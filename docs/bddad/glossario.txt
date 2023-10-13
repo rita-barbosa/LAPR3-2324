@@ -1,0 +1,27 @@
+Glossário
+
+Termos, Expressões e Acrónimos (TEA) devem ser ordenados alfabeticamente.
+
+| TEA (PT) 	              | Descrição (PT)                                                                                                                                                                                 |
+|:------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Adubo Verde             | Plantas cultivadas nas parcelas de forma temporária e com a finalidade de melhorar a fertilidade do solo, aumentando a matéria orgânica, fixando nitrogênio e prevenindo a erosão.             |
+| Animal                  | Ser vivo caracterizado pela sua capacidade de locomoção, ingestão de alimentos e resposta a estímulos ambientais.                                                                              |
+| Armazém                 | Espaço de armazenamento destinado a guardar produtos ou materiais de forma organizada e segura até que sejam necessários.                                                                      |
+| Cabaz                   | Seleção de produtos agrícolas fresco produzidos localmente, que são agrupados e vendidos diretamente aos consumidores.                                                                         |
+| Cliente                 | Pessoa que encomenda e consome os produtos agrícolas, distribuiidos sobre a forma de cabazes.                                                                                                  |
+| Condutor                | Pessoa que recolhe os cabazes na exploração agrícola e deposita-os nos Hubs de distribuição.                                                                                                   |
+| Cultura                 | Grupo de plantas da mesma espécie cultivadas em larga escala para a produção de alimentos, fibras ou outros produtos.                                                                          |
+| Edifício                | Estrutura construída para acomodar pessoas ou atividades e que serve como espaço fechado e seguro para diversas finalidades.                                                                   |
+| Estábulo                | Estrutura construída para abrigar e cuidar de animais.                                                                                                                                         |
+| Exploração              | Quinta composta por parcelas e edifícios.                                                                                                                                                      |
+| Factor de Produção      | Produto aplicado ao solo ou às plantas que visa a sua nutrição e proteção contra doenças.                                                                                                      |
+| Fertilizante            | Substância aplicada ao solo ou às plantas para fornecer nutrientes essenciais, promovendo o crescimento saudável das plantas e aumentando a produtividade agrícola.                            |
+| Ficha Técnica           | Documento que fornece informações detalhadas sobre a composição, propriedades químicas e instruções de uso de um determinado fator de produção, auxiliando na sua aplicação agrícola adequada. |
+| Fitofármaco             | Produto químico utilizado na agricultura para combater pragas, doenças e ervas daninhas nas culturas.                                                                                          |
+| Garagem                 | Estrutura projetada para estacionar e abrigar veículos e maquinaria, protegendo-os dos elementos e proporcionando segurança.                                                                   |
+| Gestor Agrícola         | Pessoa que gere as culturas nas parcelas, realiza as diferentes ações culturais e regista no Caderno de Campo.                                                                                 |
+| Gestor de Distribuição  | Pessoa que gere o processo de recolha e transporte de produtos agrícolas entre explorações, Hubs e a posterior recolha pelos diferentes clientes.                                              |
+| Hub                     | Centro de comercialização de cabazes com produtos agrícolas produzidos localmente.                                                                                                             |
+| Parcela                 | Sítio onde se cultivam plantas.                                                                                                                                                                |
+| Plantação               | Sinónimo de cultura.                                                                                                                                                                |
+| Sistema de Rega         | Conjunto de dispositivos usados para fornecer água de forma controlada às plantas nas parcelas, visando a sua irrigação.                                                                       |

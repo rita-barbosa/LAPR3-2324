@@ -1,237 +1,220 @@
-CREATE TABLE Colheita (
-    idColheita int(5) NOT NULL AUTO_INCREMENT,
-    idParcela  int(5) NOT NULL UNIQUE,
-    idCultura  int(5) NOT NULL UNIQUE,
-    semana     int(11) NOT NULL,
-    quantidade int(11) NOT NULL,
-    PRIMARY KEY (idColheita));
-
 CREATE TABLE Armazem (
-    idEdificio    int(5) NOT NULL,
-    idTipoArmazem int(5) NOT NULL,
+    idEdificio            number(5) NOT NULL,
+    designacaoTipoArmazem varchar2(50) NOT NULL,
     PRIMARY KEY (idEdificio));
 
-CREATE TABLE CadernoCampo (
-    idCadernoCampo int(5) NOT NULL AUTO_INCREMENT,
-    PRIMARY KEY (idCadernoCampo));
+CREATE TABLE CalendarioOperacao (
+    idCalendarioOperacao number(5) NOT NULL,
+    sementeira           date,
+    poda                 date,
+    colheita             date,
+    floracao             date,
+    PRIMARY KEY (idCalendarioOperacao));
 
 CREATE TABLE Classificacao (
-    idClassificacao int(5) NOT NULL AUTO_INCREMENT,
-    designacao      varchar(100) UNIQUE,
-    PRIMARY KEY (idClassificacao));
+    classificacao varchar2(50) NOT NULL,
+    PRIMARY KEY (classificacao));
 
-CREATE TABLE Componente (
-    FormulaQuimica varchar(50) NOT NULL,
-    quantidade     int(11) NOT NULL);
+CREATE TABLE ComponenteQuimico (
+    formulaQuimica varchar2(50) NOT NULL,
+    PRIMARY KEY (formulaQuimica));
+
+CREATE TABLE ConstituicaoQuimica (
+    formulaQuimica    varchar2(50) NOT NULL,
+    idFichaTecnica    number(5) NOT NULL,
+    designacaoUnidade varchar2(5) NOT NULL,
+    quantidade        number(11) NOT NULL,
+    PRIMARY KEY (formulaQuimica,idFichaTecnica));
 
 CREATE TABLE Cultura (
-    idCultura     int(5) NOT NULL AUTO_INCREMENT,
-    variedade     varchar(50) NOT NULL,
-    nomeComum     varchar(50) NOT NULL,
-    idTipoCultura int(5) NOT NULL,
-    idParcela     int(5) NOT NULL,
+    idCultura             number(5) NOT NULL,
+    variedade             varchar2(50) NOT NULL,
+    nomeComum             varchar2(50) NOT NULL,
+    designacaoTipoCultura varchar2(50) NOT NULL,
     PRIMARY KEY (idCultura));
 
 CREATE TABLE CulturaInstalada (
-    idParcela   int(5) NOT NULL UNIQUE,
-    idCultura   int(5) NOT NULL UNIQUE,
-    idEdificio  int(5) NOT NULL,
+    idParcela   number(5) NOT NULL,
+    idCultura   number(5) NOT NULL,
+    idEdificio  number(5) NOT NULL,
     dataInicial date NOT NULL,
     dataFinal   date,
-    PRIMARY KEY (idParcela, idCultura));
+    PRIMARY KEY (idParcela,idCultura));
 
 CREATE TABLE Edificio (
-    idEdificio     int(5) NOT NULL AUTO_INCREMENT,
-    idTipoEdificio int(5) NOT NULL,
-    designacao     varchar(50),
-    area           double NOT NULL,
+    idEdificio             number(5) NOT NULL,
+    designacaoTipoEdificio varchar2(50) NOT NULL,
+    designacaoUnidade      varchar2(5) NOT NULL,
+    nomeEdificio           varchar2(50) NOT NULL UNIQUE,
+    area                   double precision,
     PRIMARY KEY (idEdificio));
 
 CREATE TABLE EstacaoMeteorologica (
-    idEstacaoMeteorologica int(5) NOT NULL AUTO_INCREMENT,
+    idEstacaoMeteorologica number(5) NOT NULL,
     PRIMARY KEY (idEstacaoMeteorologica));
 
 CREATE TABLE FatorProducao (
-    nomeComercial   varchar(50) NOT NULL,
-    idClassificacao int(5) NOT NULL,
-    idTipoAplicacao int(5) NOT NULL,
-    idFormulacao    int(5) NOT NULL,
-    idStock         int(5) NOT NULL,
-    fabricante      varchar(50),
+    nomeComercial   varchar2(50) NOT NULL,
+    idFichaTecnica  number(5) NOT NULL,
+    idStock         number(5) NOT NULL,
+    classificacao   varchar2(50) NOT NULL,
+    estadoMateria   varchar2(50) NOT NULL,
+    metodoAplicacao varchar2(50) NOT NULL,
     PRIMARY KEY (nomeComercial));
 
 CREATE TABLE Fertilizacao (
-    idFertilizacao int(5) NOT NULL AUTO_INCREMENT,
-    nomeComercial  varchar(50) NOT NULL,
-    quantidade     int(11),
-    PRIMARY KEY (idFertilizacao));
+    nomeComercial      varchar2(50) NOT NULL,
+    idOperacaoAgricola number(5) NOT NULL,
+    PRIMARY KEY (nomeComercial,idOperacaoAgricola));
+
+CREATE TABLE FichaTecnica (
+    idFichaTecnica number(5) NOT NULL,
+    PRIMARY KEY (idFichaTecnica));
 
 CREATE TABLE Formulacao (
-    idFormulacao  int(5) NOT NULL AUTO_INCREMENT,
-    estadoMateria varchar(100) UNIQUE,
-    PRIMARY KEY (idFormulacao));
+    estadoMateria varchar2(50) NOT NULL,
+    PRIMARY KEY (estadoMateria));
 
 CREATE TABLE OperacaoAgricola (
-    idParcela      int(5) NOT NULL,
-    idCultura      int(5) NOT NULL,
-    data           date,
-    idColheita     int(5) NOT NULL,
-    idFertilizacao int(5) NOT NULL,
-    idCadernoCampo int(5) NOT NULL);
+    idOperacaoAgricola         number(5) NOT NULL,
+    idParcela                  number(5) NOT NULL,
+    idCultura                  number(5) NOT NULL,
+    designacaoOperacaoAgricola varchar2(50) NOT NULL,
+    designacaoUnidade          varchar2(5) NOT NULL,
+    quantidade                 number(11),
+    data                       date NOT NULL,
+    PRIMARY KEY (idOperacaoAgricola));
 
 CREATE TABLE Parcela (
-    idParcela              int(5) NOT NULL AUTO_INCREMENT,
-    idTipoSensor           int(5) NOT NULL,
-    idEstacaoMeteorologica int(5) NOT NULL,
-    designacao             varchar(100) NOT NULL,
-    area                   double NOT NULL,
+    idParcela         number(5) NOT NULL,
+    designacaoUnidade varchar2(5) NOT NULL,
+    designacaoSensor  varchar2(50) NOT NULL,
+    nomeParcela       varchar2(50) NOT NULL UNIQUE,
+    area              double precision NOT NULL,
     PRIMARY KEY (idParcela));
 
 CREATE TABLE Planta (
-    variedade  varchar(50) NOT NULL UNIQUE,
-    nomeComum  varchar(50) NOT NULL UNIQUE,
-    especie    varchar(50) NOT NULL,
-    sementeira date,
-    poda       date,
-    colheita   date,
-    floracao   date,
+    variedade            varchar2(50) NOT NULL,
+    nomeComum            varchar2(50) NOT NULL,
+    idCalendarioOperacao number(5) NOT NULL,
+    especie              varchar2(50) NOT NULL,
     PRIMARY KEY (variedade, nomeComum));
 
 CREATE TABLE Producao (
-    idProduto int(11) NOT NULL UNIQUE,
-    idCultura int(5) NOT NULL UNIQUE,
-    PRIMARY KEY (idProduto, idCultura));
+    idProduto number(5) NOT NULL,
+    idCultura number(5) NOT NULL,
+    PRIMARY KEY (idProduto,idCultura));
 
 CREATE TABLE Produto (
-    idProduto int(11) NOT NULL AUTO_INCREMENT,
-    idStock   int(5) NOT NULL,
-    nome      varchar(50),
+    idProduto number(5) NOT NULL,
+    nome      varchar2(50) NOT NULL UNIQUE,
     PRIMARY KEY (idProduto));
 
 CREATE TABLE Sensor (
-    idTipoSensor           int(5) NOT NULL,
-    idEstacaoMeteorologica int(5) NOT NULL UNIQUE,
-    idCadernoCampo         int(5) NOT NULL,
-    PRIMARY KEY (idTipoSensor));
+    designacaoSensor       varchar2(50) NOT NULL,
+    idEstacaoMeteorologica number(5) NOT NULL,
+    PRIMARY KEY (designacaoSensor));
 
 CREATE TABLE SistemaDeRega (
-    idEdificio int(5) NOT NULL,
+    idEdificio number(5) NOT NULL,
     PRIMARY KEY (idEdificio));
 
 CREATE TABLE Stock (
-    idStock    int(5) NOT NULL AUTO_INCREMENT,
-    idEdificio int(5) NOT NULL,
-    quantidade int(11),
+    idStock           number(5) NOT NULL,
+    idEdificio        number(5) NOT NULL,
+    idProduto         number(5) NOT NULL,
+    designacaoUnidade varchar2(5) NOT NULL,
+    quantidade        number(11) NOT NULL,
     PRIMARY KEY (idStock));
 
 CREATE TABLE TipoAplicacao (
-    idTipoAplicacao int(5) NOT NULL AUTO_INCREMENT,
-    metodoAplicacao varchar(100) UNIQUE,
-    PRIMARY KEY (idTipoAplicacao));
+    metodoAplicacao varchar2(50) NOT NULL,
+    PRIMARY KEY (metodoAplicacao));
 
 CREATE TABLE TipoArmazem (
-    idTipoArmazem int(5) NOT NULL AUTO_INCREMENT,
-    designacao    varchar(50) UNIQUE,
-    PRIMARY KEY (idTipoArmazem));
+    designacaoTipoArmazem varchar2(50) NOT NULL,
+    PRIMARY KEY (designacaoTipoArmazem));
 
 CREATE TABLE TipoCultura (
-    idTipoCultura int(5) NOT NULL AUTO_INCREMENT,
-    designacao    varchar(50),
-    PRIMARY KEY (idTipoCultura));
+    designacaoTipoCultura varchar2(50) NOT NULL,
+    PRIMARY KEY (designacaoTipoCultura));
 
 CREATE TABLE TipoEdificio (
-    idTipoEdificio int(5) NOT NULL AUTO_INCREMENT,
-    designacao     varchar(100) NOT NULL,
-    PRIMARY KEY (idTipoEdificio));
+    designacaoTipoEdificio varchar2(50) NOT NULL,
+    PRIMARY KEY (designacaoTipoEdificio));
+
+CREATE TABLE TipoOperacaoAgricola (
+    designacaoOperacaoAgricola varchar2(50) NOT NULL,
+    PRIMARY KEY (designacaoOperacaoAgricola));
 
 CREATE TABLE TipoSensor (
-    idTipoSensor int(5) NOT NULL AUTO_INCREMENT,
-    designacao   varchar(50) UNIQUE,
-    PRIMARY KEY (idTipoSensor));
+    designacaoSensor varchar2(50) NOT NULL,
+    PRIMARY KEY (designacaoSensor));
 
+CREATE TABLE TipoUnidade (
+    designacaoUnidade varchar2(5) NOT NULL,
+    PRIMARY KEY (designacaoUnidade));
 
-ALTER TABLE FatorProducao ADD CONSTRAINT FKFatorProdu857281 FOREIGN KEY () REFERENCES FichaTecnica ();
+ALTER TABLE FatorProducao ADD CONSTRAINT FKFatorProdu46093 FOREIGN KEY (idFichaTecnica) REFERENCES FichaTecnica (idFichaTecnica);
 ALTER TABLE Armazem ADD CONSTRAINT FKArmazem34014 FOREIGN KEY (idEdificio) REFERENCES Edificio (idEdificio);
 ALTER TABLE Sensor ADD CONSTRAINT FKSensor724240 FOREIGN KEY (idEstacaoMeteorologica) REFERENCES EstacaoMeteorologica (idEstacaoMeteorologica);
 ALTER TABLE CulturaInstalada ADD CONSTRAINT FKCulturaIns8416 FOREIGN KEY (idParcela) REFERENCES Parcela (idParcela);
-ALTER TABLE `	Colheita` ADD CONSTRAINT `FK	Colheita773942` FOREIGN KEY (idParcela, idCultura) REFERENCES CulturaInstalada (idParcela, idCultura);
+ALTER TABLE OperacaoAgricola ADD CONSTRAINT FKOperacaoAg418117 FOREIGN KEY (idParcela, idCultura) REFERENCES CulturaInstalada (idParcela, idCultura);
 ALTER TABLE Producao ADD CONSTRAINT FKProducao271906 FOREIGN KEY (idCultura) REFERENCES Cultura (idCultura);
 ALTER TABLE Producao ADD CONSTRAINT FKProducao147123 FOREIGN KEY (idProduto) REFERENCES Produto (idProduto);
-ALTER TABLE Cultura ADD CONSTRAINT FKCultura750413 FOREIGN KEY (idTipoCultura) REFERENCES TipoCultura (idTipoCultura);
+ALTER TABLE Cultura ADD CONSTRAINT FKCultura115946 FOREIGN KEY (designacaoTipoCultura) REFERENCES TipoCultura (designacaoTipoCultura);
 ALTER TABLE SistemaDeRega ADD CONSTRAINT FKSistemaDeR592919 FOREIGN KEY (idEdificio) REFERENCES Edificio (idEdificio);
 ALTER TABLE Stock ADD CONSTRAINT FKStock783580 FOREIGN KEY (idEdificio) REFERENCES Armazem (idEdificio);
-ALTER TABLE Componente ADD CONSTRAINT FKComponente967329 FOREIGN KEY () REFERENCES FichaTecnica ();
-ALTER TABLE FatorProducao ADD CONSTRAINT FKFatorProdu734245 FOREIGN KEY (idTipoAplicacao) REFERENCES TipoAplicacao (idTipoAplicacao);
-ALTER TABLE Armazem ADD CONSTRAINT FKArmazem554517 FOREIGN KEY (idTipoArmazem) REFERENCES TipoArmazem (idTipoArmazem);
-ALTER TABLE FatorProducao ADD CONSTRAINT FKFatorProdu306315 FOREIGN KEY (idClassificacao) REFERENCES Classificacao (idClassificacao);
-ALTER TABLE FatorProducao ADD CONSTRAINT FKFatorProdu678014 FOREIGN KEY (idFormulacao) REFERENCES Formulacao (idFormulacao);
+ALTER TABLE FatorProducao ADD CONSTRAINT FKFatorProdu643107 FOREIGN KEY (metodoAplicacao) REFERENCES TipoAplicacao (metodoAplicacao);
+ALTER TABLE Armazem ADD CONSTRAINT FKArmazem920049 FOREIGN KEY (designacaoTipoArmazem) REFERENCES TipoArmazem (designacaoTipoArmazem);
+ALTER TABLE FatorProducao ADD CONSTRAINT FKFatorProdu949597 FOREIGN KEY (classificacao) REFERENCES Classificacao (classificacao);
+ALTER TABLE FatorProducao ADD CONSTRAINT FKFatorProdu998558 FOREIGN KEY (estadoMateria) REFERENCES Formulacao (estadoMateria);
 ALTER TABLE Cultura ADD CONSTRAINT FKCultura587347 FOREIGN KEY (variedade, nomeComum) REFERENCES Planta (variedade, nomeComum);
 ALTER TABLE CulturaInstalada ADD CONSTRAINT FKCulturaIns779551 FOREIGN KEY (idCultura) REFERENCES Cultura (idCultura);
-ALTER TABLE OperacaoAgricola ADD CONSTRAINT FKOperacaoAg107762 FOREIGN KEY (idCadernoCampo) REFERENCES CadernoCampo (idCadernoCampo);
-ALTER TABLE Produto ADD CONSTRAINT FKProduto908588 FOREIGN KEY (idStock) REFERENCES Stock (idStock);
-ALTER TABLE Sensor ADD CONSTRAINT FKSensor374510 FOREIGN KEY (idTipoSensor) REFERENCES TipoSensor (idTipoSensor);
-ALTER TABLE Parcela ADD CONSTRAINT FKParcela449874 FOREIGN KEY (idTipoSensor) REFERENCES Sensor (idTipoSensor);
-ALTER TABLE OperacaoAgricola ADD CONSTRAINT FKOperacaoAg19227 FOREIGN KEY (idColheita) REFERENCES `	Colheita` (idColheita);
-ALTER TABLE OperacaoAgricola ADD CONSTRAINT FKOperacaoAg84969 FOREIGN KEY (idFertilizacao) REFERENCES Fertilizacao (idFertilizacao);
+ALTER TABLE Sensor ADD CONSTRAINT FKSensor785525 FOREIGN KEY (designacaoSensor) REFERENCES TipoSensor (designacaoSensor);
+ALTER TABLE Parcela ADD CONSTRAINT FKParcela38859 FOREIGN KEY (designacaoSensor) REFERENCES Sensor (designacaoSensor);
 ALTER TABLE Fertilizacao ADD CONSTRAINT FKFertilizac46637 FOREIGN KEY (nomeComercial) REFERENCES FatorProducao (nomeComercial);
-ALTER TABLE SistemaDeRega ADD CONSTRAINT FKSistemaDeR148458 FOREIGN KEY () REFERENCES OperacaoAgricola ();
-ALTER TABLE Edificio ADD CONSTRAINT FKEdificio496350 FOREIGN KEY (idTipoEdificio) REFERENCES TipoEdificio (idTipoEdificio);
+ALTER TABLE Edificio ADD CONSTRAINT FKEdificio200555 FOREIGN KEY (designacaoTipoEdificio) REFERENCES TipoEdificio (designacaoTipoEdificio);
 ALTER TABLE FatorProducao ADD CONSTRAINT FKFatorProdu857690 FOREIGN KEY (idStock) REFERENCES Stock (idStock);
 ALTER TABLE CulturaInstalada ADD CONSTRAINT FKCulturaIns32096 FOREIGN KEY (idEdificio) REFERENCES SistemaDeRega (idEdificio);
-ALTER TABLE Sensor ADD CONSTRAINT FKSensor668839 FOREIGN KEY (idCadernoCampo) REFERENCES CadernoCampo (idCadernoCampo);
+ALTER TABLE Stock ADD CONSTRAINT FKStock810484 FOREIGN KEY (idProduto) REFERENCES Produto (idProduto);
+ALTER TABLE Fertilizacao ADD CONSTRAINT FKFertilizac730503 FOREIGN KEY (idOperacaoAgricola) REFERENCES OperacaoAgricola (idOperacaoAgricola);
+ALTER TABLE OperacaoAgricola ADD CONSTRAINT FKOperacaoAg771766 FOREIGN KEY (designacaoOperacaoAgricola) REFERENCES TipoOperacaoAgricola (designacaoOperacaoAgricola);
+ALTER TABLE Planta ADD CONSTRAINT FKPlanta713876 FOREIGN KEY (idCalendarioOperacao) REFERENCES CalendarioOperacao (idCalendarioOperacao);
+ALTER TABLE Parcela ADD CONSTRAINT FKParcela450334 FOREIGN KEY (designacaoUnidade) REFERENCES TipoUnidade (designacaoUnidade);
+ALTER TABLE OperacaoAgricola ADD CONSTRAINT FKOperacaoAg548404 FOREIGN KEY (designacaoUnidade) REFERENCES TipoUnidade (designacaoUnidade);
+ALTER TABLE Stock ADD CONSTRAINT FKStock442583 FOREIGN KEY (designacaoUnidade) REFERENCES TipoUnidade (designacaoUnidade);
+ALTER TABLE Edificio ADD CONSTRAINT FKEdificio711412 FOREIGN KEY (designacaoUnidade) REFERENCES TipoUnidade (designacaoUnidade);
+ALTER TABLE ConstituicaoQuimica ADD CONSTRAINT FKConstituic589638 FOREIGN KEY (formulaQuimica) REFERENCES ComponenteQuimico (formulaQuimica);
+ALTER TABLE ConstituicaoQuimica ADD CONSTRAINT FKConstituic724074 FOREIGN KEY (idFichaTecnica) REFERENCES FichaTecnica (idFichaTecnica);
+ALTER TABLE ConstituicaoQuimica ADD CONSTRAINT FKConstituic208297 FOREIGN KEY (designacaoUnidade) REFERENCES TipoUnidade (designacaoUnidade);
 
 
--- ALTER TABLE FatorProducao DROP FOREIGN KEY FKFatorProdu857281;
--- ALTER TABLE Armazem DROP FOREIGN KEY FKArmazem34014;
--- ALTER TABLE Sensor DROP FOREIGN KEY FKSensor724240;
--- ALTER TABLE CulturaInstalada DROP FOREIGN KEY FKCulturaIns8416;
--- ALTER TABLE `	Colheita` DROP FOREIGN KEY `FK	Colheita773942`;
--- ALTER TABLE Producao DROP FOREIGN KEY FKProducao271906;
--- ALTER TABLE Producao DROP FOREIGN KEY FKProducao147123;
--- ALTER TABLE Cultura DROP FOREIGN KEY FKCultura750413;
--- ALTER TABLE SistemaDeRega DROP FOREIGN KEY FKSistemaDeR592919;
--- ALTER TABLE Stock DROP FOREIGN KEY FKStock783580;
--- ALTER TABLE Componente DROP FOREIGN KEY FKComponente967329;
--- ALTER TABLE FatorProducao DROP FOREIGN KEY FKFatorProdu734245;
--- ALTER TABLE Armazem DROP FOREIGN KEY FKArmazem554517;
--- ALTER TABLE FatorProducao DROP FOREIGN KEY FKFatorProdu306315;
--- ALTER TABLE FatorProducao DROP FOREIGN KEY FKFatorProdu678014;
--- ALTER TABLE Cultura DROP FOREIGN KEY FKCultura587347;
--- ALTER TABLE CulturaInstalada DROP FOREIGN KEY FKCulturaIns779551;
--- ALTER TABLE OperacaoAgricola DROP FOREIGN KEY FKOperacaoAg107762;
--- ALTER TABLE Produto DROP FOREIGN KEY FKProduto908588;
--- ALTER TABLE Sensor DROP FOREIGN KEY FKSensor374510;
--- ALTER TABLE Parcela DROP FOREIGN KEY FKParcela449874;
--- ALTER TABLE OperacaoAgricola DROP FOREIGN KEY FKOperacaoAg19227;
--- ALTER TABLE OperacaoAgricola DROP FOREIGN KEY FKOperacaoAg84969;
--- ALTER TABLE Fertilizacao DROP FOREIGN KEY FKFertilizac46637;
--- ALTER TABLE SistemaDeRega DROP FOREIGN KEY FKSistemaDeR148458;
--- ALTER TABLE Edificio DROP FOREIGN KEY FKEdificio496350;
--- ALTER TABLE FatorProducao DROP FOREIGN KEY FKFatorProdu857690;
--- ALTER TABLE CulturaInstalada DROP FOREIGN KEY FKCulturaIns32096;
--- ALTER TABLE Sensor DROP FOREIGN KEY FKSensor668839;
--- DROP TABLE IF EXISTS Colheita;
--- DROP TABLE IF EXISTS Armazem;
--- DROP TABLE IF EXISTS CadernoCampo;
--- DROP TABLE IF EXISTS Classificacao;
--- DROP TABLE IF EXISTS Componente;
--- DROP TABLE IF EXISTS Cultura;
--- DROP TABLE IF EXISTS CulturaInstalada;
--- DROP TABLE IF EXISTS Edificio;
--- DROP TABLE IF EXISTS EstacaoMeteorologica;
--- DROP TABLE IF EXISTS FatorProducao;
--- DROP TABLE IF EXISTS Fertilizacao;
--- DROP TABLE IF EXISTS Formulacao;
--- DROP TABLE IF EXISTS OperacaoAgricola;
--- DROP TABLE IF EXISTS Parcela;
--- DROP TABLE IF EXISTS Planta;
--- DROP TABLE IF EXISTS Producao;
--- DROP TABLE IF EXISTS Produto;
--- DROP TABLE IF EXISTS Sensor;
--- DROP TABLE IF EXISTS SistemaDeRega;
--- DROP TABLE IF EXISTS Stock;
--- DROP TABLE IF EXISTS TipoAplicacao;
--- DROP TABLE IF EXISTS TipoArmazem;
--- DROP TABLE IF EXISTS TipoCultura;
--- DROP TABLE IF EXISTS TipoEdificio;
--- DROP TABLE IF EXISTS TipoSensor;
+-- DROP TABLE Armazem CASCADE CONSTRAINTS;
+-- DROP TABLE CalendarioOperacao CASCADE CONSTRAINTS;
+-- DROP TABLE Classificacao CASCADE CONSTRAINTS;
+-- DROP TABLE ComponenteQuimico CASCADE CONSTRAINTS;
+-- DROP TABLE ConstituicaoQuimica CASCADE CONSTRAINTS;
+-- DROP TABLE Cultura CASCADE CONSTRAINTS;
+-- DROP TABLE CulturaInstalada CASCADE CONSTRAINTS;
+-- DROP TABLE Edificio CASCADE CONSTRAINTS;
+-- DROP TABLE EstacaoMeteorologica CASCADE CONSTRAINTS;
+-- DROP TABLE FatorProducao CASCADE CONSTRAINTS;
+-- DROP TABLE Fertilizacao CASCADE CONSTRAINTS;
+-- DROP TABLE FichaTecnica CASCADE CONSTRAINTS;
+-- DROP TABLE Formulacao CASCADE CONSTRAINTS;
+-- DROP TABLE OperacaoAgricola CASCADE CONSTRAINTS;
+-- DROP TABLE Parcela CASCADE CONSTRAINTS;
+-- DROP TABLE Planta CASCADE CONSTRAINTS;
+-- DROP TABLE Producao CASCADE CONSTRAINTS;
+-- DROP TABLE Produto CASCADE CONSTRAINTS;
+-- DROP TABLE Sensor CASCADE CONSTRAINTS;
+-- DROP TABLE SistemaDeRega CASCADE CONSTRAINTS;
+-- DROP TABLE Stock CASCADE CONSTRAINTS;
+-- DROP TABLE TipoAplicacao CASCADE CONSTRAINTS;
+-- DROP TABLE TipoArmazem CASCADE CONSTRAINTS;
+-- DROP TABLE TipoCultura CASCADE CONSTRAINTS;
+-- DROP TABLE TipoEdificio CASCADE CONSTRAINTS;
+-- DROP TABLE TipoOperacaoAgricola CASCADE CONSTRAINTS;
+-- DROP TABLE TipoSensor CASCADE CONSTRAINTS;
+-- DROP TABLE TipoUnidade CASCADE CONSTRAINTS;

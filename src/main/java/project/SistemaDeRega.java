@@ -1,17 +1,26 @@
 package project;
 
-import jdk.jshell.spi.ExecutionControl;
+import java.util.Set;
 
-public class SistemaDeRega extends Edificio{
+public class SistemaDeRega{
 
-    private Controlador controlador;
+    private final ControladorRega controladorRega;
 
-    public SistemaDeRega(int edificioID, String designacao, double area, TipoDeEdificio tipoDeEdificio, Controlador controlador) {
-        super(edificioID, designacao, area, tipoDeEdificio);
-        this.controlador = controlador;
+    private Set<PlanoDeRega> planoDeRegas;
+
+    public SistemaDeRega( ControladorRega controlador) {
+        this.controladorRega = controlador;
     }
 
     public boolean verificarRega(){
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public ControladorRega getControladorRega() {
+        return controladorRega;
+    }
+
+    public Set<PlanoDeRega> getPlanoDeRegas() {
+        return planoDeRegas;
     }
 }

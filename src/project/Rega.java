@@ -1,7 +1,7 @@
 package project;
 import java.util.Objects;
 
-public class PlanoDeRega {
+public class Rega {
 
     private String idParcela;
     private  Integer tempoRega;
@@ -35,7 +35,7 @@ public class PlanoDeRega {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PlanoDeRega that = (PlanoDeRega) o;
+        Rega that = (Rega) o;
         return Objects.equals(idParcela, that.idParcela) && Objects.equals(tempoRega, that.tempoRega) && Objects.equals(regularidade, that.regularidade);
     }
 

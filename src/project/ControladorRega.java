@@ -33,6 +33,8 @@ public class ControladorRega {
             for( String parcelaID : regaCheck.keySet()){
                 if(tempo.isAfter(temp) && tempo.isBefore(temp.plusMinutes(regaCheck.get(parcelaID)))){
                     System.out.println("Parcela a ser regada neste momento: "+parcelaID+" | Tempo restante: "+(temp.plusMinutes(regaCheck.get(parcelaID)).getMinute()-temp.getMinute())+" minutos.");
+                }else{
+                    temp = temp.plusMinutes(regaCheck.get(parcelaID));
                 }
             }
         }
@@ -87,6 +89,8 @@ public class ControladorRega {
     private Boolean checkDate(LocalDate data){
         return SistemaDeRega.getInicioDoPlanoDeRega().isBefore(data) && SistemaDeRega.getInicioDoPlanoDeRega().plusDays(30).isAfter(data);
     }
+
+    //Necessário? A hora pode ser qualquer uma :/
     private Boolean checkHour(LocalTime tempo){
         return false;
     }

@@ -1,4 +1,4 @@
-package project;
+package project.domain;
 
 public class Parcela {
     private int parcelaID;

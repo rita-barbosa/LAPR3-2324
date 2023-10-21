@@ -1,22 +1,23 @@
-package project;
+package project.domain;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class ControladorRega {
 
-    private final Integer NUM_DIAS = 30;
+   // private static final Integer NUM_DIAS = 30; //É necessário????
 
-    private final String TODOS_DIAS = "T";
+    private static final String TODOS_DIAS = "T";
 
-    private final String DIAS_PARES = "P";
+    private static final String DIAS_PARES = "P";
 
-    private final String DIAS_IMPARES = "I";
-    private final String TRES_DIAS = "3";
+    private static final String DIAS_IMPARES = "I";
+    private static final String TRES_DIAS = "3";
+
+    public ControladorRega() {
+    }
 
 
     /**
@@ -24,20 +25,21 @@ public class ControladorRega {
      * @param tempo
      * @param data
      */
-    public void checkIsWateringHour(LocalTime tempo, LocalDate data){
-
+    public String checkIsWateringHour(LocalTime tempo, LocalDate data){
+        String verification = null;
         Map<String, Integer> regaCheck = checkIsWateringDay(data);
 
         for( LocalTime timeInPlano : SistemaDeRega.getTempoInicialDeRega()){
             LocalTime temp = timeInPlano;
             for( String parcelaID : regaCheck.keySet()){
                 if(tempo.isAfter(temp) && tempo.isBefore(temp.plusMinutes(regaCheck.get(parcelaID)))){
-                    System.out.println("Parcela a ser regada neste momento: "+parcelaID+" | Tempo restante: "+(temp.plusMinutes(regaCheck.get(parcelaID)).getMinute()-temp.getMinute())+" minutos.");
+                    verification = "Parcela a ser regada neste momento: "+parcelaID+" | Tempo restante: "+(temp.plusMinutes(regaCheck.get(parcelaID)).getMinute()-temp.getMinute())+" minutos.";
                 }else{
                     temp = temp.plusMinutes(regaCheck.get(parcelaID));
                 }
             }
         }
+        return (verification == null) ? "Não existem parcelas a serem regadas neste momento." : verification;
     }
 
     /**
@@ -78,10 +80,10 @@ public class ControladorRega {
 
     /**
      * Se o utilizador não inserir nenhum dia nem hora o processo utiliza o dia e a hora atuais.
-     * @param planoRega
+    // * @param planoRega
      */
-    public void checkIsWateringNoData( Set<Rega> planoRega){
-        checkIsWateringHour(LocalTime.now(), LocalDate.now());
+    public String checkIsWateringNoData( /*Set<Rega> planoRega*/){
+        return checkIsWateringHour(LocalTime.now(), LocalDate.now());
     }
 
 

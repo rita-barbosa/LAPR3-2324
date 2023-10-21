@@ -1,4 +1,4 @@
-package project;
+package project.domain;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -6,20 +6,16 @@ import java.util.Set;
 
 public class SistemaDeRega{
 
-    private final ControladorRega controladorRega;
+    private static final ControladorRega controladorRega = new ControladorRega();
     private static Set<Rega> planoDeRega;
     private static Set<LocalTime> tempoInicialDeRega;
     private static LocalDate inicioDoPlanoDeRega;
-
-    public SistemaDeRega( ControladorRega controlador) {
-        this.controladorRega = controlador;
-    }
 
     public boolean verificarRega(){
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public ControladorRega getControladorRega() {
+    public static ControladorRega getControladorRega() {
         return controladorRega;
     }
 

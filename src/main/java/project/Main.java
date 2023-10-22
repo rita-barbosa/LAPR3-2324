@@ -1,7 +1,14 @@
 package project;
 
+import project.ui.menuPrincipal.MainMenuUI;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        try {
+            MainMenuUI menu = new MainMenuUI();
+            menu.run();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

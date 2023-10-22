@@ -29,21 +29,24 @@ public class ControladorRegaUI implements Runnable {
         String result = null;
         do {
             option = Utils.showAndSelectIndex(options, "Controlador de Rega:");
-            if (option == 1){
+            if (option == 0){ //estava como option == 1, mas no return do método do utils, temos option - 1
                result = controller.checkWateringInRealTime();
-            } else if (option == 2) {
+                showOutput(result);
+            } else if (option == 1) {
                 LocalTime time = getTime();
                 LocalDate day = getDay();
                 result = controller.checkWateringInSimulatedTime(day, time);
+                showOutput(result);
             }
         } while (option != -1);
         showOutput(result);
     }
 
 
-    // ANA PODES FAZER SE QUISERES
     private void showOutput(String result) {
-
+            System.out.println();
+            System.out.println(result);
+            System.out.println();
     }
 
     private LocalDate getDay() {
@@ -58,7 +61,7 @@ public class ControladorRegaUI implements Runnable {
                 data = null;
             }
         }
-        scanner.close();
+//        scanner.close();
         return LocalDate.parse(data, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 
@@ -74,7 +77,7 @@ public class ControladorRegaUI implements Runnable {
                 time = null;
             }
         }
-        scanner.close();
+//        scanner.close();
         return LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm"));
     }
 

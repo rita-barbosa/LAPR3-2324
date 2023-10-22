@@ -19,27 +19,26 @@ public class ControladorRega {
     public ControladorRega() {
     }
 
-
     /**
      * Utiliza a informaçâo da classe SistemaDeRega e da função checkIsWateringDay() para ver que parcela está a ser regada no momento indicado e quanto tempo falta para a próxima parcela ser regada.
      * @param tempo
      * @param data
      */
     public String checkIsWateringHour(LocalTime tempo, LocalDate data){
-        String verification = null;
+        StringBuilder verification = null;
         Map<String, Integer> regaCheck = checkIsWateringDay(data);
 
         for( LocalTime timeInPlano : SistemaDeRega.getTempoInicialDeRega()){
             LocalTime temp = timeInPlano;
             for( String parcelaID : regaCheck.keySet()){
                 if(tempo.isAfter(temp) && tempo.isBefore(temp.plusMinutes(regaCheck.get(parcelaID)))){
-                    verification = "Parcela a ser regada neste momento: "+parcelaID+" | Tempo restante: "+(temp.plusMinutes(regaCheck.get(parcelaID)).getMinute()-temp.getMinute())+" minutos.";
+                    verification.append("Parcela a ser regada neste momento: ").append(parcelaID).append(" | Tempo restante: ").append(temp.plusMinutes(regaCheck.get(parcelaID)).getMinute() - temp.getMinute()).append(" minutos.");
                 }else{
                     temp = temp.plusMinutes(regaCheck.get(parcelaID));
                 }
             }
         }
-        return (verification == null) ? "Não existem parcelas a serem regadas neste momento." : verification;
+        return (verification == null) ? "Não existem parcelas a serem regadas neste momento." : verification.toString();
     }
 
     /**
@@ -85,8 +84,6 @@ public class ControladorRega {
     public String checkIsWateringNoData( /*Set<Rega> planoRega*/){
         return checkIsWateringHour(LocalTime.now(), LocalDate.now());
     }
-
-
 
     private Boolean checkDate(LocalDate data){
         return SistemaDeRega.getInicioDoPlanoDeRega().isBefore(data) && SistemaDeRega.getInicioDoPlanoDeRega().plusDays(30).isAfter(data);

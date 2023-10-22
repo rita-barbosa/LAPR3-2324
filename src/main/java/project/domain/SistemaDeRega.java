@@ -11,6 +11,18 @@ public class SistemaDeRega{
     private static Set<LocalTime> tempoInicialDeRega;
     private static LocalDate inicioDoPlanoDeRega;
 
+    public static void setPlanoDeRega(Set<Rega> planoDeRega) {
+        SistemaDeRega.planoDeRega = planoDeRega;
+    }
+
+    public static void setTempoInicialDeRega(Set<LocalTime> tempoInicialDeRega) {
+        SistemaDeRega.tempoInicialDeRega = tempoInicialDeRega;
+    }
+
+    public static void setInicioDoPlanoDeRega(LocalDate inicioDoPlanoDeRega) {
+        SistemaDeRega.inicioDoPlanoDeRega = inicioDoPlanoDeRega;
+    }
+
     public boolean verificarRega(){
         throw new UnsupportedOperationException("Not supported yet.");
     }

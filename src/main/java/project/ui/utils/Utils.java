@@ -43,7 +43,7 @@ public class Utils {
                 invalid = false;
             } catch (NumberFormatException e) {
                 // Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, e);
-                System.out.println("\nERROR: Value typed is invalid."
+                System.out.println("\nERRO: O valor escolhido é invállido."
                         + " (" + e.getClass().getSimpleName() + ")");
             }
         } while (invalid);
@@ -59,7 +59,7 @@ public class Utils {
                 invalid = false;
             } catch (NumberFormatException e) {
                 // Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, e);
-                System.out.println("\nERROR: Value typed is invalid"
+                System.out.println("\nERRO: O valor escolhido é inválido"
                         + " (" + e.getClass().getSimpleName() + " - Decimal separator is a dot)");
             }
         } while (invalid);
@@ -75,12 +75,12 @@ public class Utils {
             try {
                 answer = input.nextInt();
                 if (answer != 1 && answer != 2) {
-                    System.out.println("\nERROR: Option selected is invalid.");
+                    System.out.println("\nERRO: A opção selecionada é inválida.");
                 } else {
                     invalid = false;
                 }
             } catch (InputMismatchException e) {
-                System.out.println("\nERROR: Option selected is not a number.");
+                System.out.println("\nERRO: A opção selecionada não é um número.");
                 input.nextLine();
             }
         } while (invalid);
@@ -97,12 +97,12 @@ public class Utils {
             try {
                 answer = input.nextInt();
                 if (answer != 1 && answer != 2) {
-                    System.out.println("\nERROR: Option selected is invalid.");
+                    System.out.println("\nERRO: A opção selecionada é inválida.");
                 } else {
                     invalid = false;
                 }
             } catch (InputMismatchException e) {
-                System.out.println("\nERROR: Option selected is not a number.");
+                System.out.println("\nERRO: A opção selecionada não é um número.");
                 input.nextLine();
             }
         } while (invalid);
@@ -151,17 +151,17 @@ public class Utils {
         for (Object o : list) {
             index++;
 
-            System.out.println(index + ". " + o.toString());
+            System.out.println(index + " - " + o.toString());
         }
         System.out.println();
-        System.out.println("0 - Cancel");
+        System.out.println("0 - Cancelar");
     }
 
     static public Object selectsObject(List<?> list) {
         String input;
         int value;
         do {
-            input = Utils.readLineFromConsole("Type your option: ");
+            input = Utils.readLineFromConsole("Selecione a opção desejada: ");
             value = Integer.parseInt(input);
         } while (value < 0 || value > list.size());
 
@@ -179,9 +179,9 @@ public class Utils {
      */
     public static String sortSelection(String prompt) {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Sort types available:");
-        System.out.println("1. Ascending");
-        System.out.println("2. Descending");
+        System.out.println("Tipos de ordeção disponíveis:");
+        System.out.println("1 - Ascendente/Ascending");
+        System.out.println("2 - Descendente/Descending");
         int option = 0;
         boolean invalid = true;
         do {
@@ -189,14 +189,14 @@ public class Utils {
                 while (option < 1 || option > 2) {
                     option = sc.nextInt();
                     if (option == 1) {
-                        return "Ascending";
+                        return "Ascendente";
                     } else if (option == 2) {
-                        return "Descending";
+                        return "Descendente";
                     }
                 }
                 invalid = false;
             } catch (InputMismatchException e) {
-                System.out.println("\nERROR: Option selected is invalid."
+                System.out.println("\nERRO: A opção selecionada é inválida."
                         + " (" + e.getClass().getSimpleName() + ")");
                 sc.nextLine();
             }
@@ -208,7 +208,7 @@ public class Utils {
         String input;
         int value;
         do {
-            input = Utils.readLineFromConsole("Type your option: ");
+            input = Utils.readLineFromConsole("Selecione a opção desejada: ");
             try {
                 value = Integer.parseInt(input);
             } catch (NumberFormatException ex) {

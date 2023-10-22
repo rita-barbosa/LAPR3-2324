@@ -1,7 +1,7 @@
 package project.ui.menuPrincipal;
 
 import project.ui.ControladorRegaUI;
-import project.ui.importarFicheiroUI;
+import project.ui.ImportarFicheiroUI;
 import project.ui.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public class SistemaDeRegaUI implements Runnable{
      */
     public void run() {
         List<MenuItem> options = new ArrayList<>();
-        options.add(new MenuItem("Importar ficheiro do Plano de Rega.", new importarFicheiroUI("Plano de Rega")));
+        options.add(new MenuItem("Importar ficheiro do Plano de Rega.", new ImportarFicheiroUI("Plano de Rega")));
         options.add(new MenuItem("Verificar ação de rega no tempo.", new ControladorRegaUI()));
         int option = 0;
         do {

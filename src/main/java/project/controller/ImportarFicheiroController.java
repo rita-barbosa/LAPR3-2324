@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class ImportarFicheiroController {
 
-    public void importWateringPlan(String filepath) throws ExcecaoFicheiro, IOException {
-        ImportarFicheiro.importWateringPlan(filepath);
+    public boolean importWateringPlan(String filepath) throws ExcecaoFicheiro, IOException {
+      return ImportarFicheiro.importWateringPlan(filepath);
     }
 }

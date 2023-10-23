@@ -9,8 +9,8 @@ import java.util.*;
 public class ImportarFicheiroUI implements Runnable {
 
     private final ImportarFicheiroController controller;
-
     private final String fileTypeName;
+    private boolean successfulImport = false;
 
     public ImportarFicheiroUI(String fileType) {
         this.controller = new ImportarFicheiroController();
@@ -23,7 +23,7 @@ public class ImportarFicheiroUI implements Runnable {
         switch (fileTypeName){
             case "Plano de Rega":
                 try {
-                   controller.importWateringPlan(filepath);
+                   successfulImport = controller.importWateringPlan(filepath);
                 } catch (IOException | ExcecaoFicheiro e) {
                     throw new RuntimeException(e);
                 }
@@ -33,6 +33,15 @@ public class ImportarFicheiroUI implements Runnable {
                 break;
             default:
                 break;
+        }
+        checkIfImportWasASuccess(successfulImport, fileTypeName);
+    }
+
+    private void checkIfImportWasASuccess(boolean successfulImport, String fileTypeName) {
+        if (successfulImport){
+            System.out.printf("O ficheiro %s foi importado com sucesso.\n\n", fileTypeName);
+        }else {
+            System.out.printf("O ficheiro %s não foi importado.\n\n", fileTypeName);
         }
     }
 

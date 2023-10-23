@@ -7,8 +7,6 @@ import java.util.Map;
 
 public class ControladorRega {
 
-   // private static final Integer NUM_DIAS = 30; //É necessário????
-
     private static final String TODOS_DIAS = "T";
 
     private static final String DIAS_PARES = "P";
@@ -25,20 +23,20 @@ public class ControladorRega {
      * @param data
      */
     public String checkIsWateringHour(LocalTime tempo, LocalDate data){
-        StringBuilder verification = null;
+        StringBuilder verification = new StringBuilder();
         Map<String, Integer> regaCheck = checkIsWateringDay(data);
 
         for( LocalTime timeInPlano : SistemaDeRega.getTempoInicialDeRega()){
             LocalTime temp = timeInPlano;
             for( String parcelaID : regaCheck.keySet()){
                 if(tempo.isAfter(temp) && tempo.isBefore(temp.plusMinutes(regaCheck.get(parcelaID)))){
-                    verification.append("Parcela a ser regada neste momento: ").append(parcelaID).append(" | Tempo restante: ").append(temp.plusMinutes(regaCheck.get(parcelaID)).getMinute() - temp.getMinute()).append(" minutos.");
+                    verification.append("Parcela a ser regada neste momento: ").append(parcelaID).append(" | Tempo restante: ").append(temp.plusMinutes(regaCheck.get(parcelaID)).getMinute() - temp.getMinute()).append(" minutos.\n");
                 }else{
                     temp = temp.plusMinutes(regaCheck.get(parcelaID));
                 }
             }
         }
-        return (verification == null) ? "Não existem parcelas a serem regadas neste momento." : verification.toString();
+        return (verification.isEmpty()) ? "Não há parcelas a serem regadas agora." : verification.toString();
     }
 
     /**

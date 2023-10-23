@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class ImportarFicheiro {
@@ -22,7 +23,7 @@ public class ImportarFicheiro {
         }
         File file = new File(filepath);
         Set<LocalTime> timeTurns = new HashSet<>();
-        Set<Rega> wateringAreas = new HashSet<>();
+        Set<Rega> wateringAreas = new LinkedHashSet<>();
         BufferedReader reader = new BufferedReader(new FileReader(file));
         String[] turns = reader.readLine().split(",");
         for (String time : turns){

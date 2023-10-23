@@ -20,7 +20,7 @@ public class SistemaDeRega{
     }
 
     public static void setInicioDoPlanoDeRega(LocalDate inicioDoPlanoDeRega) {
-        SistemaDeRega.inicioDoPlanoDeRega = inicioDoPlanoDeRega;
+        SistemaDeRega.inicioDoPlanoDeRega = inicioDoPlanoDeRega.plusDays(1);
     }
 
     public boolean verificarRega(){

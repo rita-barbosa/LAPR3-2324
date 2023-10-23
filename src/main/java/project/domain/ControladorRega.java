@@ -30,10 +30,11 @@ public class ControladorRega {
             LocalTime temp = timeInPlano;
             for( String parcelaID : regaCheck.keySet()){
                 if(tempo.isAfter(temp) && tempo.isBefore(temp.plusMinutes(regaCheck.get(parcelaID)))){
-                    verification.append("Parcela a ser regada neste momento: ").append(parcelaID).append(" | Tempo restante: ").append(temp.plusMinutes(regaCheck.get(parcelaID)).getMinute() - temp.getMinute()).append(" minutos.\n");
-                }else{
-                    temp = temp.plusMinutes(regaCheck.get(parcelaID));
+                    int tempoRestante=(temp.plusMinutes(regaCheck.get(parcelaID)).getMinute())-(tempo.getMinute());
+                    verification.append("Parcela a ser regada neste momento: ").append(parcelaID).append(" | Tempo restante: ").append(tempoRestante).append(" minutos.\n");
                 }
+                temp = temp.plusMinutes(regaCheck.get(parcelaID));
+
             }
         }
         return (verification.isEmpty()) ? "Não há parcelas a serem regadas agora." : verification.toString();

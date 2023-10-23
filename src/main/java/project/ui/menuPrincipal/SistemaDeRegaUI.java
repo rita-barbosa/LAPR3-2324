@@ -23,7 +23,7 @@ public class SistemaDeRegaUI implements Runnable{
         options.add(new MenuItem("Verificar ação de rega no tempo.", new ControladorRegaUI()));
         int option = 0;
         do {
-            option = Utils.showAndSelectIndex(options, "Sistema de Rega:");
+            option = Utils.showAndSelectIndex(options, "Sistema de Rega");
             if ((option >= 0) && (option < options.size())) {
                options.get(option).run();
             }

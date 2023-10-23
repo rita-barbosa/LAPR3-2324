@@ -18,7 +18,7 @@
      */
     public void run() {
         List<MenuItem> options = new ArrayList<MenuItem>();
-        options.add(new MenuItem("Aceder às funcionalidaes do Sistema de Rega", new SistemaDeRegaUI()));
+        options.add(new MenuItem("Aceder às funcionalidades do Sistema de Rega", new SistemaDeRegaUI()));
 
         int option = 0;
         do {

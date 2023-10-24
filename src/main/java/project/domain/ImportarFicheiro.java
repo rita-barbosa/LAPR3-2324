@@ -25,14 +25,15 @@ public class ImportarFicheiro {
         Set<LocalTime> timeTurns = new HashSet<>();
         Set<Rega> wateringAreas = new LinkedHashSet<>();
         BufferedReader reader = new BufferedReader(new FileReader(file));
-        String[] turns = reader.readLine().split(",");
-        for (String time : turns){
+        String[] line = reader.readLine().split(",");
+        for (String time : line){
             time = checkTimeValue(time);
-            timeTurns.add(LocalTime.parse(time.trim(), DateTimeFormatter.ofPattern("HH:mm")));
+            timeTurns.add(LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm")));
         }
-        while (reader.readLine() != null){
-            turns = reader.readLine().split(",");
-            wateringAreas.add(new Rega(turns[0].trim(), Integer.parseInt(turns[1].trim()), turns[2].trim()));
+        String currentLine;
+        while ((currentLine = reader.readLine()) != null) {
+            line = currentLine.split(",");
+            wateringAreas.add(new Rega(line[0].trim(), Integer.parseInt(line[1].trim()), line[2].trim()));
         }
         SistemaDeRega.setPlanoDeRega(wateringAreas);
         SistemaDeRega.setInicioDoPlanoDeRega(LocalDate.now());
@@ -47,7 +48,7 @@ public class ImportarFicheiro {
             if (value < 10 && value > 0){
                 time = "0" + hourAndMinutes[0].trim() + ":" + hourAndMinutes[1].trim();
             }
-            return time;
+            return time.trim();
     }
 
 }

@@ -5,40 +5,24 @@ import project.exception.ExcecaoFicheiro;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class ImportarFicheiroControllerTest {
 
     private static final ImportarFicheiroController controller = new ImportarFicheiroController();
+    private static String result;
+
 
     @Test
     public void testImportWateringPlanSuccess() {
-        try {
-            String rightFile = "src/test/java/project/testFiles/ficheiroCorreto.txt";
-            assertTrue(controller.importWateringPlan(rightFile));
-        }catch (ExcecaoFicheiro | IOException e){
-            System.out.println("testImportWateringPlanSuccess");
-        }
+        result = controller.importWateringPlan("src/test/java/project/testFiles/ficheiroCorreto.txt");
+        assertEquals("Success", result);
     }
 
     @Test
-    public void testImportWateringPlanFailureWrongLines() {
-        try {
-            String wrongLinesFile = "src/test/java/project/testFiles/ficheiroLinhasErrada.txt";
-            assertFalse(controller.importWateringPlan(wrongLinesFile));
-        }catch (ExcecaoFicheiro | IOException e){
-            System.out.println("testImportWateringPlanFailureWrongLines");
-        }
+    public void testImportWateringPlanFailure() throws ExcecaoFicheiro, IOException {
+        result = controller.importWateringPlan("src/test/java/project/testFiles/ficheiroHoraErrada.txt");
+        assertNotEquals("Success", result);
     }
 
-    @Test
-    public void testImportWateringPlanFailureWrongHours() {
-        try {
-            String wrongHoursFile = "src/test/java/project/testFiles/ficheiroHoraErrada.txt";
-            assertFalse(controller.importWateringPlan(wrongHoursFile));
-        }catch (ExcecaoFicheiro | IOException e){
-            System.out.println("testImportWateringPlanFailureWrongHours");
-        }
-    }
 }

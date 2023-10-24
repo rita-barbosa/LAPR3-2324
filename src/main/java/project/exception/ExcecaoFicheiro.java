@@ -4,6 +4,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class ExcecaoFicheiro extends Exception {
 
@@ -11,7 +15,7 @@ public class ExcecaoFicheiro extends Exception {
         super(s);
     }
 
-    public static void verificarFicheiro(String caminho) throws ExcecaoFicheiro {
+    public static void verificarFicheiro(String caminho) throws ExcecaoFicheiro, IOException {
         File ficheiro = new File(caminho);
 
         if (!ficheiro.exists()) {
@@ -30,6 +34,7 @@ public class ExcecaoFicheiro extends Exception {
             throw new ExcecaoFicheiro("ERRO: Ficheiro não possui a extensão '.txt'.");
         }
         verificarEstruturaFicheiro(ficheiro);
+        validarPlanoRega(ficheiro);
     }
 
     private static void verificarEstruturaFicheiro(File ficheiro) throws ExcecaoFicheiro {
@@ -42,16 +47,16 @@ public class ExcecaoFicheiro extends Exception {
                 validarLinha(linha);
             }
         } catch (IOException e) {
-            throw new ExcecaoFicheiro("ERRO: Problemas ao fazer verificação da estrutura do ficheiro.");
+            throw new ExcecaoFicheiro("ERRO: Problemas na verificação da estrutura do ficheiro.");
         }
     }
 
     private static void validarLinhaHoras(String linha) throws ExcecaoFicheiro {
-       String[] arr = linha.trim().split(",");
+        String[] arr = linha.trim().split(",");
 
         for (int i = 0; i < arr.length; i++) {
             String hora = arr[i].trim();
-            try{
+            try {
                 ExcecaoHora.verificarHora(hora);
             } catch (ExcecaoHora e) {
                 throw new ExcecaoFicheiro("ERRO: Conteúdo ficheiro não corresponde ao esperado.\nA primeira linha deve ter as horas de rega com o seguinte formato: hh:mm, hh:mm, etc.");
@@ -60,8 +65,48 @@ public class ExcecaoFicheiro extends Exception {
     }
 
     private static void validarLinha(String linha) throws ExcecaoFicheiro {
-        if(!linha.matches("^[A-Za-z],\\d{1,2},[TIP3]$")){
+        if (!linha.matches("^[A-Za-z],\\d{1,2},[TIP3]$")) {
             throw new ExcecaoFicheiro("ERRO: Conteúdo ficheiro não corresponde ao esperado.\nAs linhas com os setores a serem regados deve ter o seguinte formato: <parcela: [A-Z], duração, regularidade: [T,I,P,3]>, por exemplo A,14,T.");
         }
+    }
+
+    public static void validarPlanoRega(File ficheiro) throws ExcecaoFicheiro, IOException {
+        List<LocalTime> horasRega = new ArrayList<>();
+        LocalTime tempoAtualP;
+        LocalTime tempoAtualI;
+        String linha;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(ficheiro))) {
+            getHorasRega(br.readLine().split(","), horasRega);
+
+            tempoAtualP = horasRega.get(0);
+            tempoAtualI = horasRega.get(0);
+
+            while ((linha = br.readLine()) != null) {
+                String[] info = linha.split(",");
+                int duracao = Integer.parseInt(info[1]);
+
+                if (!info[2].equals("P")) {
+                    tempoAtualI = tempoAtualI.plusMinutes(duracao);
+                }
+                if (!info[2].equals("I")) {
+                    tempoAtualP = tempoAtualP.plusMinutes(duracao);
+                }
+
+                if (tempoAtualI.isAfter(horasRega.get(1)) || tempoAtualP.isAfter(horasRega.get(1))) {
+                    throw new ExcecaoFicheiro("ERRO: Sobreposição de horas de rega.");
+                }
+            }
+        } catch (IOException e) {
+            throw new ExcecaoFicheiro("ERRO: Problemas na validação plano de rega.");
+        }
+    }
+
+
+    private static void getHorasRega(String[] arrHorasRegas, List<LocalTime> horasRega) {
+        for (int i = 0; i < arrHorasRegas.length; i++) {
+            horasRega.add(LocalTime.parse(arrHorasRegas[i].trim()));
+        }
+
     }
 }

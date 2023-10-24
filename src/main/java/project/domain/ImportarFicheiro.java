@@ -16,10 +16,10 @@ import java.util.Set;
 public class ImportarFicheiro {
 
     public static boolean importWateringPlan(String filepath) throws IOException {
-       try {
-           ExcecaoFicheiro.verificarFicheiro(filepath);
-       }catch (ExcecaoFicheiro e){
-           return false;
+        try {
+            ExcecaoFicheiro.verificarFicheiro(filepath);
+        } catch (ExcecaoFicheiro e) {
+            return false;
         }
         File file = new File(filepath);
         Set<LocalTime> timeTurns = new HashSet<>();

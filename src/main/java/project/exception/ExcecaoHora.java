@@ -22,7 +22,7 @@ public class ExcecaoHora extends Exception {
     }
 
     private static void validarFormato(String hora) throws ExcecaoHora {
-        if (!hora.matches("\\d{2}:\\d{2}") && !hora.matches("\\d{1}:\\d{2}")) {
+        if (!hora.matches("\\d{2}:\\d{2}")) {
             throw new ExcecaoHora("ERRO: Formato de hora inválido. O formato deve ser hh:mm.");
         }
     }

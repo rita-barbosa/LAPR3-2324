@@ -34,7 +34,6 @@ public class ControladorRega {
                     verification.append("Parcela a ser regada neste momento: ").append(parcelaID).append(" | Tempo restante: ").append(tempoRestante).append(" minutos.\n");
                 }
                 temp = temp.plusMinutes(regaCheck.get(parcelaID));
-
             }
         }
         return (verification.isEmpty()) ? "Não há parcelas a serem regadas agora." : verification.toString();
@@ -49,7 +48,7 @@ public class ControladorRega {
 
         Map<String, Integer> regaCheck = new LinkedHashMap<>();
 
-        int difference = data.getDayOfYear() - SistemaDeRega.getInicioDoPlanoDeRega().getDayOfYear() - 1;
+        int difference = data.getDayOfYear() - SistemaDeRega.getInicioDoPlanoDeRega().getDayOfYear() ;
 
         for(Rega rega1 : SistemaDeRega.getPlanoDeRegas()){
             switch (rega1.getRegularidade()){

@@ -1,6 +1,8 @@
-package project.domain;
+package java.project.domain;
 
 import org.junit.Test;
+import project.domain.ImportarFicheiro;
+
 import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 

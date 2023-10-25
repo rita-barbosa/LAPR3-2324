@@ -50,7 +50,7 @@ public class ControladorRega {
 
         Map<String, Integer> regaCheck = new LinkedHashMap<>();
 
-        int difference = data.getDayOfYear() - SistemaDeRega.getInicioDoPlanoDeRega().getDayOfYear();
+        int difference = data.getDayOfYear() - SistemaDeRega.getInicioDoPlanoDeRega().getDayOfYear() + 1;
 
         for (Rega rega1 : SistemaDeRega.getPlanoDeRegas()) {
             switch (rega1.getRegularidade()) {

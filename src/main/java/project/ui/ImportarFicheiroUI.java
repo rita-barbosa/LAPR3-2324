@@ -20,13 +20,11 @@ public class ImportarFicheiroUI implements Runnable {
     @Override
     public void run() {
         String filepath = getfilepath();
+        String wasItSuccess = "";
         switch (fileTypeName){
             case "Plano de Rega":
-                try {
-                   successfulImport = controller.importWateringPlan(filepath);
-                } catch (IOException | ExcecaoFicheiro e) {
-                    throw new RuntimeException(e);
-                }
+                wasItSuccess = controller.importWateringPlan(filepath);
+                successfulImport = wasItSuccess.equals("Success");
                 break;
             case "Ficheiro Legacy":
                 /////
@@ -34,13 +32,16 @@ public class ImportarFicheiroUI implements Runnable {
             default:
                 break;
         }
-        checkIfImportWasASuccess(successfulImport, fileTypeName);
+        checkIfImportWasASuccess(successfulImport, fileTypeName, wasItSuccess);
     }
 
-    private void checkIfImportWasASuccess(boolean successfulImport, String fileTypeName) {
+    private void checkIfImportWasASuccess(boolean successfulImport, String fileTypeName, String exceptionMessage) {
         if (successfulImport){
             System.out.printf("O ficheiro %s foi importado com sucesso.\n\n", fileTypeName);
-        }else {
+        }else{
+            if (!exceptionMessage.isEmpty() || !exceptionMessage.isBlank()){
+                System.out.println(exceptionMessage);
+            }
             System.out.printf("O ficheiro %s não foi importado.\n\n", fileTypeName);
         }
     }

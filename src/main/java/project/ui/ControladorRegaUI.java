@@ -23,23 +23,27 @@ public class ControladorRegaUI implements Runnable {
     @Override
     public void run() {
         List<String> options = new ArrayList<>();
-        options.add("Verificar rega em Tempo Real.");
-        options.add("Verificar rega em Tempo Simulado.");
-        int option;
-        String result = null;
-        do {
-            option = Utils.showAndSelectIndex(options, "Controlador de Rega:");
-            if (option == 0){
-               result = controller.checkWateringInRealTime();
-                showOutput(result);
-            } else if (option == 1) {
-                LocalTime time = getTime();
-                LocalDate day = getDay();
-                result = controller.checkWateringInSimulatedTime(day, time);
-                showOutput(result);
-            }
-        } while (option != -1);
-        showOutput(result);
+        if (controller.checkIfPlanIsPresent()){
+            options.add("Verificar rega em Tempo Real.");
+            options.add("Verificar rega em Tempo Simulado.");
+            int option;
+            String result = null;
+            do {
+                option = Utils.showAndSelectIndex(options, "Controlador de Rega:");
+                if (option == 0){
+                    result = controller.checkWateringInRealTime();
+                    showOutput(result);
+                } else if (option == 1) {
+                    LocalTime time = getTime();
+                    LocalDate day = getDay();
+                    result = controller.checkWateringInSimulatedTime(day, time);
+                    showOutput(result);
+                }
+            } while (option != -1);
+            showOutput(result);
+        }else{
+            System.out.println("Neste momento não existe um Plano de Rega em vigor.\nPor favor, faça primeiro o importe de um ficheiro Plano de Rega.\n");
+        }
     }
 
 
@@ -71,12 +75,23 @@ public class ControladorRegaUI implements Runnable {
             try {
                 System.out.println("Defina uma hora (formato hh:mm):");
                 time = scanner.nextLine();
+                time = checkTimeValue(time);
                 ExcecaoHora.verificarHora(time);
             }catch (ExcecaoHora e){
                 time = null;
             }
         }
         return LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm"));
+    }
+
+        private static String checkTimeValue(String time) {
+            String[] hourAndMinutes = time.split(":");
+            String[] hour = hourAndMinutes[0].split("");
+            int value = Integer.parseInt(hourAndMinutes[0].trim());
+            if (value < 10 && value > 0 && hour.length == 1){
+                time = "0" + hourAndMinutes[0].trim() + ":" + hourAndMinutes[1].trim();
+            }
+            return time.trim();
     }
 
 }

@@ -15,11 +15,11 @@ import java.util.Set;
 
 public class ImportarFicheiro {
 
-    public static boolean importWateringPlan(String filepath) throws IOException {
-        try {
-            ExcecaoFicheiro.verificarFicheiro(filepath);
-        } catch (ExcecaoFicheiro e) {
-            return false;
+    public static String importWateringPlan(String filepath) throws IOException {
+       try {
+           ExcecaoFicheiro.verificarFicheiro(filepath);
+       }catch (ExcecaoFicheiro e){
+           return e.getMessage();
         }
         File file = new File(filepath);
         Set<LocalTime> timeTurns = new HashSet<>();
@@ -27,7 +27,7 @@ public class ImportarFicheiro {
         BufferedReader reader = new BufferedReader(new FileReader(file));
         String[] line = reader.readLine().split(",");
         for (String time : line){
-            time = checkTimeValue(time);
+            time = time.trim();
             timeTurns.add(LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm")));
         }
         String currentLine;
@@ -39,16 +39,9 @@ public class ImportarFicheiro {
         SistemaDeRega.setInicioDoPlanoDeRega(LocalDate.now());
         SistemaDeRega.setTempoInicialDeRega(timeTurns);
         reader.close();
-        return true;
+        return "Success";
     }
 
-    private static String checkTimeValue(String time) {
-        String[] hourAndMinutes = time.split(":");
-            int value = Integer.parseInt(hourAndMinutes[0].trim());
-            if (value < 10 && value > 0){
-                time = "0" + hourAndMinutes[0].trim() + ":" + hourAndMinutes[1].trim();
-            }
-            return time.trim();
-    }
+
 
 }

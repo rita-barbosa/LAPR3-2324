@@ -18,11 +18,12 @@ public class ControladorRegaTest {
 
     @Before
     public void setUp() throws Exception {
-        ImportarFicheiro.importWateringPlan("src/test/java/project/testFiles/ficheiroCorreto.txt");
+        ImportarFicheiro.importWateringPlan("src/test/java/project/testFiles/ficheiroCorretoV2.txt");
     }
 
     @Test
     public void checkIsWateringHour() {
+
     }
 
     @Test
@@ -37,16 +38,17 @@ public class ControladorRegaTest {
 
         Map<String, Integer> mapImpar = new LinkedHashMap<>();
         mapImpar.put("A", 14);
-        mapImpar.put("C", 2);
+        mapImpar.put("B", 8);
         mapImpar.put("E", 7);
 
         Map<String, Integer> mapPar = new LinkedHashMap<>();
         mapPar.put("A", 14);
-        mapPar.put("B", 8);
+        mapPar.put("C", 2);
         mapPar.put("E", 7);
 
         Map<String, Integer> mapDiv3 = new LinkedHashMap<>();
         mapDiv3.put("A", 14);
+        mapDiv3.put("B", 8);
         mapDiv3.put("D", 25);
         mapDiv3.put("E", 7);
 

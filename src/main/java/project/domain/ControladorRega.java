@@ -81,7 +81,7 @@ public class ControladorRega {
      * Se o utilizador não inserir nenhum dia nem hora o processo utiliza o dia e a hora atuais.
      * // * @param planoRega.txt
      */
-    public String checkIsWateringNoData( /*Set<Rega> planoRega.txt*/) {
+    public String checkIsWateringNoData() {
         return checkIsWateringHour(LocalTime.now(), LocalDate.now());
     }
 

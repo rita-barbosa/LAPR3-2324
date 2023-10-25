@@ -10,7 +10,7 @@ public class ControladorRegaController {
     }
 
     public String checkWateringInRealTime(){
-       return SistemaDeRega.getControladorRega().checkIsWateringNoData(/*SistemaDeRega.getPlanoDeRegas()*/);
+       return SistemaDeRega.getControladorRega().checkIsWateringNoData();
     }
 
     public String checkWateringInSimulatedTime(LocalDate day, LocalTime time) {
@@ -27,6 +27,10 @@ public class ControladorRegaController {
      * @return
      */
     public Boolean checkDate(LocalDate data) {
-        return SistemaDeRega.getInicioDoPlanoDeRega().isBefore(data) && SistemaDeRega.getInicioDoPlanoDeRega().plusDays(30).isAfter(data);
+        return SistemaDeRega.getInicioDoPlanoDeRega().isBefore(data) || SistemaDeRega.getInicioDoPlanoDeRega().plusDays(30).isAfter(data);
+    }
+
+    public boolean checkIfPlanIsPresent() {
+        return SistemaDeRega.getPlanoDeRegas() != null;
     }
 }

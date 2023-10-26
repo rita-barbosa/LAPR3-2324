@@ -28,14 +28,15 @@ public class ControladorRegaControllerTest{
 
     @Test
     public void testCheckWateringInSimulatedTimeExists1()  {
-        LocalDate date1 = LocalDate.now().plusDays(2);  //mudar o dia
+        LocalDate date1 = LocalDate.now().plusDays(3);
         LocalTime time1 = LocalTime.of(8, 35);
         String expected1 = "Parcela a ser regada neste momento: D | Tempo restante: 14 minutos.\n";
+
         assertEquals(expected1, controller.checkWateringInSimulatedTime(date1, time1));
 
-        LocalDate date2 = LocalDate.now().plusDays(4);
-        LocalTime time2 = LocalTime.of(8, 40);
-        String expected2 = "Parcela a ser regada neste momento: D | Tempo restante: 9 minutos.\n";
+        LocalDate date2 = LocalDate.now().plusDays(5);
+        LocalTime time2 = LocalTime.of(8, 55);
+        String expected2 = "Parcela a ser regada neste momento: E | Tempo restante: 1 minutos.\n";
         assertEquals(expected2, controller.checkWateringInSimulatedTime(date2, time2));
     }
 

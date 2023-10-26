@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 public class ControladorRegaControllerTest{
@@ -74,5 +75,8 @@ public class ControladorRegaControllerTest{
         assertEquals(expected, controller.checkIfPlanIsPresent());
     }
 
-
+    @Test
+    public void testExportWateringPlan() {
+        assertTrue(controller.exportWateringPlan());
+    }
 }

@@ -27,7 +27,7 @@ public class ControladorRegaController {
      * @return
      */
     public Boolean checkDate(LocalDate data) {
-        return (SistemaDeRega.getInicioDoPlanoDeRega().isBefore(data) && SistemaDeRega.getInicioDoPlanoDeRega().plusDays(30).isAfter(data));
+        return (SistemaDeRega.getInicioDoPlanoDeRega().isBefore(data) || SistemaDeRega.getInicioDoPlanoDeRega().plusDays(30).isAfter(data));
     }
 
     public boolean checkIfPlanIsPresent() {

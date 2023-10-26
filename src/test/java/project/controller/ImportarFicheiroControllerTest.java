@@ -20,7 +20,7 @@ public class ImportarFicheiroControllerTest {
     }
 
     @Test
-    public void testImportWateringPlanFailure() throws ExcecaoFicheiro, IOException {
+    public void testImportWateringPlanFailure() {
         result = controller.importWateringPlan("src/test/java/project/testFiles/ficheiroHoraErrada.txt");
         assertNotEquals("Success", result);
     }

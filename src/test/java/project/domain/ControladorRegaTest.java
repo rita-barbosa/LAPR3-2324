@@ -75,4 +75,6 @@ public class ControladorRegaTest {
         Assertions.assertEquals(SistemaDeRega.getControladorRega().checkIsWateringDay(dataPar), mapPar);
         Assertions.assertEquals(SistemaDeRega.getControladorRega().checkIsWateringDay(dataDiv3), mapDiv3);
     }
+
+
 }

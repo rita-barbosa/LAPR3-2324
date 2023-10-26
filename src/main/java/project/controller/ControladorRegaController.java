@@ -1,6 +1,8 @@
 package project.controller;
 
+
 import project.domain.SistemaDeRega;
+
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -32,5 +34,9 @@ public class ControladorRegaController {
 
     public boolean checkIfPlanIsPresent() {
         return SistemaDeRega.getPlanoDeRegas() != null;
+    }
+
+    public boolean exportWateringPlan() {
+        return SistemaDeRega.generateWateringDayRegister(null);
     }
 }

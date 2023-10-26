@@ -26,21 +26,34 @@ public class ControladorRegaUI implements Runnable {
         if (controller.checkIfPlanIsPresent()){
             options.add("Verificar rega em Tempo Real.");
             options.add("Verificar rega em Tempo Simulado.");
+            options.add("Gerar registo do Plano de Rega.");
             int option;
-            String result = null;
+            String result;
             do {
                 option = Utils.showAndSelectIndex(options, "Controlador de Rega:");
-                if (option == 0){
-                    result = controller.checkWateringInRealTime();
-                    showOutput(result);
-                } else if (option == 1) {
-                    LocalTime time = getTime();
-                    LocalDate day = getDay();
-                    result = controller.checkWateringInSimulatedTime(day, time);
-                    showOutput(result);
+                switch (option) {
+                    case 0 -> {
+                        result = controller.checkWateringInRealTime();
+                        showOutput(result);
+                    }
+                    case 1 -> {
+                        LocalTime time = getTime();
+                        LocalDate day = getDay();
+                        result = controller.checkWateringInSimulatedTime(day, time);
+                        showOutput(result);
+                    }
+                    case 2 -> {
+                        if (controller.exportWateringPlan()) {
+                            result = "O ficheiro com os registos do dia, segundo o Plano de Rega, foi criado.\n";
+                        } else {
+                            result = "O ficheiro com os registos do dia, segundo o Plano de Rega, não foi criado.\n";
+                        }
+                        showOutput(result);
+                    }
+                    default -> {
+                    }
                 }
             } while (option != -1);
-            showOutput(result);
         }else{
             System.out.println("Neste momento não existe um Plano de Rega em vigor.\nPor favor, faça primeiro o importe de um ficheiro Plano de Rega.\n");
         }
@@ -48,9 +61,11 @@ public class ControladorRegaUI implements Runnable {
 
 
     private void showOutput(String result) {
+        if (result != null){
             System.out.println();
             System.out.println(result);
             System.out.println();
+        }
     }
 
     private LocalDate getDay() {

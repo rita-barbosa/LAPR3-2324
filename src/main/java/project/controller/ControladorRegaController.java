@@ -29,6 +29,9 @@ public class ControladorRegaController {
      * @return
      */
     public Boolean checkDate(LocalDate data) {
+        if(SistemaDeRega.getInicioDoPlanoDeRega().equals(data) || SistemaDeRega.getInicioDoPlanoDeRega().plusDays(30).equals(data)){
+            return true;
+        }
         return (SistemaDeRega.getInicioDoPlanoDeRega().isBefore(data) && SistemaDeRega.getInicioDoPlanoDeRega().plusDays(30).isAfter(data));
     }
 

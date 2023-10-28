@@ -1,7 +1,7 @@
-SELECT cul.idParcela,
-       prod.nomeProduto,
-       SUM(DISTINCT op.quantidade) AS totalQuantidade,
-       op.designacaoUnidade
+SELECT cul.idParcela AS ID_PARCELA,
+       prod.nomeProduto AS PRODUTO,
+       SUM(DISTINCT op.quantidade) AS QUANTIDADE_TOTAL,
+       op.designacaoUnidade AS TIPO_UNIDADE
 FROM Operacao op
     INNER JOIN OperacaoCultura cul ON op.idOperacao = cul.idOperacao
     INNER JOIN Producao prod ON cul.idCultura = prod.idCultura

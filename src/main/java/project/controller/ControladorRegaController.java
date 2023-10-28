@@ -11,20 +11,25 @@ public class ControladorRegaController {
     public ControladorRegaController() {
     }
 
-    public String checkWateringInRealTime(){
-       return SistemaDeRega.getControladorRega().checkIsWateringNoData();
+    public String checkWateringInRealTime() {
+        if (checkDate(LocalDate.now())) {
+            return SistemaDeRega.getControladorRega().checkIsWateringNoData();
+        } else {
+            return "ERRO: O dia indicado está fora do espaço de tempo ativo do plano de rega importado.";
+        }
     }
 
     public String checkWateringInSimulatedTime(LocalDate day, LocalTime time) {
-        if(checkDate(day)){
+        if (checkDate(day)) {
             return SistemaDeRega.getControladorRega().checkIsWateringHour(time, day);
-        } else{
-            return "O dia indicado está fora do espaço de tempo ativo do plano de rega importado.";
+        } else {
+            return "ERRO: O dia indicado está fora do espaço de tempo ativo do plano de rega importado.";
         }
     }
 
     /**
      * O método vai utilizar a data que lhe demos e testa se esta data está antes ou depois do tempo ao qual o plano de rega foi planeado para ser ativado.
+     *
      * @param data
      * @return
      */
@@ -40,6 +45,10 @@ public class ControladorRegaController {
     }
 
     public boolean exportWateringPlan() {
-        return SistemaDeRega.generateWateringDayRegister(null);
+        if(checkDate(LocalDate.now())) {
+            return SistemaDeRega.generateWateringDayRegister(null);
+        }else{
+            return false;
+        }
     }
 }

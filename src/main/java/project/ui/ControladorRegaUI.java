@@ -23,7 +23,8 @@ public class ControladorRegaUI implements Runnable {
     @Override
     public void run() {
         List<String> options = new ArrayList<>();
-        if (controller.checkIfPlanIsPresent()){
+
+        if (controller.checkIfPlanIsPresent()) {
             options.add("Verificar rega em Tempo Real.");
             options.add("Verificar rega em Tempo Simulado.");
             options.add("Gerar registo do Plano de Rega.");
@@ -46,7 +47,7 @@ public class ControladorRegaUI implements Runnable {
                         if (controller.exportWateringPlan()) {
                             result = "O ficheiro com os registos do dia, segundo o Plano de Rega, foi criado.\n";
                         } else {
-                            result = "O ficheiro com os registos do dia, segundo o Plano de Rega, não foi criado.\n";
+                            result = "ERRO: O ficheiro com os registos do dia, segundo o Plano de Rega, não foi criado.\n";
                         }
                         showOutput(result);
                     }
@@ -54,14 +55,15 @@ public class ControladorRegaUI implements Runnable {
                     }
                 }
             } while (option != -1);
-        }else{
+        } else {
             System.out.println("Neste momento não existe um Plano de Rega em vigor.\nPor favor, faça primeiro o importe de um ficheiro Plano de Rega.\n");
         }
+
     }
 
 
     private void showOutput(String result) {
-        if (result != null){
+        if (result != null) {
             System.out.println();
             System.out.println(result);
             System.out.println();
@@ -71,12 +73,13 @@ public class ControladorRegaUI implements Runnable {
     private LocalDate getDay() {
         Scanner scanner = new Scanner(System.in);
         String data = null;
-        while (data == null){
+        while (data == null) {
             try {
                 System.out.println("Defina um dia (formato dd/mm/yyyy):");
                 data = scanner.nextLine();
                 ExcecaoData.verificarData(data);
-            }catch (ExcecaoData e){
+            } catch (ExcecaoData e) {
+                System.out.printf("%s\n\n",e.getMessage());
                 data = null;
             }
         }
@@ -86,27 +89,29 @@ public class ControladorRegaUI implements Runnable {
     private LocalTime getTime() {
         Scanner scanner = new Scanner(System.in);
         String time = null;
-        while (time == null){
+        while (time == null) {
             try {
                 System.out.println("Defina uma hora (formato hh:mm):");
                 time = scanner.nextLine();
                 time = checkTimeValue(time);
                 ExcecaoHora.verificarHora(time);
-            }catch (ExcecaoHora e){
+            } catch (ExcecaoHora e) {
                 time = null;
             }
         }
         return LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm"));
     }
 
-        private static String checkTimeValue(String time) {
-            String[] hourAndMinutes = time.split(":");
-            String[] hour = hourAndMinutes[0].split("");
-            int value = Integer.parseInt(hourAndMinutes[0].trim());
-            if (value < 10 && value > 0 && hour.length == 1){
-                time = "0" + hourAndMinutes[0].trim() + ":" + hourAndMinutes[1].trim();
-            }
-            return time.trim();
-    }
+    private static String checkTimeValue(String time) {
 
+        String[] hourAndMinutes = time.split(":");
+        String[] hour = hourAndMinutes[0].split("");
+
+        int value = Integer.parseInt(hourAndMinutes[0].trim());
+        if (value < 10 && value > 0 && hour.length == 1) {
+            time = "0" + hourAndMinutes[0].trim() + ":" + hourAndMinutes[1].trim();
+        }
+        return time.trim();
+
+    }
 }

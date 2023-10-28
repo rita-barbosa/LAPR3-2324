@@ -1,4 +1,4 @@
-package project;
+package project.ui;
 
 import project.ui.menuPrincipal.MainMenuUI;
 

@@ -815,39 +815,51 @@ INSERT INTO Stock(idStock,idEdificio,designacaoUnidade,quantidade) VALUES (5, 20
 INSERT INTO Stock(idStock,idEdificio,designacaoUnidade,quantidade) VALUES (6, 202, 'kg',12500);
 INSERT INTO Stock(idStock,idEdificio,designacaoUnidade,quantidade) VALUES (7, 202, 'kg',3600);
 INSERT INTO Stock(idStock,idEdificio,designacaoUnidade,quantidade) VALUES (8, 202, 'kg',0);
+INSERT INTO Stock(idStock,idEdificio,designacaoUnidade,quantidade) VALUES (9, 202, 'kg',0);
+INSERT INTO Stock(idStock,idEdificio,designacaoUnidade,quantidade) VALUES (10, 202, 'kg',0);
+INSERT INTO Stock(idStock,idEdificio,designacaoUnidade,quantidade) VALUES (11, 202, 'kg',0);
+INSERT INTO Stock(idStock,idEdificio,designacaoUnidade,quantidade) VALUES (12, 202, 'kg',0);
+INSERT INTO Stock(idStock,idEdificio,designacaoUnidade,quantidade) VALUES (13, 202, 'kg',0);
+INSERT INTO Stock(idStock,idEdificio,designacaoUnidade,quantidade) VALUES (14, 202, 'kg',0);
+INSERT INTO Stock(idStock,idEdificio,designacaoUnidade,quantidade) VALUES (15, 202, 'kg',0);
+INSERT INTO Stock(idStock,idEdificio,designacaoUnidade,quantidade) VALUES (16, 202, 'kg',0);
+INSERT INTO Stock(idStock,idEdificio,designacaoUnidade,quantidade) VALUES (17, 202, 'kg',0);
+INSERT INTO Stock(idStock,idEdificio,designacaoUnidade,quantidade) VALUES (18, 202, 'kg',0);
 
 
 INSERT INTO Produto(nomeProduto, idStock) VALUES ('Azeitona', 1);
-INSERT INTO Produto(nomeProduto, idStock) VALUES ('Maçã', 1);
-INSERT INTO Produto(nomeProduto, idStock) VALUES ('Milho', 1);
-INSERT INTO Produto(nomeProduto, idStock) VALUES ('Cenoura', 1);
-INSERT INTO Produto(nomeProduto, idStock) VALUES ('Nabo', 1);
-INSERT INTO Produto(nomeProduto, idStock) VALUES ('Uvas', 1);
+INSERT INTO Produto(nomeProduto, idStock) VALUES ('Maçã', 2);
+INSERT INTO Produto(nomeProduto, idStock) VALUES ('Tremoço', 3);
+INSERT INTO Produto(nomeProduto, idStock) VALUES ('Milho', 4);
+INSERT INTO Produto(nomeProduto, idStock) VALUES ('Cenoura', 5);
+INSERT INTO Produto(nomeProduto, idStock) VALUES ('Nabo', 6);
+INSERT INTO Produto(nomeProduto, idStock) VALUES ('Uvas', 7);
 
 INSERT INTO Producao(idCultura,nomeProduto) VALUES (1, 'Azeitona');
 INSERT INTO Producao(idCultura,nomeProduto) VALUES (2, 'Azeitona');
 INSERT INTO Producao(idCultura,nomeProduto) VALUES (3, 'Maçã');
 INSERT INTO Producao(idCultura,nomeProduto) VALUES (4, 'Maçã');
 INSERT INTO Producao(idCultura,nomeProduto) VALUES (5, 'Maçã');
-INSERT INTO Producao(idCultura,nomeProduto) VALUES (6, 'Milho');
-INSERT INTO Producao(idCultura,nomeProduto) VALUES (7, 'Cenoura');
-INSERT INTO Producao(idCultura,nomeProduto) VALUES (8, 'Nabo');
+INSERT INTO Producao(idCultura,nomeProduto) VALUES (6, 'Tremoço');
+INSERT INTO Producao(idCultura,nomeProduto) VALUES (7, 'Milho');
+INSERT INTO Producao(idCultura,nomeProduto) VALUES (8, 'Tremoço');
 INSERT INTO Producao(idCultura,nomeProduto) VALUES (9, 'Cenoura');
 INSERT INTO Producao(idCultura,nomeProduto) VALUES (10, 'Cenoura');
-INSERT INTO Producao(idCultura,nomeProduto) VALUES (11, 'Maçã');
+INSERT INTO Producao(idCultura,nomeProduto) VALUES (11, 'Nabo');
 INSERT INTO Producao(idCultura,nomeProduto) VALUES (12, 'Cenoura');
 
+
 INSERT INTO FatorProducao(nomeComercial, idFichaTecnica, idStock, classificacao, estadoMateria, metodoAplicacao, fabricante) VALUES ('Calda Bordalesa ASCENZA', 1, 8, 'Fitofármaco', 'Pó molhável', 'Fungicida', 'ASCENZA');
-INSERT INTO FatorProducao(nomeComercial, idFichaTecnica, idStock, classificacao, estadoMateria, metodoAplicacao, fabricante) VALUES ('Enxofre Bayer 80 WG', 2, 8, 'Fitofármaco', 'Pó molhável', 'Fungicida', 'Bayer');
-INSERT INTO FatorProducao(nomeComercial, idFichaTecnica, idStock, classificacao, estadoMateria, metodoAplicacao, fabricante) VALUES ('Patentkali', 3, 8, 'Adubo', 'Granulado', 'Adubo solo', 'K+S');
-INSERT INTO FatorProducao(nomeComercial, idFichaTecnica, idStock, classificacao, estadoMateria, metodoAplicacao, fabricante) VALUES ('ESTA Kieserit', 4, 8, 'Adubo', 'Granulado', 'Adubo solo', 'K+S');
-INSERT INTO FatorProducao(nomeComercial, idFichaTecnica, idStock, classificacao, estadoMateria, metodoAplicacao, fabricante) VALUES ('EPSO Microtop', 5, 8, 'Adubo', 'Granulado', 'Adubo foliar+Fertirrega', 'K+S');
-INSERT INTO FatorProducao(nomeComercial, idFichaTecnica, idStock, classificacao, estadoMateria, metodoAplicacao, fabricante) VALUES ('EPSO Top', 6, 8, 'Adubo', 'Granulado', 'Adubo foliar', 'K+S');
-INSERT INTO FatorProducao(nomeComercial, idFichaTecnica, idStock, classificacao, estadoMateria, metodoAplicacao, fabricante) VALUES ('Biocal CaCo3', 7, 8, 'Corretor', 'Granulado', 'Correção solo', 'Biocal');
-INSERT INTO FatorProducao(nomeComercial, idFichaTecnica, idStock, classificacao, estadoMateria, metodoAplicacao, fabricante) VALUES ('Biocal Composto', 8, 8, 'Corretor', 'Pó', 'Correção solo', 'Biocal');
-INSERT INTO FatorProducao(nomeComercial, idFichaTecnica, idStock, classificacao, estadoMateria, metodoAplicacao, fabricante) VALUES ('Sonata', 9, 8, 'Fitofármaco', 'Líquido', 'Fungicida', 'Bayer');
-INSERT INTO FatorProducao(nomeComercial, idFichaTecnica, idStock, classificacao, estadoMateria, metodoAplicacao, fabricante) VALUES ('FLiPPER ', 10, 8, 'Fitofármaco', 'Emulsão de óleo em água', 'Insecticida', 'Bayer');
-INSERT INTO FatorProducao(nomeComercial, idFichaTecnica, idStock, classificacao, estadoMateria, metodoAplicacao, fabricante) VALUES ('Requiem Prime', 11, 8, 'Fitofármaco', 'Líquido', 'Insecticida', 'Bayer');
+INSERT INTO FatorProducao(nomeComercial, idFichaTecnica, idStock, classificacao, estadoMateria, metodoAplicacao, fabricante) VALUES ('Enxofre Bayer 80 WG', 2, 9, 'Fitofármaco', 'Pó molhável', 'Fungicida', 'Bayer');
+INSERT INTO FatorProducao(nomeComercial, idFichaTecnica, idStock, classificacao, estadoMateria, metodoAplicacao, fabricante) VALUES ('Patentkali', 3, 10, 'Adubo', 'Granulado', 'Adubo solo', 'K+S');
+INSERT INTO FatorProducao(nomeComercial, idFichaTecnica, idStock, classificacao, estadoMateria, metodoAplicacao, fabricante) VALUES ('ESTA Kieserit', 4, 11, 'Adubo', 'Granulado', 'Adubo solo', 'K+S');
+INSERT INTO FatorProducao(nomeComercial, idFichaTecnica, idStock, classificacao, estadoMateria, metodoAplicacao, fabricante) VALUES ('EPSO Microtop', 5, 12, 'Adubo', 'Granulado', 'Adubo foliar+Fertirrega', 'K+S');
+INSERT INTO FatorProducao(nomeComercial, idFichaTecnica, idStock, classificacao, estadoMateria, metodoAplicacao, fabricante) VALUES ('EPSO Top', 6, 13, 'Adubo', 'Granulado', 'Adubo foliar', 'K+S');
+INSERT INTO FatorProducao(nomeComercial, idFichaTecnica, idStock, classificacao, estadoMateria, metodoAplicacao, fabricante) VALUES ('Biocal CaCo3', 7, 14, 'Corretor', 'Granulado', 'Correção solo', 'Biocal');
+INSERT INTO FatorProducao(nomeComercial, idFichaTecnica, idStock, classificacao, estadoMateria, metodoAplicacao, fabricante) VALUES ('Biocal Composto', 8, 15, 'Corretor', 'Pó', 'Correção solo', 'Biocal');
+INSERT INTO FatorProducao(nomeComercial, idFichaTecnica, idStock, classificacao, estadoMateria, metodoAplicacao, fabricante) VALUES ('Sonata', 9, 16, 'Fitofármaco', 'Líquido', 'Fungicida', 'Bayer');
+INSERT INTO FatorProducao(nomeComercial, idFichaTecnica, idStock, classificacao, estadoMateria, metodoAplicacao, fabricante) VALUES ('FLiPPER ', 10, 17, 'Fitofármaco', 'Emulsão de óleo em água', 'Insecticida', 'Bayer');
+INSERT INTO FatorProducao(nomeComercial, idFichaTecnica, idStock, classificacao, estadoMateria, metodoAplicacao, fabricante) VALUES ('Requiem Prime', 11, 18, 'Fitofármaco', 'Líquido', 'Insecticida', 'Bayer');
 
 
 INSERT INTO AplicacaoFatorProducao(nomeComercial, idOperacao) VALUES ('Patentkali' ,21);

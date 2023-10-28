@@ -36,7 +36,7 @@ public class ImportarFicheiro {
             wateringAreas.add(new Rega(line[0].trim(), Integer.parseInt(line[1].trim()), line[2].trim()));
         }
         SistemaDeRega.setPlanoDeRega(wateringAreas);
-        SistemaDeRega.setInicioDoPlanoDeRega(LocalDate.now());
+        SistemaDeRega.setInicioDoPlanoDeRega(LocalDate.now().plusDays(1));
         SistemaDeRega.setTempoInicialDeRega(timeTurns);
         reader.close();
         return "Success";

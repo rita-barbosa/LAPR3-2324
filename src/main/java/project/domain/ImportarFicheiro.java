@@ -15,11 +15,12 @@ import java.util.Set;
 
 public class ImportarFicheiro {
 
-    public static String importWateringPlan(String filepath) throws IOException {
+    public static boolean importWateringPlan(String filepath) throws IOException {
        try {
            ExcecaoFicheiro.verificarFicheiro(filepath);
        }catch (ExcecaoFicheiro e){
-           return e.getMessage();
+           System.out.printf("%s\n\n", e.getMessage());
+           return false;
         }
         File file = new File(filepath);
         Set<LocalTime> timeTurns = new HashSet<>();
@@ -39,7 +40,7 @@ public class ImportarFicheiro {
         SistemaDeRega.setInicioDoPlanoDeRega(LocalDate.now().plusDays(1));
         SistemaDeRega.setTempoInicialDeRega(timeTurns);
         reader.close();
-        return "Success";
+        return true;
     }
 
 

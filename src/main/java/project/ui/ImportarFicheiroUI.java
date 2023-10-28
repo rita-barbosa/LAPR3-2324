@@ -1,9 +1,7 @@
 package project.ui;
 
 import project.controller.ImportarFicheiroController;
-import project.exception.ExcecaoFicheiro;
 
-import java.io.*;
 import java.util.*;
 
 public class ImportarFicheiroUI implements Runnable {
@@ -20,28 +18,27 @@ public class ImportarFicheiroUI implements Runnable {
     @Override
     public void run() {
         String filepath = getfilepath();
-        String wasItSuccess = "";
         switch (fileTypeName){
             case "Plano de Rega":
-                wasItSuccess = controller.importWateringPlan(filepath);
-                successfulImport = wasItSuccess.equals("Success");
+                try{
+                    successfulImport = controller.importWateringPlan(filepath);
+                }catch (Exception e){
+                    System.out.printf("%s\n\n", e.getMessage());
+                }
                 break;
-            case "Ficheiro Legacy":
+            case "Any Other File":
                 /////
                 break;
             default:
                 break;
         }
-        checkIfImportWasASuccess(successfulImport, fileTypeName, wasItSuccess);
+        checkIfImportWasASuccess(successfulImport, fileTypeName);
     }
 
-    private void checkIfImportWasASuccess(boolean successfulImport, String fileTypeName, String exceptionMessage) {
+    private void checkIfImportWasASuccess(boolean successfulImport, String fileTypeName) {
         if (successfulImport){
             System.out.printf("O ficheiro %s foi importado com sucesso.\n\n", fileTypeName);
         }else{
-            if (!exceptionMessage.isEmpty() || !exceptionMessage.isBlank()){
-                System.out.println(exceptionMessage);
-            }
             System.out.printf("O ficheiro %s não foi importado.\n\n", fileTypeName);
         }
     }

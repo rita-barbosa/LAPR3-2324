@@ -41,8 +41,8 @@ CREATE TABLE CulturaInstalada (
   idParcela         number(5) NOT NULL, 
   idCultura         number(5) NOT NULL, 
   designacaoUnidade varchar2(5) NOT NULL, 
-  dataFinal         date, 
-  quantidade        number(11), 
+  dataFinal         date NOT NULL, 
+  quantidade        number(11) NOT NULL, 
   PRIMARY KEY (dataInicial, 
   idParcela, 
   idCultura));
@@ -131,6 +131,7 @@ CREATE TABLE Operacao (
   quantidade                 number(10) NOT NULL, 
   dataOperacao               date NOT NULL, 
   PRIMARY KEY (idOperacao));
+
 ALTER TABLE FatorProducao ADD CONSTRAINT FKFatorProdu46093 FOREIGN KEY (idFichaTecnica) REFERENCES FichaTecnica (idFichaTecnica);
 ALTER TABLE CulturaInstalada ADD CONSTRAINT FKCulturaIns8416 FOREIGN KEY (idParcela) REFERENCES Parcela (idParcela);
 ALTER TABLE OperacaoCultura ADD CONSTRAINT FKOperacaoCu594373 FOREIGN KEY (dataInicial, idParcela, idCultura) REFERENCES CulturaInstalada (dataInicial, idParcela, idCultura);

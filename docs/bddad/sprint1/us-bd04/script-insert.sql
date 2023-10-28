@@ -242,8 +242,8 @@ INSERT INTO CulturaInstalada(idParcela, idCultura, dataInicial, designacaoUnidad
 INSERT INTO CulturaInstalada(idParcela, idCultura, dataInicial, designacaoUnidade, dataFinal, quantidade) VALUES (103, 6, TO_DATE('06/10/2021', 'DD/MM/YYYY'),'ha', TO_DATE('19/03/2022', 'DD/MM/YYYY'), 1.30);
 INSERT INTO CulturaInstalada(idParcela, idCultura, dataInicial, designacaoUnidade, dataFinal, quantidade) VALUES (103, 14, TO_DATE('08/04/2022', 'DD/MM/YYYY'),'ha', TO_DATE('18/08/2022', 'DD/MM/YYYY'), 1.20);
 INSERT INTO CulturaInstalada(idParcela, idCultura, dataInicial, designacaoUnidade, dataFinal, quantidade) VALUES (103, 6, TO_DATE('12/10/2022', 'DD/MM/YYYY'),'ha', TO_DATE('20/03/2023', 'DD/MM/YYYY'), 1.30);
-INSERT INTO CulturaInstalada(idParcela, idCultura, dataInicial, designacaoUnidade, dataFinal, quantidade) VALUES (102, 1, TO_DATE('06/10/2016', 'DD/MM/YYYY'),'un', null, 30.00);
-INSERT INTO CulturaInstalada(idParcela, idCultura, dataInicial, designacaoUnidade, dataFinal, quantidade) VALUES (102, 2, TO_DATE('10/10/2016', 'DD/MM/YYYY'),'un', null, 20.00);
+INSERT INTO CulturaInstalada(idParcela, idCultura, dataInicial, designacaoUnidade, dataFinal, quantidade) VALUES (102, 1, TO_DATE('06/10/2016', 'DD/MM/YYYY'),'un', TO_DATE('01/01/1900', 'DD/MM/YYYY'), 30.00);
+INSERT INTO CulturaInstalada(idParcela, idCultura, dataInicial, designacaoUnidade, dataFinal, quantidade) VALUES (102, 2, TO_DATE('10/10/2016', 'DD/MM/YYYY'),'un', TO_DATE('01/01/1900', 'DD/MM/YYYY'), 20.00);
 INSERT INTO CulturaInstalada(idParcela, idCultura, dataInicial, designacaoUnidade, dataFinal, quantidade) VALUES (106, 9, TO_DATE('10/03/2020', 'DD/MM/YYYY'),'ha', TO_DATE('15/05/2020', 'DD/MM/YYYY'), 0.15);
 INSERT INTO CulturaInstalada(idParcela, idCultura, dataInicial, designacaoUnidade, dataFinal, quantidade) VALUES (106, 10, TO_DATE('02/06/2020', 'DD/MM/YYYY'),'ha', TO_DATE('08/09/2020', 'DD/MM/YYYY'), 0.10);
 INSERT INTO CulturaInstalada(idParcela, idCultura, dataInicial, designacaoUnidade, dataFinal, quantidade) VALUES (106, 11, TO_DATE('20/09/2020', 'DD/MM/YYYY'),'ha', TO_DATE('10/01/2021', 'DD/MM/YYYY'), 0.20);
@@ -253,13 +253,12 @@ INSERT INTO CulturaInstalada(idParcela, idCultura, dataInicial, designacaoUnidad
 INSERT INTO CulturaInstalada(idParcela, idCultura, dataInicial, designacaoUnidade, dataFinal, quantidade) VALUES (106, 12, TO_DATE('06/03/2022', 'DD/MM/YYYY'),'ha', TO_DATE('16/05/2022', 'DD/MM/YYYY'), 0.15);
 INSERT INTO CulturaInstalada(idParcela, idCultura, dataInicial, designacaoUnidade, dataFinal, quantidade) VALUES (106, 10, TO_DATE('30/05/2022', 'DD/MM/YYYY'),'ha', TO_DATE('05/09/2022', 'DD/MM/YYYY'), 0.15);
 INSERT INTO CulturaInstalada(idParcela, idCultura, dataInicial, designacaoUnidade, dataFinal, quantidade) VALUES (106, 15, TO_DATE('20/09/2022', 'DD/MM/YYYY'),'ha', TO_DATE('14/01/2023', 'DD/MM/YYYY'), 0.25);
-INSERT INTO CulturaInstalada(idParcela, idCultura, dataInicial, designacaoUnidade, dataFinal, quantidade) VALUES (104, 3, TO_DATE('07/01/2017', 'DD/MM/YYYY'),'un', null, 90.00);
-INSERT INTO CulturaInstalada(idParcela, idCultura, dataInicial, designacaoUnidade, dataFinal, quantidade) VALUES (104, 4, TO_DATE('08/01/2017', 'DD/MM/YYYY'),'un', null, 60.00);
-INSERT INTO CulturaInstalada(idParcela, idCultura, dataInicial, designacaoUnidade, dataFinal, quantidade) VALUES (104, 5, TO_DATE('08/01/2017', 'DD/MM/YYYY'),'un', null, 40.00);
-INSERT INTO CulturaInstalada(idParcela, idCultura, dataInicial, designacaoUnidade, dataFinal, quantidade) VALUES (104, 5, TO_DATE('10/12/2018', 'DD/MM/YYYY'),'un', null, 30.00);
-INSERT INTO CulturaInstalada(idParcela, idCultura, dataInicial, designacaoUnidade, dataFinal, quantidade) VALUES (107, 16, TO_DATE('10/01/2018', 'DD/MM/YYYY'),'un', null, 500.00);
-INSERT INTO CulturaInstalada(idParcela, idCultura, dataInicial, designacaoUnidade, dataFinal, quantidade) VALUES (107, 17, TO_DATE('11/01/2018', 'DD/MM/YYYY'),'un', null, 700.00);
-
+INSERT INTO CulturaInstalada(idParcela, idCultura, dataInicial, designacaoUnidade, dataFinal, quantidade) VALUES (104, 3, TO_DATE('07/01/2017', 'DD/MM/YYYY'),'un', TO_DATE('01/01/1900', 'DD/MM/YYYY'), 90.00);
+INSERT INTO CulturaInstalada(idParcela, idCultura, dataInicial, designacaoUnidade, dataFinal, quantidade) VALUES (104, 4, TO_DATE('08/01/2017', 'DD/MM/YYYY'),'un', TO_DATE('01/01/1900', 'DD/MM/YYYY'), 60.00);
+INSERT INTO CulturaInstalada(idParcela, idCultura, dataInicial, designacaoUnidade, dataFinal, quantidade) VALUES (104, 5, TO_DATE('08/01/2017', 'DD/MM/YYYY'),'un', TO_DATE('01/01/1900', 'DD/MM/YYYY'), 40.00);
+INSERT INTO CulturaInstalada(idParcela, idCultura, dataInicial, designacaoUnidade, dataFinal, quantidade) VALUES (104, 5, TO_DATE('10/12/2018', 'DD/MM/YYYY'),'un', TO_DATE('01/01/1900', 'DD/MM/YYYY'), 30.00);
+INSERT INTO CulturaInstalada(idParcela, idCultura, dataInicial, designacaoUnidade, dataFinal, quantidade) VALUES (107, 16, TO_DATE('10/01/2018', 'DD/MM/YYYY'),'un', TO_DATE('01/01/1900', 'DD/MM/YYYY'), 500.00);
+INSERT INTO CulturaInstalada(idParcela, idCultura, dataInicial, designacaoUnidade, dataFinal, quantidade) VALUES (107, 17, TO_DATE('11/01/2018', 'DD/MM/YYYY'),'un', TO_DATE('01/01/1900', 'DD/MM/YYYY'), 700.00);
 
 --WORKS
 INSERT INTO TipoOperacaoAgricola(designacaoOperacaoAgricola) VALUES ('Plantação');

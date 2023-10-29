@@ -53,7 +53,7 @@ public class ControladorRegaTest {
 
         LocalDate dataImpar = LocalDate.of(2023, 10, 21);
         LocalDate dataPar = LocalDate.of(2023, 10, 22);
-        LocalDate dataDiv3 = LocalDate.of(2023, 10, 23);
+        LocalDate dataDiv3 = LocalDate.of(2023, 10, 20);
 
         Map<String, Integer> mapImpar = new LinkedHashMap<>();
         mapImpar.put("A", 14);
@@ -67,7 +67,7 @@ public class ControladorRegaTest {
 
         Map<String, Integer> mapDiv3 = new LinkedHashMap<>();
         mapDiv3.put("A", 14);
-        mapDiv3.put("B", 8);
+        mapDiv3.put("C", 2);
         mapDiv3.put("D", 25);
         mapDiv3.put("E", 7);
 

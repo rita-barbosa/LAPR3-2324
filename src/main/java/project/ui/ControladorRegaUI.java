@@ -93,25 +93,12 @@ public class ControladorRegaUI implements Runnable {
             try {
                 System.out.println("Defina uma hora (formato hh:mm):");
                 time = scanner.nextLine();
-                time = checkTimeValue(time);
                 ExcecaoHora.verificarHora(time);
             } catch (ExcecaoHora e) {
+                System.out.printf("%s\n\n",e.getMessage());
                 time = null;
             }
         }
         return LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm"));
-    }
-
-    private static String checkTimeValue(String time) {
-
-        String[] hourAndMinutes = time.split(":");
-        String[] hour = hourAndMinutes[0].split("");
-
-        int value = Integer.parseInt(hourAndMinutes[0].trim());
-        if (value < 10 && value > 0 && hour.length == 1) {
-            time = "0" + hourAndMinutes[0].trim() + ":" + hourAndMinutes[1].trim();
-        }
-        return time.trim();
-
     }
 }

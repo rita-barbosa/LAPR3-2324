@@ -82,4 +82,10 @@ public class ControladorRegaControllerTest {
     public void testExportWateringPlan() {
         assertTrue(controller.exportWateringPlan());
     }
+
+    @Test
+    public void testExportWateringPlanForSimulatedTime() {
+        assertTrue(controller.exportWateringPlanForSimulatedTime(LocalDate.of(2023, 10, 24)));
+    }
+
 }

@@ -27,7 +27,8 @@ public class ControladorRegaUI implements Runnable {
         if (controller.checkIfPlanIsPresent()) {
             options.add("Verificar rega em Tempo Real.");
             options.add("Verificar rega em Tempo Simulado.");
-            options.add("Gerar registo do Plano de Rega.");
+            options.add("Gerar registo do Plano de Rega para dia atual.");
+            options.add("Gerar registo do Plano de Rega para dia simulado.");
             int option;
             String result;
             do {
@@ -45,6 +46,15 @@ public class ControladorRegaUI implements Runnable {
                     }
                     case 2 -> {
                         if (controller.exportWateringPlan()) {
+                            result = "O ficheiro com os registos do dia, segundo o Plano de Rega, foi criado.\n";
+                        } else {
+                            result = "ERRO: O ficheiro com os registos do dia, segundo o Plano de Rega, não foi criado.\n";
+                        }
+                        showOutput(result);
+                    }
+                    case 3 -> {
+                        LocalDate day = getDay();
+                        if (controller.exportWateringPlanForSimulatedTime(day)) {
                             result = "O ficheiro com os registos do dia, segundo o Plano de Rega, foi criado.\n";
                         } else {
                             result = "ERRO: O ficheiro com os registos do dia, segundo o Plano de Rega, não foi criado.\n";

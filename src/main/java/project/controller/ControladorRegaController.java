@@ -34,7 +34,7 @@ public class ControladorRegaController {
      * @return
      */
     public Boolean checkDate(LocalDate data) {
-        if(SistemaDeRega.getInicioDoPlanoDeRega().equals(data) || SistemaDeRega.getInicioDoPlanoDeRega().plusDays(30).equals(data)){
+        if (SistemaDeRega.getInicioDoPlanoDeRega().equals(data) || SistemaDeRega.getInicioDoPlanoDeRega().plusDays(30).equals(data)) {
             return true;
         }
         return (SistemaDeRega.getInicioDoPlanoDeRega().isBefore(data) && SistemaDeRega.getInicioDoPlanoDeRega().plusDays(30).isAfter(data));
@@ -45,9 +45,17 @@ public class ControladorRegaController {
     }
 
     public boolean exportWateringPlan() {
-        if(checkDate(LocalDate.now())) {
+        if (checkDate(LocalDate.now())) {
             return SistemaDeRega.generateWateringDayRegister(null);
-        }else{
+        } else {
+            return false;
+        }
+    }
+
+    public boolean exportWateringPlanForSimulatedTime(LocalDate day) {
+        if (checkDate(day)) {
+            return SistemaDeRega.generateWateringDayRegister(day);
+        } else {
             return false;
         }
     }

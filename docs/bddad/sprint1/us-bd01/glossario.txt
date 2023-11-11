@@ -1,7 +1,3 @@
-Glossário
-
-Termos, Expressões e Acrónimos (TEA) devem ser ordenados alfabeticamente.
-
 | TEA (PT) 	                       | Descrição (PT)                                                                                                                                                                                 |
 |:---------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Adubo Verde                      | Plantas cultivadas nas parcelas de forma temporária e com a finalidade de melhorar a fertilidade do solo, aumentando a matéria orgânica, fixando nitrogênio e prevenindo a erosão.             |

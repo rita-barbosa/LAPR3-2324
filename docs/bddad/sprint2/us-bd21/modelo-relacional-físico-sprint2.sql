@@ -22,11 +22,11 @@ CREATE TABLE Cultura (
   nomeComum varchar2(50) NOT NULL, 
   PRIMARY KEY (idCultura));
 CREATE TABLE Parcela (
-  nomeParcela          varchar2(50) NOT NULL, 
-  designacaoUnidade    varchar2(5) NOT NULL, 
-  EdificionomeEdificio varchar2(50) NOT NULL, 
-  idEdificio           number(5) NOT NULL, 
-  area                 number(10) NOT NULL, 
+  nomeParcela       varchar2(50) NOT NULL, 
+  designacaoUnidade varchar2(5) NOT NULL, 
+  nomeEdificio      varchar2(50) NOT NULL, 
+  idEdificio        number(5) NOT NULL, 
+  area              number(10) NOT NULL, 
   PRIMARY KEY (nomeParcela));
 CREATE TABLE Produto (
   nomeProduto varchar2(50) NOT NULL, 
@@ -37,7 +37,7 @@ CREATE TABLE CulturaInstalada (
   nomeParcela       varchar2(50) NOT NULL, 
   idCultura         number(5) NOT NULL, 
   designacaoUnidade varchar2(5) NOT NULL, 
-  dataFinal         date DEFAULT '01/01/1900' NOT NULL CHECK(dataVerification), 
+  dataFinal         date, 
   quantidade        number(11) NOT NULL, 
   PRIMARY KEY (dataInicial, 
   nomeParcela, 
@@ -92,9 +92,6 @@ CREATE TABLE TipoEdificio (
 CREATE TABLE TipoOperacaoAgricola (
   designacaoOperacaoAgricola varchar2(50) NOT NULL, 
   PRIMARY KEY (designacaoOperacaoAgricola));
-CREATE TABLE CalendarioFenologico (
-  idCalendarioFenologico number(5) NOT NULL, 
-  PRIMARY KEY (idCalendarioFenologico));
 CREATE TABLE TipoUnidade (
   designacaoUnidade varchar2(5) NOT NULL, 
   PRIMARY KEY (designacaoUnidade));
@@ -102,7 +99,7 @@ CREATE TABLE ConstituicaoQuimica (
   formulaQuimica    varchar2(50) NOT NULL, 
   nomeComercial     varchar2(50) NOT NULL, 
   designacaoUnidade varchar2(5) NOT NULL, 
-  quantidade        number(11) NOT NULL CHECK(${percentual}), 
+  quantidade        number(11, 2) NOT NULL, 
   PRIMARY KEY (formulaQuimica, 
   nomeComercial), 
   CONSTRAINT percentual 
@@ -140,6 +137,9 @@ CREATE TABLE DataFenologiaCalendarioFenologico (
   idCalendarioFenologico number(5) NOT NULL, 
   PRIMARY KEY (idDataFenologia, 
   idCalendarioFenologico));
+CREATE TABLE CalendarioFenologico (
+  idCalendarioFenologico number(5) NOT NULL, 
+  PRIMARY KEY (idCalendarioFenologico));
 ALTER TABLE OperacaoCultura ADD CONSTRAINT FKOperacaoCu339375 FOREIGN KEY (dataInicial, nomeParcela, idCultura) REFERENCES CulturaInstalada (dataInicial, nomeParcela, idCultura);
 ALTER TABLE Producao ADD CONSTRAINT FKProducao271906 FOREIGN KEY (idCultura) REFERENCES Cultura (idCultura);
 ALTER TABLE Producao ADD CONSTRAINT FKProducao892124 FOREIGN KEY (nomeProduto) REFERENCES Produto (nomeProduto);
@@ -153,10 +153,9 @@ ALTER TABLE CulturaInstalada ADD CONSTRAINT FKCulturaIns779551 FOREIGN KEY (idCu
 ALTER TABLE AplicacaoFatorProducao ADD CONSTRAINT FKAplicacaoF208158 FOREIGN KEY (nomeComercial) REFERENCES FatorProducao (nomeComercial);
 ALTER TABLE Edificio ADD CONSTRAINT FKEdificio200555 FOREIGN KEY (designacaoTipoEdificio) REFERENCES TipoEdificio (designacaoTipoEdificio);
 ALTER TABLE FatorProducao ADD CONSTRAINT FKFatorProdu857690 FOREIGN KEY (idStock) REFERENCES Stock (idStock);
-ALTER TABLE Parcela ADD CONSTRAINT FKParcela754645 FOREIGN KEY (EdificionomeEdificio) REFERENCES Edificio (nomeEdificio);
+ALTER TABLE Parcela ADD CONSTRAINT FKParcela684711 FOREIGN KEY (nomeEdificio) REFERENCES Edificio (nomeEdificio);
 ALTER TABLE AplicacaoFatorProducao ADD CONSTRAINT FKAplicacaoF136092 FOREIGN KEY (idOperacao) REFERENCES Operacao (idOperacao);
 ALTER TABLE Operacao ADD CONSTRAINT FKOperacao266984 FOREIGN KEY (designacaoOperacaoAgricola) REFERENCES TipoOperacaoAgricola (designacaoOperacaoAgricola);
-ALTER TABLE Planta ADD CONSTRAINT FKPlanta960851 FOREIGN KEY (idCalendarioFenologico) REFERENCES CalendarioFenologico (idCalendarioFenologico);
 ALTER TABLE Parcela ADD CONSTRAINT FKParcela450334 FOREIGN KEY (designacaoUnidade) REFERENCES TipoUnidade (designacaoUnidade);
 ALTER TABLE Operacao ADD CONSTRAINT FKOperacao587155 FOREIGN KEY (designacaoUnidade) REFERENCES TipoUnidade (designacaoUnidade);
 ALTER TABLE Stock ADD CONSTRAINT FKStock442583 FOREIGN KEY (designacaoUnidade) REFERENCES TipoUnidade (designacaoUnidade);
@@ -171,6 +170,7 @@ ALTER TABLE OperacaoCultura ADD CONSTRAINT FKOperacaoCu905077 FOREIGN KEY (idOpe
 ALTER TABLE OperacaoParcela ADD CONSTRAINT FKOperacaoPa146660 FOREIGN KEY (idOperacao) REFERENCES Operacao (idOperacao);
 ALTER TABLE ConstituicaoQuimica ADD CONSTRAINT FKConstituic201649 FOREIGN KEY (nomeComercial) REFERENCES FatorProducao (nomeComercial);
 ALTER TABLE DataFenologia ADD CONSTRAINT FKDataFenolo878973 FOREIGN KEY (designacaoTipoFenologia) REFERENCES TipoFenologia (designacaoTipoFenologia);
-ALTER TABLE DataFenologiaCalendarioFenologico ADD CONSTRAINT FKDataFenolo251415 FOREIGN KEY (idDataFenologia) REFERENCES DataFenologia (idDataFenologia);
-ALTER TABLE DataFenologiaCalendarioFenologico ADD CONSTRAINT FKDataFenolo126650 FOREIGN KEY (idCalendarioFenologico) REFERENCES CalendarioFenologico (idCalendarioFenologico);
 ALTER TABLE CulturaInstalada ADD CONSTRAINT FKCulturaIns753417 FOREIGN KEY (nomeParcela) REFERENCES Parcela (nomeParcela);
+ALTER TABLE DataFenologiaCalendarioFenologico ADD CONSTRAINT FKDataFenolo251415 FOREIGN KEY (idDataFenologia) REFERENCES DataFenologia (idDataFenologia);
+ALTER TABLE Planta ADD CONSTRAINT FKPlanta960851 FOREIGN KEY (idCalendarioFenologico) REFERENCES CalendarioFenologico (idCalendarioFenologico);
+ALTER TABLE DataFenologiaCalendarioFenologico ADD CONSTRAINT FKDataFenolo126650 FOREIGN KEY (idCalendarioFenologico) REFERENCES CalendarioFenologico (idCalendarioFenologico);

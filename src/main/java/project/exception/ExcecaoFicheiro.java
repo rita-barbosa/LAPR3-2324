@@ -15,7 +15,7 @@ public class ExcecaoFicheiro extends Exception {
         super(s);
     }
 
-    public static void verificarFicheiro(String caminho) throws ExcecaoFicheiro, IOException {
+    public static void verificarFicheiro(String caminho,String extensao) throws ExcecaoFicheiro {
         File ficheiro = new File(caminho);
 
         if (!ficheiro.exists()) {
@@ -30,14 +30,12 @@ public class ExcecaoFicheiro extends Exception {
             throw new ExcecaoFicheiro("ERRO: Não é possível ler o ficherio no caminho especificado devido a permissões insuficientes.");
         }
 
-        if (!caminho.toLowerCase().endsWith(".txt")) {
-            throw new ExcecaoFicheiro("ERRO: Ficheiro não possui a extensão '.txt'.");
+        if (!caminho.toLowerCase().endsWith(extensao)) {
+            throw new ExcecaoFicheiro("ERRO: Ficheiro não possui a extensão correta.");
         }
-        verificarEstruturaFicheiro(ficheiro);
-        validarPlanoRega(ficheiro);
     }
 
-    private static void verificarEstruturaFicheiro(File ficheiro) throws ExcecaoFicheiro {
+    public static void verificarEstruturaFicheiro(File ficheiro) throws ExcecaoFicheiro {
         try (BufferedReader br = new BufferedReader(new FileReader(ficheiro))) {
             String linhaHoras;
             String linha;

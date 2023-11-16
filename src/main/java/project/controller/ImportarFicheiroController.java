@@ -12,4 +12,12 @@ public class ImportarFicheiroController {
         }
 
     }
+
+    public boolean importRedeDistribuicao(String locais, String distancias) {
+        try {
+            return ImportarFicheiro.importRedeDistribuicao(locais,distancias);
+        }catch (Exception e){
+            return false;
+        }
+    }
 }

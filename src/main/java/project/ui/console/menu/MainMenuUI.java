@@ -1,6 +1,6 @@
- package project.ui.menuPrincipal;
+ package project.ui.console.menu;
 
- import project.ui.utils.Utils;
+ import project.ui.console.utils.Utils;
 
  import java.util.ArrayList;
  import java.util.List;
@@ -18,8 +18,8 @@
      */
     public void run() {
         List<MenuItem> options = new ArrayList<MenuItem>();
-        options.add(new MenuItem("Sistema de Rega", new SistemaDeRegaUI()));
-
+        options.add(new MenuItem("Sistema de Rega", new MenuSistemaDeRega()));
+        options.add(new MenuItem("Rede de Distruibuiçao", new MenuRedeDistribuicao()));
         int option = 0;
         do {
             option = Utils.showAndSelectIndex(options, "\n\nMain Menu");

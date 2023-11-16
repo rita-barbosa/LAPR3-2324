@@ -1,9 +1,9 @@
-package project.ui;
+package project.ui.console;
 
 import project.controller.ControladorRegaController;
 import project.exception.ExcecaoData;
 import project.exception.ExcecaoHora;
-import project.ui.utils.Utils;
+import project.ui.console.utils.Utils;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -68,7 +68,6 @@ public class ControladorRegaUI implements Runnable {
         } else {
             System.out.println("Neste momento não existe um Plano de Rega em vigor.\nPor favor, faça primeiro o importe de um ficheiro Plano de Rega.\n");
         }
-
     }
 
 

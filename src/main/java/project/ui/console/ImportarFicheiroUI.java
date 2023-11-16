@@ -1,4 +1,4 @@
-package project.ui;
+package project.ui.console;
 
 import project.controller.ImportarFicheiroController;
 
@@ -17,17 +17,27 @@ public class ImportarFicheiroUI implements Runnable {
 
     @Override
     public void run() {
-        String filepath = getfilepath();
         switch (fileTypeName){
             case "Plano de Rega":
                 try{
+                    System.out.println("Insira o caminho para o ficheiro:");
+                    String filepath = getfilepath();
                     successfulImport = controller.importWateringPlan(filepath);
                 }catch (Exception e){
                     System.out.printf("%s\n\n", e.getMessage());
                 }
                 break;
-            case "Any Other File":
-                /////
+            case "Rede Distruição":
+                try{
+                    System.out.println("Insira o caminho para o ficheiro dos locais:");
+                    String locaisFilePath = getfilepath();
+                    System.out.println("Insira o caminho para o ficheiro das distâncias:");
+                    String distanciaFilePath = getfilepath();
+
+                    successfulImport = controller.importRedeDistribuicao(locaisFilePath,distanciaFilePath);
+                }catch (Exception e){
+                    System.out.printf("%s\n\n", e.getMessage());
+                }
                 break;
             default:
                 break;
@@ -45,7 +55,6 @@ public class ImportarFicheiroUI implements Runnable {
 
     private String getfilepath() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Insira o caminho para o ficheiro:");
         return scanner.nextLine();
     }
 

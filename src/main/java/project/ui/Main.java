@@ -1,6 +1,6 @@
 package project.ui;
 
-import project.ui.menuPrincipal.MainMenuUI;
+import project.ui.console.menu.MainMenuUI;
 
 public class Main {
     public static void main(String[] args) {

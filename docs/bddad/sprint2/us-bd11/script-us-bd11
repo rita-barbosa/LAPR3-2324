@@ -1,0 +1,94 @@
+-------------------------------------------------------------------------------------------------------
+-- Função --
+-------------------------------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION registarOperacaoSemeadura(
+                            idOp IN operacao.idOperacao%TYPE,
+                            desigOp IN tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE,
+                            desigUnidade IN tipoUnidade.designacaoUnidade%TYPE,
+                            qtd IN NUMBER,
+                            dataOp IN DATE,
+                            idPar IN parcela.idParcela%TYPE,
+                            idCul IN cultura.idCultura%TYPE,
+                            dataInicio IN DATE
+) RETURN BOOLEAN IS
+    success BOOLEAN := FALSE;
+BEGIN
+    BEGIN
+        IF idCul IS NULL AND dataInicio IS NULL THEN
+            INSERT INTO operacao (idOperacao, designacaoOperacaoAgricola, designacaoUnidade, quantidade, dataOperacao)
+            VALUES (idOp, desigOp, desigUnidade, qtd, dataOp);
+            INSERT INTO operacaoparcela (idOperacao, idParcela)
+            VALUES (idOp, idPar);
+        ELSE
+            INSERT INTO culturaInstalada (dataInicial, idParcela, idCultura, designacaoUnidade, dataFinal, quantidade)
+            VALUES (dataInicio, idPar, idCul, desigUnidade, TO_DATE('14/10/2025', 'DD/MM/YYYY'), qtd);
+            INSERT INTO operacao (idOperacao, designacaoOperacaoAgricola, designacaoUnidade, quantidade, dataOperacao)
+            VALUES (idOp, desigOp, desigUnidade, qtd, dataOp);
+            INSERT INTO operacaocultura (idOperacao, idParcela, idCultura, dataInicial)
+            VALUES (idOp, idPar, idCul, dataInicio);
+        END IF;
+
+        success := TRUE;
+    EXCEPTION
+        WHEN OTHERS THEN
+            success := FALSE;
+    END;
+
+    RETURN success;
+END;
+/
+
+-------------------------------------------------------------------------------------------------------
+-- Bloco Anónimo --
+-------------------------------------------------------------------------------------------------------
+SET SERVEROUTPUT ON;
+
+DECLARE
+    -- First operation
+    v_idOp1 NUMBER := 481;
+    v_desigOp1 tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE := 'Semeadura';
+    v_desigUnidade1 tipoUnidade.designacaoUnidade%TYPE := 'ha';
+    v_qtd1 NUMBER := 100;
+    v_dataOp1 DATE := TO_DATE('13/11/2024', 'DD/MM/YYYY');
+    v_idPar1 parcela.idParcela%TYPE := 106;
+    v_idCul1 cultura.idCultura%TYPE := 7;
+    v_dataInicio1 DATE := TO_DATE('13/11/2024', 'DD/MM/YYYY');
+
+    -- Second operation
+    v_idOp2 NUMBER := 549;
+    v_desigOp2 tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE := 'Semeadura';
+    v_desigUnidade2 tipoUnidade.designacaoUnidade%TYPE := 'ha';
+    v_qtd2 NUMBER := 50;
+    v_dataOp2 DATE := TO_DATE('13/11/2024', 'DD/MM/YYYY');
+    v_idPar2 parcela.idParcela%TYPE := 101;
+    v_idCul2 cultura.idCultura%TYPE := NULL;
+    v_dataInicio2 DATE := NULL;
+
+    v_success1 BOOLEAN;
+    v_success2 BOOLEAN;
+BEGIN
+    v_success1 := registarOperacaoSemeadura(v_idOp1, v_desigOp1, v_desigUnidade1, v_qtd1, v_dataOp1, v_idPar1, v_idCul1, v_dataInicio1);
+
+    IF v_success1 THEN
+        DBMS_OUTPUT.PUT_LINE('First operation registered successfully!');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('Failed to register first operation.');
+    END IF;
+
+    v_success2 := registarOperacaoSemeadura(v_idOp2, v_desigOp2, v_desigUnidade2, v_qtd2, v_dataOp2, v_idPar2, v_idCul2, v_dataInicio2);
+
+    IF v_success2 THEN
+        DBMS_OUTPUT.PUT_LINE('Second operation registered successfully!');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('Failed to register second operation.');
+    END IF;
+END;
+/
+
+
+-------------------------------------------------------------------------------------------------------
+-- Confirmação --
+-------------------------------------------------------------------------------------------------------
+SELECT *
+FROM operacao
+WHERE dataOperacao = TO_DATE('13/11/2024', 'DD/MM/YYYY');

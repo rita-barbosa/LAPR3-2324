@@ -51,12 +51,11 @@ public class SistemaDeRega{
         if (date == null){
             date = LocalDate.now();
         }
-        String directoryPath = "files/WateringRegisters";
         String dateString = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")).trim();
         String fileName = "WateringRegisters" + dateString + ".csv";
 
-        File file = new File(directoryPath, fileName);
-        File directory = file.getParentFile();
+        File directory = new File ("files\\WateringRegisters");
+        File file = new File(directory, fileName);
         if (!directory.exists()) {
             directory.mkdirs();
         }

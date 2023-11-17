@@ -22,6 +22,7 @@ public class ImportarFicheiroUI implements Runnable {
                 try{
                     System.out.println("Insira o caminho para o ficheiro:");
                     String filepath = getfilepath();
+
                     successfulImport = controller.importWateringPlan(filepath);
                 }catch (Exception e){
                     System.out.printf("%s\n\n", e.getMessage());

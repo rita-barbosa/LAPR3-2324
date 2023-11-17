@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * The Gps class represents geographical coordinates with latitude (coordX) and longitude (coordY).
  */
-public class GpsCoordinates {
+public class CoordenadasGps {
     /**
      * The latitude coordinate.
      */
@@ -23,21 +23,21 @@ public class GpsCoordinates {
      * @param latitude The latitude coordinate.
      * @param longitude The longitude coordinate.
      */
-    public GpsCoordinates(Double latitude, Double longitude) {
+    public CoordenadasGps(Double latitude, Double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
     /**
      * Calculates the distance between two points taking into account the curvature of the earth.
-     * @param gpsCoordinates The instance with the coordinates passed as parameter
+     * @param coordenadasGps The instance with the coordinates passed as parameter
      * @return the distance between the gps of the parameter and the one that called the method
      */
-    public double calculateDistance(GpsCoordinates gpsCoordinates) {
+    public double calculateDistance(CoordenadasGps coordenadasGps) {
         double lat1 = Math.toRadians(this.latitude);
         double lon1 = Math.toRadians(this.longitude);
-        double lat2 = Math.toRadians(gpsCoordinates.getLatitude());
-        double lon2 = Math.toRadians(gpsCoordinates.getLongitude());
+        double lat2 = Math.toRadians(coordenadasGps.getLatitude());
+        double lon2 = Math.toRadians(coordenadasGps.getLongitude());
 
         double dlat = lat2 - lat1;
         double dlon = lon2 - lon1;
@@ -86,8 +86,8 @@ public class GpsCoordinates {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        GpsCoordinates gpsCoordinates = (GpsCoordinates) o;
-        return Objects.equals(latitude, gpsCoordinates.latitude) && Objects.equals(longitude, gpsCoordinates.longitude);
+        CoordenadasGps coordenadasGps = (CoordenadasGps) o;
+        return Objects.equals(latitude, coordenadasGps.latitude) && Objects.equals(longitude, coordenadasGps.longitude);
     }
 
     /**

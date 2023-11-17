@@ -4,16 +4,16 @@ import java.util.Objects;
 
 public class Hub {
     private String numId;
-    private GpsCoordinates coordenadas;
+    private CoordenadasGps coordenadas;
 
-    public Hub(String numId, GpsCoordinates coordenadas) {
+    public Hub(String numId, CoordenadasGps coordenadas) {
         this.numId = numId;
         this.coordenadas = coordenadas;
     }
 
     public Hub(String numId, Double lat, Double lon) {
         this.numId = numId;
-        this.coordenadas = new GpsCoordinates(lat, lon);
+        this.coordenadas = new CoordenadasGps(lat, lon);
     }
 
     public Hub(String numId) {
@@ -24,7 +24,7 @@ public class Hub {
         return numId;
     }
 
-    public GpsCoordinates getCoordenadas() {
+    public CoordenadasGps getCoordenadas() {
         return coordenadas;
     }
 

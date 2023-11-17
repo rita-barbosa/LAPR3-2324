@@ -22,4 +22,9 @@ public class ImportarFicheiroControllerTest {
         assertFalse(result);
     }
 
+    @Test
+    public void testImportRedeDistribuicaoCorrect() {
+        result = controller.importRedeDistribuicao("src/test/java/project/testFiles/locais_small.csv","src/test/java/project/testFiles/distancias_small.csv");
+        assertTrue(result);
+    }
 }

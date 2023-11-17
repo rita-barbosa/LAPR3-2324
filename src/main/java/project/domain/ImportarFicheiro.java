@@ -43,15 +43,11 @@ public class ImportarFicheiro {
     }
 
 
-    public static boolean importRedeDistribuicao(String locais, String distancias) {
-        try {
-            ExcecaoFicheiro.verificarFicheiro(locais,".csv");
-            ExcecaoFicheiro.verificarFicheiro(distancias,".csv");
-            importFicheiroLocais(locais);
-            importFicheiroDistancias(distancias);
-        } catch (ExcecaoFicheiro | IOException e) {
-            return false;
-        }
+    public static boolean importRedeDistribuicao(String locais, String distancias) throws ExcecaoFicheiro, IOException {
+        ExcecaoFicheiro.verificarFicheiro(locais,".csv");
+        ExcecaoFicheiro.verificarFicheiro(distancias,".csv");
+        importFicheiroLocais(locais);
+        importFicheiroDistancias(distancias);
 
         return true;
     }

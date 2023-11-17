@@ -1,0 +1,40 @@
+CREATE OR REPLACE FUNCTION obterListaUnidade
+RETURN SYS_REFCURSOR AS
+listaUnidades SYS_REFCURSOR;
+BEGIN
+    OPEN listaUnidades FOR
+        SELECT designacaoUnidade
+        FROM tipoUnidade;
+    RETURN listaUnidades;
+END;
+/
+
+-------------------------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION obterIntroCulturas
+RETURN SYS_REFCURSOR AS
+listIntroCulturas SYS_REFCURSOR;
+BEGIN
+    OPEN listIntroCulturas FOR
+        SELECT DISTINCT idCultura, (nomeComum || ' ' || variedade) AS nome
+        FROM cultura;
+    RETURN listIntroCulturas;
+END;
+/
+
+-------------------------------------------------------------------------------------------------------------------
+
+INSERT INTO tipoOperacaoAgricola(designacaoOperacaoAgricola) VALUES ('Semeadura');
+
+CREATE OR REPLACE FUNCTION mostrarOperacaoSemeadura
+ RETURN SYS_REFCURSOR AS
+    operacoes SYS_REFCURSOR;
+BEGIN
+    OPEN operacoes FOR
+        SELECT *
+        FROM operacao
+        WHERE designacaoOperacaoAgricola = 'Semeadura'
+        ORDER BY idOperacao;
+    RETURN operacoes;
+END;
+/

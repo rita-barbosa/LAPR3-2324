@@ -27,4 +27,8 @@ public class RedeHub {
     public String toString() {
         return redeDistribuicao.toString();
     }
+
+    public MapGraph<Hub, Integer> getRedeDistribuicao() {
+        return redeDistribuicao;
+    }
 }

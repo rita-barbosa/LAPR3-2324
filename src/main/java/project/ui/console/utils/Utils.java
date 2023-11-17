@@ -2,23 +2,15 @@ package project.ui.console.utils;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Utils {
-
-    private static Boolean isApplicationLaunched = false;
-
-
-    static public Boolean getApplicationLaunched() {
-        return isApplicationLaunched;
-    }
 
     static public String readLineFromConsole(String prompt) {
         try {
@@ -88,26 +80,26 @@ public class Utils {
     }
 
 
-    public static boolean askOptionalData(String optionalData) {
-        System.out.printf("Would you like to provide data about the Property's %s?%n1. Yes%n2. No%n", optionalData);
-        boolean invalid = true;
-        int answer = -1;
-        Scanner input = new Scanner(System.in);
-        do {
-            try {
-                answer = input.nextInt();
-                if (answer != 1 && answer != 2) {
-                    System.out.println("\nERRO: A opção selecionada é inválida.");
-                } else {
-                    invalid = false;
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("\nERRO: A opção selecionada não é um número.");
-                input.nextLine();
-            }
-        } while (invalid);
-        return answer == 1;
-    }
+//    public static boolean askOptionalData(String optionalData) {
+//        System.out.printf("Would you like to provide data about the Property's %s?%n1. Yes%n2. No%n", optionalData);
+//        boolean invalid = true;
+//        int answer = -1;
+//        Scanner input = new Scanner(System.in);
+//        do {
+//            try {
+//                answer = input.nextInt();
+//                if (answer != 1 && answer != 2) {
+//                    System.out.println("\nERRO: A opção selecionada é inválida.");
+//                } else {
+//                    invalid = false;
+//                }
+//            } catch (InputMismatchException e) {
+//                System.out.println("\nERRO: A opção selecionada não é um número.");
+//                input.nextLine();
+//            }
+//        } while (invalid);
+//        return answer == 1;
+//    }
 
     static public Date readDateFromConsole(String prompt) {
         do {
@@ -134,14 +126,47 @@ public class Utils {
         return input.equalsIgnoreCase("s");
     }
 
-    static public Object showAndSelectOne(List<?> list, String header) {
-        showList(list, header);
-        return selectsObject(list);
-    }
-
     static public int showAndSelectIndex(List<?> list, String header) {
         showList(list, header);
         return selectsIndex(list);
+    }
+
+    static public  <K, V> Object showAndSelectIndex(Map<K, V> map, String header) {
+        showMap(map, header);
+        return selectsIndex(map);
+    }
+
+    private static  <K, V> Object selectsIndex(Map<K,V> map) {
+            String input;
+            int value;
+            do {
+                input = Utils.readLineFromConsole("Select the desired option: ");
+                value = Integer.parseInt(input);
+            } while (value < 0 || value > map.size());
+
+            if (value == 0) {
+                return null;
+            } else {
+                int index = 0;
+                for (Map.Entry<K, V> entry : map.entrySet()) {
+                    index++;
+                    if (index == value) {
+                        return entry.getKey();
+                    }
+                }
+                return null;
+            }
+        }
+
+    private static void showMap(Map<?, ?> map, String header) {
+        System.out.println(header);
+
+        int index = 0;
+        for (Map.Entry<?, ?> entry : map.entrySet()) {
+            index++;
+            System.out.println(index + " - " + entry.getKey() + " : " + entry.getValue());
+        }
+        System.out.println("0 - Cancelar");
     }
 
     static public void showList(List<?> list, String header) {
@@ -171,37 +196,37 @@ public class Utils {
         }
     }
 
-    /**
-     * This method display and aks to select a type of sorting.
-     *
-     * @return the type of sorting chosen
-     */
-    public static String sortSelection(String prompt) {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Tipos de ordeção disponíveis:");
-        System.out.println("1 - Ascendente/Ascending");
-        System.out.println("2 - Descendente/Descending");
-        int option = 0;
-        boolean invalid = true;
-        do {
-            try {
-                while (option < 1 || option > 2) {
-                    option = sc.nextInt();
-                    if (option == 1) {
-                        return "Ascendente";
-                    } else if (option == 2) {
-                        return "Descendente";
-                    }
-                }
-                invalid = false;
-            } catch (InputMismatchException e) {
-                System.out.println("\nERRO: A opção selecionada é inválida."
-                        + " (" + e.getClass().getSimpleName() + ")");
-                sc.nextLine();
-            }
-        } while (invalid);
-        return null;
-    }
+//    /**
+//     * This method display and aks to select a type of sorting.
+//     *
+//     * @return the type of sorting chosen
+//     */
+//    public static String sortSelection(String prompt) {
+//        Scanner sc = new Scanner(System.in);
+//        System.out.println("Tipos de ordeção disponíveis:");
+//        System.out.println("1 - Ascendente/Ascending");
+//        System.out.println("2 - Descendente/Descending");
+//        int option = 0;
+//        boolean invalid = true;
+//        do {
+//            try {
+//                while (option < 1 || option > 2) {
+//                    option = sc.nextInt();
+//                    if (option == 1) {
+//                        return "Ascendente";
+//                    } else if (option == 2) {
+//                        return "Descendente";
+//                    }
+//                }
+//                invalid = false;
+//            } catch (InputMismatchException e) {
+//                System.out.println("\nERRO: A opção selecionada é inválida."
+//                        + " (" + e.getClass().getSimpleName() + ")");
+//                sc.nextLine();
+//            }
+//        } while (invalid);
+//        return null;
+//    }
 
     static public int selectsIndex(List<?> list) {
         String input;
@@ -217,7 +242,26 @@ public class Utils {
         return value - 1;
     }
 
-    public static void setAplicationLaunched(boolean b) {
-        isApplicationLaunched = b;
+    public static List<String> resultSetTypeToList(ResultSet resultSet, String paramName) throws SQLException {
+        List<String> entryList = new ArrayList<>();
+        while (true) {
+            if (!resultSet.next()) break;
+            String entry = resultSet.getString(paramName);
+            entryList.add(entry);
+        }
+        return entryList;
+    }
+
+    public static void validateDate(String date){           //se tiver excecao entao sai do programa? ou voltasse a perguntar
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public static <K, V> void resultSetMapToList(Map<K, V> map, ResultSet resultSet) throws SQLException {
+        while (true) {
+            if (!resultSet.next()) break;
+            K key = (K) resultSet.getObject(1);
+            V values = (V) resultSet.getObject(2);
+            map.put(key, values);
+        }
     }
 }

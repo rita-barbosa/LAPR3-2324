@@ -17,26 +17,27 @@ public class ImportarFicheiroUI implements Runnable {
 
     @Override
     public void run() {
-        switch (fileTypeName){
+        switch (fileTypeName) {
             case "Plano de Rega":
-                try{
+                try {
                     System.out.println("Insira o caminho para o ficheiro:");
                     String filepath = getfilepath();
 
                     successfulImport = controller.importWateringPlan(filepath);
-                }catch (Exception e){
+                } catch (Exception e) {
                     System.out.printf("%s\n\n", e.getMessage());
                 }
                 break;
             case "Rede Distruição":
-                try{
+                try {
                     System.out.println("Insira o caminho para o ficheiro dos locais:");
                     String locaisFilePath = getfilepath();
                     System.out.println("Insira o caminho para o ficheiro das distâncias:");
                     String distanciaFilePath = getfilepath();
 
-                    successfulImport = controller.importRedeDistribuicao(locaisFilePath,distanciaFilePath);
-                }catch (Exception e){
+                    successfulImport = controller.importRedeDistribuicao(locaisFilePath, distanciaFilePath);
+
+                } catch (Exception e) {
                     System.out.printf("%s\n\n", e.getMessage());
                 }
                 break;
@@ -47,9 +48,9 @@ public class ImportarFicheiroUI implements Runnable {
     }
 
     private void checkIfImportWasASuccess(boolean successfulImport, String fileTypeName) {
-        if (successfulImport){
+        if (successfulImport) {
             System.out.printf("O ficheiro %s foi importado com sucesso.\n\n", fileTypeName);
-        }else{
+        } else {
             System.out.printf("O ficheiro %s não foi importado.\n\n", fileTypeName);
         }
     }

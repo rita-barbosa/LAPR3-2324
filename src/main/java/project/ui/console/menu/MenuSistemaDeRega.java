@@ -18,7 +18,7 @@ public class MenuSistemaDeRega implements Runnable{
      */
     public void run() {
         List<MenuItem> options = new ArrayList<>();
-        options.add(new MenuItem("Importar ficheiro de dados", new ImportarFicheiroUI("Plano de Rega")));
+        options.add(new MenuItem("Importar ficheiro do plano de rega.", new ImportarFicheiroUI("Plano de Rega")));
         options.add(new MenuItem("Controlador de Rega.", new ControladorRegaUI()));
         int option = 0;
         do {

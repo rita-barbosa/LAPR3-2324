@@ -1,4 +1,4 @@
-package project.ui.console.registoOperacoes;
+package project.ui.console;
 
 import project.controller.operacoes.RegistarOperacaoSemeaduraController;
 import project.ui.console.utils.Utils;

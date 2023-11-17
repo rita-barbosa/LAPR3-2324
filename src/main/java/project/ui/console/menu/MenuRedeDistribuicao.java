@@ -14,7 +14,7 @@ public class MenuRedeDistribuicao implements Runnable {
     @Override
     public void run() {
         List<MenuItem> options = new ArrayList<>();
-        options.add(new MenuItem("Importar ficheiro do Plano de Rega.", new ImportarFicheiroUI("Rede Distruição")));
+        options.add(new MenuItem("Importar ficheiros dos dados.", new ImportarFicheiroUI("Rede Distruição")));
         options.add(new MenuItem("Localização ideal de N hubs.", new LocalizacaoIdealHubsUI()));
         options.add(new MenuItem("Percurso mínimo possível.", new PercursoMinimoUI()));
         options.add(new MenuItem("Rede de ligação mínima.", new RedeLigacaoMinimaUI()));

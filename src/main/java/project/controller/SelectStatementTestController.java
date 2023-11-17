@@ -1,6 +1,5 @@
 package project.controller;
 
-import project.domain.Operacao;
 import project.domain.OperacaoCultura;
 import project.domain.dataAccess.OperacaoRepository;
 import project.domain.dataAccess.Repositories;

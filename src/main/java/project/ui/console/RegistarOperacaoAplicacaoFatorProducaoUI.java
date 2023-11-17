@@ -1,4 +1,4 @@
-package project.ui.console.registoOperacoes;
+package project.ui.console;
 
 public class RegistarOperacaoAplicacaoFatorProducaoUI implements Runnable {
     @Override

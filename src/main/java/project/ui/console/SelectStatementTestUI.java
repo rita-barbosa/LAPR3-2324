@@ -2,6 +2,7 @@ package project.ui.console;
 
 import project.controller.SelectStatementTestController;
 import project.domain.Operacao;
+import project.domain.OperacaoCultura;
 
 import java.sql.SQLException;
 import java.util.Collections;
@@ -18,7 +19,7 @@ public class SelectStatementTestUI implements Runnable {
     @Override
     public void run() {
         try {
-            List<Operacao> listaOperacoes = Collections.singletonList((Operacao) controller.getSemeaduraOperationList());
+            List<OperacaoCultura> listaOperacoes = controller.getSemeaduraOperationList();
             System.out.println("\nStatement compiled successfully.\n");
             printOperationList(listaOperacoes);
         } catch (SQLException e ) {
@@ -26,13 +27,13 @@ public class SelectStatementTestUI implements Runnable {
         }
     }
 
-    private void printOperationList(List<Operacao> lista){
-        System.out.println("---------------------------------------------------------------------");
-        System.out.println("|  ID  | Designação da Operação |    Data    | Quantidade | Unidade |");
-        System.out.println("---------------------------------------------------------------------");
-        for (Operacao operacao : lista){
+    private void printOperationList(List<OperacaoCultura> lista){
+        System.out.println("---------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("|  ID  | Designação da Operação |    Data    | Quantidade | Unidade | ID Parcela | ID Cultura | Data Inicial | Data Final |");
+        System.out.println("---------------------------------------------------------------------------------------------------------------------------");
+        for (OperacaoCultura operacao : lista){
             System.out.println(operacao);
         }
-        System.out.println("---------------------------------------------------------------------");
+        System.out.println("---------------------------------------------------------------------------------------------------------------------------");
     }
 }

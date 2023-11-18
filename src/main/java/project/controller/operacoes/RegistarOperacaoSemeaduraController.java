@@ -67,7 +67,7 @@ public class RegistarOperacaoSemeaduraController {
         return cultureRepository.getCultures();
     }
 
-    public void registerOperation(Integer idParcela, Integer idCultura, Date dataInicio, Date dataFim, Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
-        operacaoRepository.registerSemeaduraOperation(idParcela, idCultura, dataOperacao, dataInicio, dataFim, tipoUnidade, quantidade);
+    public boolean registerOperation(Integer idParcela, String designacaoOperacaoAgricola, Integer idCultura, Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
+        return operacaoRepository.registerCultureOperation(idParcela, designacaoOperacaoAgricola, idCultura, dataOperacao, tipoUnidade, quantidade);
     }
 }

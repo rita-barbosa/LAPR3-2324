@@ -14,16 +14,14 @@ import java.util.Scanner;
 public class RegistarOperacaoSemeaduraUI implements Runnable {
 
     private RegistarOperacaoSemeaduraController controller;
+    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
+    String designacaoOperacaoAgricola = "Semeadura";
     private Date dataOperacao;
     private Integer idParcela;
     private Integer idCultura;
-    private Date dataInicio;
-    private Date dataFim = null;
     private String tipoUnidade;
     private Double quantidade;
-
-    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
     public RegistarOperacaoSemeaduraUI() {
         controller = new RegistarOperacaoSemeaduraController();
@@ -39,37 +37,29 @@ public class RegistarOperacaoSemeaduraUI implements Runnable {
 
             Scanner scanner = new Scanner(System.in);
 
-            Map<Integer, String>  fieldsIDs = controller.getFieldsIDs();  //MOSTRA LISTA DAS PARCELAS
+            Map<Integer, String>  fieldsIDs = controller.getFieldsIDs();
             idParcela = (Integer) Utils.showAndSelectIndex(fieldsIDs, "Selecione o id da parcela:");
 
-            Map<Integer, String> cultureIDs = controller.getCulturesIDs();  //MOSTRA LISTA DAS CULTURAS
+            Map<Integer, String> cultureIDs = controller.getCulturesIDs();
             idCultura = (Integer) Utils.showAndSelectIndex(cultureIDs, "Selecione o id da cultura:");
 
-            List<String> unitTypes = controller.getUnitTypes();  //MOSTRA LISTA DAS UNIDADES
-            index = Utils.showAndSelectIndex(unitTypes, "Tipo de Unidade:");
+            List<String> unitTypes = controller.getUnitTypes();
+            index = Utils.showAndSelectIndex(unitTypes, "Indique o tipo de unidade:");
             tipoUnidade = unitTypes.get(index);
 
-            System.out.print("Data do início da operação: ");
-            String dataInicial = scanner.next();
-            Utils.validateDate(dataInicial);
-            dataInicio = formatter.parse(dataInicial);
+            System.out.print("Data da operação: ");
+            String dataOp = scanner.next();
+            Utils.validateDate(dataOp);
+            dataOp = dataOp.replace("/", "-");
+            dataOperacao = formatter.parse(dataOp);
 
             quantidade = Utils.readDoubleFromConsole("Quantidade: ");
 
-            System.out.print("Data do fim da operação (se ainda não houver selecionar ENTER): ");
-            String dataFinal = scanner.next();
-            if (!(dataFinal.isBlank()) && !(dataFinal.isEmpty())){
-                validateEndDate(dataInicio, dataFinal);
-                dataFim = formatter.parse(dataFinal);
+            boolean opStatus = controller.registerOperation(idParcela, designacaoOperacaoAgricola, idCultura, dataOperacao, tipoUnidade, quantidade);
+
+            if (opStatus){
+                System.out.println("\nOperação de semeadura registada com sucesso.");
             }
-
-            System.out.print("Data da Operação (dd-mm-yyyy): ");
-            String dataOp = scanner.next();
-            validateOperationDate(dataOp);
-            dataOperacao =formatter.parse(dataOp);
-
-            controller.registerOperation(idParcela, idCultura, dataOperacao, dataInicio, dataFim, tipoUnidade, quantidade);
-            System.out.println("\nOperação de semeadura registada com sucesso.");
         } catch (ParseException | SQLException e) {
             System.out.println("\nFalha em registar a operação de semeadura.\n" + e.getMessage());
         }

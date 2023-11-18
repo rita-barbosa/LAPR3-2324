@@ -132,20 +132,23 @@ CREATE TABLE DataFenologia (
   PRIMARY KEY (intervaloTempo, 
   designacaoTipoFenologia));
 CREATE TABLE Setor (
-  idSetor      number(10) GENERATED AS IDENTITY, 
-  nomeEdificio varchar2(50) NOT NULL, 
-  dataInicio   number(10) NOT NULL, 
-  dataFim      number(10) NOT NULL, 
-  caudalMaximo number(10) NOT NULL, 
+  idSetor           number(10) GENERATED AS IDENTITY, 
+  nomeEdificio      varchar2(50) NOT NULL, 
+  designacaoUnidade varchar2(5) NOT NULL, 
+  dataInicio        date NOT NULL, 
+  dataFim           date NOT NULL, 
+  caudalMaximo      number(10) NOT NULL, 
   PRIMARY KEY (idSetor));
 CREATE TABLE SetorCulturaInstalada (
-  designacao  number(10) NOT NULL, 
-  dataInicial date NOT NULL, 
-  nomeParcela varchar2(50) NOT NULL, 
-  nomeComum   varchar2(50) NOT NULL, 
-  variedade   varchar2(50) NOT NULL, 
+  designacao                  number(10) NOT NULL, 
+  dataInicialCulturaInstalada date NOT NULL, 
+  nomeParcela                 varchar2(50) NOT NULL, 
+  nomeComum                   varchar2(50) NOT NULL, 
+  variedade                   varchar2(50) NOT NULL, 
+  dataInicialSetorCultura     date NOT NULL, 
+  dataFinalSetorCultura       date NOT NULL, 
   PRIMARY KEY (designacao, 
-  dataInicial, 
+  dataInicialCulturaInstalada, 
   nomeParcela, 
   nomeComum, 
   variedade));
@@ -188,6 +191,10 @@ CREATE TABLE MaquinaUtilizada (
 CREATE TABLE TipoMaquina (
   designacao varchar2(50) NOT NULL, 
   PRIMARY KEY (designacao));
+CREATE TABLE Colheita (
+  idOperacao  number(10) NOT NULL, 
+  nomeProduto varchar2(50) NOT NULL, 
+  PRIMARY KEY (idOperacao));
 ALTER TABLE OperacaoCultura ADD CONSTRAINT FKOperacaoCu672704 FOREIGN KEY (dataInicial, nomeParcela, variedade, nomeComum) REFERENCES CulturaInstalada (dataInicial, nomeParcela, variedade, nomeComum);
 ALTER TABLE Producao ADD CONSTRAINT FKProducao892124 FOREIGN KEY (nomeProduto) REFERENCES Produto (nomeProduto);
 ALTER TABLE Planta ADD CONSTRAINT FKPlanta661690 FOREIGN KEY (designacaoTipoPermanencia) REFERENCES TipoPermanencia (designacaoTipoPermanencia);
@@ -215,7 +222,7 @@ ALTER TABLE OperacaoParcela ADD CONSTRAINT FKOperacaoPa146660 FOREIGN KEY (idOpe
 ALTER TABLE ConstituicaoQuimica ADD CONSTRAINT FKConstituic201649 FOREIGN KEY (nomeComercial) REFERENCES FatorProducao (nomeComercial);
 ALTER TABLE DataFenologia ADD CONSTRAINT FKDataFenolo878973 FOREIGN KEY (designacaoTipoFenologia) REFERENCES TipoFenologia (designacaoTipoFenologia);
 ALTER TABLE CulturaInstalada ADD CONSTRAINT FKCulturaIns753417 FOREIGN KEY (nomeParcela) REFERENCES Parcela (nomeParcela);
-ALTER TABLE SetorCulturaInstalada ADD CONSTRAINT FKSetorCultu589851 FOREIGN KEY (dataInicial, nomeParcela, variedade, nomeComum) REFERENCES CulturaInstalada (dataInicial, nomeParcela, variedade, nomeComum);
+ALTER TABLE SetorCulturaInstalada ADD CONSTRAINT FKSetorCultu259544 FOREIGN KEY (dataInicialCulturaInstalada, nomeParcela, variedade, nomeComum) REFERENCES CulturaInstalada (dataInicial, nomeParcela, variedade, nomeComum);
 ALTER TABLE SetorCulturaInstalada ADD CONSTRAINT FKSetorCultu215803 FOREIGN KEY (designacao) REFERENCES Setor (idSetor);
 ALTER TABLE ColheitaPrevista ADD CONSTRAINT FKColheitaPr933761 FOREIGN KEY (dataInicial, nomeParcela, variedade, nomeComum) REFERENCES CulturaInstalada (dataInicial, nomeParcela, variedade, nomeComum);
 ALTER TABLE CalendarioFenologico ADD CONSTRAINT FKCalendario72418 FOREIGN KEY (variedade, nomeComum) REFERENCES Planta (variedade, nomeComum);
@@ -232,3 +239,6 @@ ALTER TABLE Maquina ADD CONSTRAINT FKMaquina759219 FOREIGN KEY (nomeEdificio) RE
 ALTER TABLE CulturaInstalada ADD CONSTRAINT FKCulturaIns609934 FOREIGN KEY (variedade, nomeComum) REFERENCES Planta (variedade, nomeComum);
 ALTER TABLE Maquina ADD CONSTRAINT FKMaquina73966 FOREIGN KEY (designacaoMaquina) REFERENCES TipoMaquina (designacao);
 ALTER TABLE Producao ADD CONSTRAINT FKProducao310198 FOREIGN KEY (variedade, nomeComum) REFERENCES Planta (variedade, nomeComum);
+ALTER TABLE Setor ADD CONSTRAINT FKSetor884264 FOREIGN KEY (designacaoUnidade) REFERENCES TipoUnidade (designacaoUnidade);
+ALTER TABLE Colheita ADD CONSTRAINT FKColheita605445 FOREIGN KEY (idOperacao) REFERENCES Operacao (idOperacao);
+ALTER TABLE Colheita ADD CONSTRAINT FKColheita797062 FOREIGN KEY (nomeProduto) REFERENCES Produto (nomeProduto);

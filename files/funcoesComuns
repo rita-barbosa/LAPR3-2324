@@ -1,3 +1,16 @@
+CREATE OR REPLACE FUNCTION obterIntroParcelas
+    RETURN SYS_REFCURSOR AS
+    listIntroParcelas SYS_REFCURSOR;
+BEGIN
+    OPEN listIntroParcelas FOR
+        SELECT DISTINCT idParcela, nomeParcela
+        FROM parcela;
+    RETURN listIntroParcelas;
+END;
+/
+
+-------------------------------------------------------------------------------------------------------------------
+
 CREATE OR REPLACE FUNCTION obterListaUnidade
 RETURN SYS_REFCURSOR AS
 listaUnidades SYS_REFCURSOR;
@@ -24,6 +37,18 @@ END;
 
 -------------------------------------------------------------------------------------------------------------------
 
+CREATE OR REPLACE FUNCTION getNewIdOperation
+    RETURN NUMBER AS
+    newIdOperation NUMBER;
+BEGIN
+    SELECT NVL(MAX(idOperacao), 0) + 1 INTO newIdOperation
+    FROM operacao;
+    RETURN newIdOperation;
+END;
+/
+
+-------------------------------------------------------------------------------------------------------------------
+
 INSERT INTO tipoOperacaoAgricola(designacaoOperacaoAgricola) VALUES ('Semeadura');
 
 CREATE OR REPLACE FUNCTION mostrarOperacaoSemeadura
@@ -38,3 +63,5 @@ BEGIN
     RETURN operacoes;
 END;
 /
+
+-------------------------------------------------------------------------------------------------------------------

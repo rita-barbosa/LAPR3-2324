@@ -8,6 +8,7 @@ public class Repositories {
     private UnitsRepository unitsRepository;
     private FieldsRepository fieldsRepository;
     private CultureRepository cultureRepository;
+    private DatesRepository datesRepository;
 
     public UnitsRepository getUnitsRepository() {
         return unitsRepository;
@@ -26,6 +27,7 @@ public class Repositories {
         unitsRepository = new UnitsRepository();
         fieldsRepository = new FieldsRepository();
         cultureRepository = new CultureRepository();
+        datesRepository = new DatesRepository();
     }
 
     public static Repositories getInstance() {
@@ -34,6 +36,10 @@ public class Repositories {
 
     public OperacaoRepository getOperacaoRepository() {
         return operacaoRepository;
+    }
+
+    public DatesRepository getDatesRepository(){
+        return datesRepository;
     }
 
 }

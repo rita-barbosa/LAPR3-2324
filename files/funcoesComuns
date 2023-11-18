@@ -107,3 +107,25 @@ END;
 /
 
 -------------------------------------------------------------------------------------------------------------------
+
+create or replace FUNCTION obterDataInicial(
+        p_idParcela IN NUMBER,
+        p_idCultura IN NUMBER
+    ) RETURN DATE
+    IS
+        v_dataInicial DATE;
+    BEGIN
+        SELECT dataInicial
+        INTO v_dataInicial
+        FROM CulturaInstalada
+        WHERE idParcela = p_idParcela
+        AND idCultura = p_idCultura;
+
+        RETURN v_dataInicial;
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            RETURN NULL;
+    END;
+/
+
+-------------------------------------------------------------------------------------------------------------------

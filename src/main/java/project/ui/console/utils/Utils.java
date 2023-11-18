@@ -229,4 +229,12 @@ public class Utils {
         }
         return newIdOperacao;
     }
+
+
+    public static int selectYesOrNoOption(){
+        List<String> options = new ArrayList<>();
+        options.add("Yes");
+        options.add("No");
+        return showAndSelectIndex(options, "Deseja terminar a Cultura selecionada?");
+    }
 }

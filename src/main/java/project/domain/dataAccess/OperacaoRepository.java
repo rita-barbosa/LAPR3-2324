@@ -186,4 +186,43 @@ public class OperacaoRepository {
         }
         return exists;
     }
+
+
+
+    //mudar para estar de acordo com o novo modelo relacional
+    public void registerColheitaOperation(Integer idParcela, Integer idCultura, Date dataInicio, Date dataFim, Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
+        CallableStatement callStmt = null;
+        try {
+            Connection connection = DatabaseConnection.getInstance().getConnection();
+            callStmt = connection.prepareCall("{ call registarOperacaoColheita(?,?,?,?,?,?,?,?,?) }");
+
+            int idOperacao = Utils.getNewIdOperation();
+
+            callStmt.setInt(1, idOperacao);
+            callStmt.setString(2, "Colheita");
+            callStmt.setString(3, tipoUnidade);
+            callStmt.setDouble(4, quantidade);
+
+            java.sql.Date sqlDataOp = new java.sql.Date(dataOperacao.getTime());
+            callStmt.setDate(5, sqlDataOp);
+
+            callStmt.setInt(6, idParcela);
+            callStmt.setInt(7, idCultura);
+
+            java.sql.Date sqlDataInicio = new java.sql.Date(dataInicio.getTime());
+            callStmt.setDate(8, sqlDataInicio);
+
+            java.sql.Date sqlDataFim = new java.sql.Date(dataFim.getTime());
+            callStmt.setDate(9, sqlDataFim);
+
+            callStmt.execute();
+            connection.commit();
+        } finally {
+            if (!Objects.isNull(callStmt)) {
+                callStmt.close();
+            }
+        }
+    }
+
+
 }

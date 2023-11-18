@@ -1,0 +1,75 @@
+--FUNÇÃO
+CREATE OR REPLACE FUNCTION registarOperacaoColheita(
+    							p_id_Operacao IN Operacao.idOperacao%TYPE,
+    							p_des_Operacao IN TipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE,
+    							p_des_Unidade IN tipoUnidade.designacaoUnidade%TYPE,
+    							p_quantidade IN NUMBER,
+                            	p_data_Operacao IN DATE,
+                            	p_id_Parcela IN parcela.idParcela%TYPE,
+                            	p_id_Cultura IN cultura.idCultura%TYPE,
+                            	p_dataInicio IN DATE,
+    							p_dataFinal IN DATE
+) RETURN BOOLEAN IS
+    l_success BOOLEAN := FALSE;
+BEGIN
+    BEGIN
+        IF p_dataFinal IS NULL THEN
+            INSERT INTO Operacao (idOperacao, designacaoOperacaoAgricola, designacaoUnidade, quantidade, dataOperacao)
+            VALUES (p_id_Operacao, p_des_Operacao, p_des_Unidade, p_quantidade, p_data_Operacao);
+            INSERT INTO OperacaoCultura (idOperacao, idParcela, idCultura, dataInicial)
+            VALUES (p_id_Operacao, p_id_Parcela, p_id_Cultura, p_dataInicio);
+        ELSE
+            INSERT INTO CulturaInstalada (dataInicial, idParcela, idCultura, designacaoUnidade, dataFinal, quantidade)
+            VALUES (p_dataInicio, p_id_Parcela, p_id_Cultura, p_des_Unidade, TO_DATE('10/01/2025', 'DD/MM/YYYY'), p_quantidade);
+            INSERT INTO Operacao (idOperacao, designacaoOperacaoAgricola, designacaoUnidade, quantidade, dataOperacao)
+            VALUES (p_id_Operacao, p_des_Operacao, p_des_Unidade, p_quantidade, p_data_Operacao);
+            INSERT INTO OperacaoCultura (idOperacao, idParcela, idCultura, dataInicial)
+            VALUES (p_id_Operacao, p_id_Parcela, p_id_Cultura, p_dataInicio);
+        END IF;
+
+        l_success := TRUE;
+    EXCEPTION
+        WHEN OTHERS THEN
+            l_success := FALSE;
+    END;
+
+    RETURN l_success;
+END;
+/
+
+
+--BLOCO ANÓNIMO
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    -- First operation
+    v_id_Operacao1 NUMBER := 481;
+    v_des_Operacao1 tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE := 'Colheita';
+    v_des_Unidade1 tipoUnidade.designacaoUnidade%TYPE := 'ha';
+    v_quantidade1 NUMBER := 100;
+    v_data_Operacao1 DATE := TO_DATE('13/11/2024', 'DD/MM/YYYY');
+    v_id_Parcela1 parcela.idParcela%TYPE := 106;
+    v_id_Cultura1 cultura.idCultura%TYPE := 7;
+    v_dataInicio1 DATE := TO_DATE('13/11/2024', 'DD/MM/YYYY');
+
+    v_result1 BOOLEAN;
+BEGIN
+    v_result1 := registarOperacaoColheita(v_id_Operacao1, v_des_Operacao1, v_des_Unidade1, v_quantidade1, v_data_Operacao1, v_id_Parcela1, v_id_Cultura1, v_dataInicio1);
+
+    IF v_result1 THEN
+        DBMS_OUTPUT.PUT_LINE('First operation registered successfully!');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('Failed to register first operation.');
+    END IF;
+
+    v_result2 := registarOperacaoColheita(v_id_Operacao2, v_des_Operacao2, v_des_Unidade2, v_quantidade2, v_data_Operacao2, v_id_Parcela2, v_id_Cultura2, v_dataInicio2);
+
+    IF v_result2 THEN
+        DBMS_OUTPUT.PUT_LINE('Second operation registered successfully!');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('Failed to register second operation.');
+    END IF;
+END;
+
+

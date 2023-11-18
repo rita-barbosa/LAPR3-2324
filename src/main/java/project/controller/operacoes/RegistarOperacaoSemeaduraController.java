@@ -2,11 +2,9 @@ package project.controller.operacoes;
 
 import project.domain.dataAccess.*;
 
-import java.util.Date;
+import java.math.BigDecimal;
+import java.util.*;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 public class RegistarOperacaoSemeaduraController {
 
@@ -59,11 +57,11 @@ public class RegistarOperacaoSemeaduraController {
         return unitsRepository.getUnitDesignations();
     }
 
-    public  Map<Integer, String>  getFieldsIDs() throws SQLException {
+    public  Map<BigDecimal, String>  getFieldsIDs() throws SQLException {
         return fieldsRepository.getFieldIds();
     }
 
-    public Map<Integer, String> getCulturesIDs() throws SQLException {
+    public Map<BigDecimal, String> getCulturesIDs() throws SQLException {
         return cultureRepository.getCultures();
     }
 

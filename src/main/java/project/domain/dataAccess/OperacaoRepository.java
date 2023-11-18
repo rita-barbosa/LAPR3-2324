@@ -5,6 +5,7 @@ import project.domain.Operacao;
 import project.domain.OperacaoCultura;
 import project.ui.console.utils.Utils;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -131,7 +132,8 @@ public class OperacaoRepository {
 
             callStmt.execute();
 
-            int opStatus = (Integer) callStmt.getObject(1);
+            BigDecimal bigDecimalValue = (BigDecimal) callStmt.getObject(1);
+            int opStatus = bigDecimalValue.intValue();
 
             if (opStatus == 1) {
                 success = true;

@@ -12,15 +12,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Utils {
-
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
 
     static public String readLineFromConsole(String prompt) {
         try {
@@ -141,17 +137,18 @@ public class Utils {
         return selectsIndex(list);
     }
 
-    static public  <K, V> Object showAndSelectIndex(Map<K, V> map, String header) {
-        List<Map.Entry<K, V>> listMap = showMap(map, header);
-        return selectsIndex(listMap);
+    static public  <K, V> K showAndSelectIndex(Map<K, V> map, String header) {
+        List<K> listMap = showMap(map, header);
+        int index = selectsIndex(listMap);
+        return listMap.get(index);
     }
 
-    private static <K, V> List<Map.Entry<K, V>> showMap(Map<K, V> map, String header) {
-        List<Map.Entry<K, V>> listMap = new ArrayList<>();
+    private static <K, V> List<K> showMap(Map<K, V> map, String header) {
+        List<K> listMap = new ArrayList<>();
         System.out.println(header);
         int index = 0;
         for (Map.Entry<K, V> entry : map.entrySet()) {
-            listMap.add(entry);
+            listMap.add(entry.getKey());
             index++;
             System.out.println(index + " - " + entry.getKey() + " : " + entry.getValue());
         }

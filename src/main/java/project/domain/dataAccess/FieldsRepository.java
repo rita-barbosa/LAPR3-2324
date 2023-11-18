@@ -3,6 +3,7 @@ package project.domain.dataAccess;
 import oracle.jdbc.OracleTypes;
 import project.ui.console.utils.Utils;
 
+import java.math.BigDecimal;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -12,10 +13,10 @@ import java.util.Map;
 import java.util.Objects;
 
 public class FieldsRepository {
-    public Map<Integer, String> getFieldIds() throws SQLException {
+    public Map<BigDecimal, String> getFieldIds() throws SQLException {
         CallableStatement callStmt = null;
         ResultSet resultSet = null;
-        Map<Integer, String> map = new HashMap<>();
+        Map<BigDecimal, String> map = new HashMap<>();
 
         try {
             Connection connection = DatabaseConnection.getInstance().getConnection();

@@ -3,6 +3,7 @@ package project.ui.console;
 import project.controller.operacoes.RegistarOperacaoSemeaduraController;
 import project.ui.console.utils.Utils;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,11 +38,15 @@ public class RegistarOperacaoSemeaduraUI implements Runnable {
 
             Scanner scanner = new Scanner(System.in);
 
-            Map<Integer, String>  fieldsIDs = controller.getFieldsIDs();
-            idParcela = (Integer) Utils.showAndSelectIndex(fieldsIDs, "Selecione o id da parcela:");
+            Map<BigDecimal, String>  fieldsIDs = controller.getFieldsIDs();
+            BigDecimal bigDecimalValue = Utils.showAndSelectIndex(fieldsIDs, "Selecione o id da parcela:");
+            idParcela = bigDecimalValue.intValue();
 
-            Map<Integer, String> cultureIDs = controller.getCulturesIDs();
-            idCultura = (Integer) Utils.showAndSelectIndex(cultureIDs, "Selecione o id da cultura:");
+
+            Map<BigDecimal, String> cultureIDs = controller.getCulturesIDs();
+            bigDecimalValue = Utils.showAndSelectIndex(cultureIDs, "Selecione o id da cultura:");
+            idCultura = bigDecimalValue.intValue();
+
 
             List<String> unitTypes = controller.getUnitTypes();
             index = Utils.showAndSelectIndex(unitTypes, "Indique o tipo de unidade:");

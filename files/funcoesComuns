@@ -1,43 +1,45 @@
-CREATE OR REPLACE FUNCTION obterIntroParcelas
+create or replace FUNCTION obterIntroParcelas
     RETURN SYS_REFCURSOR AS
     listIntroParcelas SYS_REFCURSOR;
 BEGIN
     OPEN listIntroParcelas FOR
         SELECT DISTINCT idParcela, nomeParcela
-        FROM parcela;
+        FROM parcela
+        ORDER BY idParcela;
     RETURN listIntroParcelas;
 END;
 /
-
 -------------------------------------------------------------------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION obterListaUnidade
-RETURN SYS_REFCURSOR AS
-listaUnidades SYS_REFCURSOR;
+create or replace NONEDITIONABLE FUNCTION obterListaUnidade
+    RETURN SYS_REFCURSOR AS
+    listaUnidades SYS_REFCURSOR;
 BEGIN
     OPEN listaUnidades FOR
         SELECT designacaoUnidade
-        FROM tipoUnidade;
+        FROM tipoUnidade
+        ORDER BY designacaoUnidade;
     RETURN listaUnidades;
 END;
 /
 
 -------------------------------------------------------------------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION obterIntroCulturas
-RETURN SYS_REFCURSOR AS
-listIntroCulturas SYS_REFCURSOR;
+create or replace FUNCTION obterIntroCulturas
+    RETURN SYS_REFCURSOR AS
+    listIntroCulturas SYS_REFCURSOR;
 BEGIN
     OPEN listIntroCulturas FOR
         SELECT DISTINCT idCultura, (nomeComum || ' ' || variedade) AS nome
-        FROM cultura;
+        FROM cultura
+        ORDER BY idCultura;
     RETURN listIntroCulturas;
 END;
 /
 
 -------------------------------------------------------------------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION getNewIdOperation
+create or replace FUNCTION novoIdOperacao
     RETURN NUMBER AS
     newIdOperation NUMBER;
 BEGIN
@@ -51,15 +53,25 @@ END;
 
 INSERT INTO tipoOperacaoAgricola(designacaoOperacaoAgricola) VALUES ('Semeadura');
 
-CREATE OR REPLACE FUNCTION mostrarOperacaoSemeadura
- RETURN SYS_REFCURSOR AS
+create or replace FUNCTION mostrarOperacaoSemeadura
+    RETURN SYS_REFCURSOR AS
     operacoes SYS_REFCURSOR;
 BEGIN
     OPEN operacoes FOR
-        SELECT *
-        FROM operacao
+        SELECT DISTINCT op.idOperacao,
+                        op.designacaooperacaoagricola,
+                        op.designacaounidade,
+                        op.quantidade,
+                        op.dataoperacao,
+                        cul.idparcela,
+                        cul.idcultura,
+                        inst.datainicial,
+                        inst.datafinal
+        FROM operacao op
+                 INNER JOIN operacaoCultura cul ON cul.idOperacao = op.idOperacao
+                 INNER JOIN culturaInstalada inst ON cul.datainicial = inst.datainicial
         WHERE designacaoOperacaoAgricola = 'Semeadura'
-        ORDER BY idOperacao;
+        ORDER BY op.idOperacao;
     RETURN operacoes;
 END;
 /

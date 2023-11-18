@@ -7,14 +7,13 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class CultureRepository {
     public Map<Integer, String> getCultures() throws SQLException {
         CallableStatement callStmt = null;
         ResultSet resultSet = null;
-        Map<Integer, String> map = null;
+        Map<Integer, String> map = new HashMap<>();
 
         try {
             Connection connection = DatabaseConnection.getInstance().getConnection();

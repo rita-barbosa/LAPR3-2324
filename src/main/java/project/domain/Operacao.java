@@ -2,11 +2,16 @@ package project.domain;
 
 
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class Operacao {
 
-    private final int idOperacao;
+//    public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
+//
+//    public static Date defaultDate = (Date) formatter.parse("0-00-0000");
+
+    private final Integer idOperacao;
 
     private final String designacaoOperacaoAgricola;
 
@@ -14,7 +19,7 @@ public class Operacao {
     private final Double quantidade;
     private final Date dataOperacao;
 
-    public Operacao(int idOperacao, String designacaoOperacaoAgricola, String designacaoUnidade, Double quantidade, Date dataOperacao) {
+    public Operacao(Integer idOperacao, String designacaoOperacaoAgricola, String designacaoUnidade, Double quantidade, Date dataOperacao) {
         this.idOperacao = idOperacao;
         this.designacaoOperacaoAgricola = designacaoOperacaoAgricola;
         this.designacaoUnidade = designacaoUnidade;
@@ -23,7 +28,7 @@ public class Operacao {
     }
 
 
-    public int getIdOperacao() {
+    public Integer getIdOperacao() {
         return idOperacao;
     }
 
@@ -45,11 +50,6 @@ public class Operacao {
 
     @Override
     public String toString() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        String formattedDate = dateFormat.format(dataOperacao);
-
-        return String.format("| %4d | %22s | %10s | %10d | %7s |",
-                idOperacao, designacaoOperacaoAgricola, formattedDate, quantidade, designacaoUnidade);
+        return String.format("| %4d | %22s | %10s | %10.2f | %7s |", idOperacao, designacaoOperacaoAgricola, dataOperacao, quantidade, designacaoUnidade);
     }
-
 }

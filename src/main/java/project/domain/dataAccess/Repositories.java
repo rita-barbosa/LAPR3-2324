@@ -3,11 +3,11 @@ package project.domain.dataAccess;
 public class Repositories {
 
     private static final Repositories instance = new Repositories();
-    private OperacaoRepository operacaoRepository = null;
+    private OperacaoRepository operacaoRepository;
 
-    private UnitsRepository unitsRepository = null;
-    private FieldsRepository fieldsRepository = null;
-    private CultureRepository cultureRepository = null;
+    private UnitsRepository unitsRepository;
+    private FieldsRepository fieldsRepository;
+    private CultureRepository cultureRepository;
 
     public UnitsRepository getUnitsRepository() {
         return unitsRepository;

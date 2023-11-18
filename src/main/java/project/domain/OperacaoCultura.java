@@ -10,7 +10,7 @@ public class OperacaoCultura extends Operacao{
     private Date dataInicial;
     private Date dataFinal;
 
-    public OperacaoCultura(int idOperacao, String designacaoOperacaoAgricola, Date dataOperacao, int idParcela, int idCultura, Date dataInicial, Date dataFinal, String designacaoUnidade, double quantidade) {
+    public OperacaoCultura(Integer idOperacao, String designacaoOperacaoAgricola, Date dataOperacao, Integer idParcela, Integer idCultura, Date dataInicial, Date dataFinal, String designacaoUnidade, Double quantidade) {
         super(idOperacao, designacaoOperacaoAgricola,designacaoUnidade, quantidade, dataOperacao);
         this.idCultura = idCultura;
         this.idParcela = idParcela;
@@ -18,7 +18,7 @@ public class OperacaoCultura extends Operacao{
         this.dataFinal = dataFinal;
     }
 
-    public OperacaoCultura(int idOperacao, String designacaoOperacaoAgricola, Date dataOperacao, int idParcela, int idCultura, Date dataInicial, String designacaoUnidade, double quantidade) {
+    public OperacaoCultura(Integer idOperacao, String designacaoOperacaoAgricola, Date dataOperacao, Integer idParcela, Integer idCultura, Date dataInicial, String designacaoUnidade, Double quantidade) {
         super(idOperacao, designacaoOperacaoAgricola,designacaoUnidade, quantidade, dataOperacao);
         this.idCultura = idCultura;
         this.idParcela = idParcela;
@@ -44,5 +44,13 @@ public class OperacaoCultura extends Operacao{
 
     public void setDataFinal(Date dataFinal) {
         this.dataFinal = dataFinal;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(super.toString());
+        stringBuilder.append(String.format(" %10d | %10d |  %10s  | %10s |", idParcela, idCultura, dataInicial.toString(), (dataFinal == null) ? "0000-00-00" : dataFinal.toString()));
+        return  stringBuilder.toString() ;
     }
 }

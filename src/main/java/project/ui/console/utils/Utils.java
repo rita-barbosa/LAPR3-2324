@@ -1,16 +1,26 @@
 package project.ui.console.utils;
 
+import oracle.jdbc.OracleTypes;
+import project.domain.dataAccess.DatabaseConnection;
+import project.exception.ExcecaoData;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.sql.CallableStatement;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Utils {
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
 
     static public String readLineFromConsole(String prompt) {
         try {
@@ -132,46 +142,25 @@ public class Utils {
     }
 
     static public  <K, V> Object showAndSelectIndex(Map<K, V> map, String header) {
-        showMap(map, header);
-        return selectsIndex(map);
+        List<Map.Entry<K, V>> listMap = showMap(map, header);
+        return selectsIndex(listMap);
     }
 
-    private static  <K, V> Object selectsIndex(Map<K,V> map) {
-            String input;
-            int value;
-            do {
-                input = Utils.readLineFromConsole("Select the desired option: ");
-                value = Integer.parseInt(input);
-            } while (value < 0 || value > map.size());
-
-            if (value == 0) {
-                return null;
-            } else {
-                int index = 0;
-                for (Map.Entry<K, V> entry : map.entrySet()) {
-                    index++;
-                    if (index == value) {
-                        return entry.getKey();
-                    }
-                }
-                return null;
-            }
-        }
-
-    private static void showMap(Map<?, ?> map, String header) {
+    private static <K, V> List<Map.Entry<K, V>> showMap(Map<K, V> map, String header) {
+        List<Map.Entry<K, V>> listMap = new ArrayList<>();
         System.out.println(header);
-
         int index = 0;
-        for (Map.Entry<?, ?> entry : map.entrySet()) {
+        for (Map.Entry<K, V> entry : map.entrySet()) {
+            listMap.add(entry);
             index++;
             System.out.println(index + " - " + entry.getKey() + " : " + entry.getValue());
         }
         System.out.println("0 - Cancelar");
+        return listMap;
     }
 
     static public void showList(List<?> list, String header) {
         System.out.println(header);
-
         int index = 0;
         for (Object o : list) {
             index++;
@@ -180,53 +169,6 @@ public class Utils {
         }
         System.out.println("0 - Cancelar");
     }
-
-    static public Object selectsObject(List<?> list) {
-        String input;
-        int value;
-        do {
-            input = Utils.readLineFromConsole("Selecione a opção desejada: ");
-            value = Integer.parseInt(input);
-        } while (value < 0 || value > list.size());
-
-        if (value == 0) {
-            return null;
-        } else {
-            return list.get(value - 1);
-        }
-    }
-
-//    /**
-//     * This method display and aks to select a type of sorting.
-//     *
-//     * @return the type of sorting chosen
-//     */
-//    public static String sortSelection(String prompt) {
-//        Scanner sc = new Scanner(System.in);
-//        System.out.println("Tipos de ordeção disponíveis:");
-//        System.out.println("1 - Ascendente/Ascending");
-//        System.out.println("2 - Descendente/Descending");
-//        int option = 0;
-//        boolean invalid = true;
-//        do {
-//            try {
-//                while (option < 1 || option > 2) {
-//                    option = sc.nextInt();
-//                    if (option == 1) {
-//                        return "Ascendente";
-//                    } else if (option == 2) {
-//                        return "Descendente";
-//                    }
-//                }
-//                invalid = false;
-//            } catch (InputMismatchException e) {
-//                System.out.println("\nERRO: A opção selecionada é inválida."
-//                        + " (" + e.getClass().getSimpleName() + ")");
-//                sc.nextLine();
-//            }
-//        } while (invalid);
-//        return null;
-//    }
 
     static public int selectsIndex(List<?> list) {
         String input;
@@ -252,8 +194,12 @@ public class Utils {
         return entryList;
     }
 
-    public static void validateDate(String date){           //se tiver excecao entao sai do programa? ou voltasse a perguntar
-        throw new UnsupportedOperationException("Not supported yet.");
+    public static void validateDate(String date){
+        try{
+            ExcecaoData.verificarData(date);
+        }catch (ExcecaoData e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public static <K, V> void resultSetMapToList(Map<K, V> map, ResultSet resultSet) throws SQLException {
@@ -263,5 +209,27 @@ public class Utils {
             V values = (V) resultSet.getObject(2);
             map.put(key, values);
         }
+    }
+
+
+    public static int getNewIdOperation() throws SQLException {
+        CallableStatement callStmt = null;
+        int newIdOperacao;
+        try {
+            Connection connection = DatabaseConnection.getInstance().getConnection();
+            callStmt = connection.prepareCall("{ ? = call novoIdOperacao() }");
+
+            callStmt.registerOutParameter(1, OracleTypes.INTEGER);
+
+            callStmt.execute();
+
+            newIdOperacao = callStmt.getInt(1);
+
+        } finally {
+            if (!Objects.isNull(callStmt)) {
+                callStmt.close();
+            }
+        }
+        return newIdOperacao;
     }
 }

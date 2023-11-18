@@ -17,8 +17,7 @@ SELECT DISTINCT idParcela, idOperacao
     INNER JOIN AplicacaoFatorProducao afp ON op.idOperacao = afp.idOperacao
     INNER JOIN FatorProducao f ON afp.nomeComercial = f.nomeComercial
     INNER JOIN ConstituicaoQuimica cq ON f.idFichaTecnica = cq.idFichaTecnica
-    WHERE OPS.idParcela = p_id_Parcela AND
-    op.dataOperacao BETWEEN p_data_inicial AND p_data_final
+    WHERE op.dataOperacao BETWEEN TO_DATE('12/10/2010', 'DD/MM/YYYY') AND TO_DATE('26/05/2024', 'DD/MM/YYYY')
 )
 SELECT fs.ID_PARCELA,
     fs.COMPONENTE,
@@ -30,9 +29,7 @@ ORDER BY fs.ID_PARCELA;
 
 
 --FUNCTION:
-CREATE OR REPLACE FUNCTION listaComponentesFatores(p_id_parcela Parcela.idParcela%type,
-                                              	   p_data_inicial Operacao.dataOperacao%type,
-                                              	   p_data_final Operacao.dataOperacao%type)
+CREATE OR REPLACE FUNCTION fncListaComponentesFatores(listaParametros OUT SYS_REFCURSOR)
     RETURN SYS_REFCURSOR IS
     listaComponentesParcela SYS_REFCURSOR;
 
@@ -56,8 +53,7 @@ BEGIN
             INNER JOIN AplicacaoFatorProducao afp ON op.idOperacao = afp.idOperacao
             INNER JOIN FatorProducao f ON afp.nomeComercial = f.nomeComercial
             INNER JOIN ConstituicaoQuimica cq ON f.idFichaTecnica = cq.idFichaTecnica
-            WHERE OPS.idParcela = p_id_Parcela AND
-            op.dataOperacao BETWEEN p_data_inicial AND p_data_final
+            WHERE op.dataOperacao BETWEEN TO_DATE('12/10/2010', 'DD/MM/YYYY') AND TO_DATE('26/05/2024', 'DD/MM/YYYY')
         )
         SELECT fs.ID_PARCELA,
                fs.COMPONENTE,
@@ -70,21 +66,33 @@ BEGIN
 END;
 
 
+SET SERVEROUTPUT  ON;
 
 --DECLARE:
 DECLARE
+    aplicacaoFatorProducaoInexistente EXCEPTION;
     listaComponentesParcela SYS_REFCURSOR;
-    ID_PARCELA OperacaoPArcela.idParcela%type;
-    COMPONENTE ConstituicaoQuimica.formulaQuimica%type;
-    QUANTIDADES ConstituicaoQuimica.quantidade%type;
+    v_id_Parcela OperacaoParcela.idParcela%type;
+    v_componente ConstituicaoQuimica.formulaQuimica%type;
+    v_quantidade ConstituicaoQuimica.quantidade%type;
 BEGIN
-    listaComponentesParcela := listaComponentesFatores(102,TO_DATE('2016-01-01', 'YYYY-MM-DD'),TO_DATE('2024-12-31', 'YYYY-MM-DD'));
-    LOOP
-        FETCH listaComponentesParcela
-            INTO ID_PARCELA, COMPONENTE, QUANTIDADES;
-        EXIT WHEN  listaComponentesParcela%notfound;
+    listaComponentesParcela := fncListaComponentesFatores(listaComponentesParcela);
 
-        dbms_output.put_line(ID_PARCELA || ' - ' || COMPONENTE || ' - ' || QUANTIDADES);
-    END LOOP;
+    FETCH listaComponentesParcela INTO v_id_Parcela, v_componente, v_quantidade;
+
+    IF listaComponentesParcela%ROWCOUNT = 0 THEN
+        RAISE  aplicacaoFatorProducaoInexistente;
+    ELSE
+        LOOP
+            DBMS_OUTPUT.PUT_LINE(v_id_Parcela || ' - ' || v_componente || ' - ' || v_quantidade);
+            FETCH listaComponentesParcela
+                INTO v_id_Parcela, v_componente, v_quantidade;
+            EXIT WHEN  listaComponentesParcela%NOTFOUND;
+        END LOOP;
+    END IF;
     CLOSE listaComponentesParcela;
+
+EXCEPTION
+    WHEN aplicacaoFatorProducaoInexistente THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Não existem aplicações de fator produção no período indicado.');
 END;

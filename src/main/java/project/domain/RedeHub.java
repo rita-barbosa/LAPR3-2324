@@ -5,7 +5,7 @@ import project.structure.MapGraph;
 public class RedeHub {
     private static final RedeHub instance = new RedeHub();
 
-    final private MapGraph<Hub, Integer> redeDistribuicao;
+    final private MapGraph<Local, Integer> redeDistribuicao;
 
     private RedeHub() {
         this.redeDistribuicao = new MapGraph<>(false);
@@ -15,11 +15,11 @@ public class RedeHub {
     }
 
     public boolean addHub(String numId, Double lat, Double lon) {
-        Hub vert = new Hub(numId, lat, lon);
+        Local vert = new Local(numId, lat, lon);
         return redeDistribuicao.addVertex(vert);
     }
 
-    public boolean addRoute(Hub orig, Hub dest, Integer distance) {
+    public boolean addRoute(Local orig, Local dest, Integer distance) {
         return redeDistribuicao.addEdge(orig,dest,distance);
     }
 
@@ -28,7 +28,7 @@ public class RedeHub {
         return redeDistribuicao.toString();
     }
 
-    public MapGraph<Hub, Integer> getRedeDistribuicao() {
+    public MapGraph<Local, Integer> getRedeDistribuicao() {
         return redeDistribuicao;
     }
 }

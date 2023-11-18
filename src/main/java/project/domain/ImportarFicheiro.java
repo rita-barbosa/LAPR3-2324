@@ -14,7 +14,7 @@ public class ImportarFicheiro {
 
     public static boolean importWateringPlan(String filepath) throws IOException {
         try {
-            ExcecaoFicheiro.verificarFicheiro(filepath,".txt");
+            ExcecaoFicheiro.verificarFicheiro(filepath, ".txt");
             ExcecaoFicheiro.validarPlanoRega(new File(filepath));
             ExcecaoFicheiro.verificarEstruturaFicheiro(new File(filepath));
         } catch (ExcecaoFicheiro e) {
@@ -44,8 +44,8 @@ public class ImportarFicheiro {
 
 
     public static boolean importRedeDistribuicao(String locais, String distancias) throws ExcecaoFicheiro, IOException {
-        ExcecaoFicheiro.verificarFicheiro(locais,".csv");
-        ExcecaoFicheiro.verificarFicheiro(distancias,".csv");
+        ExcecaoFicheiro.verificarFicheiro(locais, ".csv");
+        ExcecaoFicheiro.verificarFicheiro(distancias, ".csv");
         importFicheiroLocais(locais);
         importFicheiroDistancias(distancias);
 
@@ -61,7 +61,7 @@ public class ImportarFicheiro {
         String[] line;
         while ((currentLine = reader.readLine()) != null) {
             line = currentLine.split(",");
-            redeHub.addRoute(new Hub(line[0]),new Hub(line[1]),Integer.parseInt(line[2]));
+            redeHub.addRoute(new Local(line[0]), new Local(line[1]), Integer.parseInt(line[2]));
         }
     }
 
@@ -74,7 +74,7 @@ public class ImportarFicheiro {
         String[] line;
         while ((currentLine = reader.readLine()) != null) {
             line = currentLine.split(",");
-            redeHub.addHub(line[0],Double.parseDouble(line[1]),Double.parseDouble(line[2]));
+            redeHub.addHub(line[0], Double.parseDouble(line[1]), Double.parseDouble(line[2]));
         }
     }
 }

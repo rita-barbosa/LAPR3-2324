@@ -1,6 +1,7 @@
 package project.ui.console;
 
 import project.controller.ImportarFicheiroController;
+import project.domain.RedeHub;
 
 import java.util.*;
 
@@ -36,7 +37,8 @@ public class ImportarFicheiroUI implements Runnable {
                     String distanciaFilePath = getfilepath();
 
                     successfulImport = controller.importRedeDistribuicao(locaisFilePath, distanciaFilePath);
-
+                    RedeHub rede = RedeHub.getInstance();
+                    System.out.println(rede.toString());
                 } catch (Exception e) {
                     System.out.printf("%s\n\n", e.getMessage());
                 }

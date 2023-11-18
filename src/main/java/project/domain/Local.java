@@ -2,21 +2,21 @@ package project.domain;
 
 import java.util.Objects;
 
-public class Hub {
+public class Local {
     private String numId;
     private CoordenadasGps coordenadas;
 
-    public Hub(String numId, CoordenadasGps coordenadas) {
+    public Local(String numId, CoordenadasGps coordenadas) {
         this.numId = numId;
         this.coordenadas = coordenadas;
     }
 
-    public Hub(String numId, Double lat, Double lon) {
+    public Local(String numId, Double lat, Double lon) {
         this.numId = numId;
         this.coordenadas = new CoordenadasGps(lat, lon);
     }
 
-    public Hub(String numId) {
+    public Local(String numId) {
         this.numId = numId;
     }
 
@@ -36,7 +36,7 @@ public class Hub {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Hub hub = (Hub) o;
+        Local hub = (Local) o;
         return Objects.equals(numId, hub.numId);
     }
 

@@ -1,4 +1,4 @@
-package project.domain.dataAccess;
+package project.dataAccess;
 
 import oracle.jdbc.OracleTypes;
 import project.ui.console.utils.Utils;

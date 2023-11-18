@@ -1,10 +1,9 @@
 package project.ui.console;
 
-import project.controller.operacoes.RegistarOperacaoSemeaduraController;
+import project.controller.RegistarOperacaoSemeaduraController;
 import project.ui.console.utils.Utils;
 
 import java.math.BigDecimal;
-import java.sql.SQLDataException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

@@ -1,4 +1,4 @@
-package project.domain.dataAccess;
+package project.dataAccess;
 
 public class Repositories {
 

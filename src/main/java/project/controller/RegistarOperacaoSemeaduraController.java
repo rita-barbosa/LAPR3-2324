@@ -1,27 +1,22 @@
-package project.controller.operacoes;
+package project.controller;
 
-import project.domain.dataAccess.*;
-
+import project.dataAccess.*;
 import java.math.BigDecimal;
+import java.util.*;
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
-public class RegistarOperacaoColheitaController {
+public class RegistarOperacaoSemeaduraController {
+
     private OperacaoRepository operacaoRepository;
     private UnitsRepository unitsRepository;
     private FieldsRepository fieldsRepository;
     private CultureRepository cultureRepository;
-    private DatesRepository datesRepository;
 
-    public RegistarOperacaoColheitaController() {
+    public RegistarOperacaoSemeaduraController() {
         getOperacaoRepository();
         getUnitsRepository();
         getCultureRepository();
         getFieldsRepository();
-        getDatesRepository();
     }
 
     private OperacaoRepository getOperacaoRepository() {
@@ -56,19 +51,12 @@ public class RegistarOperacaoColheitaController {
         return fieldsRepository;
     }
 
-    private DatesRepository getDatesRepository() {
-        if (Objects.isNull(datesRepository)) {
-            Repositories repositories = Repositories.getInstance();
-            datesRepository = repositories.getDatesRepository();
-        }
-        return datesRepository;
-    }
 
     public List<String> getUnitTypes() throws SQLException {
         return unitsRepository.getUnitDesignations();
     }
 
-    public Map<BigDecimal, String> getFieldsIDs() throws SQLException {
+    public  Map<BigDecimal, String>  getFieldsIDs() throws SQLException {
         return fieldsRepository.getFieldIds();
     }
 
@@ -76,11 +64,12 @@ public class RegistarOperacaoColheitaController {
         return cultureRepository.getCultures();
     }
 
-    public Date getEndDate() throws  SQLException {
-        return datesRepository.getBeginDate();
+    public boolean registerOperation(Integer idParcela, String designacaoOperacaoAgricola, Integer idCultura, Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
+        return operacaoRepository.registerCultureOperation(idParcela, designacaoOperacaoAgricola, idCultura, dataOperacao, tipoUnidade, quantidade);
     }
 
-    public void registerOperation(Integer idParcela, Integer idCultura, Date dataInicio, Date dataFim, Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
-        operacaoRepository.registerColheitaOperation(idParcela, idCultura, dataOperacao, dataInicio, dataFim, tipoUnidade, quantidade);
+    public boolean verifyIfOperationExists(Integer idParcela, String designacaoOperacaoAgricola, Integer idCultura, Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
+        return operacaoRepository.verifyIfOperationExists(idParcela, designacaoOperacaoAgricola, idCultura, dataOperacao, tipoUnidade, quantidade);
+
     }
 }

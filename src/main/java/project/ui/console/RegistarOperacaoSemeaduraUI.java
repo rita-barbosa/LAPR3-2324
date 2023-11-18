@@ -4,6 +4,7 @@ import project.controller.operacoes.RegistarOperacaoSemeaduraController;
 import project.ui.console.utils.Utils;
 
 import java.math.BigDecimal;
+import java.sql.SQLDataException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,6 +16,7 @@ import java.util.Scanner;
 public class RegistarOperacaoSemeaduraUI implements Runnable {
 
     private RegistarOperacaoSemeaduraController controller;
+
     SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
     String designacaoOperacaoAgricola = "Semeadura";
@@ -39,46 +41,38 @@ public class RegistarOperacaoSemeaduraUI implements Runnable {
             Scanner scanner = new Scanner(System.in);
 
             Map<BigDecimal, String>  fieldsIDs = controller.getFieldsIDs();
-            BigDecimal bigDecimalValue = Utils.showAndSelectIndex(fieldsIDs, "Selecione o id da parcela:");
+            BigDecimal bigDecimalValue = Utils.showAndSelectIndex(fieldsIDs, "Selecione a parcela:");
             idParcela = bigDecimalValue.intValue();
 
-
             Map<BigDecimal, String> cultureIDs = controller.getCulturesIDs();
-            bigDecimalValue = Utils.showAndSelectIndex(cultureIDs, "Selecione o id da cultura:");
+            bigDecimalValue = Utils.showAndSelectIndex(cultureIDs, "Selecione a cultura:");
             idCultura = bigDecimalValue.intValue();
-
 
             List<String> unitTypes = controller.getUnitTypes();
             index = Utils.showAndSelectIndex(unitTypes, "Indique o tipo de unidade:");
             tipoUnidade = unitTypes.get(index);
 
-            System.out.print("Data da operação: ");
+            System.out.print("Data da operação (formato : dd/mm/yyyy): ");
             String dataOp = scanner.next();
             Utils.validateDate(dataOp);
             dataOp = dataOp.replace("/", "-");
             dataOperacao = formatter.parse(dataOp);
 
-            quantidade = Utils.readDoubleFromConsole("Quantidade: ");
+            quantidade = Utils.readDoubleFromConsole("Indique a quantidade a semear: ");
 
-            boolean opStatus = controller.registerOperation(idParcela, designacaoOperacaoAgricola, idCultura, dataOperacao, tipoUnidade, quantidade);
+            boolean exists = controller.verifyIfOperationExists(idParcela, designacaoOperacaoAgricola, idCultura, dataOperacao, tipoUnidade, quantidade);
 
-            if (opStatus){
-                System.out.println("\nOperação de semeadura registada com sucesso.");
+            if (!exists){
+                boolean opStatus = controller.registerOperation(idParcela, designacaoOperacaoAgricola, idCultura, dataOperacao, tipoUnidade, quantidade);
+                if (opStatus){
+                    System.out.println("\nOperação de semeadura registada com sucesso.");
+                }
+            }else {
+                throw new SQLException("Os dados introduzidos se encontram no registo de uma operação já existente no sistema.");
             }
         } catch (ParseException | SQLException e) {
             System.out.println("\nFalha em registar a operação de semeadura.\n" + e.getMessage());
         }
-    }
-
-
-    public static void validateEndDate(Date dataInicio, String dataFinal) {
-        Utils.validateDate(dataFinal);
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    private void validateOperationDate(String dataOp) {
-        Utils.validateDate(dataOp);
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }

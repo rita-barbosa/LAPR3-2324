@@ -77,3 +77,33 @@ END;
 /
 
 -------------------------------------------------------------------------------------------------------------------
+
+create or replace FUNCTION verificarSeOperacaoExiste(
+    desigOp IN tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE,
+    desigUnidade IN tipoUnidade.designacaoUnidade%TYPE,
+    qtd IN NUMBER,
+    dataOp IN DATE,
+    idPar IN parcela.idParcela%TYPE,
+    idCul IN cultura.idCultura%TYPE
+) RETURN NUMBER IS
+    found NUMBER := 0;
+BEGIN
+    BEGIN
+        SELECT NVL(COUNT(*), 0) INTO found
+        FROM OPERACAO op
+                 INNER JOIN operacaoCultura cul ON op.idOperacao = cul.idOperacao
+        WHERE op.designacaooperacaoagricola = desigOp
+          AND op.dataoperacao = dataOp
+          AND op.designacaounidade = desigUnidade
+          AND op.quantidade = qtd
+          AND cul.idparcela = idPar
+          AND cul.idcultura = idCul;
+    EXCEPTION
+        WHEN OTHERS THEN
+            found := 0;
+    END;
+    RETURN found;
+END;
+/
+
+-------------------------------------------------------------------------------------------------------------------

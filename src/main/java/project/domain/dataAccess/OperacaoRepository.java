@@ -149,4 +149,41 @@ public class OperacaoRepository {
         return success;
     }
 
+    public boolean verifyIfOperationExists(Integer idParcela, String designacaoOperacaoAgricola, Integer idCultura, Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
+        CallableStatement callStmt = null;
+        boolean exists = false;
+        try {
+            Connection connection = DatabaseConnection.getInstance().getConnection();
+            callStmt = connection.prepareCall("{ ? = call verificarSeOperacaoExiste(?,?,?,?,?,?) }");
+
+            callStmt.registerOutParameter(1, OracleTypes.NUMBER);
+
+            callStmt.setString(2, designacaoOperacaoAgricola);
+            callStmt.setString(3, tipoUnidade);
+            callStmt.setDouble(4, quantidade);
+
+            java.sql.Date sqlDataOp = new java.sql.Date(dataOperacao.getTime());
+            callStmt.setDate(5, sqlDataOp);
+
+            callStmt.setInt(6, idParcela);
+            callStmt.setInt(7, idCultura);
+
+            callStmt.execute();
+
+            BigDecimal bigDecimalValue = (BigDecimal) callStmt.getObject(1);
+            int foundOp = bigDecimalValue.intValue();
+
+            if (foundOp == 1) {
+                exists = true;
+            }
+
+            connection.commit();
+
+        } finally {
+            if (!Objects.isNull(callStmt)) {
+                callStmt.close();
+            }
+        }
+        return exists;
+    }
 }

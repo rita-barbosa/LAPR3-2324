@@ -1,41 +1,53 @@
 package project.domain;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.Objects;
 
 public class Rega {
 
-    private String idParcela;
-    private  Integer tempoRega;
-    private String regularidade;
+    private String idSetor;
+    private LocalTime horaInicio;
+    private LocalTime horaFim;
+    private LocalDate data;
 
-    public Rega(String idParcela, Integer tempoRega, String regularidade) {
-        this.idParcela = idParcela;
-        this.tempoRega = tempoRega;
-        this.regularidade = regularidade;
+    public Rega(String idSetor, LocalTime horaInicio, LocalTime horaFim, LocalDate data){
+        this.idSetor = idSetor;
+        this.horaInicio = horaInicio;
+        this.horaFim = horaFim;
+        this.data = data;
+    }
+    public String getIdSetor() {
+        return idSetor;
     }
 
-    public Integer getTempoRega() {
-        return tempoRega;
+    public void setIdSetor(String idSetor) {
+        this.idSetor = idSetor;
     }
 
-    public void setTempoRega(Integer tempoRega) {
-        this.tempoRega = tempoRega;
+    public LocalDate getData() {
+        return data;
     }
 
-    public String getRegularidade() {
-        return regularidade;
+    public void setData(LocalDate data) {
+        this.data = data;
     }
 
-    public void setRegularidade(String regularidade) {
-        this.regularidade = regularidade;
+    public LocalTime getHoraFim() {
+        return horaFim;
     }
 
-    public String getIdParcela() {
-        return idParcela;
+    public void setHoraFim(LocalTime horaFim) {
+        this.horaFim = horaFim;
     }
 
-    public void setIdParcela(String idParcela) {
-        this.idParcela = idParcela;
+    public LocalTime getHoraInicio() {
+        return horaInicio;
+    }
+
+    public void setHoraInicio(LocalTime horaInicio) {
+        this.horaInicio = horaInicio;
     }
 
     @Override
@@ -43,12 +55,12 @@ public class Rega {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Rega that = (Rega) o;
-        return Objects.equals(idParcela, that.idParcela) && Objects.equals(tempoRega, that.tempoRega) && Objects.equals(regularidade, that.regularidade);
+        return Objects.equals(idSetor, that.idSetor) && Objects.equals(horaInicio, that.horaInicio) && Objects.equals(horaFim, that.horaFim) && Objects.equals(data, that.data);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idParcela, tempoRega, regularidade);
+        return Objects.hash(idSetor, horaInicio, horaFim, data);
     }
 
 }

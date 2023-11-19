@@ -6,17 +6,18 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class SistemaDeRega{
+public class SistemaDeRega {
 
     private static final ControladorRega controladorRega = new ControladorRega();
-    private static Set<Rega> planoDeRega;
+    private static PlanoRega planoDeRega;
     private static Set<LocalTime> tempoInicialDeRega;
     private static LocalDate inicioDoPlanoDeRega;
 
-    public static void setPlanoDeRega(Set<Rega> planoDeRega) {
+    public static void setPlanoDeRega(PlanoRega planoDeRega) {
         SistemaDeRega.planoDeRega = planoDeRega;
     }
 
@@ -28,7 +29,7 @@ public class SistemaDeRega{
         SistemaDeRega.inicioDoPlanoDeRega = inicioDoPlanoDeRega;
     }
 
-    public boolean verificarRega(){
+    public boolean verificarRega() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -36,25 +37,26 @@ public class SistemaDeRega{
         return controladorRega;
     }
 
-    public static Set<Rega> getPlanoDeRegas() {
+    public static PlanoRega getPlanoDeRegas() {
         return planoDeRega;
     }
 
-    public static Set<LocalTime> getTempoInicialDeRega(){
+    public static Set<LocalTime> getTempoInicialDeRega() {
         return tempoInicialDeRega;
     }
+
     public static LocalDate getInicioDoPlanoDeRega() {
         return inicioDoPlanoDeRega;
     }
 
-    public static boolean generateWateringDayRegister(LocalDate date)  {
-        if (date == null){
+    public static boolean generateWateringDayRegister(LocalDate date) {
+        if (date == null) {
             date = LocalDate.now();
         }
         String dateString = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")).trim();
         String fileName = "WateringRegisters" + dateString + ".csv";
 
-        File directory = new File ("files\\WateringRegisters");
+        File directory = new File("files\\WateringRegisters");
         File file = new File(directory, fileName);
         if (!directory.exists()) {
             directory.mkdirs();
@@ -64,23 +66,18 @@ public class SistemaDeRega{
 
     private static boolean writeWateringRegisterFile(File file, LocalDate date) {
         try {
-            Map<String, Integer> map = controladorRega.checkIsWateringDay(date);;
             FileWriter fileWriter = new FileWriter(file);
             fileWriter.write("Dia,Sector,Duracao,Inicio,Final\n");
             String dateString = date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).trim();
-            for (LocalTime turn : tempoInicialDeRega){
-                LocalTime timeBeginning = turn;
-                for (String rega : map.keySet()) {
-                    String beginning = timeBeginning.format(DateTimeFormatter.ofPattern("HH:mm")).trim();
-                    String ending = timeBeginning.plusMinutes(map.get(rega)).format(DateTimeFormatter.ofPattern("HH:mm")).trim();
-                    String line = String.format("%s,%s,%s,%s,%s\n", dateString, rega, map.get(rega), beginning, ending);
+            for (Rega rega : SistemaDeRega.planoDeRega.getPlanoDeRega()) {
+                if (rega.getData().equals(date)) {
+                    String line = String.format("%s,%s,%s,%s,%s\n", dateString, rega.getIdSetor(), (rega.getHoraFim().getMinute()-rega.getHoraInicio().getMinute()), rega.getHoraInicio(), rega.getHoraFim());
                     fileWriter.write(line);
-                    timeBeginning = LocalTime.parse(ending);
                 }
             }
             fileWriter.close();
             return true;
-        }catch (IOException e){
+        } catch (IOException e) {
             return false;
         }
     }

@@ -124,10 +124,10 @@ CREATE TABLE Operacao (
   quantidade                 number(10) NOT NULL, 
   dataOperacao               date NOT NULL, 
   PRIMARY KEY (idOperacao));
-CREATE TABLE TipoAçaoAgricola (
+CREATE TABLE TipoAcaoAgricola (
   designacaoTipoAçaoAgricola varchar2(20) NOT NULL, 
   PRIMARY KEY (designacaoTipoAçaoAgricola));
-CREATE TABLE DataAçaoAgricola (
+CREATE TABLE DataAcaoAgricola (
   designacaoTipoAçaoAgricola varchar2(20) NOT NULL, 
   intervaloTempo             varchar2(50), 
   PRIMARY KEY (designacaoTipoAçaoAgricola));
@@ -136,7 +136,7 @@ CREATE TABLE Setor (
   nomeEdificio      varchar2(50) NOT NULL, 
   designacaoUnidade varchar2(5) NOT NULL, 
   dataInicio        date NOT NULL, 
-  dataFim           date NOT NULL, 
+  dataFim           date, 
   caudalMaximo      number(10) NOT NULL, 
   PRIMARY KEY (idSetor));
 CREATE TABLE SetorCulturaInstalada (
@@ -145,14 +145,14 @@ CREATE TABLE SetorCulturaInstalada (
   nomeParcela                 varchar2(50) NOT NULL, 
   nomeComum                   varchar2(50) NOT NULL, 
   variedade                   varchar2(50) NOT NULL, 
+  dataFinalSetorCultura       date, 
   dataInicialSetorCultura     date NOT NULL, 
-  dataFinalSetorCultura       date NOT NULL, 
   PRIMARY KEY (designacao, 
   dataInicialCulturaInstalada, 
   nomeParcela, 
   nomeComum, 
   variedade));
-CREATE TABLE CalendarioAçaoAgricola (
+CREATE TABLE CalendarioAcaoAgricola (
   variedade                  varchar2(50) NOT NULL, 
   nomeComum                  varchar2(50) NOT NULL, 
   designacaoTipoAçaoAgricola varchar2(20) NOT NULL, 
@@ -219,13 +219,13 @@ ALTER TABLE OperacaoParcela ADD CONSTRAINT FKOperacaoPa42292 FOREIGN KEY (nomePa
 ALTER TABLE OperacaoCultura ADD CONSTRAINT FKOperacaoCu905077 FOREIGN KEY (idOperacao) REFERENCES Operacao (idOperacao);
 ALTER TABLE OperacaoParcela ADD CONSTRAINT FKOperacaoPa146660 FOREIGN KEY (idOperacao) REFERENCES Operacao (idOperacao);
 ALTER TABLE ConstituicaoQuimica ADD CONSTRAINT FKConstituic201649 FOREIGN KEY (nomeComercial) REFERENCES FatorProducao (nomeComercial);
-ALTER TABLE DataAçaoAgricola ADD CONSTRAINT FKDataAçaoAg776451 FOREIGN KEY (designacaoTipoAçaoAgricola) REFERENCES TipoAçaoAgricola (designacaoTipoAçaoAgricola);
+ALTER TABLE DataAcaoAgricola ADD CONSTRAINT FKDataAcaoAg534616 FOREIGN KEY (designacaoTipoAçaoAgricola) REFERENCES TipoAcaoAgricola (designacaoTipoAçaoAgricola);
 ALTER TABLE CulturaInstalada ADD CONSTRAINT FKCulturaIns753417 FOREIGN KEY (nomeParcela) REFERENCES Parcela (nomeParcela);
 ALTER TABLE SetorCulturaInstalada ADD CONSTRAINT FKSetorCultu259544 FOREIGN KEY (dataInicialCulturaInstalada, nomeParcela, variedade, nomeComum) REFERENCES CulturaInstalada (dataInicial, nomeParcela, variedade, nomeComum);
 ALTER TABLE SetorCulturaInstalada ADD CONSTRAINT FKSetorCultu215803 FOREIGN KEY (designacao) REFERENCES Setor (idSetor);
 ALTER TABLE ColheitaPrevista ADD CONSTRAINT FKColheitaPr933761 FOREIGN KEY (dataInicial, nomeParcela, variedade, nomeComum) REFERENCES CulturaInstalada (dataInicial, nomeParcela, variedade, nomeComum);
-ALTER TABLE CalendarioAçaoAgricola ADD CONSTRAINT FKCalendario815299 FOREIGN KEY (variedade, nomeComum) REFERENCES Planta (variedade, nomeComum);
-ALTER TABLE CalendarioAçaoAgricola ADD CONSTRAINT FKCalendario710190 FOREIGN KEY (designacaoTipoAçaoAgricola) REFERENCES DataAçaoAgricola (designacaoTipoAçaoAgricola);
+ALTER TABLE CalendarioAcaoAgricola ADD CONSTRAINT FKCalendario777208 FOREIGN KEY (variedade, nomeComum) REFERENCES Planta (variedade, nomeComum);
+ALTER TABLE CalendarioAcaoAgricola ADD CONSTRAINT FKCalendario503235 FOREIGN KEY (designacaoTipoAçaoAgricola) REFERENCES DataAcaoAgricola (designacaoTipoAçaoAgricola);
 ALTER TABLE CulturaInstalada ADD CONSTRAINT FKCulturaIns927340 FOREIGN KEY (designacaoEstadoFenologico) REFERENCES EstadoFenologico (designacao);
 ALTER TABLE Setor ADD CONSTRAINT FKSetor749218 FOREIGN KEY (nomeEdificio) REFERENCES Edificio (nomeEdificio);
 ALTER TABLE Rega ADD CONSTRAINT FKRega38580 FOREIGN KEY (idOperacao) REFERENCES Operacao (idOperacao);

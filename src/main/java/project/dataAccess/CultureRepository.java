@@ -36,4 +36,32 @@ public class CultureRepository {
         }
         return map;
     }
+
+    public Map<String, String> getCulturesByField(String nomeParcela) throws SQLException {
+        CallableStatement callStmt = null;
+        ResultSet resultSet = null;
+        Map<String, String> map = new HashMap<>();
+
+        try {
+            Connection connection = DatabaseConnection.getInstance().getConnection();
+            callStmt = connection.prepareCall("{ ? = call getCulturesByField(?) }");
+
+            callStmt.registerOutParameter(1, OracleTypes.NUMBER);
+
+            callStmt.setString(1, nomeParcela);
+
+            callStmt.execute();
+
+            resultSet = (ResultSet) callStmt.getObject(1);
+            connection.commit();
+        } finally {
+            if (!Objects.isNull(callStmt)) {
+                callStmt.close();
+            }
+            if (!Objects.isNull(resultSet)) {
+                resultSet.close();
+            }
+        }
+        return map;
+    }
 }

@@ -188,7 +188,6 @@ public class OperacaoRepository {
     }
 
 
-
     //mudar para estar de acordo com o novo modelo relacional
     public void registerColheitaOperation(Integer idParcela, Integer idCultura, Date dataInicio, Date dataFim, Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
         CallableStatement callStmt = null;
@@ -225,4 +224,42 @@ public class OperacaoRepository {
     }
 
 
+    public boolean registarOperacaoMonda(String nomeParcela, String nomeComum, String variedade, Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
+        CallableStatement callStmt = null;
+        boolean success = false;
+        try {
+            Connection connection = DatabaseConnection.getInstance().getConnection();
+            callStmt = connection.prepareCall("{ ? = call registarOperacaoMonda(?,?,?,?,?,?,?) }");
+
+            callStmt.registerOutParameter(1, OracleTypes.NUMBER);
+
+            callStmt.setString(2,"Monda");
+            callStmt.setString(3,tipoUnidade);
+            callStmt.setDouble(5, quantidade);
+
+            java.sql.Date sqlDataOp = new java.sql.Date(dataOperacao.getTime());
+            callStmt.setDate(6, sqlDataOp);
+
+            callStmt.setString(7, nomeParcela);
+            callStmt.setString(8, nomeComum);
+            callStmt.setString(9, variedade);
+
+            callStmt.execute();
+
+            BigDecimal bigDecimalValue = (BigDecimal) callStmt.getObject(1);
+            int opStatus = bigDecimalValue.intValue();
+
+            if (opStatus == 1) {
+                success = true;
+            }
+
+            connection.commit();
+
+        } finally {
+            if (!Objects.isNull(callStmt)) {
+                callStmt.close();
+            }
+        }
+        return success;
+    }
 }

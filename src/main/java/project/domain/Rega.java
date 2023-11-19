@@ -2,7 +2,6 @@ package project.domain;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.Objects;
 
 public class Rega {
@@ -12,12 +11,13 @@ public class Rega {
     private LocalTime horaFim;
     private LocalDate data;
 
-    public Rega(String idSetor, LocalTime horaInicio, LocalTime horaFim, LocalDate data){
+    public Rega(String idSetor, LocalTime horaInicio, LocalTime horaFim, LocalDate data) {
         this.idSetor = idSetor;
         this.horaInicio = horaInicio;
         this.horaFim = horaFim;
         this.data = data;
     }
+
     public String getIdSetor() {
         return idSetor;
     }
@@ -62,5 +62,17 @@ public class Rega {
     public int hashCode() {
         return Objects.hash(idSetor, horaInicio, horaFim, data);
     }
+
+
+      @Override
+    public String toString() {
+        return "Rega{" +
+                "idSetor='" + idSetor + '\'' +
+                ", horaInicio=" + horaInicio +
+                ", horaFim=" + horaFim +
+                ", data=" + data +
+                '}';
+    }
+
 
 }

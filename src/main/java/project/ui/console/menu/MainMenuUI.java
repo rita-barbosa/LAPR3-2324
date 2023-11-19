@@ -1,13 +1,13 @@
- package project.ui.console.menu;
+package project.ui.console.menu;
 
- import project.ui.console.DatabaseConnectionTestUI;
- import project.ui.console.SelectStatementTestUI;
- import project.ui.console.utils.Utils;
+import project.ui.console.DatabaseConnectionTestUI;
+import project.ui.console.SelectStatementTestUI;
+import project.ui.console.utils.Utils;
 
- import java.util.ArrayList;
- import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
- public class MainMenuUI implements Runnable {
+public class MainMenuUI implements Runnable {
 
     /**
      * Constructs a MainMenuUI object.
@@ -32,5 +32,6 @@
                 options.get(option).run();
             }
         } while (option != -1);
+        System.exit(0);
     }
 }

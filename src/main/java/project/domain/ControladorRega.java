@@ -2,8 +2,6 @@ package project.domain;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class ControladorRega {
 
@@ -19,7 +17,7 @@ public class ControladorRega {
     public String checkIsWateringHour(LocalTime tempo, LocalDate data) {
         StringBuilder verification = new StringBuilder();
 
-        for (Rega rega : SistemaDeRega.getPlanoDeRegas().getPlanoDeRega()) {
+        for (Rega rega : SistemaDeRega.getPlanoDeRegas()) {
             if(rega.getData().equals(data) && rega.getHoraInicio().isBefore(tempo) && rega.getHoraFim().isAfter(tempo)){
                 verification.append("Parcela a ser regada neste momento: "+rega.getIdSetor()+" | Tempo restante: "+(rega.getHoraFim().getMinute()-tempo.getMinute())+" minutos.\n" );
             }

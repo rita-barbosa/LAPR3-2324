@@ -1,9 +1,11 @@
 package project.domain;
 
-import org.w3c.dom.ls.LSInput;
 import project.exception.ExcecaoFicheiro;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -16,76 +18,76 @@ public class ImportarFicheiro {
 
     private static final String DIAS_IMPARES = "I";
     private static final String TRES_DIAS = "3";
+    private static final Set<LocalTime> timeTurns = new TreeSet<>();
+    private static final Map<String, List<String>> lineRega = new HashMap<>();
 
-    public static boolean importWateringPlan(String filepath) throws IOException {
+    public static boolean importWateringPlan(String filepath) {
         try {
             ExcecaoFicheiro.verificarFicheiro(filepath, ".txt");
             ExcecaoFicheiro.validarPlanoRega(new File(filepath));
             ExcecaoFicheiro.verificarEstruturaFicheiro(new File(filepath));
-        } catch (ExcecaoFicheiro e) {
-            System.out.printf("%s\n\n", e.getMessage());
+
+            List<Rega> plano = new ArrayList<>();
+            readDataFromWateringPlanFile(filepath);
+            setWateringPlan(plano);
+            SistemaDeRega.setPlanoDeRega(plano);
+            SistemaDeRega.setInicioDoPlanoDeRega(LocalDate.now());
+            return true;
+        } catch (ExcecaoFicheiro | IOException e) {
             return false;
         }
-        File file = new File(filepath);
-        Set<LocalTime> timeTurns = new HashSet<>();
-        List<Rega> wateringAreas = new ArrayList<>();
-        BufferedReader reader = new BufferedReader(new FileReader(file));
-        String[] line = reader.readLine().split(",");
-        for (String time : line) {
-            time = time.trim();
-            timeTurns.add(LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm")));
-        }
+    }
 
-        String currentLine;
-        List<String> lineRega = new ArrayList<>();
-        int counter = 0;
-        while ((currentLine = reader.readLine()) != null) {
-            line = currentLine.split(",");
-            for (int i = 0; i < 3; i++) {
-                lineRega.add(line[i]);
-            }
-            counter++;
-        }
-        LocalDate tempData = LocalDate.now();
+    private static void setWateringPlan(List<Rega> plano) {
+        LocalDate currentDate = LocalDate.now();
         for (int i = 0; i < 30; i++) {
             for (LocalTime hora : timeTurns) {
-                if (LocalTime.now().isBefore(hora)) {
+                if (LocalTime.now().isBefore(hora) || !currentDate.equals(LocalDate.now())) {
                     LocalTime tempHora = hora;
-                    for (int j = 1; j <= counter; j++) {
-                        switch (lineRega.get(((j*3)-1))) {
-                            case TODOS_DIAS:
-                                tempHora = tempHora.plusMinutes(Integer.parseInt(lineRega.get(((j*3)-2))));
-                                wateringAreas.add(new Rega(lineRega.get((j*3)-3),tempHora.minusMinutes(Integer.parseInt(lineRega.get(((j*3)-2)))),tempHora,tempData));
-                                break;
-                            case DIAS_IMPARES:
-                                if (tempData.getDayOfMonth() % 2 == 1) {
-                                    tempHora = tempHora.plusMinutes(Integer.parseInt(lineRega.get(((j*3)-2))));
-                                    wateringAreas.add(new Rega(lineRega.get((j*3)-3),tempHora.minusMinutes(Integer.parseInt(lineRega.get(((j*3)-2)))),tempHora,tempData));
-                                }
-                                break;
-                            case DIAS_PARES:
-                                if (tempData.getDayOfMonth() % 2 == 0) {
-                                    tempHora = tempHora.plusMinutes(Integer.parseInt(lineRega.get(((j*3)-2))));
-                                    wateringAreas.add(new Rega(lineRega.get((j*3)-3),tempHora.minusMinutes(Integer.parseInt(lineRega.get(((j*3)-2)))),tempHora,tempData));
-                                }
-                                break;
-                            case TRES_DIAS:
-                                if (tempData.getDayOfMonth() % 3 == 0) {
-                                    tempHora = tempHora.plusMinutes(Integer.parseInt(lineRega.get(((j*3)-2))));
-                                    wateringAreas.add(new Rega(lineRega.get((j*3)-3),tempHora.minusMinutes(Integer.parseInt(lineRega.get(((j*3)-2)))),tempHora,tempData));
-                                }
-                                break;
+
+                    for (String setor : lineRega.keySet()) {
+                        String regularidade = lineRega.get(setor).get(1);
+                        int minutos = Integer.parseInt(lineRega.get(setor).get(0));
+
+                        if (isRegaDay(currentDate, regularidade)) {
+                            tempHora = tempHora.plusMinutes(minutos);
+                            plano.add(new Rega(setor, tempHora.minusMinutes(minutos), tempHora, currentDate));
                         }
                     }
                 }
             }
-            tempData = tempData.plusDays(1);
+            currentDate = currentDate.plusDays(1);
         }
-        SistemaDeRega.setPlanoDeRega(new PlanoRega(wateringAreas));
-        SistemaDeRega.setInicioDoPlanoDeRega(LocalDate.now());
-        SistemaDeRega.setTempoInicialDeRega(timeTurns);
+    }
+
+    private static boolean isRegaDay(LocalDate date, String regularidade) {
+        return switch (regularidade) {
+            case TODOS_DIAS -> true;
+            case DIAS_IMPARES -> date.getDayOfMonth() % 2 == 1;
+            case DIAS_PARES -> date.getDayOfMonth() % 2 == 0;
+            case TRES_DIAS -> date.getDayOfMonth() % 3 == 0;
+            default -> false;
+        };
+    }
+
+    private static void readDataFromWateringPlanFile(String filepath) throws IOException {
+        File file = new File(filepath);
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        String[] line = reader.readLine().split(",");
+
+        for (String time : line) {
+            time = time.trim();
+            timeTurns.add(LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm")));
+        }
+        String currentLine;
+        while ((currentLine = reader.readLine()) != null) {
+            List<String> valores = new ArrayList<>();
+            line = currentLine.split(",");
+            valores.add(line[1]);
+            valores.add(line[2]);
+            lineRega.put(line[0], valores);
+        }
         reader.close();
-        return true;
     }
 
 

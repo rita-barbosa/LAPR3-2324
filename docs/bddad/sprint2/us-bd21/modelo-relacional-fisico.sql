@@ -110,7 +110,7 @@ CREATE TABLE ColheitaPrevista (
   nomeParcela        varchar2(50) NOT NULL, 
   nomeComum          varchar2(50) NOT NULL, 
   variedade          varchar2(50) NOT NULL, 
-  semana             varchar2(10) NOT NULL, 
+  semana             varchar2(10), 
   quantidade         number(11) NOT NULL, 
   PRIMARY KEY (idColheitaPrevista));
 CREATE TABLE OperacaoParcela (
@@ -125,11 +125,11 @@ CREATE TABLE Operacao (
   dataOperacao               date NOT NULL, 
   PRIMARY KEY (idOperacao));
 CREATE TABLE TipoAcaoAgricola (
-  designacaoTipoAcaoAgricola varchar2(20) NOT NULL, 
+  designacaoTipoAcaoAgricola varchar2(50) NOT NULL, 
   PRIMARY KEY (designacaoTipoAcaoAgricola));
 CREATE TABLE DataAcaoAgricola (
-  designacaoTipoAcaoAgricola varchar2(20) NOT NULL, 
-  intervaloTempo             varchar2(50) NOT NULL, 
+  designacaoTipoAcaoAgricola varchar2(50) NOT NULL, 
+  intervaloTempo             varchar2(70) NOT NULL, 
   PRIMARY KEY (designacaoTipoAcaoAgricola, 
   intervaloTempo));
 CREATE TABLE Setor (
@@ -156,8 +156,8 @@ CREATE TABLE SetorCulturaInstalada (
 CREATE TABLE CalendarioAcaoAgricola (
   variedade                  varchar2(50) NOT NULL, 
   nomeComum                  varchar2(50) NOT NULL, 
-  designacaoTipoAcaoAgricola varchar2(20) NOT NULL, 
-  intervaloTempo             varchar2(50) NOT NULL, 
+  designacaoTipoAcaoAgricola varchar2(50) NOT NULL, 
+  intervaloTempo             varchar2(70) NOT NULL, 
   PRIMARY KEY (variedade, 
   nomeComum, 
   designacaoTipoAcaoAgricola, 

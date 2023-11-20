@@ -129,8 +129,9 @@ CREATE TABLE TipoAcaoAgricola (
   PRIMARY KEY (designacaoTipoAcaoAgricola));
 CREATE TABLE DataAcaoAgricola (
   designacaoTipoAcaoAgricola varchar2(20) NOT NULL, 
-  intervaloTempo             varchar2(50), 
-  PRIMARY KEY (designacaoTipoAcaoAgricola));
+  intervaloTempo             varchar2(50) NOT NULL, 
+  PRIMARY KEY (designacaoTipoAcaoAgricola, 
+  intervaloTempo));
 CREATE TABLE Setor (
   idSetor           number(10) NOT NULL,
   nomeEdificio      varchar2(50) NOT NULL, 
@@ -156,10 +157,11 @@ CREATE TABLE CalendarioAcaoAgricola (
   variedade                  varchar2(50) NOT NULL, 
   nomeComum                  varchar2(50) NOT NULL, 
   designacaoTipoAcaoAgricola varchar2(20) NOT NULL, 
-  intervalo                  varchar2(50), 
+  intervaloTempo             varchar2(50) NOT NULL, 
   PRIMARY KEY (variedade, 
   nomeComum, 
-  designacaoTipoAcaoAgricola));
+  designacaoTipoAcaoAgricola, 
+  intervaloTempo));
 CREATE TABLE EstadoFenologico (
   designacao number(10) NOT NULL,
   PRIMARY KEY (designacao));
@@ -225,7 +227,7 @@ ALTER TABLE SetorCulturaInstalada ADD CONSTRAINT FKSetorCultu259544 FOREIGN KEY 
 ALTER TABLE SetorCulturaInstalada ADD CONSTRAINT FKSetorCultu215803 FOREIGN KEY (designacao) REFERENCES Setor (idSetor);
 ALTER TABLE ColheitaPrevista ADD CONSTRAINT FKColheitaPr933761 FOREIGN KEY (dataInicial, nomeParcela, variedade, nomeComum) REFERENCES CulturaInstalada (dataInicial, nomeParcela, variedade, nomeComum);
 ALTER TABLE CalendarioAcaoAgricola ADD CONSTRAINT FKCalendario777208 FOREIGN KEY (variedade, nomeComum) REFERENCES Planta (variedade, nomeComum);
-ALTER TABLE CalendarioAcaoAgricola ADD CONSTRAINT FKCalendario254929 FOREIGN KEY (designacaoTipoAcaoAgricola) REFERENCES DataAcaoAgricola (designacaoTipoAcaoAgricola);
+ALTER TABLE CalendarioAcaoAgricola ADD CONSTRAINT FKCalendario687087 FOREIGN KEY (designacaoTipoAcaoAgricola, intervaloTempo) REFERENCES DataAcaoAgricola (designacaoTipoAcaoAgricola, intervaloTempo);
 ALTER TABLE CulturaInstalada ADD CONSTRAINT FKCulturaIns927340 FOREIGN KEY (designacaoEstadoFenologico) REFERENCES EstadoFenologico (designacao);
 ALTER TABLE Setor ADD CONSTRAINT FKSetor749218 FOREIGN KEY (nomeEdificio) REFERENCES Edificio (nomeEdificio);
 ALTER TABLE Rega ADD CONSTRAINT FKRega38580 FOREIGN KEY (idOperacao) REFERENCES Operacao (idOperacao);

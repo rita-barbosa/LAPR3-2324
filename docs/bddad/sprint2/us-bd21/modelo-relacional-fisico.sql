@@ -1,201 +1,201 @@
-CREATE TABLE TipoPermanencia (
-  designacaoTipoPermanencia varchar2(15) NOT NULL, 
-  PRIMARY KEY (designacaoTipoPermanencia));
-CREATE TABLE Edificio (
-  nomeEdificio           varchar2(50) NOT NULL, 
-  designacaoTipoEdificio varchar2(50) NOT NULL, 
-  designacaoUnidade      varchar2(5), 
-  dimensao               number(10) NOT NULL, 
-  PRIMARY KEY (nomeEdificio));
-CREATE TABLE FatorProducao (
-  nomeComercial   varchar2(50) NOT NULL, 
-  idStock         number(5) NOT NULL, 
-  classificacao   varchar2(50) NOT NULL, 
-  estadoMateria   varchar2(50) NOT NULL, 
-  metodoAplicacao varchar2(50) NOT NULL, 
-  fabricante      varchar2(50) NOT NULL, 
-  pH              number(10), 
-  PRIMARY KEY (nomeComercial));
-CREATE TABLE Parcela (
-  nomeParcela       varchar2(50) NOT NULL, 
-  designacaoUnidade varchar2(5) NOT NULL, 
-  nomeEdificio      varchar2(50) NOT NULL, 
-  area              number(10) NOT NULL, 
-  PRIMARY KEY (nomeParcela));
-CREATE TABLE Produto (
-  nomeProduto varchar2(50) NOT NULL, 
-  idStock     number(5) NOT NULL, 
-  PRIMARY KEY (nomeProduto));
-CREATE TABLE CulturaInstalada (
-  dataInicial                date NOT NULL, 
-  nomeParcela                varchar2(50) NOT NULL, 
-  variedade                  varchar2(50) NOT NULL, 
-  nomeComum                  varchar2(50) NOT NULL, 
-  designacaoUnidade          varchar2(5) NOT NULL, 
-  designacaoEstadoFenologico number(10), 
-  dataFinal                  date, 
-  quantidade                 number(11) NOT NULL, 
-  PRIMARY KEY (dataInicial, 
-  nomeParcela, 
-  variedade, 
-  nomeComum), 
-  CONSTRAINT dataVerification 
-    CHECK (dataFinal >= dataInicial));
-CREATE TABLE Producao (
-  nomeProduto varchar2(50) NOT NULL, 
-  variedade   varchar2(50) NOT NULL, 
-  nomeComum   varchar2(50) NOT NULL, 
-  PRIMARY KEY (nomeProduto, 
-  variedade, 
-  nomeComum));
-CREATE TABLE Classificacao (
-  classificacao varchar2(50) NOT NULL, 
-  PRIMARY KEY (classificacao));
-CREATE TABLE MetodoAplicacao (
-  metodoAplicacao varchar2(50) NOT NULL, 
-  PRIMARY KEY (metodoAplicacao));
-CREATE TABLE ComponenteQuimico (
-  formulaQuimica varchar2(50) NOT NULL, 
-  PRIMARY KEY (formulaQuimica));
-CREATE TABLE Formulacao (
-  estadoMateria varchar2(50) NOT NULL, 
-  PRIMARY KEY (estadoMateria));
-CREATE TABLE Planta (
-  variedade                 varchar2(50) NOT NULL, 
-  nomeComum                 varchar2(50) NOT NULL, 
-  designacaoTipoPermanencia varchar2(15) NOT NULL, 
-  especie                   varchar2(50) NOT NULL, 
-  PRIMARY KEY (variedade, 
-  nomeComum));
-CREATE TABLE OperacaoCultura (
-  idOperacao  number(10) NOT NULL, 
-  nomeParcela varchar2(50) NOT NULL, 
-  dataInicial date NOT NULL, 
-  nomeComum   varchar2(50) NOT NULL, 
-  variedade   varchar2(50) NOT NULL, 
-  PRIMARY KEY (idOperacao));
-CREATE TABLE Stock (
-  idStock           number(5) NOT NULL, 
-  nomeEdificio      varchar2(50) NOT NULL, 
-  designacaoUnidade varchar2(5) NOT NULL, 
-  quantidade        number(11) NOT NULL, 
-  PRIMARY KEY (idStock));
 CREATE TABLE AplicacaoFatorProducao (
-  nomeComercial varchar2(50) NOT NULL, 
-  idOperacao    number(10) NOT NULL, 
-  PRIMARY KEY (nomeComercial, 
-  idOperacao));
-CREATE TABLE TipoEdificio (
-  designacaoTipoEdificio varchar2(50) NOT NULL, 
-  PRIMARY KEY (designacaoTipoEdificio));
-CREATE TABLE TipoOperacaoAgricola (
-  designacaoOperacaoAgricola varchar2(50) NOT NULL, 
-  PRIMARY KEY (designacaoOperacaoAgricola));
-CREATE TABLE TipoUnidade (
-  designacaoUnidade varchar2(5) NOT NULL, 
-  PRIMARY KEY (designacaoUnidade));
-CREATE TABLE ConstituicaoQuimica (
-  formulaQuimica    varchar2(50) NOT NULL, 
-  nomeComercial     varchar2(50) NOT NULL, 
-  designacaoUnidade varchar2(5) NOT NULL, 
-  quantidade        number(11, 2) NOT NULL, 
-  PRIMARY KEY (formulaQuimica, 
-  nomeComercial), 
-  CONSTRAINT percentual 
-    CHECK (quantidade >= 0 AND quantidade <= 100));
-CREATE TABLE ColheitaPrevista (
-  idColheitaPrevista number(10) NOT NULL,
-  designacaoUnidade  varchar2(5) NOT NULL, 
-  dataInicial        date NOT NULL, 
-  nomeParcela        varchar2(50) NOT NULL, 
-  nomeComum          varchar2(50) NOT NULL, 
-  variedade          varchar2(50) NOT NULL, 
-  semana             varchar2(10), 
-  quantidade         number(11) NOT NULL, 
-  PRIMARY KEY (idColheitaPrevista));
-CREATE TABLE OperacaoParcela (
-  idOperacao  number(10) NOT NULL, 
-  nomeParcela varchar2(50) NOT NULL, 
-  PRIMARY KEY (idOperacao));
-CREATE TABLE Operacao (
-  idOperacao                 number(10) NOT NULL, 
-  designacaoOperacaoAgricola varchar2(50) NOT NULL, 
-  designacaoUnidade          varchar2(5) NOT NULL, 
-  quantidade                 number(10) NOT NULL, 
-  dataOperacao               date NOT NULL, 
-  PRIMARY KEY (idOperacao));
-CREATE TABLE TipoAcaoAgricola (
-  designacaoTipoAcaoAgricola varchar2(50) NOT NULL, 
-  PRIMARY KEY (designacaoTipoAcaoAgricola));
-CREATE TABLE DataAcaoAgricola (
-  designacaoTipoAcaoAgricola varchar2(50) NOT NULL, 
-  intervaloTempo             varchar2(70) NOT NULL, 
-  PRIMARY KEY (designacaoTipoAcaoAgricola, 
-  intervaloTempo));
-CREATE TABLE Setor (
-  idSetor           number(10) NOT NULL,
-  nomeEdificio      varchar2(50) NOT NULL, 
-  designacaoUnidade varchar2(5) NOT NULL, 
-  dataInicio        date NOT NULL, 
-  dataFim           date, 
-  caudalMaximo      number(10) NOT NULL, 
-  PRIMARY KEY (idSetor));
-CREATE TABLE SetorCulturaInstalada (
-  designacao                  number(10) NOT NULL, 
-  dataInicialCulturaInstalada date NOT NULL, 
-  nomeParcela                 varchar2(50) NOT NULL, 
-  nomeComum                   varchar2(50) NOT NULL, 
-  variedade                   varchar2(50) NOT NULL, 
-  dataFinalSetorCultura       date, 
-  dataInicialSetorCultura     date NOT NULL, 
-  PRIMARY KEY (designacao, 
-  dataInicialCulturaInstalada, 
-  nomeParcela, 
-  nomeComum, 
-  variedade));
+                                        nomeComercial varchar2(50) NOT NULL,
+                                        idOperacao    number(10) NOT NULL,
+                                        PRIMARY KEY (nomeComercial,
+                                                     idOperacao));
 CREATE TABLE CalendarioAcaoAgricola (
-  variedade                  varchar2(50) NOT NULL, 
-  nomeComum                  varchar2(50) NOT NULL, 
-  designacaoTipoAcaoAgricola varchar2(50) NOT NULL, 
-  intervaloTempo             varchar2(70) NOT NULL, 
-  PRIMARY KEY (variedade, 
-  nomeComum, 
-  designacaoTipoAcaoAgricola, 
-  intervaloTempo));
-CREATE TABLE EstadoFenologico (
-  designacao number(10) NOT NULL,
-  PRIMARY KEY (designacao));
-CREATE TABLE Rega (
-  idOperacao      number(10) NOT NULL, 
-  designacaoSetor number(10) NOT NULL, 
-  horaInicial     varchar2(10) NOT NULL, 
-  horaFinal       number(10) NOT NULL, 
-  PRIMARY KEY (idOperacao));
-CREATE TABLE Maquina (
-  idMaquina         number(10) NOT NULL,
-  nomeEdificio      varchar2(50) NOT NULL, 
-  designacaoMaquina varchar2(50) NOT NULL, 
-  PRIMARY KEY (idMaquina));
-CREATE TABLE InstrumentoAgricola (
-  designacao number(10) NOT NULL,
-  PRIMARY KEY (designacao));
-CREATE TABLE InstrumentoUtilizado (
-  idOperacao number(10) NOT NULL, 
-  designacao number(10) NOT NULL, 
-  PRIMARY KEY (idOperacao, 
-  designacao));
-CREATE TABLE MaquinaUtilizada (
-  idOperacao number(10) NOT NULL, 
-  idMaquina  number(10) NOT NULL, 
-  PRIMARY KEY (idOperacao, 
-  idMaquina));
-CREATE TABLE TipoMaquina (
-  designacao varchar2(50) NOT NULL, 
-  PRIMARY KEY (designacao));
+                                        variedade                  varchar2(50) NOT NULL,
+                                        nomeComum                  varchar2(50) NOT NULL,
+                                        designacaoTipoAcaoAgricola varchar2(50) NOT NULL,
+                                        intervaloTempo             varchar2(70) NOT NULL,
+                                        PRIMARY KEY (variedade,
+                                                     nomeComum,
+                                                     designacaoTipoAcaoAgricola,
+                                                     intervaloTempo));
+CREATE TABLE Classificacao (
+                               classificacao varchar2(50) NOT NULL,
+                               PRIMARY KEY (classificacao));
 CREATE TABLE Colheita (
-  idOperacao  number(10) NOT NULL, 
-  nomeProduto varchar2(50) NOT NULL, 
-  PRIMARY KEY (idOperacao));
+                          idOperacao  number(10) NOT NULL,
+                          nomeProduto varchar2(50) NOT NULL,
+                          PRIMARY KEY (idOperacao));
+CREATE TABLE ColheitaPrevista (
+                                  idColheitaPrevista number(10) NOT NULL,
+                                  designacaoUnidade  varchar2(5) NOT NULL,
+                                  dataInicial        date NOT NULL,
+                                  nomeParcela        varchar2(50) NOT NULL,
+                                  nomeComum          varchar2(50) NOT NULL,
+                                  variedade          varchar2(50) NOT NULL,
+                                  semana             varchar2(10),
+                                  quantidade         number(11) NOT NULL,
+                                  PRIMARY KEY (idColheitaPrevista));
+CREATE TABLE ComponenteQuimico (
+                                   formulaQuimica varchar2(50) NOT NULL,
+                                   PRIMARY KEY (formulaQuimica));
+CREATE TABLE ConstituicaoQuimica (
+                                     formulaQuimica    varchar2(50) NOT NULL,
+                                     nomeComercial     varchar2(50) NOT NULL,
+                                     designacaoUnidade varchar2(5) NOT NULL,
+                                     quantidade        number(11, 2) NOT NULL,
+                                     PRIMARY KEY (formulaQuimica,
+                                                  nomeComercial),
+                                     CONSTRAINT percentual
+                                         CHECK (quantidade >= 0 AND quantidade <= 100));
+CREATE TABLE CulturaInstalada (
+                                  dataInicial                date NOT NULL,
+                                  nomeParcela                varchar2(50) NOT NULL,
+                                  variedade                  varchar2(50) NOT NULL,
+                                  nomeComum                  varchar2(50) NOT NULL,
+                                  designacaoUnidade          varchar2(5) NOT NULL,
+                                  designacaoEstadoFenologico number(10),
+                                  dataFinal                  date,
+                                  quantidade                 number(11) NOT NULL,
+                                  PRIMARY KEY (dataInicial,
+                                               nomeParcela,
+                                               variedade,
+                                               nomeComum),
+                                  CONSTRAINT dataVerification
+                                      CHECK (dataFinal >= dataInicial));
+CREATE TABLE DataAcaoAgricola (
+                                  designacaoTipoAcaoAgricola varchar2(50) NOT NULL,
+                                  intervaloTempo             varchar2(70) NOT NULL,
+                                  PRIMARY KEY (designacaoTipoAcaoAgricola,
+                                               intervaloTempo));
+CREATE TABLE Edificio (
+                          nomeEdificio           varchar2(50) NOT NULL,
+                          designacaoTipoEdificio varchar2(50) NOT NULL,
+                          designacaoUnidade      varchar2(5),
+                          dimensao               number(10) NOT NULL,
+                          PRIMARY KEY (nomeEdificio));
+CREATE TABLE EstadoFenologico (
+                                  designacao number(10) GENERATED AS IDENTITY,
+                                  PRIMARY KEY (designacao));
+CREATE TABLE FatorProducao (
+                               nomeComercial   varchar2(50) NOT NULL,
+                               idStock         number(5) NOT NULL,
+                               classificacao   varchar2(50) NOT NULL,
+                               estadoMateria   varchar2(50) NOT NULL,
+                               metodoAplicacao varchar2(50) NOT NULL,
+                               fabricante      varchar2(50) NOT NULL,
+                               pH              number(10),
+                               PRIMARY KEY (nomeComercial));
+CREATE TABLE Formulacao (
+                            estadoMateria varchar2(50) NOT NULL,
+                            PRIMARY KEY (estadoMateria));
+CREATE TABLE InstrumentoAgricola (
+                                     designacao number(10) GENERATED AS IDENTITY,
+                                     PRIMARY KEY (designacao));
+CREATE TABLE InstrumentoUtilizado (
+                                      idOperacao number(10) NOT NULL,
+                                      designacao number(10) NOT NULL,
+                                      PRIMARY KEY (idOperacao,
+                                                   designacao));
+CREATE TABLE Maquina (
+                         idMaquina         number(10) GENERATED AS IDENTITY,
+                         nomeEdificio      varchar2(50) NOT NULL,
+                         designacaoMaquina varchar2(50) NOT NULL,
+                         PRIMARY KEY (idMaquina));
+CREATE TABLE MaquinaUtilizada (
+                                  idOperacao number(10) NOT NULL,
+                                  idMaquina  number(10) NOT NULL,
+                                  PRIMARY KEY (idOperacao,
+                                               idMaquina));
+CREATE TABLE MetodoAplicacao (
+                                 metodoAplicacao varchar2(50) NOT NULL,
+                                 PRIMARY KEY (metodoAplicacao));
+CREATE TABLE Operacao (
+                          idOperacao                 number(10) NOT NULL,
+                          designacaoOperacaoAgricola varchar2(50) NOT NULL,
+                          designacaoUnidade          varchar2(5) NOT NULL,
+                          quantidade                 number(10) NOT NULL,
+                          dataOperacao               date NOT NULL,
+                          PRIMARY KEY (idOperacao));
+CREATE TABLE OperacaoCultura (
+                                 idOperacao  number(10) NOT NULL,
+                                 nomeParcela varchar2(50) NOT NULL,
+                                 dataInicial date NOT NULL,
+                                 nomeComum   varchar2(50) NOT NULL,
+                                 variedade   varchar2(50) NOT NULL,
+                                 PRIMARY KEY (idOperacao));
+CREATE TABLE OperacaoParcela (
+                                 idOperacao  number(10) NOT NULL,
+                                 nomeParcela varchar2(50) NOT NULL,
+                                 PRIMARY KEY (idOperacao));
+CREATE TABLE Parcela (
+                         nomeParcela       varchar2(50) NOT NULL,
+                         designacaoUnidade varchar2(5) NOT NULL,
+                         nomeEdificio      varchar2(50) NOT NULL,
+                         area              number(10) NOT NULL,
+                         PRIMARY KEY (nomeParcela));
+CREATE TABLE Planta (
+                        variedade                 varchar2(50) NOT NULL,
+                        nomeComum                 varchar2(50) NOT NULL,
+                        designacaoTipoPermanencia varchar2(15) NOT NULL,
+                        especie                   varchar2(50) NOT NULL,
+                        PRIMARY KEY (variedade,
+                                     nomeComum));
+CREATE TABLE Producao (
+                          nomeProduto varchar2(50) NOT NULL,
+                          variedade   varchar2(50) NOT NULL,
+                          nomeComum   varchar2(50) NOT NULL,
+                          PRIMARY KEY (nomeProduto,
+                                       variedade,
+                                       nomeComum));
+CREATE TABLE Produto (
+                         nomeProduto varchar2(50) NOT NULL,
+                         idStock     number(5) NOT NULL,
+                         PRIMARY KEY (nomeProduto));
+CREATE TABLE Rega (
+                      idOperacao      number(10) NOT NULL,
+                      designacaoSetor number(10) NOT NULL,
+                      horaInicial     varchar2(10),
+                      horaFinal       number(10),
+                      PRIMARY KEY (idOperacao));
+CREATE TABLE Setor (
+                       idSetor           number(10) NOT NULL,
+                       nomeEdificio      varchar2(50) NOT NULL,
+                       designacaoUnidade varchar2(5) NOT NULL,
+                       dataInicio        date NOT NULL,
+                       dataFim           date,
+                       caudalMaximo      number(10) NOT NULL,
+                       PRIMARY KEY (idSetor));
+CREATE TABLE SetorCulturaInstalada (
+                                       designacao                  number(10) NOT NULL,
+                                       dataInicialCulturaInstalada date NOT NULL,
+                                       nomeParcela                 varchar2(50) NOT NULL,
+                                       nomeComum                   varchar2(50) NOT NULL,
+                                       variedade                   varchar2(50) NOT NULL,
+                                       dataFinalSetorCultura       date,
+                                       dataInicialSetorCultura     date NOT NULL,
+                                       PRIMARY KEY (designacao,
+                                                    dataInicialCulturaInstalada,
+                                                    nomeParcela,
+                                                    nomeComum,
+                                                    variedade));
+CREATE TABLE Stock (
+                       idStock           number(5) NOT NULL,
+                       nomeEdificio      varchar2(50) NOT NULL,
+                       designacaoUnidade varchar2(5) NOT NULL,
+                       quantidade        number(11) NOT NULL,
+                       PRIMARY KEY (idStock));
+CREATE TABLE TipoAcaoAgricola (
+                                  designacaoTipoAcaoAgricola varchar2(50) NOT NULL,
+                                  PRIMARY KEY (designacaoTipoAcaoAgricola));
+CREATE TABLE TipoEdificio (
+                              designacaoTipoEdificio varchar2(50) NOT NULL,
+                              PRIMARY KEY (designacaoTipoEdificio));
+CREATE TABLE TipoMaquina (
+                             designacao varchar2(50) NOT NULL,
+                             PRIMARY KEY (designacao));
+CREATE TABLE TipoOperacaoAgricola (
+                                      designacaoOperacaoAgricola varchar2(50) NOT NULL,
+                                      PRIMARY KEY (designacaoOperacaoAgricola));
+CREATE TABLE TipoPermanencia (
+                                 designacaoTipoPermanencia varchar2(15) NOT NULL,
+                                 PRIMARY KEY (designacaoTipoPermanencia));
+CREATE TABLE TipoUnidade (
+                             designacaoUnidade varchar2(5) NOT NULL,
+                             PRIMARY KEY (designacaoUnidade));
 ALTER TABLE OperacaoCultura ADD CONSTRAINT FKOperacaoCu672704 FOREIGN KEY (dataInicial, nomeParcela, variedade, nomeComum) REFERENCES CulturaInstalada (dataInicial, nomeParcela, variedade, nomeComum);
 ALTER TABLE Producao ADD CONSTRAINT FKProducao892124 FOREIGN KEY (nomeProduto) REFERENCES Produto (nomeProduto);
 ALTER TABLE Planta ADD CONSTRAINT FKPlanta661690 FOREIGN KEY (designacaoTipoPermanencia) REFERENCES TipoPermanencia (designacaoTipoPermanencia);

@@ -1624,6 +1624,65 @@ INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRIC
 INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('MANTEIGA', 'Abóbora', 'Sementeira/Plantação', 'Primavera');
 INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('MANTEIGA', 'Abóbora', 'Colheita', 'Final Verão ou Outono');
 
------------------------------------------------------------------------------------------------------------------------
---VER QUESTAO DA REGA COM NULL NAS HORAS
------------------------------------------------------------------------------------------------------------------------
+--WORKS
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (266, 21, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (267, 21, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (268, 21, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (269, 21, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (270, 21, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (271, 21, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (272, 21, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (273, 21, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (274, 21, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (275, 21, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (276, 21, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (277, 21, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (278, 21, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (279, 21, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (280, 22, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (281, 22, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (282, 22, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (283, 22, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (284, 22, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (285, 22, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (286, 22, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (287, 22, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (288, 22, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (289, 22, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (290, 22, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (291, 22, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (292, 22, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (293, 22, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (294, 22, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (295, 10, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (296, 10, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (297, 10, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (298, 10, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (299, 10, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (300, 42, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (301, 42, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (302, 42, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (303, 42, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (304, 42, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (305, 42, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (306, 42, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (307, 42, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (308, 42, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (309, 42, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (310, 42, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (311, 42, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (312, 42, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (313, 41, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (314, 41, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (315, 41, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (316, 41, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (317, 41, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (318, 41, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (319, 41, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (320, 41, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (321, 41, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (322, 41, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (323, 41, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (324, 41, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (325, 41, NULL, NULL);
+INSERT INTO Rega(idOperacao, designacaoSetor, horaInicial, horaFinal) VALUES (326, 41, NULL, NULL);

@@ -1,7 +1,5 @@
 package project.structure;
 
-import project.domain.Local;
-
 import java.util.*;
 import java.util.function.BinaryOperator;
 

@@ -11,10 +11,10 @@ import java.util.function.Predicate;
  *
  */
 public abstract class CommonGraph <V,E> implements Graph<V,E> {
-    protected int numVerts;
+    public int numVerts;
     protected int numEdges;
     protected final boolean isDirected;
-    protected ArrayList<V> vertices;       // Used to maintain a numeric key to each vertex
+    public ArrayList<V> vertices;       // Used to maintain a numeric key to each vertex
 
     public CommonGraph(boolean directed) {
         numVerts = 0;

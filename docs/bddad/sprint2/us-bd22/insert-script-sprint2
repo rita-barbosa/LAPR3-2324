@@ -141,12 +141,6 @@ INSERT INTO TipoAcaoAgricola(designacaoTipoAcaoAgricola) VALUES ('Poda');
 INSERT INTO TipoAcaoAgricola(designacaoTipoAcaoAgricola) VALUES ('Floração');
 INSERT INTO TipoAcaoAgricola(designacaoTipoAcaoAgricola) VALUES ('Colheita');
 
------------------------------------------------------------------------------------------------------------------------------------
---VER DATAACAOAGRICOLA
-------------------------------------------
--- VER CALENDARIOACAOAGRICOLA
------------------------------------------------------------------------------------------------------------------------------------
-
 --WORKS
 INSERT INTO Classificacao(classificacao) VALUES ('Fitofármaco');
 INSERT INTO Classificacao(classificacao) VALUES ('Adubo');
@@ -1274,7 +1268,7 @@ INSERT INTO OperacaoCultura (idOperacao, nomeParcela, dataInicial, nomeComum, va
 INSERT INTO OperacaoCultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade) VALUES (241, 'Lameiro da ponte', TO_DATE('10/12/2018', 'DD/MM/YYYY'), 'Macieira', UPPER('Royal Gala') );
 INSERT INTO OperacaoCultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade) VALUES (242, 'Lameiro da ponte', TO_DATE('07/01/2017', 'DD/MM/YYYY'), 'Macieira', UPPER('Jonagored') );
 INSERT INTO OperacaoCultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade) VALUES (243, 'Lameiro da ponte', TO_DATE('07/01/2017', 'DD/MM/YYYY'), 'Macieira', UPPER('Jonagored') );
-INSERT INTO OperacaoCultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade) VALUES (244, 'Horta nova', TO_DATE('20/09/2022', 'DD/MM/YYYY'), 'Nabo', UPPER('greleiro Senhora Conceição') );
+INSERT INTO OperacaoCultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade) VALUES (244, 'Horta nova', TO_DATE('20/09/2022', 'DD/MM/YYYY'), 'Nabo greleiro', UPPER('Senhora Conceição') );
 INSERT INTO OperacaoCultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade) VALUES (245, 'Campo do poço', TO_DATE('12/10/2022', 'DD/MM/YYYY'), 'Tremoço', UPPER('Amarelo') );
 INSERT INTO OperacaoCultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade) VALUES (246, 'Lameiro da ponte', TO_DATE('08/01/2017', 'DD/MM/YYYY'), 'Macieira', UPPER('Fuji') );
 INSERT INTO OperacaoCultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade) VALUES (247, 'Lameiro da ponte', TO_DATE('08/01/2017', 'DD/MM/YYYY'), 'Macieira', UPPER('Fuji') );
@@ -1282,14 +1276,14 @@ INSERT INTO OperacaoCultura (idOperacao, nomeParcela, dataInicial, nomeComum, va
 INSERT INTO OperacaoCultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade) VALUES (249, 'Campo Grande', TO_DATE('10/10/2016', 'DD/MM/YYYY'), 'Oliveira', UPPER('Picual') );
 INSERT INTO OperacaoCultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade) VALUES (250, 'Campo Grande', TO_DATE('06/10/2016', 'DD/MM/YYYY'), 'Oliveira', UPPER('Galega') );
 INSERT INTO OperacaoCultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade) VALUES (251, 'Campo Grande', TO_DATE('10/10/2016', 'DD/MM/YYYY'), 'Oliveira', UPPER('Picual') );
-INSERT INTO OperacaoCultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade) VALUES (252, 'Horta nova', TO_DATE('20/09/2022', 'DD/MM/YYYY'), 'Nabo', UPPER('greleiro Senhora Conceição') );
+INSERT INTO OperacaoCultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade) VALUES (252, 'Horta nova', TO_DATE('20/09/2022', 'DD/MM/YYYY'), 'Nabo greleiro', UPPER('Senhora Conceição') );
 INSERT INTO OperacaoCultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade) VALUES (253, 'Lameiro da ponte', TO_DATE('08/01/2017', 'DD/MM/YYYY'), 'Macieira', UPPER('Royal Gala') );
 INSERT INTO OperacaoCultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade) VALUES (254, 'Lameiro da ponte', TO_DATE('10/12/2018', 'DD/MM/YYYY'), 'Macieira', UPPER('Royal Gala') );
 INSERT INTO OperacaoCultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade) VALUES (255, 'Lameiro da ponte', TO_DATE('07/01/2017', 'DD/MM/YYYY'), 'Macieira', UPPER('Jonagored') );
 INSERT INTO OperacaoCultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade) VALUES (256, 'Campo Grande', TO_DATE('06/10/2016', 'DD/MM/YYYY'), 'Oliveira', UPPER('Galega') );
 INSERT INTO OperacaoCultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade) VALUES (257, 'Campo Grande', TO_DATE('10/10/2016', 'DD/MM/YYYY'), 'Oliveira', UPPER('Picual') );
 INSERT INTO OperacaoCultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade) VALUES (258, 'Vinha', TO_DATE('10/01/2018', 'DD/MM/YYYY'), 'Videira', UPPER('Dona Maria') );
-INSERT INTO OperacaoCultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade) VALUES (259, 'Horta nova', TO_DATE('20/09/2022', 'DD/MM/YYYY'), 'Nabo', UPPER('greleiro Senhora Conceição') );
+INSERT INTO OperacaoCultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade) VALUES (259, 'Horta nova', TO_DATE('20/09/2022', 'DD/MM/YYYY'), 'Nabo greleiro', UPPER('Senhora Conceição') );
 INSERT INTO OperacaoCultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade) VALUES (260, 'Vinha', TO_DATE('11/01/2018', 'DD/MM/YYYY'), 'Videira', UPPER('Cardinal') );
 INSERT INTO OperacaoCultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade) VALUES (261, 'Lameiro da ponte', TO_DATE('08/01/2017', 'DD/MM/YYYY'), 'Macieira', UPPER('Fuji') );
 INSERT INTO OperacaoCultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade) VALUES (262, 'Horta nova', TO_DATE('20/09/2022', 'DD/MM/YYYY'), 'Nabo greleiro', UPPER('Senhora Conceição') );
@@ -1370,26 +1364,266 @@ INSERT INTO OperacaoCultura (idOperacao, nomeParcela, dataInicial, nomeComum, va
 INSERT INTO OperacaoCultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade) VALUES (401, 'Campo novo', TO_DATE('06/04/2023', 'DD/MM/YYYY'), 'Abóbora', 'MANTEIGA' );
 INSERT INTO OperacaoCultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade) VALUES (402, 'Campo novo', TO_DATE('06/04/2023', 'DD/MM/YYYY'), 'Abóbora', 'MANTEIGA' );
 
+--WORKS
+INSERT INTO DataAcaoAgricola(DESIGNACAOTIPOACAOAGRICOLA, intervaloTempo) VALUES ('Sementeira/Plantação', 'Abril a junho');
+INSERT INTO DataAcaoAgricola(DESIGNACAOTIPOACAOAGRICOLA, intervaloTempo) VALUES ('Sementeira/Plantação', 'Março a setembro');
+INSERT INTO DataAcaoAgricola(DESIGNACAOTIPOACAOAGRICOLA, intervaloTempo) VALUES ('Sementeira/Plantação', 'Fevereiro a abril, agosto a outubro');
+INSERT INTO DataAcaoAgricola(DESIGNACAOTIPOACAOAGRICOLA, intervaloTempo) VALUES ('Poda', 'Novembro a dezembro');
+INSERT INTO DataAcaoAgricola(DESIGNACAOTIPOACAOAGRICOLA, intervaloTempo) VALUES ('Poda', 'Janeiro');
+INSERT INTO DataAcaoAgricola(DESIGNACAOTIPOACAOAGRICOLA, intervaloTempo) VALUES ('Poda', 'Dezembro a janeiro');
+INSERT INTO DataAcaoAgricola(DESIGNACAOTIPOACAOAGRICOLA, intervaloTempo) VALUES ('Floração', 'Fevereiro a março');
+INSERT INTO DataAcaoAgricola(DESIGNACAOTIPOACAOAGRICOLA, intervaloTempo) VALUES ('Floração', 'Abril a maio');
+INSERT INTO DataAcaoAgricola(DESIGNACAOTIPOACAOAGRICOLA, intervaloTempo) VALUES ('Floração', 'Março a abril');
+INSERT INTO DataAcaoAgricola(DESIGNACAOTIPOACAOAGRICOLA, intervaloTempo) VALUES ('Floração', 'Maio');
+INSERT INTO DataAcaoAgricola(DESIGNACAOTIPOACAOAGRICOLA, intervaloTempo) VALUES ('Colheita', 'Julho a agosto');
+INSERT INTO DataAcaoAgricola(DESIGNACAOTIPOACAOAGRICOLA, intervaloTempo) VALUES ('Colheita', 'Agosto a setembro');
+INSERT INTO DataAcaoAgricola(DESIGNACAOTIPOACAOAGRICOLA, intervaloTempo) VALUES ('Colheita', 'Novembro a dezembro');
+INSERT INTO DataAcaoAgricola(DESIGNACAOTIPOACAOAGRICOLA, intervaloTempo) VALUES ('Colheita', '80 dias');
+INSERT INTO DataAcaoAgricola(DESIGNACAOTIPOACAOAGRICOLA, intervaloTempo) VALUES ('Colheita', 'Julho a setembro');
+INSERT INTO DataAcaoAgricola(DESIGNACAOTIPOACAOAGRICOLA, intervaloTempo) VALUES ('Colheita', 'Junho a fevereiro');
+INSERT INTO DataAcaoAgricola(DESIGNACAOTIPOACAOAGRICOLA, intervaloTempo) VALUES ('Colheita', 'Outubro a novembro');
+INSERT INTO DataAcaoAgricola(DESIGNACAOTIPOACAOAGRICOLA, intervaloTempo) VALUES ('Colheita', '90 dias');
+INSERT INTO DataAcaoAgricola(DESIGNACAOTIPOACAOAGRICOLA, intervaloTempo) VALUES ('Sementeira/Plantação', 'Primavera');
+INSERT INTO DataAcaoAgricola(DESIGNACAOTIPOACAOAGRICOLA, intervaloTempo) VALUES ('Colheita', 'Final Verão ou Outono');
+INSERT INTO DataAcaoAgricola(DESIGNACAOTIPOACAOAGRICOLA, intervaloTempo) VALUES ('Colheita', 'Junho a agosto');
+
+--WORKS
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('MAS 24.C', 'Milho', 'Sementeira/Plantação', 'Abril a junho');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('DOCE GOLDEN BANTAM', 'Milho', 'Sementeira/Plantação', 'Abril a junho');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('SENHORA CONCEIÇÃO', 'Nabo greleiro', 'Sementeira/Plantação', 'Março a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('S. COSME', 'Nabo', 'Sementeira/Plantação', 'Fevereiro a abril, agosto a outubro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('RAINHA CLAUDIA CARANGUEJEIRA', 'Ameixoeira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('PRESIDENT', 'Ameixoeira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('STANLEY', 'Ameixoeira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('ANGELENO', 'Ameixoeira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('BLACK BEAUTY', 'Ameixoeira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('BLACK STAR', 'Ameixoeira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('BLACK GOLD', 'Ameixoeira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('BLACK DIAMOND', 'Ameixoeira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('BLACK AMBER', 'Ameixoeira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('BLACK SPLENDOR', 'Ameixoeira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('FORTUNA', 'Ameixoeira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('FRIAR', 'Ameixoeira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('EL DORADO', 'Ameixoeira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('ELEPHANT HEART', 'Ameixoeira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('GOLDEN JAPAN', 'Ameixoeira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('HARRY PITCHON', 'Ameixoeira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('LAETITIA', 'Ameixoeira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('METLEY', 'Ameixoeira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('MIRABELLE DE NANCY', 'Ameixoeira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('QUEEN ROSE', 'Ameixoeira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('RED BEAUT', 'Ameixoeira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('SANTA ROSA', 'Ameixoeira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('SHIRO', 'Ameixoeira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('SUNGOLD', 'Ameixoeira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('WILSON PERFECTION', 'Ameixoeira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('AUTUMN GIANT', 'Ameixoeira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('BULIDA', 'Damasqueiro', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('CANINO', 'Damasqueiro', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('LIABAUD', 'Damasqueiro', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('MAILLOT JAUNE', 'Damasqueiro', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('POLONAIS', 'Damasqueiro', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('AKANE', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('BELGOLDEN', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('BRAVO DE ESMOLFE', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('CASA NOVA DE ALCOBAÇA', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('EROVAN', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('FUJI', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('GRANNY SMITH', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('GOLDEN DELICIOUS', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('HI-EARLY', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('JONAGORED', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('LYSGOLDEN', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('MUTSU', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('PORTA DA LOJA', 'Macieira', 'Poda', 'Janeiro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('CANADA', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('GRAND FAY', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('RISCADINHA DE PALMELA', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('ROYAL GALA', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('REDCHIEF', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('STARKING', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('SUMMER RED', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('WELLSPUR DELICIOUS', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('NOIVA', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('OLHO ABERTO', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('CAMOESA ROSA', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('MALÁPIO', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('GRONHO DOCE', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('PÉ DE BOI ', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('PINOVA', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('PARDO LINDO', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('PIPO DE BASTO', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('PRIMA', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('QUERINA', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('VISTA BELLA', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('GOLDEN SMOOTHEE', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('GOLDEN SUPREMA', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('GLOSTER 69', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('FREEDOM', 'Macieira', 'Poda', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('DONA MARIA', 'Videira', 'Poda', 'Dezembro a janeiro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('CARDINAL', 'Videira', 'Poda', 'Dezembro a janeiro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('RAINHA CLAUDIA CARANGUEJEIRA', 'Ameixoeira', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('PRESIDENT', 'Ameixoeira', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('STANLEY', 'Ameixoeira', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('ANGELENO', 'Ameixoeira', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('BLACK BEAUTY', 'Ameixoeira', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('BLACK STAR', 'Ameixoeira', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('BLACK GOLD', 'Ameixoeira', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('BLACK DIAMOND', 'Ameixoeira', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('BLACK AMBER', 'Ameixoeira', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('BLACK SPLENDOR', 'Ameixoeira', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('FORTUNA', 'Ameixoeira', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('FRIAR', 'Ameixoeira', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('EL DORADO', 'Ameixoeira', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('ELEPHANT HEART', 'Ameixoeira', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('GOLDEN JAPAN', 'Ameixoeira', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('HARRY PITCHON', 'Ameixoeira', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('LAETITIA', 'Ameixoeira', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('METLEY', 'Ameixoeira', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('MIRABELLE DE NANCY', 'Ameixoeira', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('QUEEN ROSE', 'Ameixoeira', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('RED BEAUT', 'Ameixoeira', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('SANTA ROSA', 'Ameixoeira', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('SHIRO', 'Ameixoeira', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('SUNGOLD', 'Ameixoeira', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('WILSON PERFECTION', 'Ameixoeira', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('AUTUMN GIANT', 'Ameixoeira', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('BULIDA', 'Damasqueiro', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('CANINO', 'Damasqueiro', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('LIABAUD', 'Damasqueiro', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('MAILLOT JAUNE', 'Damasqueiro', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('POLONAIS', 'Damasqueiro', 'Floração', 'Fevereiro a março');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('AKANE', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('BELGOLDEN', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('BRAVO DE ESMOLFE', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('CASA NOVA DE ALCOBAÇA', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('EROVAN', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('FUJI', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('GRANNY SMITH', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('GOLDEN DELICIOUS', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('HI-EARLY', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('JONAGORED', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('LYSGOLDEN', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('MUTSU', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('PORTA DA LOJA', 'Macieira', 'Floração', 'Abril a maio');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('CANADA', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('GRAND FAY', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('RISCADINHA DE PALMELA', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('ROYAL GALA', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('REDCHIEF', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('STARKING', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('SUMMER RED', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('WELLSPUR DELICIOUS', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('NOIVA', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('OLHO ABERTO', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('CAMOESA ROSA', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('MALÁPIO', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('GRONHO DOCE', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('PÉ DE BOI ', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('PINOVA', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('PARDO LINDO', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('PIPO DE BASTO', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('PRIMA', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('QUERINA', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('VISTA BELLA', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('GOLDEN SMOOTHEE', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('GOLDEN SUPREMA', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('GLOSTER 69', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('FREEDOM', 'Macieira', 'Floração', 'Março a abril');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('DONA MARIA', 'Videira', 'Floração', 'Maio');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('CARDINAL', 'Videira', 'Floração', 'Maio');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('RAINHA CLAUDIA CARANGUEJEIRA', 'Ameixoeira', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('PRESIDENT', 'Ameixoeira', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('STANLEY', 'Ameixoeira', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('ANGELENO', 'Ameixoeira', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('BLACK BEAUTY', 'Ameixoeira', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('BLACK STAR', 'Ameixoeira', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('BLACK GOLD', 'Ameixoeira', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('BLACK DIAMOND', 'Ameixoeira', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('BLACK AMBER', 'Ameixoeira', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('BLACK SPLENDOR', 'Ameixoeira', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('FORTUNA', 'Ameixoeira', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('FRIAR', 'Ameixoeira', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('EL DORADO', 'Ameixoeira', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('ELEPHANT HEART', 'Ameixoeira', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('GOLDEN JAPAN', 'Ameixoeira', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('HARRY PITCHON', 'Ameixoeira', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('LAETITIA', 'Ameixoeira', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('METLEY', 'Ameixoeira', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('MIRABELLE DE NANCY', 'Ameixoeira', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('QUEEN ROSE', 'Ameixoeira', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('RED BEAUT', 'Ameixoeira', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('SANTA ROSA', 'Ameixoeira', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('SHIRO', 'Ameixoeira', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('SUNGOLD', 'Ameixoeira', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('WILSON PERFECTION', 'Ameixoeira', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('AUTUMN GIANT', 'Ameixoeira', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('BULIDA', 'Damasqueiro', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('CANINO', 'Damasqueiro', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('LIABAUD', 'Damasqueiro', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('MAILLOT JAUNE', 'Damasqueiro', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('POLONAIS', 'Damasqueiro', 'Colheita', 'Julho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('AKANE', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('BELGOLDEN', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('BRAVO DE ESMOLFE', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('CASA NOVA DE ALCOBAÇA', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('EROVAN', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('FUJI', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('GRANNY SMITH', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('GOLDEN DELICIOUS', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('HI-EARLY', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('JONAGORED', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('LYSGOLDEN', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('MUTSU', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('PORTA DA LOJA', 'Macieira', 'Colheita', 'Novembro a dezembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('CANADA', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('GRAND FAY', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('RISCADINHA DE PALMELA', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('ROYAL GALA', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('REDCHIEF', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('STARKING', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('SUMMER RED', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('WELLSPUR DELICIOUS', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('NOIVA', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('OLHO ABERTO', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('CAMOESA ROSA', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('MALÁPIO', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('GRONHO DOCE', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('PÉ DE BOI ', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('PINOVA', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('PARDO LINDO', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('PIPO DE BASTO', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('PRIMA', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('QUERINA', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('VISTA BELLA', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('GOLDEN SMOOTHEE', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('GOLDEN SUPREMA', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('GLOSTER 69', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('FREEDOM', 'Macieira', 'Colheita', 'Agosto a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('CARSON HYBRID', 'Cenoura', 'Colheita', '80 dias');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('RED CORED CHANTENAY', 'Cenoura', 'Colheita', '80 dias');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('DANVERS HALF LONG', 'Cenoura', 'Colheita', '80 dias');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('IMPERATOR 58', 'Cenoura', 'Colheita', '80 dias');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('SUGARSNAX HYBRID', 'Cenoura', 'Colheita', '80 dias');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('NELSON HYBRID', 'Cenoura', 'Colheita', '80 dias');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('SCARLET NANTES', 'Cenoura', 'Colheita', '80 dias');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('MAS 24.C', 'Milho', 'Colheita', 'Julho a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('DOCE GOLDEN BANTAM', 'Milho', 'Colheita', 'Julho a setembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('SENHORA CONCEIÇÃO', 'Nabo greleiro', 'Colheita', 'Junho a fevereiro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('COBRANÇOSA', 'Oliveira', 'Colheita', 'Outubro a novembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('ARBEQUINA', 'Oliveira', 'Colheita', 'Outubro a novembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('HOJIBLANCA', 'Oliveira', 'Colheita', 'Outubro a novembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('NEGRINHA DO FREIXO', 'Oliveira', 'Colheita', 'Outubro a novembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('PICUAL', 'Oliveira', 'Colheita', 'Outubro a novembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('MAÇANILHA', 'Oliveira', 'Colheita', 'Outubro a novembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('CONSERVA DE ELVAS', 'Oliveira', 'Colheita', 'Outubro a novembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('GALEGA', 'Oliveira', 'Colheita', 'Outubro a novembro');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('S. COSME', 'Nabo', 'Colheita', '90 dias');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('DONA MARIA', 'Videira', 'Colheita', 'Junho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('CARDINAL', 'Videira', 'Colheita', 'Junho a agosto');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('MANTEIGA', 'Abóbora', 'Sementeira/Plantação', 'Primavera');
+INSERT INTO CalendarioAcaoAgricola(variedade, nomeComum, DESIGNACAOTIPOACAOAGRICOLA, INTERVALOTEMPO) VALUES ('MANTEIGA', 'Abóbora', 'Colheita', 'Final Verão ou Outono');
+
 -----------------------------------------------------------------------------------------------------------------------
 --VER QUESTAO DA REGA COM NULL NAS HORAS
 -----------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -5,53 +5,51 @@
 	.global enqueue_value
 	
 enqueue_value:
-	movl (%rcx), %r9d
-	movl %r8d, (%rdi,%r9,4)
-	movl (%rdx), %r8d
-	
+    movl (%rcx), %r9d
+    movl %r8d, (%rdi,%r9,4)
+    movl (%rdx), %r8d
+
 	subl $1, %esi
+
+	call checkWrite
+	pushq %r9
+	call checkRead
+	popq %r9
 	
-	cmpl %r8d, %r9d 
-	je readWriteEqual
-	jg writeBigger
-	
-	addl $1, %r9d
+	movl %r8d, (%rdx)
 	movl %r9d, (%rcx)
-	jmp end
-
-readWriteEqual:
 	
-	cmpl %esi, %r9d
-	jge endOfArrayBoth
+	ret
 	
-	addl $1, %r9d
-	movl %r9d, (%rcx)
-	movl (%rdx), %r9d
-	addl $1, %r9d
-	movl %r9d, (%rdx)
-	jmp end
-
-writeBigger:
-	
-	cmpl %esi, %r9d
-	jle endOfArrayWrite
+checkRead: 
+	cmpl %r8d, %r9d
+	je secondCheck
 	
 	addl $1, %r9d
-	movl %r9d, (%rcx)
-	jmp end 
+	cmpl %r8d, %r9d
+	je secondCheck
+	subl $1, %r9d
 	
-endOfArrayWrite:
-
-	movl $0, (%rcx)
-	jmp end
+	cmpl $2, %r9d 
+	je secondCheck
+	ret
 	
+secondCheck:
+	cmpl %r8d, %esi 
+	jle resetRead
+	addl $1, %r8d
+	ret
 	
-endOfArrayBoth:
+resetRead:
+	movl $0, %r8d
+	ret
 	
-	movl $0, (%rcx)
-	movl $0, (%rdx)
-	jmp end
-
-end:
-
+checkWrite:
+	cmpl %r9d, %esi
+	jle resetWrite
+	addl $1, %r9d
+	ret
+	
+resetWrite:	
+	movl $0, %r9d
 	ret

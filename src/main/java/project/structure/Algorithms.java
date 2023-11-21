@@ -87,13 +87,14 @@ public class Algorithms {
         pathKeys[vKey] = vOrig;
 
         while (vOrig != null) {
-            int keyVOrig = g.key(vOrig);
-            visited[keyVOrig] = true;
+            vKey = g.key(vOrig);
+            visited[vKey] = true;
             for (Edge<V, E> edge : g.outgoingEdges(vOrig)) {
                 int keyVAdj = g.key(edge.getVDest());
-                E sumLength = sum.apply(dist[keyVOrig], edge.getWeight());
-                if (!visited[keyVAdj] && (dist[keyVAdj] == null || ce.compare(dist[keyVAdj], sumLength) > 0)) {
-                    dist[keyVAdj] = sumLength;
+                if (!visited[keyVAdj]) {
+                    E s = sum.apply(dist[vKey], edge.getWeight());
+                    if(dist[keyVAdj] == null || ce.compare(dist[keyVAdj], s) > 0)
+                    dist[keyVAdj] = s;
                     pathKeys[keyVAdj] = vOrig;
                 }
             }
@@ -102,7 +103,7 @@ public class Algorithms {
             vOrig = null;
             for (V vertex : g.vertices()) {
                 int vertexKey = g.key(vertex);
-                if (!visited[vertexKey] && dist[vertexKey] != null && (minDist == null || ce.compare(dist[vertexKey], minDist) < 0)) {
+                if (!visited[vertexKey] && (dist[vertexKey] != null) && (minDist == null) || ce.compare(dist[vertexKey], minDist) < 0) {
                     minDist = dist[vertexKey];
                     vOrig = vertex;
                 }
@@ -125,45 +126,34 @@ public class Algorithms {
     public static <V, E> E shortestPath(Graph<V, E> g, V vOrig, V vDest,
                                         Comparator<E> ce, BinaryOperator<E> sum, E zero,
                                         LinkedList<V> shortPath) {
-//        if(g == null)
-//            return null;
-//        if(g.key(vOrig) < 0 || g.key(vDest) < 0)
-//            return null;
-//
-//        int size = g.numVertices();
-//        boolean[] visited = new boolean[size];
-//        ArrayList<V> pathKeys = new ArrayList<>(size);
-//        ArrayList<E> dist = new ArrayList<>(size);
-//
-//        //dão erro mas não sei porquê, os parametros estão direitos
-//
-//        //shortestPathDijkstra(g, vOrig, ce, sum, zero, visited, pathKeys, dist);
-//
-//        //getPath(g, vOrig, vDest, pathKeys, shortPath);
-//        if(shortPath.isEmpty())
-//            return null;
-//
-//        return dist.get(g.key(vDest));
-
-        // Check if vOrig and vDest exist in the application.ESINF.graph
-        if (!g.validVertex(vOrig) || !g.validVertex(vDest)) {
+        if(!g.validVertex(vOrig) || !g.validVertex(vDest)){
             return null;
         }
 
-        int numVertices = g.numVertices();
-        boolean[] visited = new boolean[numVertices];
-        E[] dist = (E[]) new Object[numVertices];
-        V[] pathKeys = (V[]) new Object[numVertices];
+        shortPath.clear();
+        int numVerts = g.numVertices();
+        boolean[] visited = new boolean[numVerts];
+        V[] pathKeys = (V[]) new Object [numVerts];
+        E[] dist = (E[]) new Object [numVerts];
+        initializePathDist(numVerts, pathKeys, dist);
 
         shortestPathDijkstra(g, vOrig, ce, sum, zero, visited, pathKeys, dist);
 
-        if (pathKeys[g.key(vDest)] == null) {
-            return null;
+        E lengthPath = dist[g.key(vDest)];
+
+        if(lengthPath != null){
+            getPath(g, vOrig, vDest, pathKeys, shortPath);
+            return lengthPath;
         }
 
-        reconstructShortestPath(g, vOrig, vDest, pathKeys, shortPath);
+        return null;
+    }
 
-        return dist[g.key(vDest)];
+    public static <V, E> void initializePathDist(int numVerts, V[] pathKeys, E[] dist){
+        for (int i = 0; i < numVerts; i++) {
+            pathKeys[i]=null;
+            dist[i] = null;
+        }
     }
 
     /**

@@ -10,10 +10,8 @@ int main(void){
 	int output = -1;
 	int* outputPtr = &output;
 	
-	
 	printf("###### Informação do Sensor ######\n");
 	printf("%s\n", sensor);
-	
 
 	printf("\n###### Tokens ######\n");
 	
@@ -47,7 +45,6 @@ int main(void){
 
 	////////////////////////////////////
 
-
 	char token3[15] = "value:";
 	char* tokenPtr3 = token3;
 	output = -1;
@@ -62,7 +59,6 @@ int main(void){
 	printf("\n");
 
 	////////////////////////////////////
-
 
 	char token4[15] = "unit:";
 	char* tokenPtr4 = token4;
@@ -79,7 +75,6 @@ int main(void){
 	printf("\n");
 
 	//////////////////////////////////////
-
 
 	char token5[15] = "time:";
 	char* tokenPtr5 = token5;

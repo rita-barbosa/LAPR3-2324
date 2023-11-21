@@ -47,7 +47,7 @@ CREATE TABLE CulturaInstalada (
                                   variedade                  varchar2(50) NOT NULL,
                                   nomeComum                  varchar2(50) NOT NULL,
                                   designacaoUnidade          varchar2(5) NOT NULL,
-                                  designacaoEstadoFenologico number(10),
+                                  designacaoEstadoFenologico varchar2(50),
                                   dataFinal                  date,
                                   quantidade                 number(11) NOT NULL,
                                   PRIMARY KEY (dataInicial,
@@ -68,7 +68,7 @@ CREATE TABLE Edificio (
                           dimensao               number(10) NOT NULL,
                           PRIMARY KEY (nomeEdificio));
 CREATE TABLE EstadoFenologico (
-                                  designacao number(10) GENERATED AS IDENTITY,
+                                  designacao varchar2(50) NOT NULL,
                                   PRIMARY KEY (designacao));
 CREATE TABLE FatorProducao (
                                nomeComercial   varchar2(50) NOT NULL,
@@ -149,7 +149,7 @@ CREATE TABLE Rega (
                       idOperacao      number(10) NOT NULL,
                       designacaoSetor number(10) NOT NULL,
                       horaInicial     varchar2(10),
-                      horaFinal       number(10),
+                      horaFinal       varchar2(10),
                       PRIMARY KEY (idOperacao));
 CREATE TABLE Setor (
                        idSetor           number(10) NOT NULL,

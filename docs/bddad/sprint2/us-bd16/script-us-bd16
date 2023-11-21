@@ -1,76 +1,49 @@
 -------------------------------------------------------------------------------------------------------
--- Comandos --
--------------------------------------------------------------------------------------------------------
-
-WITH produtosInfo AS (
-    SELECT DISTINCT c.nomeComum,
-     	   p.nomeProduto,
-    	   c.idCultura
-    FROM cultura c
-    INNER JOIN producao p ON p.idCultura = c.idCultura
-)
-SELECT opCul.idParcela, opCul.idCultura,  produtosInfo.nomeComum,  produtosInfo.nomeProduto
-FROM operacaoCultura opCul
-INNER JOIN operacao op ON opCul.idOperacao = op.idOperacao
-INNER JOIN produtosInfo ON produtosInfo.idCultura = opCul.idCultura
-WHERE UPPER(op.DESIGNACAOOPERACAOAGRICOLA) LIKE 'COLHEITA'
-  	AND op.dataOperacao BETWEEN TO_DATE('12/10/2005', 'DD/MM/YYYY') AND TO_DATE('26/05/2024', 'DD/MM/YYYY')
-GROUP BY opCul.idParcela, opCul.idCultura, produtosInfo.nomeComum, produtosInfo.nomeProduto
-ORDER BY opCul.idParcela, produtosInfo.nomeProduto;
-
-
-
-
--------------------------------------------------------------------------------------------------------
 -- Função --
 -------------------------------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION fncListaProdutosPorParcela(listaProdutos OUT SYS_REFCURSOR)
-RETURN SYS_REFCURSOR IS
+create or replace FUNCTION fncListaProdutosPorParcela
+    RETURN SYS_REFCURSOR IS
     lista SYS_REFCURSOR;
 BEGIN
     OPEN lista FOR
-        WITH produtosInfo AS (
-        SELECT DISTINCT c.nomeComum,
-               p.nomeProduto,
-               c.idCultura
-        FROM cultura c
-        INNER JOIN producao p ON p.idCultura = c.idCultura
-    )
-    SELECT opCul.idParcela, opCul.idCultura,  produtosInfo.nomeComum,  produtosInfo.nomeProduto
-    FROM operacaoCultura opCul
-    INNER JOIN operacao op ON opCul.idOperacao = op.idOperacao
-    INNER JOIN produtosInfo ON produtosInfo.idCultura = opCul.idCultura
-    WHERE UPPER(op.DESIGNACAOOPERACAOAGRICOLA) LIKE 'COLHEITA'
-        AND op.dataOperacao BETWEEN TO_DATE('12/10/2005', 'DD/MM/YYYY') AND TO_DATE('26/05/2024', 'DD/MM/YYYY')
-    GROUP BY opCul.idParcela, opCul.idCultura, produtosInfo.nomeComum, produtosInfo.nomeProduto
-    ORDER BY opCul.idParcela, produtosInfo.nomeProduto;
+        SELECT opCul.nomeParcela, p.nomeComum, p.variedade, p.nomeProduto
+        FROM operacaoCultura opCul
+                 INNER JOIN operacao op ON opCul.idOperacao = op.idOperacao
+                 INNER JOIN producao p ON p.nomeComum = opCul.nomeComum AND p.variedade = opCul.variedade
+        WHERE UPPER(op.DESIGNACAOOPERACAOAGRICOLA) LIKE 'COLHEITA'
+          AND op.dataOperacao BETWEEN TO_DATE('12/10/2005', 'DD/MM/YYYY') AND TO_DATE('26/05/2024', 'DD/MM/YYYY')
+        GROUP BY opCul.nomeParcela, p.nomeComum, p.variedade, p.nomeProduto
+        ORDER BY opCul.nomeParcela, p.nomeProduto, p.variedade;
     RETURN (lista);
 END;
-/
+-------------------------------------------------------------------------------------------------------
+-- Bloco Anónimo --
+-------------------------------------------------------------------------------------------------------
+SET SERVEROUTPUT ON;
 
 DECLARE
-semColheitas EXCEPTION;
-listaProdutosCursor SYS_REFCURSOR;
-v_idParcela operacaoCultura.idParcela%TYPE;
-v_idCultura operacaoCultura.idCultura%TYPE;
-v_nomeComum cultura.nomeComum%TYPE;
-v_nomeProduto producao.nomeProduto%TYPE;
+    semColheitas EXCEPTION;
+    listaProdutosCursor SYS_REFCURSOR;
+    v_nomeParcela operacaoCultura.nomeParcela%TYPE;
+    v_nomeComum producao.nomeComum%TYPE;
+    v_nomeProduto producao.nomeProduto%TYPE;
+    v_variedade producao.variedade%TYPE;
 
 BEGIN
 
-    listaProdutosCursor := fncListaProdutosPorParcela(listaProdutosCursor);
+    listaProdutosCursor := fncListaProdutosPorParcela;
 
-	FETCH listaProdutosCursor INTO v_idParcela, v_idCultura, v_nomeComum, v_nomeProduto;
+    FETCH listaProdutosCursor INTO v_nomeParcela, v_nomeComum, v_variedade, v_nomeProduto;
 
-	IF listaProdutosCursor%ROWCOUNT = 0 THEN
+    IF listaProdutosCursor%ROWCOUNT = 0 THEN
         RAISE semColheitas;
     ELSE
-      LOOP
-        DBMS_OUTPUT.PUT_LINE('Parcela: ' || v_idParcela || ', Cultura: ' || v_idCultura || ', Planta: ' || v_nomeComum || ', Produto: ' || v_nomeProduto);
-		FETCH listaProdutosCursor INTO v_idParcela, v_idCultura, v_nomeComum, v_nomeProduto;
-		EXIT WHEN listaProdutosCursor%NOTFOUND;
-    	END LOOP;
-	END IF;
+        LOOP
+            DBMS_OUTPUT.PUT_LINE('Parcela: ' || v_nomeParcela || ', Planta: ' || v_nomeComum || ', Variedade: ' || v_variedade || ', Produto: ' || v_nomeProduto);
+            FETCH listaProdutosCursor INTO v_nomeParcela, v_nomeComum, v_variedade, v_nomeProduto;
+            EXIT WHEN listaProdutosCursor%NOTFOUND;
+        END LOOP;
+    END IF;
 
     CLOSE listaProdutosCursor;
 

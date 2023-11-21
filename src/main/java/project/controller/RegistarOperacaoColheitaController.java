@@ -1,11 +1,10 @@
 package project.controller;
 
 import project.dataAccess.*;
-import java.math.BigDecimal;
+
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class RegistarOperacaoColheitaController {
@@ -67,11 +66,11 @@ public class RegistarOperacaoColheitaController {
         return unitsRepository.getUnitDesignations();
     }
 
-    public Map<BigDecimal, String> getFieldsIDs() throws SQLException {
-        return fieldsRepository.getFieldIds();
+    public List<String> getFieldsIDs() throws SQLException {
+        return fieldsRepository.getFieldsNames();
     }
 
-    public Map<BigDecimal, String> getCulturesIDs() throws SQLException {
+    public List<String> getCulturesIDs() throws SQLException {
         return cultureRepository.getCultures();
     }
 

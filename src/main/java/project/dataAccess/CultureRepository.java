@@ -11,10 +11,10 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class CultureRepository {
-    public Map<BigDecimal, String> getCultures() throws SQLException {
+    public List<String> getCultures() throws SQLException {
         CallableStatement callStmt = null;
         ResultSet resultSet = null;
-        Map<BigDecimal, String> map = new HashMap<>();
+        List<String> list;
 
         try {
             Connection connection = DatabaseConnection.getInstance().getConnection();
@@ -25,7 +25,7 @@ public class CultureRepository {
             callStmt.execute();
             resultSet = (ResultSet) callStmt.getObject(1);
 
-            Utils.resultSetMapToList(map, resultSet);
+            list = Utils.resultSetTypeToList(resultSet, "nome");
         } finally {
             if (!Objects.isNull(callStmt)) {
                 callStmt.close();
@@ -34,7 +34,7 @@ public class CultureRepository {
                 resultSet.close();
             }
         }
-        return map;
+        return list;
     }
 
     public Map<String, String> getCulturesByField(String nomeParcela) throws SQLException {
@@ -63,5 +63,9 @@ public class CultureRepository {
             }
         }
         return map;
+    }
+
+    public List<String> getPlantGrowthStage() {
+        throw new UnsupportedOperationException("Este método ainda não foi implementado.");
     }
 }

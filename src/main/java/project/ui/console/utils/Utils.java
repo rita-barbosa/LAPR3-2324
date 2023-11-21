@@ -65,7 +65,7 @@ public class Utils {
     }
 
     public static Boolean askDirectQuestion(String message) {
-        System.out.printf("\n%s \n1. Yes \n2. No\n", message);
+        System.out.printf("\n%s \n1. Sim \n2. Não\n", message);
         boolean invalid = true;
         int answer = -1;
         Scanner input = new Scanner(System.in);
@@ -164,7 +164,7 @@ public class Utils {
 
             System.out.println(index + " - " + o.toString());
         }
-        System.out.println("0 - Cancelar");
+       System.out.println("0 - Cancelar");
     }
 
     static public int selectsIndex(List<?> list) {
@@ -237,4 +237,35 @@ public class Utils {
         options.add("No");
         return showAndSelectIndex(options, "Deseja terminar a Cultura selecionada?");
     }
+
+    public static int showAndSelectIndexNoCancel(List<?> list, String header) {
+        showListNoCancel(list, header);
+        return selectsIndexNoCancel(list);
+    }
+
+    private static int selectsIndexNoCancel(List<?> list) {
+        String input;
+        int value;
+        do {
+            input = Utils.readLineFromConsole("Selecione a opção desejada: ");
+            try {
+                value = Integer.parseInt(input);
+            } catch (NumberFormatException ex) {
+                value = -1;
+            }
+        } while (value < 1 || value > list.size());
+        return value - 1;
+    }
+
+    private static void showListNoCancel(List<?> list, String header) {
+        System.out.println(header);
+        int index = 0;
+        for (Object o : list) {
+            index++;
+
+            System.out.println(index + " - " + o.toString());
+        }
+    }
+
+
 }

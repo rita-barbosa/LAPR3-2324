@@ -5,33 +5,40 @@ import java.util.Date;
 
 public class OperacaoCultura extends Operacao{
 
-    private Integer idParcela;
-    private Integer idCultura;
+    private String nomeParcela;
+    private String nomeComum;
+    private String variedade;
     private Date dataInicial;
     private Date dataFinal;
 
-    public OperacaoCultura(Integer idOperacao, String designacaoOperacaoAgricola, Date dataOperacao, Integer idParcela, Integer idCultura, Date dataInicial, Date dataFinal, String designacaoUnidade, Double quantidade) {
-        super(idOperacao, designacaoOperacaoAgricola,designacaoUnidade, quantidade, dataOperacao);
-        this.idCultura = idCultura;
-        this.idParcela = idParcela;
+    public OperacaoCultura(Integer idOperacao, String designacaoOperacaoAgricola, String designacaoUnidade, Double quantidade, Date dataOperacao, String nomeParcela, String nomeComum, String variedade, Date dataInicial, Date dataFinal) {
+        super(idOperacao, designacaoOperacaoAgricola, designacaoUnidade, quantidade, dataOperacao);
+        this.nomeComum = nomeComum;
+        this.nomeParcela = nomeParcela;
+        this.variedade = variedade;
         this.dataInicial = dataInicial;
         this.dataFinal = dataFinal;
     }
 
-    public OperacaoCultura(Integer idOperacao, String designacaoOperacaoAgricola, Date dataOperacao, Integer idParcela, Integer idCultura, Date dataInicial, String designacaoUnidade, Double quantidade) {
-        super(idOperacao, designacaoOperacaoAgricola,designacaoUnidade, quantidade, dataOperacao);
-        this.idCultura = idCultura;
-        this.idParcela = idParcela;
+    public OperacaoCultura(Integer idOperacao, String designacaoOperacaoAgricola, String designacaoUnidade, Double quantidade, Date dataOperacao, String nomeParcela, String nomeComum, String variedade, Date dataInicial) {
+        super(idOperacao, designacaoOperacaoAgricola, designacaoUnidade, quantidade, dataOperacao);
+        this.nomeComum = nomeComum;
+        this.nomeParcela = nomeParcela;
+        this.variedade = variedade;
         this.dataInicial = dataInicial;
         this.dataFinal = null;
     }
 
-    public Integer getIdParcela() {
-        return idParcela;
+    public String getNomeParcela() {
+        return nomeParcela;
     }
 
-    public Integer getIdCultura() {
-        return idCultura;
+    public String getNomeComum() {
+        return nomeComum;
+    }
+
+    public String getVariedade() {
+        return variedade;
     }
 
     public Date getDataInicial() {
@@ -50,7 +57,9 @@ public class OperacaoCultura extends Operacao{
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(super.toString());
-        stringBuilder.append(String.format(" %10d | %10d |  %10s  | %10s |", idParcela, idCultura, dataInicial.toString(), (dataFinal == null) ? "0000-00-00" : dataFinal.toString()));
+        stringBuilder.append(String.format(" %20s | %20s | %20s | %12s | %10s |", nomeParcela, nomeComum, variedade, dataInicial.toString(), (dataFinal == null) ? "0000-00-00" : dataFinal.toString()));
         return  stringBuilder.toString() ;
     }
+
+
 }

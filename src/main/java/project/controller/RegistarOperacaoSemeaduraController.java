@@ -1,7 +1,7 @@
 package project.controller;
 
 import project.dataAccess.*;
-import java.math.BigDecimal;
+
 import java.util.*;
 import java.sql.SQLException;
 
@@ -56,20 +56,24 @@ public class RegistarOperacaoSemeaduraController {
         return unitsRepository.getUnitDesignations();
     }
 
-    public  Map<BigDecimal, String>  getFieldsIDs() throws SQLException {
-        return fieldsRepository.getFieldIds();
+    public  List<String> getFieldsNames() throws SQLException {
+        return fieldsRepository.getFieldsNames();
     }
 
-    public Map<BigDecimal, String> getCulturesIDs() throws SQLException {
+    public List<String> getCultures() throws SQLException {
         return cultureRepository.getCultures();
     }
 
-    public boolean registerOperation(Integer idParcela, String designacaoOperacaoAgricola, Integer idCultura, Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
-        return operacaoRepository.registerCultureOperation(idParcela, designacaoOperacaoAgricola, idCultura, dataOperacao, tipoUnidade, quantidade);
+    public boolean registerOperation(String nomeParcela, String desigEstadoFenologico, String designacaoOperacaoAgricola, String nomeComum, String variedade, Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
+        return operacaoRepository.registerSemeaduraOperation(nomeParcela, desigEstadoFenologico, designacaoOperacaoAgricola, nomeComum, variedade, dataOperacao, tipoUnidade, quantidade);
     }
 
-    public boolean verifyIfOperationExists(Integer idParcela, String designacaoOperacaoAgricola, Integer idCultura, Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
-        return operacaoRepository.verifyIfOperationExists(idParcela, designacaoOperacaoAgricola, idCultura, dataOperacao, tipoUnidade, quantidade);
+    public boolean verifyIfOperationExists(String nomeParcela, String designacaoOperacaoAgricola, String nomeComum, String variedade, Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
+        return operacaoRepository.verifyIfCulturaOperationExists(nomeParcela, designacaoOperacaoAgricola, nomeComum, variedade, dataOperacao, tipoUnidade, quantidade);
 
+    }
+
+    public List<String> showPlantGrowthStage() {
+        return cultureRepository.getPlantGrowthStage();
     }
 }

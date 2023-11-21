@@ -3,15 +3,15 @@ create or replace FUNCTION obterIntroParcelas
     listIntroParcelas SYS_REFCURSOR;
 BEGIN
     OPEN listIntroParcelas FOR
-        SELECT DISTINCT idParcela, nomeParcela
+        SELECT DISTINCT nomeParcela
         FROM parcela
-        ORDER BY idParcela;
+        ORDER BY nomeParcela;
     RETURN listIntroParcelas;
 END;
 /
 -------------------------------------------------------------------------------------------------------------------
 
-create or replace NONEDITIONABLE FUNCTION obterListaUnidade
+create or replace FUNCTION obterListaUnidade
     RETURN SYS_REFCURSOR AS
     listaUnidades SYS_REFCURSOR;
 BEGIN
@@ -30,9 +30,9 @@ create or replace FUNCTION obterIntroCulturas
     listIntroCulturas SYS_REFCURSOR;
 BEGIN
     OPEN listIntroCulturas FOR
-        SELECT DISTINCT idCultura, (nomeComum || ' ' || variedade) AS nome
-        FROM cultura
-        ORDER BY idCultura;
+        SELECT DISTINCT (nomeComum || ' ' || variedade) AS nome
+        FROM planta
+        ORDER BY nome;
     RETURN listIntroCulturas;
 END;
 /
@@ -50,9 +50,6 @@ END;
 /
 
 -------------------------------------------------------------------------------------------------------------------
-
-INSERT INTO tipoOperacaoAgricola(designacaoOperacaoAgricola) VALUES ('Semeadura');
-
 create or replace FUNCTION mostrarOperacaoSemeadura
     RETURN SYS_REFCURSOR AS
     operacoes SYS_REFCURSOR;
@@ -63,8 +60,9 @@ BEGIN
                         op.designacaounidade,
                         op.quantidade,
                         op.dataoperacao,
-                        cul.idparcela,
-                        cul.idcultura,
+                        cul.nomeParcela,
+                        cul.nomeComum,
+                        cul.variedade,
                         inst.datainicial,
                         inst.datafinal
         FROM operacao op
@@ -83,8 +81,9 @@ create or replace FUNCTION verificarSeOperacaoExiste(
     desigUnidade IN tipoUnidade.designacaoUnidade%TYPE,
     qtd IN NUMBER,
     dataOp IN DATE,
-    idPar IN parcela.idParcela%TYPE,
-    idCul IN cultura.idCultura%TYPE
+    nomeParcela IN parcela.nomeParcela%TYPE,
+    nomeComum IN culturainstalada.nomeComum%TYPE,
+    variedade IN culturainstalada.variedade%TYPE
 ) RETURN NUMBER IS
     found NUMBER := 0;
 BEGIN
@@ -96,8 +95,9 @@ BEGIN
           AND op.dataoperacao = dataOp
           AND op.designacaounidade = desigUnidade
           AND op.quantidade = qtd
-          AND cul.idparcela = idPar
-          AND cul.idcultura = idCul;
+          AND cul.nomeComum = nomeComum
+          AND cul.variedade = variedade
+          AND cul.nomeParcela = nomeParcela;
     EXCEPTION
         WHEN OTHERS THEN
             found := 0;
@@ -105,7 +105,6 @@ BEGIN
     RETURN found;
 END;
 /
-
 -------------------------------------------------------------------------------------------------------------------
 
 create or replace FUNCTION obterDataInicial(

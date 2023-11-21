@@ -60,9 +60,9 @@ public class RegistarOperacaoMondaController {
         return unitsRepository.getUnitDesignations();
     }
 
-    public Map<BigDecimal, String> getFieldsNames() throws SQLException {
-        return fieldsRepository.getFieldIds();
-    }
+//    public Map<BigDecimal, String> getFieldsNames() throws SQLException {
+//        return fieldsRepository.getFieldIds();
+//    }
 
     public Map<String, String> getCulturesByField(String nomeParcela) throws SQLException { // key -> nomeComum; value -> variedade
         return cultureRepository.getCulturesByField(nomeParcela);

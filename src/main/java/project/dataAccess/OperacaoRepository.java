@@ -3,10 +3,14 @@ package project.dataAccess;
 import oracle.jdbc.OracleTypes;
 import project.domain.Operacao;
 import project.domain.OperacaoCultura;
+import project.domain.Rega;
 import project.ui.console.utils.Utils;
 
 import java.math.BigDecimal;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
@@ -93,42 +97,76 @@ public class OperacaoRepository {
             OperacaoCultura operacao = new OperacaoCultura(
                     resultSet.getInt("idOperacao"),
                     resultSet.getString("designacaoOperacaoAgricola"),
-                    resultSet.getDate("dataOperacao"),
-                    resultSet.getInt("idParcela"),
-                    resultSet.getInt("idCultura"),
-                    resultSet.getDate("dataInicial"),
-                    resultSet.getDate("dataFinal"),
                     resultSet.getString("designacaoUnidade"),
-                    resultSet.getDouble("quantidade")
+                    resultSet.getDouble("quantidade"),
+                    resultSet.getDate("dataOperacao"),
+                    resultSet.getString("nomeParcela"),
+                    resultSet.getString("nomeComum"),
+                    resultSet.getString("variedade"),
+                    resultSet.getDate("dataInicial"),
+                    resultSet.getDate("dataFinal")
             );
             operacoes.add(operacao);
         }
         return operacoes;
     }
 
-    public boolean registerCultureOperation(Integer idParcela, String designacaoOperacaoAgricola, Integer idCultura, Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
+    public boolean registerSemeaduraOperation(String nomeParcela, String desigEstadoFenologico, String designacaoOperacaoAgricola, String nomeComum, String variedade, Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
         CallableStatement callStmt = null;
         boolean success = false;
         try {
             Connection connection = DatabaseConnection.getInstance().getConnection();
             callStmt = connection.prepareCall("{ ? = call registarOperacaoSemeadura(?,?,?,?,?,?,?,?) }");
 
-            int idOperacao = Utils.getNewIdOperation();
+            callStmt.registerOutParameter(1, OracleTypes.NUMBER);
+
+            callStmt.setString(2, designacaoOperacaoAgricola);
+            callStmt.setString(3, tipoUnidade);
+            callStmt.setDouble(4, quantidade);
+
+            java.sql.Date sqlDataOp = new java.sql.Date(dataOperacao.getTime());
+            callStmt.setDate(5, sqlDataOp);
+
+            callStmt.setString(6, nomeParcela);
+            callStmt.setString(7, desigEstadoFenologico);
+            callStmt.setString(8, nomeComum);
+            callStmt.setString(9, variedade);
+
+            callStmt.execute();
+
+            int opStatus = callStmt.getInt(1);
+
+            if (opStatus == 1) {
+                success = true;
+            }
+
+            connection.commit();
+
+        } finally {
+            if (!Objects.isNull(callStmt)) {
+                callStmt.close();
+            }
+        }
+        return success;
+    }
+
+    //VER COM O GRUPO
+    public boolean registerRegaOperation(Rega rega) throws SQLException {
+        CallableStatement callStmt = null;
+        boolean success = false;
+        try {
+            Connection connection = DatabaseConnection.getInstance().getConnection();
+            callStmt = connection.prepareCall("{ ? = call registarOperacaoRega(?,?,?,?) }");
 
             callStmt.registerOutParameter(1, OracleTypes.NUMBER);
 
-            callStmt.setInt(2, idOperacao);
-            callStmt.setString(3, designacaoOperacaoAgricola);
-            callStmt.setString(4, tipoUnidade);
-            callStmt.setDouble(5, quantidade);
+            callStmt.setString(2, rega.getIdSetor());
+            callStmt.setString(3, rega.getHoraInicio().toString());
+            callStmt.setString(4, rega.getHoraFim().toString());
 
-            java.sql.Date sqlDataOp = new java.sql.Date(dataOperacao.getTime());
-            callStmt.setDate(6, sqlDataOp);
-
-            callStmt.setInt(7, idParcela);
-            callStmt.setInt(8, idCultura);
-
-            callStmt.setDate(9, sqlDataOp);
+            Date dataRega = Date.from(rega.getData().atStartOfDay(ZoneId.systemDefault()).toInstant());
+            java.sql.Date sqlDataOp = new java.sql.Date(dataRega.getTime());
+            callStmt.setDate(5, sqlDataOp);
 
             callStmt.execute();
 
@@ -149,12 +187,12 @@ public class OperacaoRepository {
         return success;
     }
 
-    public boolean verifyIfOperationExists(Integer idParcela, String designacaoOperacaoAgricola, Integer idCultura, Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
+    public boolean verifyIfCulturaOperationExists(String nomeParcela, String designacaoOperacaoAgricola, String nomeComum, String variedade, Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
         CallableStatement callStmt = null;
         boolean exists = false;
         try {
             Connection connection = DatabaseConnection.getInstance().getConnection();
-            callStmt = connection.prepareCall("{ ? = call verificarSeOperacaoExiste(?,?,?,?,?,?) }");
+            callStmt = connection.prepareCall("{ ? = call verificarSeOperacaoExiste(?,?,?,?,?,?,?) }");
 
             callStmt.registerOutParameter(1, OracleTypes.NUMBER);
 
@@ -165,8 +203,9 @@ public class OperacaoRepository {
             java.sql.Date sqlDataOp = new java.sql.Date(dataOperacao.getTime());
             callStmt.setDate(5, sqlDataOp);
 
-            callStmt.setInt(6, idParcela);
-            callStmt.setInt(7, idCultura);
+            callStmt.setString(6, nomeParcela);
+            callStmt.setString(7, nomeComum);
+            callStmt.setString(8, variedade);
 
             callStmt.execute();
 
@@ -233,8 +272,8 @@ public class OperacaoRepository {
 
             callStmt.registerOutParameter(1, OracleTypes.NUMBER);
 
-            callStmt.setString(2,"Monda");
-            callStmt.setString(3,tipoUnidade);
+            callStmt.setString(2, "Monda");
+            callStmt.setString(3, tipoUnidade);
             callStmt.setDouble(5, quantidade);
 
             java.sql.Date sqlDataOp = new java.sql.Date(dataOperacao.getTime());

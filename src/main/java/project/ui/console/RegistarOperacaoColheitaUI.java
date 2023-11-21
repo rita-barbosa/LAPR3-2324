@@ -48,13 +48,13 @@ public class RegistarOperacaoColheitaUI implements Runnable {
 
             Scanner scanner = new Scanner(System.in);
 
-            Map<BigDecimal, String> fieldsIDs = controller.getFieldsIDs();
-            BigDecimal bigDecimalValue = Utils.showAndSelectIndex(fieldsIDs, "Selecione o id da parcela:");
-            idParcela = bigDecimalValue.intValue();
-
-            Map<BigDecimal, String> cultureIDs = controller.getCulturesIDs();
-            bigDecimalValue = Utils.showAndSelectIndex(cultureIDs, "Selecione o id da cultura:");
-            idCultura = bigDecimalValue.intValue();
+//            Map<BigDecimal, String> fieldsIDs = controller.getFieldsIDs();
+//            BigDecimal bigDecimalValue = Utils.showAndSelectIndex(fieldsIDs, "Selecione o id da parcela:");
+//            idParcela = bigDecimalValue.intValue();
+//
+//            Map<BigDecimal, String> cultureIDs = controller.getCulturesIDs();
+//            bigDecimalValue = Utils.showAndSelectIndex(cultureIDs, "Selecione o id da cultura:");
+//            idCultura = bigDecimalValue.intValue();
 
             List<String> unitTypes = controller.getUnitTypes();
             index = Utils.showAndSelectIndex(unitTypes, "Tipo de Unidade:");

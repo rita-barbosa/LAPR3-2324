@@ -21,7 +21,7 @@ public class MenuRegistoOperacoes implements Runnable {
         options.add(new MenuItem("Registar operação de aplicação de fator de produção.", new RegistarOperacaoAplicacaoFatorProducaoUI()));
         int option = 0;
         do {
-            option = Utils.showAndSelectIndex(options, "Sistema de Rega");
+            option = Utils.showAndSelectIndex(options, "Registo de Operações");
             if ((option >= 0) && (option < options.size())) {
                 options.get(option).run();
             }

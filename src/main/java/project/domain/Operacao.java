@@ -50,6 +50,6 @@ public class Operacao {
 
     @Override
     public String toString() {
-        return String.format("| %4d | %22s | %10s | %10.2f | %7s |", idOperacao, designacaoOperacaoAgricola, dataOperacao, quantidade, designacaoUnidade);
+        return String.format("| %4d | %22s | %10s | %10.2f | %7s |", idOperacao, designacaoOperacaoAgricola, dataOperacao.toString(), quantidade, designacaoUnidade);
     }
 }

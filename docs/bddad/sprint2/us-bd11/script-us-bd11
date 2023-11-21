@@ -1,37 +1,59 @@
 -------------------------------------------------------------------------------------------------------
+create or replace FUNCTION novoIdOperacao
+    RETURN NUMBER AS
+    newIdOperation NUMBER;
+BEGIN
+    SELECT NVL(MAX(idOperacao), 0) + 1 INTO newIdOperation
+    FROM operacao;
+    RETURN newIdOperation;
+END;
+/
+-------------------------------------------------------------------------------------------------------
 -- Função --
 -------------------------------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION registarOperacaoSemeadura(
-    idOp IN operacao.idOperacao%TYPE,
+create or replace NONEDITIONABLE FUNCTION registarOperacaoSemeadura(
     desigOp IN tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE,
     desigUnidade IN tipoUnidade.designacaoUnidade%TYPE,
     qtd IN NUMBER,
     dataOp IN DATE,
-    idPar IN parcela.idParcela%TYPE,
-    idCul IN cultura.idCultura%TYPE,
-    dataInicio IN DATE
-) RETURN BOOLEAN IS
-    success BOOLEAN := FALSE;
+    nomeParcela IN parcela.nomeParcela%TYPE,
+    desigEstadoFen IN VARCHAR2,
+    nomeComum IN planta.nomeComum%TYPE,
+    variedade IN planta.variedade%TYPE
+) RETURN NUMBER IS
+    success NUMBER := 0;
+    idOp    NUMBER;
+    estadoFenologico_exists NUMBER := 0;
 BEGIN
     BEGIN
-        INSERT INTO culturaInstalada (dataInicial, idParcela, idCultura, designacaoUnidade, dataFinal, quantidade)
-        VALUES (dataInicio, idPar, idCul, desigUnidade, NULL , qtd);
+        SELECT NVL(COUNT(*),0) INTO estadoFenologico_exists
+        FROM estadoFenologico
+        WHERE designacao = desigEstadoFen;
 
-        INSERT INTO operacao (idOperacao, designacaoOperacaoAgricola, designacaoUnidade, quantidade, dataOperacao)
-        VALUES (idOp, desigOp, desigUnidade, qtd, dataOp);
+        IF estadoFenologico_exists >= 0 THEN
 
-        INSERT INTO operacaocultura (idOperacao, idParcela, idCultura, dataInicial)
-        VALUES (idOp, idPar, idCul, dataInicio);
+            INSERT INTO culturaInstalada (dataInicial, nomeParcela, variedade, nomeComum, designacaoUnidade, designacaoEstadoFenologico, dataFinal, quantidade)
+            VALUES (dataOp, nomeParcela, variedade, nomeComum, desigUnidade, desigEstadoFen, NULL, qtd);
 
-        success := TRUE;
+            idOp := novoIdOperacao();
+
+            INSERT INTO operacao (idOperacao, designacaoOperacaoAgricola, designacaoUnidade, quantidade, dataOperacao)
+            VALUES (idOp, desigOp, desigUnidade, qtd, dataOp);
+
+            INSERT INTO operacaocultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade)
+            VALUES (idOp, nomeParcela, dataOp, nomeComum, variedade);
+
+            success := 1;
+        END IF;
+
     EXCEPTION
         WHEN OTHERS THEN
-            success := FALSE;
+            success := 0;
     END;
 
     RETURN success;
 END;
-/
+
 
 -------------------------------------------------------------------------------------------------------
 -- Bloco Anónimo --
@@ -39,21 +61,20 @@ END;
 SET SERVEROUTPUT ON;
 
 DECLARE
-    -- First operation
-    v_idOp1 NUMBER := 892;
-    v_desigOp1 tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE := 'Semeadura';
-    v_desigUnidade1 tipoUnidade.designacaoUnidade%TYPE := 'ha';
-    v_qtd1 NUMBER := 50;
-    v_dataOp1 DATE := TO_DATE('12/03/2022', 'DD/MM/YYYY');
-    v_idPar1 parcela.idParcela%TYPE := 105;
-    v_idCul1 cultura.idCultura%TYPE := 11;
-    v_dataInicio1 DATE := TO_DATE('12/03/2022', 'DD/MM/YYYY');
+    v_desigOp tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE := 'Semeadura';
+    v_desigUnidade tipoUnidade.DESIGNACAOUNIDADE%TYPE := 'ha';
+    v_qtd NUMBER := 13;
+    v_desigEstadoFen VARCHAR2(50) := NULL;
+    v_dataOp DATE := TO_DATE('16/03/2022', 'DD/MM/YYYY');
+    v_nomeParcela parcela.nomeParcela%TYPE := 'Vinha';
+    v_nomeComum planta.nomeComum%TYPE := 'Cenoura';
+    v_variedade planta.variedade%TYPE := 'CARSON HYBRID';
 
-    v_success1 BOOLEAN;
+    v_success NUMBER;
 BEGIN
-    v_success1 := registarOperacaoSemeadura(v_idOp1, v_desigOp1, v_desigUnidade1, v_qtd1, v_dataOp1, v_idPar1, v_idCul1, v_dataInicio1);
+    v_success := registarOperacaoSemeadura(v_desigOp, v_desigUnidade, v_qtd, v_dataOp, v_nomeParcela, v_desigEstadoFen, v_nomeComum, v_variedade);
 
-    IF v_success1 THEN
+    IF v_success = 1 THEN
         DBMS_OUTPUT.PUT_LINE('Operation registered successfully!');
     ELSE
         DBMS_OUTPUT.PUT_LINE('Failed to register operation.');
@@ -65,5 +86,7 @@ END;
 -- Confirmação --
 -------------------------------------------------------------------------------------------------------
 SELECT *
-FROM operacao
-WHERE dataOperacao = TO_DATE('13/11/2024', 'DD/MM/YYYY');
+FROM operacao op
+         INNER JOIN operacaoCultura opCul ON opCul.idOperacao = op.idOperacao
+         INNER JOIN culturaInstalada culInst ON culInst.datainicial = op.dataOperacao
+WHERE dataOperacao = TO_DATE('16/03/2022', 'DD/MM/YYYY');

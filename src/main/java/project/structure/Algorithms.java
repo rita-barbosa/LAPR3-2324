@@ -194,46 +194,34 @@ public class Algorithms {
     public static <V, E> boolean shortestPaths(Graph<V, E> g, V vOrig,
                                                Comparator<E> ce, BinaryOperator<E> sum, E zero,
                                                ArrayList<LinkedList<V>> paths, ArrayList<E> dists) {
-//        if(g == null)
-//            return false;
-//
-//        if(!g.validVertex(vOrig))
-//            return false;
-//
-//        int size = g.numVertices();
-//        boolean[] visited = new boolean[size];
-//        ArrayList<V> pathKeys = new ArrayList<>(size);
-//        ArrayList<E> dist = new ArrayList<>(size);
-//
-//        //acontece o mesmo aqui
-//
-//        //shortestPathDijkstra(g, vOrig, ce, sum, zero, visited, pathKeys, dist);
-//
-//        for(V vDest : g.vertices()){
-//            dists.add(dist.get(g.key(vDest)));
-//            LinkedList<V> path = new LinkedList<>();
-//            //getPath(g, vOrig, vDest, pathKeys, path);
-//            paths.add(path);
-//        }
-//
-//        return true;
 
         if (!g.validVertex(vOrig)) {
             return false;
         }
-
+        paths.clear();
+        dists.clear();
         int numVertices = g.numVertices();
         boolean[] visited = new boolean[numVertices];
         V[] pathKeys = (V[]) new Object[numVertices];
         E[] dist = (E[]) new Object[numVertices];
+        initializePathDist(numVertices, pathKeys, dist);
 
         shortestPathDijkstra(g, vOrig, ce, sum, zero, visited, pathKeys, dist);
 
+        dists.clear();
+        paths.clear();
         for (int i = 0; i < numVertices; i++) {
-            LinkedList<V> path = new LinkedList<>();
-            reconstructShortestPath(g, vOrig, g.vertex(i), pathKeys, path);
-            paths.add(path);
-            dists.add(dist[i]);
+            paths.add(null);
+            dists.add(null);
+        }
+        for (V vDist:g.vertices()) {
+            int i = g.key(vDist);
+            if(dist[i] != null){
+                LinkedList<V> shortPath = new LinkedList<>();
+                getPath(g, vOrig, vDist, pathKeys, shortPath);
+                paths.set(i, shortPath);
+                dists.set(i, dist[i]);
+            }
         }
 
         return true;

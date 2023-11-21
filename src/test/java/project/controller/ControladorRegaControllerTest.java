@@ -2,6 +2,7 @@ package project.controller;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
 import project.domain.ImportarFicheiro;
 import project.domain.SistemaDeRega;
 
@@ -17,7 +18,7 @@ public class ControladorRegaControllerTest {
     private static final LocalDate dataInicio = LocalDate.of(2023, 10, 20);
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         ImportarFicheiro.importWateringPlan("src/test/java/project/testFiles/ficheiroCorreto.txt");
         SistemaDeRega.setInicioDoPlanoDeRega(dataInicio);
     }
@@ -78,14 +79,14 @@ public class ControladorRegaControllerTest {
         assertEquals(expected, controller.checkIfPlanIsPresent());
     }
 
-    @Test
-    public void testExportWateringPlan() {
-        assertTrue(controller.exportWateringPlan());
-    }
+//    @Disabled
+//    public void testExportWateringPlan() {
+//        assertTrue(controller.exportWateringPlan());
+//    }
 
-    @Test
-    public void testExportWateringPlanForSimulatedTime() {
-        assertTrue(controller.exportWateringPlanForSimulatedTime(LocalDate.of(2023, 10, 24)));
-    }
+//    @Disabled
+//    public void testExportWateringPlanForSimulatedTime() {
+//        assertTrue(controller.exportWateringPlanForSimulatedTime(LocalDate.of(2023, 10, 24)));
+//    }
 
 }

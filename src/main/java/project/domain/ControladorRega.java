@@ -1,11 +1,27 @@
 package project.domain;
 
+import project.dataAccess.OperacaoRepository;
+import project.dataAccess.Repositories;
+
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Objects;
 
 public class ControladorRega {
 
+    private OperacaoRepository operacaoRepository;
+
     public ControladorRega() {
+        getOperacaoRepository();
+    }
+
+    private OperacaoRepository getOperacaoRepository() {
+        if (Objects.isNull(operacaoRepository)) {
+            Repositories repositories = Repositories.getInstance();
+            operacaoRepository = repositories.getOperacaoRepository();
+        }
+        return operacaoRepository;
     }
 
     /**
@@ -34,4 +50,7 @@ public class ControladorRega {
         return checkIsWateringHour(LocalTime.now(), LocalDate.now());
     }
 
+    public boolean sendRegisterToDataBase(Rega rega) throws SQLException {
+        return operacaoRepository.registerRegaOperation(rega);
+    }
 }

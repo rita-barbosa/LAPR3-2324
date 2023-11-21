@@ -3,6 +3,8 @@ package project.domain;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -13,7 +15,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class SistemaDeRega {
-    private static final ControladorRega controladorRega = new ControladorRega();
+    private static ControladorRega controladorRega = new ControladorRega();
 
     private static LocalDate inicioDoPlanoDeRega;
 
@@ -46,31 +48,32 @@ public class SistemaDeRega {
         return inicioDoPlanoDeRega;
     }
 
-    public static boolean generateWateringDayRegister(LocalDate date) {
-        if (date == null) {
-            date = LocalDate.now();
-        }
-        String dateString = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")).trim();
+    public static boolean generateWateringDayRegister() {
+        String dateString = inicioDoPlanoDeRega.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")).trim();
         String fileName = "WateringRegisters" + dateString + ".csv";
-
         File directory = new File("files\\WateringRegisters");
         File file = new File(directory, fileName);
         if (!directory.exists()) {
             directory.mkdirs();
         }
-        return writeWateringRegisterFile(file, date);
+        return writeWateringRegisterFile(file);
     }
 
-    private static boolean writeWateringRegisterFile(File file, LocalDate date) {
+    private static boolean writeWateringRegisterFile(File file) {
+        LocalDate date = inicioDoPlanoDeRega;
         try {
             FileWriter fileWriter = new FileWriter(file);
             fileWriter.write("Dia,Sector,Duracao,Inicio,Final\n");
-            String dateString = date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).trim();
-            for (Rega rega : planoDeRega) {
-                if (rega.getData().equals(date)) {
-                    String line = String.format("%s,%s,%s,%s,%s\n", dateString, rega.getIdSetor(), (rega.getHoraFim().getMinute() - rega.getHoraInicio().getMinute()), rega.getHoraInicio(), rega.getHoraFim());
-                    fileWriter.write(line);
+            while (date.compareTo(inicioDoPlanoDeRega.plusDays(30)) <= 0) {
+                String dateString = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")).trim();
+                for (Rega rega : planoDeRega) {
+                    if (rega.getData().equals(date)) {
+                        Duration durationMinutes = Duration.between(rega.getHoraInicio(), rega.getHoraFim());
+                        String line = String.format("%s,%s,%s,%s,%s\n", dateString, rega.getIdSetor(), durationMinutes.toMinutes(), rega.getHoraInicio(), rega.getHoraFim());
+                        fileWriter.write(line);
+                    }
                 }
+                date = date.plusDays(1);
             }
             fileWriter.close();
             return true;
@@ -93,10 +96,9 @@ public class SistemaDeRega {
                 System.out.println("performing: " + atual);
                 try {
                     sendToExternalDatabase(atual);
-                } catch (IOException e) {
+                } catch (IOException | SQLException e) {
                     throw new RuntimeException(e);
                 }
-
 
                 scheduleNextTask(index + 1);
             }, delay, TimeUnit.MILLISECONDS);
@@ -106,9 +108,13 @@ public class SistemaDeRega {
         }
     }
 
-    private static void sendToExternalDatabase(Rega rega) throws IOException {
-        //AQUI QUE VAI SER CHAMADO MÉTODO PARA INSERIR REGA NA BD
-        System.out.println("Sending to database: " + rega);
+    private static void sendToExternalDatabase(Rega rega) throws IOException, SQLException {
+           boolean success = controladorRega.sendRegisterToDataBase(rega);
+            if (success){
+                System.out.println("Sending to database: " + rega);
+            }else {
+                throw new SQLException("Não foi possível registar a operação de rega na base de dados.");
+            }
     }
 
     private static long calculateDelay(LocalTime currentTime, LocalTime scheduledTime) {

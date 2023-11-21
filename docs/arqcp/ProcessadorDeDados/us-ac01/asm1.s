@@ -4,111 +4,75 @@
 
 .global extract_token # void extract_token(char* input, char* token, int* output);
 extract_token:
-# input -> rdi
-# token -> rsi
-# output -> rdx
 
+movl $0, %r10d
+movl $0, %r11d
 
-movq %rsi, %r9	#preserve rsi
-movb (%rsi), %cl
+movb (%rsi, %r11, 1), %r9b	# token char
 
 loop:
-	
-	cmpb $0, (%rdi)
-	je end
-	
-	pushq %rdi
-	pushq %rsi
-	
-	cmpb (%rdi), %cl
+	movb (%rdi, %r10, 1), %r8b	# input char
+
+	cmpb $0, %r8b
+	je done
+
+	cmpb %r8b, %r9b
 	je checkToken
-	
+
 	increments:
-		popq %rsi
-		popq %rdi
-		addq $1, %rdi
-		movb (%rsi), %cl
+		incl %r10d
 		jmp loop
-	
 
 checkToken:
+	cmpb $0, %r9b
+	je getTokenInfo		# se nao saiu do loop entao quer dizer que todos os caracteres até ao fim do token são iguais
 
-movq %r9, %rsi
-
-checkInnerLoop:
-
-	cmpb $0, (%rsi)
-	je endOfToken
-	
-	cmpb %cl, (%rdi)
+	cmpb %r9b, %r8b
 	jne notToken
-	
-	checkInnerIncrements:
-		addq $1, %rdi
-		addq $1, %rsi
-		movb (%rsi), %cl
-		jmp checkInnerLoop
-		
 
-endOfToken:
-movq %r9, %rsi
-addq $1, %rsi
-addq $1, %rdi
-movq $0, %r8
+	incl %r10d
+	incl %r11d
+	movb (%rdi, %r10, 1), %r8b
+	movb (%rsi, %r11, 1), %r9b
+	jmp checkToken
+
+
+getTokenInfo:
 movq $0, %r9
-movl $0, (%rdx)
-	
-	retrieveValueLoop:
-	
-		cmpb $0, (%rdi)
-		je end
-		
-		cmpb $'#', (%rdi)
-		je end
-				
-		cmpb $'.', (%rdi)
-		je valueIncrements
-		
-		
-		movl (%rdx), %r9d
-		
-		imull $10, %r9d
-		
-		movl %r9d, (%rdx)
-		
-		movb (%rdi), %r8b
-		movzbl %r8b, %r8d
-		
-		cmpb $'y', (%rsi)
-		jne seeOtherToken
-		movq $-1, (%rdx)
-		je end	
-		
-		retrieveValueIncrements:
-		
-			addl %r8d, (%rdx)
-			
-			valueIncrements:
+movl $0, %eax
+movl $0, %ecx
 
-			#addq $4, %rdx
-			addq $1, %rdi
+	retrieveValueLoop:
+
+		cmpb $0, %r8b
+		je end
+
+		cmpb $'.', %r8b
+		je valueIncrements	# se o numero tiver casas decimais ignora e adiciona o resto dos digitos
+
+		cmpb $':', %r8b		# ignorar simbolos e letras
+		jge done
+
+		cmpb $'#', %r8b		#inicio de um novo token - fim do atual
+		je end
+
+		imull $10, %eax		# multiplica por 10 o numero atual para inserir no output
+		movzbl %r8b, %r9d	# conversao de bit para double word -> char para int
+		subl $'0', %r9d		# subtração do valor ASCII de 0 para o codigo representar o numero que se espera
+		addl %r9d, %eax		# adiciona-se o novo numero, ao output
+
+		valueIncrements:
+			incl %r10d
+			movb (%rdi, %r10, 1), %r8b
 			jmp retrieveValueLoop
 
-
-seeOtherToken:
-	cmpb $'n', (%rsi)
-	jne isNumberToken
-	movq $-1, (%rdx)
-	je end
-				
-isNumberToken:
-	subl $'0', %r8d
-	jmp retrieveValueIncrements
-	
 notToken:
+	movl $0, %r11d
+	movb (%rsi, %r11, 1), %r9b		# faz-se reset do apontador do token
 	jmp increments
 
 end:
-	popq %rsi
-	popq %rdi
+	movl %eax, (%rdx)
+
+done:
 	ret

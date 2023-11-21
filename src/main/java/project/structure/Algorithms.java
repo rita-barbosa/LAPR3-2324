@@ -78,9 +78,9 @@ public class Algorithms {
      * @param pathKeys minimum path vertices keys
      * @param dist     minimum distances
      */
-    private static <V, E> void shortestPathDijkstra(Graph<V, E> g, V vOrig,
-                                                    Comparator<E> ce, BinaryOperator<E> sum, E zero,
-                                                    boolean[] visited, V [] pathKeys, E [] dist) {
+    public static <V, E> void shortestPathDijkstra(Graph<V, E> g, V vOrig,
+                                                   Comparator<E> ce, BinaryOperator<E> sum, E zero,
+                                                   boolean[] visited, V[] pathKeys, E[] dist) {
 
         int vKey = g.key(vOrig);
         dist[vKey] = zero;

@@ -10,11 +10,16 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
+import static project.structure.Algorithms.shortestPathDijkstra;
+
 public class PercursoMinimoController {
 
 //    public static String getShortestPathForFurthestNodes() {
 //        int maxDist = 0;
 //        Local tempLocalInicio = null,tempLocalFim = null;
+//        Local[] tempPath = new Local[RedeHub.getInstance().getRedeDistribuicao().numVertices()];
+//
+//        StringBuilder stringBuilder = new StringBuilder();
 //
 //        for (Local local : RedeHub.getInstance().getRedeDistribuicao().vertices) {
 //            boolean[] visited = new boolean[RedeHub.getInstance().getRedeDistribuicao().numVertices()];
@@ -25,19 +30,30 @@ public class PercursoMinimoController {
 //                maxDist = dist[getBiggestDist(dist)];
 //                tempLocalInicio = local;
 //                tempLocalFim = path[getBiggestDist(dist)];
-//                Local[] tempPath = path;
+//                tempPath = path;
 //            }
 //        }
+//
+//        stringBuilder.append("Locais mais afastados da rede:\n");
+//        stringBuilder.append("Local Inicio: "+tempLocalInicio.toString()+" | Local Fim: "+tempLocalFim.toString()+"\n");
+//        stringBuilder.append("Percurso: ");
+//        for (int i = 0; i < tempPath.length; i++) {
+//            stringBuilder.append(" -> "+tempPath[i].getNumId());
+//        }
+//        stringBuilder.append("\n");
+//
+//        return stringBuilder.toString();
 //    }
 //
 //    public static int getBiggestDist(Integer[] dist){
-//        int temp = 0;
+//        int temp = 0, index=0;
 //        for (int i = 0; i < dist.length; i++) {
 //            if (temp < dist[i]){
-//                temp = i;
+//                temp = dist[i];
+//                index=i;
 //            }
 //        }
-//        return temp;
+//        return index;
 //    }
 
 }

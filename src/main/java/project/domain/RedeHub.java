@@ -13,17 +13,18 @@ public class RedeHub {
     private RedeHub() {
         this.redeDistribuicao = new MapGraph<>(false);
     }
+
     public static RedeHub getInstance() {
         return instance;
     }
 
-    public boolean addHub(String numId, Double lat, Double lon) {
+    public void addHub(String numId, Double lat, Double lon) {
         Local vert = new Local(numId, lat, lon);
-        return redeDistribuicao.addVertex(vert);
+        redeDistribuicao.addVertex(vert);
     }
 
-    public boolean addRoute(Local orig, Local dest, Integer distance) {
-        return redeDistribuicao.addEdge(orig,dest,distance);
+    public void addRoute(Local orig, Local dest, Integer distance) {
+        redeDistribuicao.addEdge(orig, dest, distance);
     }
 
     @Override

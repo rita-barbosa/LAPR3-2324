@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class ExcecaoFicheiro extends Exception {
 
@@ -72,15 +71,18 @@ public class ExcecaoFicheiro extends Exception {
         List<LocalTime> horasRega = new ArrayList<>();
         LocalTime tempoAtualP;
         LocalTime tempoAtualI;
-        String linha;
+
 
         try (BufferedReader br = new BufferedReader(new FileReader(ficheiro))) {
-            getHorasRega(br.readLine().split(","), horasRega);
+            String linha =  br.readLine();
+            validarLinhaHoras(linha);
+            getHorasRega(linha.split(","), horasRega);
 
             tempoAtualP = horasRega.get(0);
             tempoAtualI = horasRega.get(0);
 
             while ((linha = br.readLine()) != null) {
+                validarLinha(linha);
                 String[] info = linha.split(",");
                 int duracao = Integer.parseInt(info[1]);
 

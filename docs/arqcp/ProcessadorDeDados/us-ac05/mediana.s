@@ -4,6 +4,11 @@
 	.global mediana
 
 mediana:
+	movl $0,%eax
+
+	cmpl $0, %esi
+	je end
+
 	pushq %rdi
 	pushq %rsi
 	call sort_array
@@ -14,9 +19,11 @@ mediana:
 	cdq
 	movl $2, %ecx
 	idivl %ecx
-	
+
 	movl %eax, %edx
-	movl (%rdi, %rdx, 4), %eax	
+	movl (%rdi, %rdx, 4), %eax
+
+end:
 	ret
 	
 	

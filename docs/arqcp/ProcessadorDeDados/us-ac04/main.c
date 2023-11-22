@@ -7,7 +7,7 @@ int main(void){
 	int* ptr = vec;
 	int num = 5;
 	
-	 array_sort(ptr,num);
+	sort_array(ptr,num);
 
 	printf("RESULTADO:\n");
 	

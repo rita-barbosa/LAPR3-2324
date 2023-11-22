@@ -23,41 +23,30 @@ public class PercursoMinimoUI implements Runnable{
 
     @Override
     public void run() {
+        int autonomia=getAutonomy();
         System.out.println("|-------------------------------------------------------|");
         System.out.println("| Rota Eficiente com Paragens Mínimas para Carregamento |");
         System.out.println("|-------------------------------------------------------|");
-        System.out.print("|                       AUTONOMIA: ");
-        int autonomia = read.nextInt();
-        System.out.println("                     |");
+        System.out.println(String.format("|                       AUTONOMIA: %7d metros       |", autonomia));
         System.out.println("|-------------------------------------------------------|");
         EstruturaDeEntregaDeDados estruturaDeEntregaDeDados = analyzeData(autonomia);
         if(estruturaDeEntregaDeDados.isFlag()) {
-            System.out.println(String.format("| Local Inicial: %11s | Local Final: %11s |", estruturaDeEntregaDeDados.getPercurso().get(0), estruturaDeEntregaDeDados.getPercurso().get(estruturaDeEntregaDeDados.getPercurso().size() - 1)));
+            System.out.println(String.format("| Local Inicial: %11s | Local Final: %11s |", estruturaDeEntregaDeDados.getPercurso().get(0).getNumId(), estruturaDeEntregaDeDados.getPercurso().get(estruturaDeEntregaDeDados.getPercurso().size() - 1).getNumId()));
             System.out.println("|-------------------------------------------------------|");
             System.out.println("|                        Percurso:                      |");
             System.out.println("|-------------------------------------------------------|");
             System.out.println(String.format("|               Distância Total Percorrida: %6d      |", estruturaDeEntregaDeDados.getDistanciaTotal()));
             System.out.println("|-------------------------------------------------------|");
-            System.out.println("| ");
-            for (int i = 0; i < estruturaDeEntregaDeDados.getPercurso().size(); i++) {
-                System.out.println(estruturaDeEntregaDeDados.getPercurso().get(i) + " ");
-                if (i % 11 == 0) {
-                    System.out.println("|");
-                    System.out.println("");
-                    System.out.println("|");
-                }
+            System.out.println(String.format("| %27s                           |",estruturaDeEntregaDeDados.getPercurso().get(0).getNumId()));
+            for (int i = 1; i < estruturaDeEntregaDeDados.getPercurso().size(); i++) {
+                System.out.println(String.format("| %26s                            |", "V"));
+                System.out.println(String.format("| %27s                           |",estruturaDeEntregaDeDados.getPercurso().get(i).getNumId()));
             }
             System.out.println("|-------------------------------------------------------|");
             System.out.println("|                     Carregamentos:                    |");
             System.out.println("|-------------------------------------------------------|");
-            System.out.println("| ");
             for (int i = 0; i < estruturaDeEntregaDeDados.getCarregamentos().size(); i++) {
-                System.out.println(estruturaDeEntregaDeDados.getPercurso().get(estruturaDeEntregaDeDados.getCarregamentos().get(i)) + " ");
-                if (i % 11 == 0) {
-                    System.out.println("|");
-                    System.out.println();
-                    System.out.println("|");
-                }
+                System.out.println(String.format("| %27s                           |",estruturaDeEntregaDeDados.getPercurso().get(estruturaDeEntregaDeDados.getCarregamentos().get(0))));
             }
             System.out.println("|-------------------------------------------------------|");
             System.out.println(String.format("|                Numero De Carregamentos: %3d           |", estruturaDeEntregaDeDados.getCarregamentos().size()));
@@ -68,5 +57,12 @@ public class PercursoMinimoUI implements Runnable{
         }
     }
 
+    public int getAutonomy(){
+        System.out.println("|-------------------------------------------------------|");
+        System.out.println("|             Qual É A Autonomia Do Veículo?            |");
+        System.out.println("|-------------------------------------------------------|");
+        int num = read.nextInt();
+        return num;
+    }
     public Scanner read = new Scanner(System.in);
 }

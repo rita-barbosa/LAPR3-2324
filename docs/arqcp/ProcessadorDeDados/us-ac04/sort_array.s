@@ -1,9 +1,9 @@
 .section .data 
 	
 .section .text
-	.global array_sort
+	.global sort_array
 
-array_sort:
+sort_array:
 	movq $0, %rcx
 	movl (%rdi,%rcx,4), %r8d
 	

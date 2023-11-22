@@ -93,17 +93,18 @@ public class Algorithms {
                 int keyVAdj = g.key(edge.getVDest());
                 if (!visited[keyVAdj]) {
                     E s = sum.apply(dist[vKey], edge.getWeight());
-                    if(dist[keyVAdj] == null || ce.compare(dist[keyVAdj], s) > 0)
-                    dist[keyVAdj] = s;
-                    pathKeys[keyVAdj] = vOrig;
+                    if (dist[keyVAdj] == null || ce.compare(dist[keyVAdj], s) > 0) {
+                        dist[keyVAdj] = s;
+                        pathKeys[keyVAdj] = vOrig;
+                    }
                 }
             }
 
-            E minDist = null;
+            E minDist = zero;
             vOrig = null;
             for (V vertex : g.vertices()) {
                 int vertexKey = g.key(vertex);
-                if (!visited[vertexKey] && (dist[vertexKey] != null) && (minDist == null) || ce.compare(dist[vertexKey], minDist) < 0) {
+                if (!visited[vertexKey] && (dist[vertexKey] != null) && ((minDist == null) || ce.compare(dist[vertexKey], minDist) < 0)) {
                     minDist = dist[vertexKey];
                     vOrig = vertex;
                 }

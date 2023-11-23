@@ -1,5 +1,7 @@
 package project.exception;
 
+import java.time.LocalDate;
+
 public class ExcecaoData extends Exception{
     public ExcecaoData(String s) {
         super(s);
@@ -36,5 +38,18 @@ public class ExcecaoData extends Exception{
             return 29;
         }
         return diasPorMes[mes];
+    }
+
+    public static void validarDataDeOperacao(String data) throws ExcecaoData {
+        String[] partes = data.split("/");
+        int dia = Integer.parseInt(partes[0]);
+        int mes = Integer.parseInt(partes[1]);
+        int ano = Integer.parseInt(partes[2]);
+
+        LocalDate d = LocalDate.of(ano,mes,dia);
+        if(d.isAfter(LocalDate.now())){
+            throw new ExcecaoData("ERRO: Não é possível registar operações no futuro.");
+        }
+
     }
 }

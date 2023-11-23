@@ -7,13 +7,14 @@ import project.domain.Rega;
 import project.ui.console.utils.Utils;
 
 import java.math.BigDecimal;
-import java.sql.*;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 public class OperacaoRepository {
@@ -274,21 +275,21 @@ public class OperacaoRepository {
 
             callStmt.setString(2, "Monda");
             callStmt.setString(3, tipoUnidade);
-            callStmt.setDouble(5, quantidade);
+            callStmt.setDouble(4, quantidade);
 
             java.sql.Date sqlDataOp = new java.sql.Date(dataOperacao.getTime());
-            callStmt.setDate(6, sqlDataOp);
+            callStmt.setDate(5, sqlDataOp);
 
-            callStmt.setString(7, nomeParcela);
-            callStmt.setString(8, nomeComum);
-            callStmt.setString(9, variedade);
+            callStmt.setString(6, nomeParcela);
+            callStmt.setString(7, nomeComum);
+            callStmt.setString(8, variedade);
 
             callStmt.execute();
 
             BigDecimal bigDecimalValue = (BigDecimal) callStmt.getObject(1);
             int opStatus = bigDecimalValue.intValue();
 
-            if (opStatus == 1) {
+            if (opStatus == 0) {
                 success = true;
             }
 

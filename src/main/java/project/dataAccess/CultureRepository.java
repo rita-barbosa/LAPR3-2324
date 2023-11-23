@@ -1,14 +1,16 @@
 package project.dataAccess;
 
 import oracle.jdbc.OracleTypes;
+import project.domain.Planta;
 import project.ui.console.utils.Utils;
 
-import java.math.BigDecimal;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class CultureRepository {
     public List<String> getCultures() throws SQLException {
@@ -37,23 +39,24 @@ public class CultureRepository {
         return list;
     }
 
-    public Map<String, String> getCulturesByField(String nomeParcela) throws SQLException {
+    public  List<Planta> getCulturesByField(String nomeParcela) throws SQLException {
         CallableStatement callStmt = null;
         ResultSet resultSet = null;
-        Map<String, String> map = new HashMap<>();
+        List<Planta> culturasInstaladas;
 
         try {
             Connection connection = DatabaseConnection.getInstance().getConnection();
-            callStmt = connection.prepareCall("{ ? = call getCulturesByField(?) }");
+            callStmt = connection.prepareCall("{ ? = call obterCulturasValidasDeParcela(?) }");
 
-            callStmt.registerOutParameter(1, OracleTypes.NUMBER);
+            callStmt.registerOutParameter(1, OracleTypes.CURSOR);
 
-            callStmt.setString(1, nomeParcela);
+            callStmt.setString(2, nomeParcela);
 
             callStmt.execute();
 
             resultSet = (ResultSet) callStmt.getObject(1);
-            connection.commit();
+
+            culturasInstaladas = resultSetTypeToCultureList(resultSet);
         } finally {
             if (!Objects.isNull(callStmt)) {
                 callStmt.close();
@@ -62,7 +65,20 @@ public class CultureRepository {
                 resultSet.close();
             }
         }
-        return map;
+        return culturasInstaladas;
+    }
+
+    private List<Planta> resultSetTypeToCultureList(ResultSet resultSet) throws SQLException {
+        List<Planta> culturasInstaladas = new ArrayList<>();
+        while (true) {
+            if (!resultSet.next()) break;
+            Planta planta = new Planta(
+                    resultSet.getString("nomeComum"),
+                    resultSet.getString("variedade")
+            );
+            culturasInstaladas.add(planta);
+        }
+        return culturasInstaladas;
     }
 
     public List<String> getPlantGrowthStage() {

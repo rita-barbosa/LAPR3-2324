@@ -1,6 +1,7 @@
 package project.controller;
 
 import project.dataAccess.*;
+import project.domain.Planta;
 
 import java.sql.SQLException;
 import java.util.Date;
@@ -62,16 +63,11 @@ public class RegistarOperacaoMondaController {
         return fieldsRepository.getFieldsNames();
     }
 
-//    public Map<String, String> getCulturesByField(String nomeParcela) throws SQLException { // key -> nomeComum; value -> variedade
-//        return cultureRepository.getCulturesByField(nomeParcela);
-//    }
-
-    public boolean registerMondaOperation(String nomeParcela, String nomeComum, String variedade,Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
-        return operacaoRepository.registarOperacaoMonda(nomeParcela, nomeComum, variedade, dataOperacao, tipoUnidade, quantidade);
+    public List<Planta> getCulturesByField(String nomeParcela) throws SQLException {
+        return cultureRepository.getCulturesByField(nomeParcela);
     }
 
-    public boolean verifyIfOperationExists(String nomeParcela, String nomeComum, String variedade, Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
-        operacaoRepository.verifyIfCulturaOperationExists(nomeParcela,"Monda",nomeComum,variedade,dataOperacao,tipoUnidade,quantidade);
-        return false;
+    public boolean registerMondaOperation(String nomeParcela, Planta cultura,Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
+        return operacaoRepository.registarOperacaoMonda(nomeParcela, cultura.getNomeComum(), cultura.getVariedade(), dataOperacao, tipoUnidade, quantidade);
     }
 }

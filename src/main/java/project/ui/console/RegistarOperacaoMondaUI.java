@@ -1,14 +1,13 @@
 package project.ui.console;
 
 import project.controller.RegistarOperacaoMondaController;
+import project.domain.Planta;
 import project.ui.console.utils.Utils;
 
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Scanner;
 
 public class RegistarOperacaoMondaUI implements Runnable {
     private RegistarOperacaoMondaController controller;
@@ -16,8 +15,7 @@ public class RegistarOperacaoMondaUI implements Runnable {
     SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
     private Date dataOperacao;
     private String nomeParcela;
-    private String nomeComum;
-    private String variedade;
+    private Planta cultura;
     private String tipoUnidade;
     private Double quantidade;
 
@@ -33,50 +31,46 @@ public class RegistarOperacaoMondaUI implements Runnable {
         try {
             int index;
             System.out.println("-----------------------------------------");
-            System.out.println("Registar uma nova Operação de Semeadura");
+            System.out.println("Registar operação de monda");
             System.out.println("-----------------------------------------");
 
-            Scanner scanner = new Scanner(System.in);
-
             List<String> fields = controller.getFieldsNames();
-            index = Utils.showAndSelectIndexNoCancel(fields, "Selecione a parcela:");
+            index = Utils.showAndSelectIndex(fields, "Selecione a parcela:");
+            verificarIndex(index);
             nomeParcela = fields.get(index);
 
-//                List<String> cultures = controller.getCulturesByField(nomeParcela);
-//                index = Utils.showAndSelectIndex(cultures, "Selecione a cultura:");
-//                String cultura = cultures.get(index);
-//                String[] culturaInfo = cultura.split(" ");
-//                nomeComum = culturaInfo[0];
-//                variedade = culturaInfo[1];
+            List<Planta> culturasInstaladas = controller.getCulturesByField(nomeParcela);
+            index = Utils.showAndSelectIndex(culturasInstaladas, "Selecione a cultura:");
+            verificarIndex(index);
+            cultura = culturasInstaladas.get(index);
 
             List<String> unitTypes = controller.getUnitTypes();
-            index = Utils.showAndSelectIndexNoCancel(unitTypes, "Indique o tipo de unidade:");
+            index = Utils.showAndSelectIndex(unitTypes, "Indique o tipo de unidade:");
+            verificarIndex(index);
             tipoUnidade = unitTypes.get(index);
 
-            System.out.print("Data da operação (formato: dd/mm/yyyy): ");
-            String dataOp = scanner.next();
-            Utils.validateDate(dataOp);
-            dataOp = dataOp.replace("/", "-");
-            dataOperacao = formatter.parse(dataOp);
+            dataOperacao = Utils.readDateFromConsole("Indique a data da operação (formato: dd/mm/yyyy): \n");
 
             quantidade = Utils.readDoubleFromConsole("Indique a quantidade a mondar:");
 
-            //  boolean exists = controller.verifyIfOperationExists(nomeParcela, nomeComum, variedade, dataOperacao, tipoUnidade, quantidade);
+            boolean opStatus = controller.registerMondaOperation(nomeParcela, cultura, dataOperacao, tipoUnidade, quantidade);
 
-            if (false) {
-                boolean opStatus = controller.registerMondaOperation(nomeParcela, nomeComum, variedade, dataOperacao, tipoUnidade, quantidade);
-                if (opStatus) {
-                    System.out.println("\nOperação de semeadura registada com sucesso.\n");
-                } else {
-                    System.out.println("\nFalha em registar a operação de semeadura.\n");
-                }
+            if (opStatus) {
+                System.out.println("\nOperação de semeadura registada com sucesso.\n");
             } else {
-                throw new SQLException("Os dados introduzidos se encontram no registo de uma operação já existente no sistema.");
+                System.out.println("\nERRO: Falha ao registar a operação de semeadura.\n");
             }
-        } catch (ParseException | SQLException e) {
-            System.out.println("\nFalha em registar a operação de semeadura.\n" + e.getMessage());
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage().split("\n")[0].substring(11) + "\n");
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
         }
     }
 
-
+    private void verificarIndex(int index) {
+        if (index == -1) {
+            throw new RuntimeException("\nA cancelar registo da operação ...\n");
+        }
+    }
 }

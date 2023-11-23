@@ -13,18 +13,14 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Utils {
 
     static public String readLineFromConsole(String prompt) {
         try {
             System.out.println("\n" + prompt);
-
             InputStreamReader converter = new InputStreamReader(System.in);
             BufferedReader in = new BufferedReader(converter);
-
             return in.readLine();
         } catch (Exception e) {
             e.printStackTrace();
@@ -108,19 +104,25 @@ public class Utils {
 //    }
 
     static public Date readDateFromConsole(String prompt) {
+        boolean invalid = true;
+        Date d = null;
         do {
             try {
                 String strDate = readLineFromConsole(prompt);
+                ExcecaoData.verificarData(strDate);
+                ExcecaoData.validarDataDeOperacao(strDate);
 
-                SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-
-                Date date = df.parse(strDate);
-
-                return date;
+                SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+                strDate = strDate.replace("/", "-");
+                d = formatter.parse(strDate);
+                invalid = false;
             } catch (ParseException ex) {
-                Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("ERRO: Não foi possível ler a data. Por favor, insira novamente.");
+            } catch (ExcecaoData e) {
+                System.out.println(e.getMessage());
             }
-        } while (true);
+        } while (invalid);
+        return d;
     }
 
     static public boolean confirm(String message) {
@@ -194,6 +196,7 @@ public class Utils {
     public static void validateDate(String date){
         try{
             ExcecaoData.verificarData(date);
+            ExcecaoData.validarDataDeOperacao(date);
         }catch (ExcecaoData e) {
             System.out.println(e.getMessage());
         }

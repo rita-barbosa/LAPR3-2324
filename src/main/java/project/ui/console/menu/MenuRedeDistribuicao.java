@@ -21,7 +21,7 @@ public class MenuRedeDistribuicao implements Runnable {
         options.add(new MenuItem("Rede de ligação mínima.", new RedeLigacaoMinimaUI()));
         int option = 0;
         do {
-            option = Utils.showAndSelectIndex(options, "Sistema de Rega");
+            option = Utils.showAndSelectIndex(options, "Rede de distribuição");
             if ((option >= 0) && (option < options.size())) {
                 options.get(option).run();
             }

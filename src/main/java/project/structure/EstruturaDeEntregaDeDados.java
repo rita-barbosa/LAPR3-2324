@@ -51,4 +51,21 @@ public class EstruturaDeEntregaDeDados {
     public boolean isFlag() {
         return flag;
     }
+
+    @Override
+    public boolean equals(Object o) {
+
+        // If the object is compared with itself then return true
+        if (o == this) {
+            return true;
+        }
+
+        // typecast o to Complex so that we can compare data members
+        EstruturaDeEntregaDeDados c = (EstruturaDeEntregaDeDados) o;
+
+        if(c.isFlag() == (this.isFlag() && c.carregamentos.equals(this.carregamentos) && c.distanciaTotal == this.distanciaTotal && c.percurso.equals(this.percurso))){
+            return true;
+        }
+        return false;
+    }
 }

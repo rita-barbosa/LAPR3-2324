@@ -14,7 +14,7 @@ public class PercursoMinimoUI implements Runnable{
     /**
      * Runs this operation.
      */
-
+    private final Scanner read = new Scanner(System.in);
     private final PercursoMinimoController controller;
 
     public PercursoMinimoUI(PercursoMinimoController controller) {
@@ -27,7 +27,7 @@ public class PercursoMinimoUI implements Runnable{
         System.out.println("|-------------------------------------------------------|");
         System.out.println("| Rota Eficiente com Paragens Mínimas para Carregamento |");
         System.out.println("|-------------------------------------------------------|");
-        System.out.println(String.format("|                       AUTONOMIA: %7d metros       |", autonomia));
+        System.out.println(String.format("|                       AUTONOMIA: %7d (m)          |", autonomia));
         System.out.println("|-------------------------------------------------------|");
         EstruturaDeEntregaDeDados estruturaDeEntregaDeDados = analyzeData(autonomia);
         if(estruturaDeEntregaDeDados.isFlag()) {
@@ -35,7 +35,7 @@ public class PercursoMinimoUI implements Runnable{
             System.out.println("|-------------------------------------------------------|");
             System.out.println("|                        Percurso:                      |");
             System.out.println("|-------------------------------------------------------|");
-            System.out.println(String.format("|               Distância Total Percorrida: %6d      |", estruturaDeEntregaDeDados.getDistanciaTotal()));
+            System.out.println(String.format("|               Distância Total Percorrida: %6d (m)  |", estruturaDeEntregaDeDados.getDistanciaTotal()));
             System.out.println("|-------------------------------------------------------|");
             System.out.println(String.format("| %27s                           |",estruturaDeEntregaDeDados.getPercurso().get(0).getNumId()));
             for (int i = 1; i < estruturaDeEntregaDeDados.getPercurso().size(); i++) {
@@ -55,14 +55,19 @@ public class PercursoMinimoUI implements Runnable{
             System.out.println("|             A Autonomia Não É O Suficiente            |");
             System.out.println("|-------------------------------------------------------|");
         }
+        System.out.println("");
+        System.out.println("");
     }
 
     public int getAutonomy(){
+        int returna;
         System.out.println("|-------------------------------------------------------|");
-        System.out.println("|             Qual É A Autonomia Do Veículo?            |");
+        System.out.println("|          Qual A Autonomia Do Veiculo? (Metros)        |");
         System.out.println("|-------------------------------------------------------|");
-        int num = read.nextInt();
-        return num;
+        returna = read.nextInt();
+        System.out.println("|-------------------------------------------------------|");
+        System.out.println("");
+        System.out.println("");
+        return returna;
     }
-    public Scanner read = new Scanner(System.in);
 }

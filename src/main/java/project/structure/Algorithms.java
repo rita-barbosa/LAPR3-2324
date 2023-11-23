@@ -164,31 +164,8 @@ public class Algorithms {
     }
 
     /**
-     * Helper method to reconstruct the shortest path from vOrig to vDest
-     *
-     * @param g         application.ESINF.graph
-     * @param vOrig     origin vertex
-     * @param vDest     destination vertex
-     * @param pathKeys  minimum path vertices keys
-     * @param shortPath returns the vertices which make the shortest path
-     */
-    private static <V, E> void reconstructShortestPath(Graph<V, E> g, V vOrig, V vDest, V[] pathKeys, LinkedList<V> shortPath) { //novo método --talvez não seja preciso
-        int vOrigKey = g.key(vOrig);
-        int vDestKey = g.key(vDest);
-
-        // Reconstruct the path in reverse order
-        while (!vDest.equals(vOrig)) {
-            shortPath.addFirst(vDest);
-            vDest = pathKeys[vDestKey];
-            vDestKey = g.key(vDest);
-        }
-
-        // Add the origin vertex to the path
-        shortPath.addFirst(vOrig);
-    }
-
-    /**
      * Shortest-path between a vertex and all other vertices
+    /** Shortest-path between a vertex and all other vertices
      *
      * @param g     graph
      * @param vOrig start vertex
@@ -258,19 +235,6 @@ public class Algorithms {
         }
     }
 
-//    /** Calculates the minimum distance graph using Floyd-Warshall
-//     *
-//     * @param g initial graph
-//     * @param ce comparator between elements of type E
-//     * @param sum sum two elements of type E
-//     * @return the minimum distance graph
-//     */
-//    public static <V,E> MatrixGraph <V,E> minDistGraph(Graph <V,E> g, Comparator<E> ce, BinaryOperator<E> sum) {
-//
-//        throw new UnsupportedOperationException("Not supported yet.");
-//    }
-
-
 
     /**
      * Calculates the betweenness centrality for each vertex in the graph using Brandes' algorithm.
@@ -316,6 +280,7 @@ public class Algorithms {
                     if (distance.get(neighbor) == distance.get(currentVertex) + 1) {
                         numShortestPaths.put(neighbor, numShortestPaths.getOrDefault(neighbor, 0) + numShortestPaths.get(currentVertex));
                         dependency.put(neighbor, dependency.get(neighbor) + 1);
+                        //dependency.put(neighbor, dependency.get(neighbor) + dependency.get(currentVertex) + 1);
                     }
                 }
             }

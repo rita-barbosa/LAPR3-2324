@@ -12,7 +12,6 @@ public class Edge<V, E> {
     final private V vDest;        // vertex destination
     private E weight;        // Edge weight
 
-
     public Edge(V vOrig, V vDest, E weight) {
         if ((vOrig == null) || (vDest == null)) throw new RuntimeException("Edge vertices cannot be null!");
         this.vOrig = vOrig;
@@ -35,10 +34,14 @@ public class Edge<V, E> {
         this.weight = weight;
     }
 
+    public Edge<V, E> reverse() {
+        return new Edge<>(vDest, vOrig, weight);
+    }
+
 
     @Override
     public String toString() {
-        return String.format("%s -> %s | Weight: %s", vOrig, vDest, weight);
+        return String.format("%s -> %s | %8s %s", vOrig, vDest, "Weight: ", weight);
     }
 
     @Override
@@ -54,4 +57,6 @@ public class Edge<V, E> {
     public int hashCode() {
         return Objects.hash(vOrig, vDest);
     }
+
+
 }

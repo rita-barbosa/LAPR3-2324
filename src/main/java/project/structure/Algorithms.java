@@ -1,11 +1,17 @@
 package project.structure;
 
+import org.apache.velocity.util.introspection.UberspectImpl;
+import project.domain.Local;
+
+import javax.swing.*;
+import java.awt.geom.Area;
 import java.util.*;
 import java.util.function.BinaryOperator;
 
 public class Algorithms {
 
-    /** Performs breadth-first search of a Graph starting in a vertex
+    /**
+     * Performs breadth-first search of a Graph starting in a vertex
      *
      * @param g Graph instance
      * @param vert vertex that will be the source of the search
@@ -181,13 +187,14 @@ public class Algorithms {
         shortPath.addFirst(vOrig);
     }
 
-    /** Shortest-path between a vertex and all other vertices
+    /**
+     * Shortest-path between a vertex and all other vertices
      *
-     * @param g graph
+     * @param g     graph
      * @param vOrig start vertex
-     * @param ce comparator between elements of type E
-     * @param sum sum two elements of type E
-     * @param zero neutral element of the sum in elements of type E
+     * @param ce    comparator between elements of type E
+     * @param sum   sum two elements of type E
+     * @param zero  neutral element of the sum in elements of type E
      * @param paths returns all the minimum paths
      * @param dists returns the corresponding minimum distances
      * @return if vOrig exists in the graph true, false otherwise
@@ -215,9 +222,9 @@ public class Algorithms {
             paths.add(null);
             dists.add(null);
         }
-        for (V vDist:g.vertices()) {
+        for (V vDist : g.vertices()) {
             int i = g.key(vDist);
-            if(dist[i] != null){
+            if (dist[i] != null) {
                 LinkedList<V> shortPath = new LinkedList<>();
                 getPath(g, vOrig, vDist, pathKeys, shortPath);
                 paths.set(i, shortPath);
@@ -239,7 +246,7 @@ public class Algorithms {
      * @param path     stack with the minimum path (correct order)
      */
     private static <V, E> void getPath(Graph<V, E> g, V vOrig, V vDest,
-                                       V [] pathKeys, LinkedList<V> path) {
+                                       V[] pathKeys, LinkedList<V> path) {
 
         if (vOrig.equals(vDest))
             path.push(vDest);
@@ -271,9 +278,9 @@ public class Algorithms {
      * between other vertices in the graph.
      *
      * @param graph The graph for which to calculate betweenness centrality.
+     * @param <V>   The type of vertex in the graph.
+     * @param <E>   The type of edge in the graph.
      * @return A map where each vertex is associated with its betweenness centrality value.
-     * @param <V> The type of vertex in the graph.
-     * @param <E> The type of edge in the graph.
      */
     public static <V, E> Map<V, Integer> betweennessCentrality(Graph<V, E> graph) {
         Map<V, Integer> centrality = new HashMap<>();
@@ -319,7 +326,6 @@ public class Algorithms {
                 }
             }
         }
-
         return centrality;
     }
 }

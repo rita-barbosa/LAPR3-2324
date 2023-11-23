@@ -23,7 +23,7 @@ public class Main {
         } catch (UnknownHostException e) {
             System.out.println("\nDatabase Server not reachable!");
         } catch (Exception e) {
-            System.out.println("App properties not loaded!" + e.getMessage());
+            System.out.println("App properties not loaded!\n" + e.getMessage());
         }
     }
 

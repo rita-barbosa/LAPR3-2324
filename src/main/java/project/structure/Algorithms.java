@@ -100,7 +100,7 @@ public class Algorithms {
                 }
             }
 
-            E minDist = zero;
+            E minDist = null;
             vOrig = null;
             for (V vertex : g.vertices()) {
                 int vertexKey = g.key(vertex);

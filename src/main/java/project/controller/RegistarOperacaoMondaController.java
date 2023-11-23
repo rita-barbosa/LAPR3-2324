@@ -2,11 +2,9 @@ package project.controller;
 
 import project.dataAccess.*;
 
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class RegistarOperacaoMondaController {
@@ -60,15 +58,20 @@ public class RegistarOperacaoMondaController {
         return unitsRepository.getUnitDesignations();
     }
 
-//    public Map<BigDecimal, String> getFieldsNames() throws SQLException {
-//        return fieldsRepository.getFieldIds();
-//    }
-
-    public Map<String, String> getCulturesByField(String nomeParcela) throws SQLException { // key -> nomeComum; value -> variedade
-        return cultureRepository.getCulturesByField(nomeParcela);
+    public List<String> getFieldsNames() throws SQLException {
+        return fieldsRepository.getFieldsNames();
     }
 
-    public boolean registarOperacaoMonda(String nomeParcela, String nomeComum, String variedade,Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
+//    public Map<String, String> getCulturesByField(String nomeParcela) throws SQLException { // key -> nomeComum; value -> variedade
+//        return cultureRepository.getCulturesByField(nomeParcela);
+//    }
+
+    public boolean registerMondaOperation(String nomeParcela, String nomeComum, String variedade,Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
         return operacaoRepository.registarOperacaoMonda(nomeParcela, nomeComum, variedade, dataOperacao, tipoUnidade, quantidade);
+    }
+
+    public boolean verifyIfOperationExists(String nomeParcela, String nomeComum, String variedade, Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
+        operacaoRepository.verifyIfCulturaOperationExists(nomeParcela,"Monda",nomeComum,variedade,dataOperacao,tipoUnidade,quantidade);
+        return false;
     }
 }

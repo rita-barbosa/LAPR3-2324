@@ -1,18 +1,21 @@
 ---------------------------------------------------
 ----------------------FUNÇÕES----------------------
 ---------------------------------------------------
-CREATE OR REPLACE FUNCTION registarOperacaoMonda(desigOp IN tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE,
-                                                 desigUnidade IN tipoUnidade.designacaoUnidade%TYPE,
-                                                 qtd IN NUMBER,
-                                                 dataOp IN DATE,
-                                                 nomePar IN parcela.nomeParcela%TYPE,
-                                                 nomeCom IN planta.nomeComum%TYPE,
-                                                 vard IN planta.variedade%TYPE)
+create or replace NONEDITIONABLE FUNCTION registarOperacaoMonda(desigOp IN tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE,
+                                                                desigUnidade IN tipoUnidade.designacaoUnidade%TYPE,
+                                                                qtd IN NUMBER,
+                                                                dataOp IN DATE,
+                                                                nomePar IN parcela.nomeParcela%TYPE,
+                                                                nomeCom IN planta.nomeComum%TYPE,
+                                                                vard IN planta.variedade%TYPE)
     RETURN NUMBER IS
     success NUMBER := 1;
     datas   SYS_REFCURSOR;
     dataIni DATE;
     idOp    Number;
+    invalidOperation exception;
+    invalidArea exception;
+    invalidCulture exception;
 BEGIN
     BEGIN
         SAVEPOINT antesRegisto;
@@ -25,11 +28,9 @@ BEGIN
                     dataIni;
                 EXIT WHEN datas%notfound;
 
-                IF((obterAreaPlantada(nomePar,nomeCom,vard,dataIni) < qtd)) THEN
-                    success := 1;
-                ELSE
+                IF((obterAreaPlantada(nomePar,nomeCom,vard,dataIni) > qtd)) THEN
                     IF (temDataFinal(nomePar,nomeCom,vard,dataIni)) THEN
-                        success := 1;
+                        RAISE invalidCulture;
                     ELSE
                         idOp := novoIdOperacao();
 
@@ -41,8 +42,12 @@ BEGIN
 
                         success := 0;
                     END IF;
+                ELSE
+                    RAISE invalidArea;
                 END IF;
             END LOOP;
+        ELSE
+            RAISE invalidOperation;
         END IF;
 
         IF( success = 1) THEN
@@ -52,9 +57,19 @@ BEGIN
         END IF;
 
     EXCEPTION
+        WHEN invalidCulture THEN
+            ROLLBACK TO SAVEPOINT antesRegisto;
+            RAISE_APPLICATION_ERROR(-20001, 'ERRO: A cultura selecionada não se encontra na parcela.');
+        WHEN invalidArea THEN
+            ROLLBACK TO SAVEPOINT antesRegisto;
+            RAISE_APPLICATION_ERROR(-20001, 'ERRO: Não é possível mondar a quantidade pretendida.');
+        WHEN invalidOperation THEN
+            ROLLBACK TO SAVEPOINT antesRegisto;
+            RAISE_APPLICATION_ERROR(-20001, 'ERRO: Os dados introduzidos já existem no sistema.');
         WHEN OTHERS THEN
             ROLLBACK TO SAVEPOINT antesRegisto;
             success := 1;
+
     END;
     RETURN success;
 END;
@@ -149,7 +164,8 @@ BEGIN
 END;
 /
 ----------------------------------------------------
-CREATE OR REPLACE FUNCTION temDataFinal(nomePar IN parcela.nomeParcela%TYPE,
+CREATE OR REPLACE FUNCTION
+    (nomePar IN parcela.nomeParcela%TYPE,
                                         nomeCom IN culturaInstalada.nomeComum%TYPE,
                                         vard IN culturaInstalada.variedade%TYPE,
                                         dataIni IN culturaInstalada.dataInicial%TYPE)
@@ -175,9 +191,9 @@ BEGIN
     END;
 END;
 /
-
-
-
+------------------------------------------------
+------------------BLOCO ANÓNIMO-----------------
+------------------------------------------------
 SET SERVEROUTPUT ON;
 
 DECLARE

@@ -40,9 +40,8 @@ public class RedeHub {
     }
 
 
-    //método para calcular a influência
-    public static Map<Local, Integer> calculateInfluence(MapGraph<Local, Integer> graph) {
-        Map<Local, Integer> influence = new LinkedHashMap<>(); //colocar como treeMap para depois fazer a ordenação decrescente
+    public Map<Local, Integer> calculateInfluence(MapGraph<Local, Integer> graph) {
+        Map<Local, Integer> influence = new HashMap<>();
         for (Local vertex : graph.vertices()) {
             influence.put(vertex, graph.outDegree(vertex));
         }
@@ -50,7 +49,7 @@ public class RedeHub {
         List<Map.Entry<Local, Integer>> sortedInfluencies = new ArrayList<>(influence.entrySet());
         sortedInfluencies.sort((e1, e2) -> Integer.compare(e2.getValue(), e1.getValue()));
 
-        Map<Local, Integer> sortedInfluence = new LinkedHashMap<>(); // Para ser mantida a ordem dos elementos
+        Map<Local, Integer> sortedInfluence = new LinkedHashMap<>();
 
         // Colocar os valores no map
         for (Map.Entry<Local, Integer> entry : sortedInfluencies) {
@@ -60,46 +59,70 @@ public class RedeHub {
         return sortedInfluence;
     }
 
-    public static Map<Local, Integer> calculateProximity(MapGraph<Local, Integer> graph) {
+    public Map<Local, Integer> calculateProximity(MapGraph<Local, Integer> graph) {
         Map<Local, Integer> proximity = new HashMap<>();
 
         for (Local vertex : graph.vertices()) {
-            int somaDistancias = 0;
-            for (Local destination : graph.vertices()) {
-                if (!vertex.equals(destination)) {
-                    int distancia = calculateDistance(graph, vertex, destination);
-                    somaDistancias += distancia;
-                }
-            }
-            proximity.put(vertex, somaDistancias);
+            Integer proximityValue = calculateVertexProximity(graph, vertex);
+            proximity.put(vertex, proximityValue);
         }
 
-        //transformar em lista e ordenar se for preciso!!!! --> não tem nos critérios de aceitação
-        return proximity;
+        List<Map.Entry<Local, Integer>> sortedProximities = new ArrayList<>(proximity.entrySet());
+        sortedProximities.sort(Comparator.comparingInt(Map.Entry::getValue));
+
+        Map<Local, Integer> sortedProximityMap = new LinkedHashMap<>();
+
+
+        for (Map.Entry<Local, Integer> entry : sortedProximities) {
+            sortedProximityMap.put(entry.getKey(), entry.getValue());
+        }
+
+        return sortedProximityMap;
     }
 
-    private static int calculateDistance(MapGraph<Local, Integer> graph, Local vertex, Local destination) {
-        LinkedList<Local> shortestPath = new LinkedList<>();
-        Integer distancia = Algorithms.shortestPath(graph, vertex, destination, Integer::compareTo, Integer::sum, 0, shortestPath);
+    private Integer calculateVertexProximity(MapGraph<Local, Integer> graph, Local vertex) {
+        ArrayList<Integer> dists = new ArrayList<>();
+        Algorithms.shortestPaths(graph, vertex, Comparator.naturalOrder(), Integer::sum, 0, new ArrayList<>(), dists);
 
-        return distancia != null ? distancia : Integer.MAX_VALUE;
+        int proximitySum = 0;
+        for (Integer dist : dists) {
+            if (dist != null) {
+                proximitySum += dist;
+            }
+        }
+
+        return proximitySum;
     }
 
-    public static Map<Local, Integer> calculateCentrality(MapGraph<Local, Integer> graph) {
+    public Map<Local, Integer> calculateCentrality(MapGraph<Local, Integer> graph) {
         Map<Local, Integer> centrality = Algorithms.betweennessCentrality(graph);
 
-        // Converte a lista para depois ordenar
         List<Map.Entry<Local, Integer>> sortedCentralities = new ArrayList<>(centrality.entrySet());
         sortedCentralities.sort((e1, e2) -> Integer.compare(e2.getValue(), e1.getValue()));
 
-        Map<Local, Integer> sortedCentrality = new LinkedHashMap<>(); // Para ser mantida a ordem dos elementos
+        Map<Local, Integer> sortedCentrality = new LinkedHashMap<>();
 
-        // Colocar os valores no map
         for (Map.Entry<Local, Integer> entry : sortedCentralities) {
             sortedCentrality.put(entry.getKey(), entry.getValue());
         }
 
         return sortedCentrality;
+    }
+
+    public Map<Local, Integer> getTopNHubs(Map<Local,Integer> map, Integer n){
+        Map<Local, Integer> topNHubsMap = new LinkedHashMap<>();
+
+        int count = 0;
+        for (Map.Entry<Local, Integer> entry : map.entrySet()) {
+            if (count < n) {
+                topNHubsMap.put(entry.getKey(), entry.getValue());
+                count++;
+            } else {
+                break;
+            }
+        }
+
+        return topNHubsMap;
     }
 
     public static EstruturaDeEntregaDeDados analyzeData(int autonomia){

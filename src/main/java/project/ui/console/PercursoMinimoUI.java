@@ -7,7 +7,7 @@ import project.structure.EstruturaDeEntregaDeDados;
 import java.util.Scanner;
 
 import static project.controller.PercursoMinimoController.analyzeData;
-import static project.controller.PercursoMinimoController.getShortestPathForFurthestNodes;
+
 
 
 public class PercursoMinimoUI implements Runnable{
@@ -46,7 +46,7 @@ public class PercursoMinimoUI implements Runnable{
             System.out.println("|                     Carregamentos:                    |");
             System.out.println("|-------------------------------------------------------|");
             for (int i = 0; i < estruturaDeEntregaDeDados.getCarregamentos().size(); i++) {
-                System.out.println(String.format("| %27s                           |",estruturaDeEntregaDeDados.getPercurso().get(estruturaDeEntregaDeDados.getCarregamentos().get(0))));
+                System.out.println(String.format("| %27s                           |",estruturaDeEntregaDeDados.getPercurso().get(estruturaDeEntregaDeDados.getCarregamentos().get(i))));
             }
             System.out.println("|-------------------------------------------------------|");
             System.out.println(String.format("|                Numero De Carregamentos: %3d           |", estruturaDeEntregaDeDados.getCarregamentos().size()));

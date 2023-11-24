@@ -1,7 +1,7 @@
 ---------------------------------------------------
 ----------------------FUNÇÕES----------------------
 ---------------------------------------------------
-create or replace NONEDITIONABLE FUNCTION registarOperacaoMonda(desigOp IN tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE,
+CREATE OR REPLACE NONEDITIONABLE FUNCTION registarOperacaoMonda(desigOp IN tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE,
                                                                 desigUnidade IN tipoUnidade.designacaoUnidade%TYPE,
                                                                 qtd IN NUMBER,
                                                                 dataOp IN DATE,
@@ -19,8 +19,8 @@ create or replace NONEDITIONABLE FUNCTION registarOperacaoMonda(desigOp IN tipoO
 BEGIN
     BEGIN
         SAVEPOINT antesRegisto;
-        IF( verificarSeOperacaoExiste('Monda', desigUnidade, qtd,dataOp,nomePar,nomeCom,vard) = 0) THEN
-            datas := getdatainicialcultura(nomePar, nomeCom,vard);
+        IF(verificarSeOperacaoExiste('Monda', desigUnidade, qtd,dataOp,nomePar,nomeCom,vard) = 0) THEN
+            datas := obterdatainicialcultura(nomePar, nomeCom,vard);
             LOOP
                 FETCH
                     datas
@@ -75,7 +75,7 @@ BEGIN
 END;
 /
 ----------------------------------------------------
-create or replace FUNCTION verificarSeOperacaoExiste(
+CREATE OR REPLACE FUNCTION verificarSeOperacaoExiste(
     desigOp IN tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE,
     desigUnidade IN tipoUnidade.designacaoUnidade%TYPE,
     qtd IN NUMBER,
@@ -105,18 +105,7 @@ BEGIN
 END;
 /
 ----------------------------------------------------
-CREATE OR REPLACE FUNCTION novoIdOperacao
-    RETURN NUMBER AS
-    newIdOperation NUMBER;
-BEGIN
-    SELECT NVL(MAX(idOperacao), 0) + 1
-    INTO newIdOperation
-    FROM operacao;
-    RETURN newIdOperation;
-END;
-/
-----------------------------------------------------
-CREATE OR REPLACE FUNCTION getDataInicialCultura(nomePar IN parcela.nomeParcela%TYPE,
+CREATE OR REPLACE FUNCTION obterdatainicialcultura(nomePar IN parcela.nomeParcela%TYPE,
                                                  nomeCom IN planta.nomeComum%TYPE,
                                                  vard IN planta.variedade%TYPE)
     RETURN SYS_REFCURSOR IS
@@ -137,7 +126,7 @@ BEGIN
 END;
 /
 ----------------------------------------------------
-create or replace NONEDITIONABLE FUNCTION obterAreaPlantada(nomePar IN parcela.nomeParcela%TYPE,
+CREATE OR REPLACE NONEDITIONABLE FUNCTION obterAreaPlantada(nomePar IN parcela.nomeParcela%TYPE,
                                                             nomeCom IN culturaInstalada.nomeComum%TYPE,
                                                             vard IN culturaInstalada.variedade%TYPE,
                                                             dataIni IN culturaInstalada.dataInicial%TYPE)
@@ -145,7 +134,6 @@ create or replace NONEDITIONABLE FUNCTION obterAreaPlantada(nomePar IN parcela.n
     areaPlantada culturaInstalada.quantidade%TYPE;
 
 BEGIN
-
     BEGIN
         SELECT quantidade INTO areaPlantada
         FROM culturaInstalada
@@ -164,8 +152,7 @@ BEGIN
 END;
 /
 ----------------------------------------------------
-CREATE OR REPLACE FUNCTION
-    (nomePar IN parcela.nomeParcela%TYPE,
+CREATE OR REPLACE FUNCTION temDataFinal(nomePar IN parcela.nomeParcela%TYPE,
                                         nomeCom IN culturaInstalada.nomeComum%TYPE,
                                         vard IN culturaInstalada.variedade%TYPE,
                                         dataIni IN culturaInstalada.dataInicial%TYPE)
@@ -204,9 +191,9 @@ DECLARE
     v_nomeParcela parcela.nomeParcela%TYPE := 'Campo Novo';
     v_nomeComum planta.nomeComum%TYPE := 'Tremoço';
     v_variedade planta.variedade%TYPE := 'AMARELO';
-
-
     v_success NUMBER;
+
+
 BEGIN
     v_success := registarOperacaoMonda(v_desigOp, v_desigUnidade, v_qtd, v_dataOp, v_nomeParcela, v_nomeComum, v_variedade);
 

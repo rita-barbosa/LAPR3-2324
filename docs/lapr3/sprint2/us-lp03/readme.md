@@ -42,29 +42,28 @@ Isto significa que o simulador que está a ser desenvolvido, por exemplo, assume
 
 ### 1.3. Design
 
-> O grupo idealizou várias maneiras de implementação da user story, no entanto devido à falta de informação ainda não chegamos a uma conclusão definitiva.
+> NOTA : esta funcionalidade sofreu várias alterações de design. No fim chegou-se ao seguinte plano:
 
 Criação das classes:
-* RegistoRega
 * RegistoRegaUI
 * RegistoRegaController
 
 Classes utilizadas já existentes:
 * ImportarFicheiro
 * ExcecaoFicheiro
+* Rega
+* ControladorRega
 
 #### Descrição
 
-Para esta user story iremos utilizar a classe RegistoRega que irá conter os dados necessários para o 'insert' na base de dados. 
-Inicialmente, importamos o ficheiro disponibilizado pelo user, e avaliamos qual a data das regas deste. No caso desta ser posterior ao dia de atual o ficheiro nao irá ser importado.
-No entanto, se a data coincidir com a atual ou anterior o sistema aceita o ficheiro e passamos para a importação de dados.
+Para esta US iremos adicionar a implementação de 'scheduled tasks' à implementação usada para o import do plano de rega. Desta forma, após o ficheiro do plano de rega for carregado,
+o programa vai automaticamente fazer o schedule do registo da operação de rega.
+Este registo, apenas vai ocorrer quando a rega chegar ao fim (quando o tempo real igualar a hora final da rega).
+Como os dados de inserção provém do sistema, não é necessário verificar os dados. No entanto, a função sql irá conter uma verificação para que não se insira regas repetidas.
+A implementação desta funcionalidade foca-se principalmente nas classes ImportFicheiro e SistemaDeRega. Na 
+classe SistemaDeRega é feita o agendamento dos registos. No entanto, a classe ControladorRega de rega é a responsável por conetar com a base de dados e registar as regas.
 
-Com isto, teremos que fazer uma 'validação' das horas, no caso em que o dia é o atual, uma vez que podem haver regas que 
-ainda estão por acontecer.Se isto acontecer iremos criar uma schedule task que irá inserir a rega na base de dados apenas quando esta for executada.
-
-Adicionalmente, teremos um método (possivel classe) que irá tratar de fazer a inserção da rega na base de dados. Esta ainda é uma função a explorar e, por isso, ainda não está bem planeada.
-
-##### Mini gráfico esclarecedor
+##### Mini gráfico esclarecedor 
 
 ![diagrama-esclarecedor.png](diagrama-esclarecedor.png)
 

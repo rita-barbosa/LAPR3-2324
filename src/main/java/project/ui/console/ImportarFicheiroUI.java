@@ -2,6 +2,7 @@ package project.ui.console;
 
 import project.controller.ImportarFicheiroController;
 import project.domain.RedeHub;
+import project.exception.ExcecaoFicheiro;
 
 import java.util.*;
 
@@ -33,8 +34,11 @@ public class ImportarFicheiroUI implements Runnable {
                 try {
                     System.out.println("Insira o caminho para o ficheiro dos locais:");
                     String locaisFilePath = getfilepath();
+                    ExcecaoFicheiro.verificarFicheiro(locaisFilePath, ".csv");
+
                     System.out.println("Insira o caminho para o ficheiro das distâncias:");
                     String distanciaFilePath = getfilepath();
+                    ExcecaoFicheiro.verificarFicheiro(distanciaFilePath, ".csv");
 
                     successfulImport = controller.importRedeDistribuicao(locaisFilePath, distanciaFilePath);
                     RedeHub rede = RedeHub.getInstance();

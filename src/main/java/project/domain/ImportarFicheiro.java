@@ -92,8 +92,6 @@ public class ImportarFicheiro {
 
 
     public static boolean importRedeDistribuicao(String locais, String distancias) throws ExcecaoFicheiro, IOException {
-        ExcecaoFicheiro.verificarFicheiro(locais, ".csv");
-        ExcecaoFicheiro.verificarFicheiro(distancias, ".csv");
         importFicheiroLocais(locais);
         importFicheiroDistancias(distancias);
 

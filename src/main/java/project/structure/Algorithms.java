@@ -1,10 +1,5 @@
 package project.structure;
 
-import org.apache.velocity.util.introspection.UberspectImpl;
-import project.domain.Local;
-
-import javax.swing.*;
-import java.awt.geom.Area;
 import java.util.*;
 import java.util.function.BinaryOperator;
 
@@ -165,7 +160,6 @@ public class Algorithms {
 
     /**
      * Shortest-path between a vertex and all other vertices
-    /** Shortest-path between a vertex and all other vertices
      *
      * @param g     graph
      * @param vOrig start vertex
@@ -280,7 +274,6 @@ public class Algorithms {
                     if (distance.get(neighbor) == distance.get(currentVertex) + 1) {
                         numShortestPaths.put(neighbor, numShortestPaths.getOrDefault(neighbor, 0) + numShortestPaths.get(currentVertex));
                         dependency.put(neighbor, dependency.get(neighbor) + 1);
-                        //dependency.put(neighbor, dependency.get(neighbor) + dependency.get(currentVertex) + 1);
                     }
                 }
             }

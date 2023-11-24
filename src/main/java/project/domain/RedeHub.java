@@ -46,17 +46,7 @@ public class RedeHub {
             influence.put(vertex, graph.outDegree(vertex));
         }
 
-        List<Map.Entry<Local, Integer>> sortedInfluencies = new ArrayList<>(influence.entrySet());
-        sortedInfluencies.sort((e1, e2) -> Integer.compare(e2.getValue(), e1.getValue()));
-
-        Map<Local, Integer> sortedInfluence = new LinkedHashMap<>();
-
-        // Colocar os valores no map
-        for (Map.Entry<Local, Integer> entry : sortedInfluencies) {
-            sortedInfluence.put(entry.getKey(), entry.getValue());
-        }
-
-        return sortedInfluence;
+        return influence;
     }
 
     public Map<Local, Integer> calculateProximity(MapGraph<Local, Integer> graph) {
@@ -67,17 +57,7 @@ public class RedeHub {
             proximity.put(vertex, proximityValue);
         }
 
-        List<Map.Entry<Local, Integer>> sortedProximities = new ArrayList<>(proximity.entrySet());
-        sortedProximities.sort(Comparator.comparingInt(Map.Entry::getValue));
-
-        Map<Local, Integer> sortedProximityMap = new LinkedHashMap<>();
-
-
-        for (Map.Entry<Local, Integer> entry : sortedProximities) {
-            sortedProximityMap.put(entry.getKey(), entry.getValue());
-        }
-
-        return sortedProximityMap;
+        return proximity;
     }
 
     private Integer calculateVertexProximity(MapGraph<Local, Integer> graph, Local vertex) {
@@ -97,23 +77,57 @@ public class RedeHub {
     public Map<Local, Integer> calculateCentrality(MapGraph<Local, Integer> graph) {
         Map<Local, Integer> centrality = Algorithms.betweennessCentrality(graph);
 
-        List<Map.Entry<Local, Integer>> sortedCentralities = new ArrayList<>(centrality.entrySet());
-        sortedCentralities.sort((e1, e2) -> Integer.compare(e2.getValue(), e1.getValue()));
-
-        Map<Local, Integer> sortedCentrality = new LinkedHashMap<>();
-
-        for (Map.Entry<Local, Integer> entry : sortedCentralities) {
-            sortedCentrality.put(entry.getKey(), entry.getValue());
-        }
-
-        return sortedCentrality;
+        return centrality;
     }
 
-    public Map<Local, Integer> getTopNHubs(Map<Local,Integer> map, Integer n){
+    public Map<Local, Integer> getTopNHubsSeparate(Map<Local,Integer> map, Integer n){
         Map<Local, Integer> topNHubsMap = new LinkedHashMap<>();
 
         int count = 0;
         for (Map.Entry<Local, Integer> entry : map.entrySet()) {
+            if (count < n) {
+                topNHubsMap.put(entry.getKey(), entry.getValue());
+                count++;
+            } else {
+                break;
+            }
+        }
+
+        return topNHubsMap;
+    }
+
+    public Map<Local, List<Integer>> getTopNMap(Map<Local, List<Integer>> map, Integer n){
+        List<Map.Entry<Local, List<Integer>>> entries = new ArrayList<>(map.entrySet());
+        entries.sort((entry1, entry2) -> {
+            List<Integer> values1 = entry1.getValue();
+            List<Integer> values2 = entry2.getValue();
+
+            int compareCentrality = Integer.compare(values2.get(2), values1.get(2));
+            if (compareCentrality != 0) {
+                return compareCentrality;
+            }
+
+            int compareInfluence = Integer.compare(values2.get(0), values1.get(0));
+            if (compareInfluence != 0) {
+                return compareInfluence;
+            }
+
+            return Integer.compare(values1.get(1), values2.get(1));
+        });
+
+        Map<Local, List<Integer>> sortedFinalMap = new LinkedHashMap<>();
+        for (Map.Entry<Local, List<Integer>> entry : entries) {
+            sortedFinalMap.put(entry.getKey(), entry.getValue());
+        }
+
+        return getTopNHubs(sortedFinalMap, n);
+    }
+
+    public Map<Local, List<Integer>> getTopNHubs(Map<Local,List<Integer>> map, Integer n){
+        Map<Local, List<Integer>> topNHubsMap = new LinkedHashMap<>();
+
+        int count = 0;
+        for (Map.Entry<Local, List<Integer>> entry : map.entrySet()) {
             if (count < n) {
                 topNHubsMap.put(entry.getKey(), entry.getValue());
                 count++;

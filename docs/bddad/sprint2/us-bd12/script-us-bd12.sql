@@ -1,6 +1,5 @@
----------------------------------------------------
-----------------------FUNÇÕES----------------------
----------------------------------------------------
+------------------------------------------------
+--FUNÇÕES---------------------------------------
 CREATE OR REPLACE NONEDITIONABLE FUNCTION registarOperacaoMonda(desigOp IN tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE,
                                                                 desigUnidade IN tipoUnidade.designacaoUnidade%TYPE,
                                                                 qtd IN NUMBER,
@@ -18,7 +17,6 @@ CREATE OR REPLACE NONEDITIONABLE FUNCTION registarOperacaoMonda(desigOp IN tipoO
     invalidCulture exception;
 BEGIN
     BEGIN
-        SAVEPOINT antesRegisto;
         IF(verificarSeOperacaoExiste('Monda', desigUnidade, qtd,dataOp,nomePar,nomeCom,vard) = 0) THEN
             datas := obterdatainicialcultura(nomePar, nomeCom,vard);
             LOOP
@@ -27,20 +25,23 @@ BEGIN
                     INTO
                     dataIni;
                 EXIT WHEN datas%notfound;
+                IF((obterAreaPlantada(nomePar,nomeCom,vard,dataIni) >= qtd) ) THEN
+                    IF (qtd >= 0) THEN
+                        IF (temDataFinal(nomePar,nomeCom,vard,dataIni) < dataOp) THEN
+                            RAISE invalidCulture;
+                        ELSE
+                            idOp := novoIdOperacao();
 
-                IF((obterAreaPlantada(nomePar,nomeCom,vard,dataIni) > qtd)) THEN
-                    IF (temDataFinal(nomePar,nomeCom,vard,dataIni)) THEN
-                        RAISE invalidCulture;
+                            INSERT INTO operacao (idOperacao, designacaoOperacaoAgricola, designacaoUnidade, quantidade, dataOperacao)
+                            VALUES (idOp, desigOp, desigUnidade, qtd, dataOp);
+
+                            INSERT INTO operacaocultura (idOperacao, nomeParcela, dataInicial, nomeComum,variedade)
+                            VALUES (idOp, nomePar, dataIni,nomeCom,vard);
+
+                            success := 0;
+                        END IF;
                     ELSE
-                        idOp := novoIdOperacao();
-
-                        INSERT INTO operacao (idOperacao, designacaoOperacaoAgricola, designacaoUnidade, quantidade, dataOperacao)
-                        VALUES (idOp, desigOp, desigUnidade, qtd, dataOp);
-
-                        INSERT INTO operacaocultura (idOperacao, nomeParcela, dataInicial, nomeComum,variedade)
-                        VALUES (idOp, nomePar, dataIni,nomeCom,vard);
-
-                        success := 0;
+                        RAISE invalidArea;
                     END IF;
                 ELSE
                     RAISE invalidArea;
@@ -51,23 +52,23 @@ BEGIN
         END IF;
 
         IF( success = 1) THEN
-            ROLLBACK TO SAVEPOINT antesRegisto;
+            ROLLBACK;
         ELSE
             COMMIT;
         END IF;
 
     EXCEPTION
         WHEN invalidCulture THEN
-            ROLLBACK TO SAVEPOINT antesRegisto;
+            ROLLBACK;
             RAISE_APPLICATION_ERROR(-20001, 'ERRO: A cultura selecionada não se encontra na parcela.');
         WHEN invalidArea THEN
-            ROLLBACK TO SAVEPOINT antesRegisto;
+            ROLLBACK;
             RAISE_APPLICATION_ERROR(-20001, 'ERRO: Não é possível mondar a quantidade pretendida.');
         WHEN invalidOperation THEN
-            ROLLBACK TO SAVEPOINT antesRegisto;
+            ROLLBACK;
             RAISE_APPLICATION_ERROR(-20001, 'ERRO: Os dados introduzidos já existem no sistema.');
         WHEN OTHERS THEN
-            ROLLBACK TO SAVEPOINT antesRegisto;
+            ROLLBACK;
             success := 1;
 
     END;
@@ -106,8 +107,8 @@ END;
 /
 ----------------------------------------------------
 CREATE OR REPLACE FUNCTION obterdatainicialcultura(nomePar IN parcela.nomeParcela%TYPE,
-                                                 nomeCom IN planta.nomeComum%TYPE,
-                                                 vard IN planta.variedade%TYPE)
+                                                   nomeCom IN planta.nomeComum%TYPE,
+                                                   vard IN planta.variedade%TYPE)
     RETURN SYS_REFCURSOR IS
     datas SYS_REFCURSOR;
 BEGIN
@@ -152,11 +153,11 @@ BEGIN
 END;
 /
 ----------------------------------------------------
-CREATE OR REPLACE FUNCTION temDataFinal(nomePar IN parcela.nomeParcela%TYPE,
-                                        nomeCom IN culturaInstalada.nomeComum%TYPE,
-                                        vard IN culturaInstalada.variedade%TYPE,
-                                        dataIni IN culturaInstalada.dataInicial%TYPE)
-    RETURN BOOLEAN IS
+CREATE OR REPLACE NONEDITIONABLE FUNCTION obterDataFinal(nomePar IN parcela.nomeParcela%TYPE,
+                                                         nomeCom IN culturaInstalada.nomeComum%TYPE,
+                                                         vard IN culturaInstalada.variedade%TYPE,
+                                                         dataIni IN culturaInstalada.dataInicial%TYPE)
+    RETURN DATE IS
     dataF CulturaInstalada.dataFinal%TYPE;
 BEGIN
     BEGIN
@@ -167,32 +168,37 @@ BEGIN
           AND variedade = vard
           AND dataInicial = dataIni;
 
-        if dataF is null then
-            return false;
-        else
-            RETURN TRUE;
-        end if;
+        RETURN dataF;
+
     EXCEPTION
         WHEN OTHERS THEN
-            RETURN FALSE;
+            RETURN NULL;
     END;
 END;
-/
 ------------------------------------------------
-------------------BLOCO ANÓNIMO-----------------
+--DADOS-----------------------------------------
+--08/09/2023,
+--Cenoura
+--Danvers Half Long
+--0.5
+------------
+--08/10/2023
+--Cenoura
+--Danvers Half Long
+--0.5
 ------------------------------------------------
+--BLOCO ANÓNIMO---------------------------------
 SET SERVEROUTPUT ON;
-
+------------------------------------------------
 DECLARE
     v_desigOp tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE := 'Monda';
     v_desigUnidade tipoUnidade.DESIGNACAOUNIDADE%TYPE := 'ha';
-    v_qtd NUMBER := 0.7;
-    v_dataOp DATE := TO_DATE('22/11/2023 - 23:20', 'DD/MM/YYYY - HH24:MI');
+    v_qtd NUMBER := 0.5;
+    v_dataOp DATE := TO_DATE('08/09/2023', 'DD/MM/YYYY');
     v_nomeParcela parcela.nomeParcela%TYPE := 'Campo Novo';
-    v_nomeComum planta.nomeComum%TYPE := 'Tremoço';
-    v_variedade planta.variedade%TYPE := 'AMARELO';
+    v_nomeComum planta.nomeComum%TYPE := 'Cenoura';
+    v_variedade planta.variedade%TYPE := 'DANVERS HALF LONG';
     v_success NUMBER;
-
 
 BEGIN
     v_success := registarOperacaoMonda(v_desigOp, v_desigUnidade, v_qtd, v_dataOp, v_nomeParcela, v_nomeComum, v_variedade);
@@ -202,17 +208,168 @@ BEGIN
     ELSE
         DBMS_OUTPUT.PUT_LINE('Failed to register operation.');
     END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Failed to register operation.');
 END;
 /
+--------------------------------------------------------------------------
+--TESTE-------------------------------------------------------------------
+DECLARE
+    test_desigOp tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE := 'Monda';
+    test_desigUnidade tipoUnidade.DESIGNACAOUNIDADE%TYPE := 'ha';
+    test_qtd NUMBER := 0.2;
+    test_dataOp DATE := SYSDATE;
+    test_nomeParcela parcela.nomeParcela%TYPE := 'Campo Novo';
+    test_nomeComum planta.nomeComum%TYPE := 'Tremoço';
+    test_variedade planta.variedade%TYPE := 'AMARELO';
+    test_success NUMBER;
+    failedTest EXCEPTION;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('TESTE DA FUNÇÃO: verifica que operação é registada para parâmetros válidos.');
+    test_success := registarOperacaoMonda(test_desigOp, test_desigUnidade, test_qtd, test_dataOp, test_nomeParcela, test_nomeComum, test_variedade);
 
+    IF test_success = 0 THEN
+        DBMS_OUTPUT.PUT_LINE('TESTE PASSOU');
+    ELSE
+        RAISE failedTest;
+    END IF;
+
+EXCEPTION
+    WHEN failedTest THEN
+        DBMS_OUTPUT.PUT_LINE('TESTE FALHOU');
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('TESTE FALHOU');
+END;
+/
+--------------------------------------------------------------------------
+--TESTE-------------------------------------------------------------------
+DECLARE
+    test_desigOp tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE := 'Monda';
+    test_desigUnidade tipoUnidade.DESIGNACAOUNIDADE%TYPE := 'ha';
+    test_qtd NUMBER := 9;
+    test_dataOp DATE := TO_DATE('22/11/2023 - 23:59', 'DD/MM/YYYY - HH24:MI');
+    test_nomeParcela parcela.nomeParcela%TYPE := 'Campo Novo';
+    test_nomeComum planta.nomeComum%TYPE := 'Tremoço';
+    test_variedade planta.variedade%TYPE := 'AMARELO';
+    test_success NUMBER;
+    failedTest EXCEPTION;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('TESTE DA QUANTIDADE: verifica que não regista operação com quantidade superior à área plantada.');
+    test_success := registarOperacaoMonda(test_desigOp, test_desigUnidade, test_qtd, test_dataOp, test_nomeParcela, test_nomeComum, test_variedade);
+
+    IF test_success = 0 THEN
+        DBMS_OUTPUT.PUT_LINE('TESTE PASSOU');
+    ELSE
+        RAISE failedTest;
+    END IF;
+
+EXCEPTION
+    WHEN failedTest THEN
+        DBMS_OUTPUT.PUT_LINE('TESTE FALHOU');
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('TESTE PASSOU');
+END;
+/
+--------------------------------------------------------------------------
+--TESTE-------------------------------------------------------------------
+DECLARE
+    test_desigOp tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE := 'Monda';
+    test_desigUnidade tipoUnidade.DESIGNACAOUNIDADE%TYPE := 'ha';
+    test_qtd NUMBER := -0.6;
+    test_dataOp DATE := TO_DATE('25/11/2023 - 17:25', 'DD/MM/YYYY - HH24:MI');
+    test_nomeParcela parcela.nomeParcela%TYPE := 'Campo Novo';
+    test_nomeComum planta.nomeComum%TYPE := 'Tremoço';
+    test_variedade planta.variedade%TYPE := 'AMARELO';
+    test_success NUMBER;
+    failedTest EXCEPTION;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('TESTE DA QUANTIDADE: verifica que não regista operação com quantidade negativa.');
+    test_success := registarOperacaoMonda(test_desigOp, test_desigUnidade, test_qtd, test_dataOp, test_nomeParcela, test_nomeComum, test_variedade);
+
+    IF test_success = 1 THEN
+        DBMS_OUTPUT.PUT_LINE('TESTE PASSOU');
+    ELSE
+        RAISE failedTest;
+    END IF;
+
+EXCEPTION
+    WHEN failedTest THEN
+        DBMS_OUTPUT.PUT_LINE('TESTE FALHOU');
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('TESTE PASSOU');
+END;
+/
+--------------------------------------------------------------------------
+--TESTE-------------------------------------------------------------------
+DECLARE
+    test_desigOp tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE := 'Monda';
+    test_desigUnidade tipoUnidade.DESIGNACAOUNIDADE%TYPE := 'ha';
+    test_qtd NUMBER := 0.5;
+    test_dataOp DATE := TO_DATE('23.08.08 - 00:00', 'DD/MM/YYYY - HH24:MI');
+    test_nomeParcela parcela.nomeParcela%TYPE := 'Campo Novo';
+    test_nomeComum planta.nomeComum%TYPE := 'Cenoura';
+    test_variedade planta.variedade%TYPE := 'DANVERS HALF LONG';
+    test_success NUMBER;
+    failedTest EXCEPTION;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('TESTE DA OPERAÇÃO EXISTENTE: verifica que não regista operação existente.');
+    test_success := registarOperacaoMonda(test_desigOp, test_desigUnidade, test_qtd, test_dataOp, test_nomeParcela, test_nomeComum, test_variedade);
+
+    IF test_success = 1 THEN
+        DBMS_OUTPUT.PUT_LINE('TESTE PASSOU');
+    ELSE
+        RAISE failedTest;
+    END IF;
+
+EXCEPTION
+    WHEN failedTest THEN
+        DBMS_OUTPUT.PUT_LINE('TESTE FALHOU');
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('TESTE PASSOU');
+END;
+/
+--------------------------------------------------------------------------
+--TESTE-------------------------------------------------------------------
+DECLARE
+    test_desigOp tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE := 'Monda';
+    test_desigUnidade tipoUnidade.DESIGNACAOUNIDADE%TYPE := 'ha';
+    test_qtd NUMBER := 0.2;
+    test_dataOp DATE := TO_DATE('08/08/2023 - 00:00', 'DD/MM/YYYY - HH24:MI');
+    test_nomeParcela parcela.nomeParcela%TYPE := 'Campo Novo';
+    test_nomeComum planta.nomeComum%TYPE := 'Cenoura';
+    test_variedade planta.variedade%TYPE := 'DANVERS HALF LONG';
+    test_success NUMBER;
+    failedTest EXCEPTION;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('TESTE DA CULTURA TERMINADA: verifica que não regista operação para cultura com data final, ou seja terminada.');
+    test_success := registarOperacaoMonda(test_desigOp, test_desigUnidade, test_qtd, test_dataOp, test_nomeParcela, test_nomeComum, test_variedade);
+
+    IF test_success = 1 THEN
+        DBMS_OUTPUT.PUT_LINE('TESTE PASSOU');
+    ELSE
+        RAISE failedTest;
+    END IF;
+
+EXCEPTION
+    WHEN failedTest THEN
+        DBMS_OUTPUT.PUT_LINE('TESTE FALHOU');
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('TESTE PASSOU');
+END;
+/
 ------------------------------------------------
--------------------CONFIRMAÇÃO------------------
-------------------------------------------------
+--CONFIRMAÇÃO-----------------------------------
 select *
 from  operacaoCultura oc
           inner join Operacao o
                      on oc.idoperacao = o.idoperacao
 order by dataoperacao;
---||----||----||----||----||----||----||----||--
+------------------------------------------------
 select * from culturaInstalada;
---||----||----||----||----||----||----||----||--
+------------------------------------------------
+
+
+
+

@@ -56,9 +56,9 @@ public class RegistarOperacaoMondaUI implements Runnable {
             boolean opStatus = controller.registerMondaOperation(nomeParcela, cultura, dataOperacao, tipoUnidade, quantidade);
 
             if (opStatus) {
-                System.out.println("\nOperação de semeadura registada com sucesso.\n");
+                System.out.println("\nOperação de monda registada com sucesso.\n");
             } else {
-                System.out.println("\nERRO: Falha ao registar a operação de semeadura.\n");
+                System.out.println("\nERRO: Falha ao registar a operação de monda.\n");
             }
 
         } catch (SQLException e) {

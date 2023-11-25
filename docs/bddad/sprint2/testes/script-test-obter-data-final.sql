@@ -8,7 +8,8 @@ CREATE OR REPLACE NONEDITIONABLE FUNCTION temDataFinal(nomePar IN parcela.nomePa
     dataF CulturaInstalada.dataFinal%TYPE;
 BEGIN
     BEGIN
-        SELECT dataFinal INTO dataF
+        SELECT dataFinal
+        INTO dataF
         FROM culturaInstalada
         WHERE nomeParcela = nomePar
           AND nomeComum = nomeCom
@@ -26,42 +27,20 @@ BEGIN
     END;
 END;
 --------------------------------------------------------------------------
---TESTE-------------------------------------------------------------------
---VERIFICA QUE PARA CULTURA INSTALADA QUE NAO TEM DATA FINAL RETORNA FALSO
-DECLARE
-    test_dataInicial DATE := TO_DATE('12/10/2023 - 00:00', 'DD/MM/YYYY - HH24:MI');
-    test_nomeParcela parcela.nomeParcela%TYPE := 'Campo Novo';
-    test_nomeComum planta.nomeComum%TYPE := 'Tremoço';
-    test_variedade planta.variedade%TYPE := 'AMARELO';
-    success BOOLEAN;
-    failedTest EXCEPTION;
-BEGIN
-    success := temDataFinal( test_nomeParcela, test_nomeComum, test_variedade,test_dataInicial);
-
-    IF NOT success THEN
-        DBMS_OUTPUT.PUT_LINE('TESTE PASSOU');
-    ELSE
-        RAISE failedTest;
-    END IF;
-
-EXCEPTION
-    WHEN failedTest THEN
-        DBMS_OUTPUT.PUT_LINE('TESTE FALHOU');
-END;
-/
 --TESTE--------------------------------------------------------------------
---VERIFICA QUE PARA CULTURA INSTALADA QUE TEM DATA FINAL RETORNA VERDADEIRO
+--VERIFICA QUE PARA CULTURA INSTALADA QUE TEM DATA FINAL RETORNA A DATA CORRETA
 DECLARE
-    test_dataInicial DATE := TO_DATE('10/10/2020 - 00:00', 'DD/MM/YYYY - HH24:MI');
+    test_dataInicial DATE                     := TO_DATE('10/10/2020', 'DD/MM/YYYY');
+    test_dataFinal   DATE                     := TO_DATE('30/03/2021', 'DD/MM/YYYY');
     test_nomeParcela parcela.nomeParcela%TYPE := 'Campo da bouça';
-    test_nomeComum planta.nomeComum%TYPE := 'Tremoço';
-    test_variedade planta.variedade%TYPE := 'AMARELO';
-    success BOOLEAN;
+    test_nomeComum   planta.nomeComum%TYPE    := 'Tremoço';
+    test_variedade   planta.variedade%TYPE    := 'AMARELO';
+    success          DATE;
     failedTest EXCEPTION;
 BEGIN
-    success := temDataFinal(test_nomeParcela, test_nomeComum, test_variedade,test_dataInicial);
+    success := temDataFinal(test_nomeParcela, test_nomeComum, test_variedade, test_dataInicial);
 
-    IF success = TRUE THEN
+    IF success = test_dataFinal THEN
         DBMS_OUTPUT.PUT_LINE('TESTE PASSOU');
     ELSE
         RAISE failedTest;

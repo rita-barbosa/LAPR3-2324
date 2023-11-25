@@ -35,9 +35,9 @@ Isto significa que o simulador que está a ser desenvolvido, por exemplo, assume
 > 
 > **Resposta:** As regas podem ser registadas em minutos e en«m função do tipo de rega instalado no setor e respetivo débito poderiamos calcular a quantidade de água. No entanto, não entendo que o precisem de fazer, os minutos de rega são suficientes.
 
-> **Questão:** No enunciado da USLP03 encontra-se a seguinte instrução: "[...] que de forma escalonada após a conclusão da rega em cada sector registe essa operacão no caderno de campo." Como deve ser feita a implementação deste requisito de escalonamento? Devemos recorrer a threads?
+> **Questão:** No meu ponto de vista o que é solicitado da sua parte é o registo das operações de rega no caderno de campo conforme vão sendo realizadas. No entanto não percebi como é que o cliente as quer visualizar. É suposto ir armazenando num ficheiro conforme vou inserindo na base de dados? É suposto solicitar à base de dados através de uma query e guardar num ficheiro?
 > 
-> **Resposta:**
+> **Resposta:** Em termos de demo pode ser interessante escrever uma mensagem no ecra mas num contexto de utilização "real" poderiamos fazer um query à BD para obter essa informação (não é necessário).
 
 
 ### 1.3. Design

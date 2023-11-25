@@ -110,12 +110,12 @@ public class SistemaDeRega {
     }
 
     private static void sendToExternalDatabase(Rega rega) throws IOException, SQLException {
-           boolean success = controladorRega.sendRegisterToDataBase(rega);
-            if (success){
-                System.out.println("Sending to database: " + rega);
-            }else {
-                throw new SQLException("Não foi possível registar a operação de rega na base de dados.");
-            }
+        boolean success = controladorRega.sendRegisterToDataBase(rega);
+        if (success) {
+            System.out.println("Sending to database: " + rega);
+        } else {
+            throw new SQLException("Não foi possível registar a operação de rega na base de dados.");
+        }
     }
 
     private static long calculateDelay(LocalTime currentTime, LocalTime scheduledTime) {

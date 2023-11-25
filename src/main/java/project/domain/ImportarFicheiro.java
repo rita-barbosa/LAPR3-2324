@@ -19,7 +19,7 @@ public class ImportarFicheiro {
     private static final String DIAS_IMPARES = "I";
     private static final String TRES_DIAS = "3";
     private static final Set<LocalTime> timeTurns = new TreeSet<>();
-    private static final Map<String, List<String>> lineRega = new HashMap<>();
+    private static final Map<String, List<String>> lineRega = new LinkedHashMap<>();
 
     public static boolean importWateringPlan(String filepath) {
         try {

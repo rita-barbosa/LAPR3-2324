@@ -1,9 +1,5 @@
 package project.controller;
-
-
 import project.domain.SistemaDeRega;
-
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 

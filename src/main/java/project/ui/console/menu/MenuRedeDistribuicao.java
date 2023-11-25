@@ -1,7 +1,6 @@
 package project.ui.console.menu;
 
-import project.controller.PercursoMinimoController;
-import project.ui.console.*;
+import project.ui.console.ImportarFicheiroUI;
 import project.ui.console.rede.LocalizacaoIdealHubsUI;
 import project.ui.console.rede.PercursoMinimoUI;
 import project.ui.console.rede.RedeLigacaoMinimaUI;
@@ -20,7 +19,7 @@ public class MenuRedeDistribuicao implements Runnable {
         List<MenuItem> options = new ArrayList<>();
         options.add(new MenuItem("Importar ficheiros dos dados.", new ImportarFicheiroUI("Rede Distruição")));
         options.add(new MenuItem("Localização ideal de N hubs.", new LocalizacaoIdealHubsUI()));
-        options.add(new MenuItem("Percurso mínimo possível.", new PercursoMinimoUI(new PercursoMinimoController())));
+        options.add(new MenuItem("Percurso mínimo possível.", new PercursoMinimoUI()));
         options.add(new MenuItem("Rede de ligação mínima.", new RedeLigacaoMinimaUI()));
         int option = 0;
         do {

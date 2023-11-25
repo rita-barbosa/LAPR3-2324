@@ -17,8 +17,8 @@ public class PercursoMinimoUI implements Runnable{
     private final Scanner read = new Scanner(System.in);
     private final PercursoMinimoController controller;
 
-    public PercursoMinimoUI(PercursoMinimoController controller) {
-        this.controller = controller;
+    public PercursoMinimoUI() {
+        this.controller = new PercursoMinimoController();
     }
 
     @Override

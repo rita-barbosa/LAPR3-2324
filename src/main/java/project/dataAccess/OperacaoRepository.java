@@ -11,9 +11,10 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.*;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -179,7 +180,7 @@ public class OperacaoRepository {
 
             LocalDateTime localDateTime = LocalDateTime.of(localDate, localTime);
             java.util.Date date = java.util.Date.from(localDateTime.atZone(java.time.ZoneId.systemDefault()).toInstant());
-           java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+            java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 
             callStmt.setDate(5, sqlDate);
 
@@ -292,7 +293,7 @@ public class OperacaoRepository {
 
             callStmt.setString(2, "Monda");
             callStmt.setString(3, tipoUnidade);
-            callStmt.setDouble(5, quantidade);
+            callStmt.setDouble(4, quantidade);
 
             java.sql.Date sqlDataOp = new java.sql.Date(dataOperacao.getTime());
             callStmt.setDate(5, sqlDataOp);

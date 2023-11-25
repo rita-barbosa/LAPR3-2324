@@ -119,16 +119,16 @@ public class OperacaoRepository {
         return operacoes;
     }
 
-    public boolean registerSemeaduraOperation(String nomeParcela, String desigEstadoFenologico, String designacaoOperacaoAgricola, String nomeComum, String variedade, Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
+    public boolean registerSemeaduraOperation(String nomeParcela , String nomeComum, String variedade, Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
         CallableStatement callStmt = null;
         boolean success = false;
         try {
             Connection connection = DatabaseConnection.getInstance().getConnection();
-            callStmt = connection.prepareCall("{ ? = call registarOperacaoSemeadura(?,?,?,?,?,?,?,?) }");
+            callStmt = connection.prepareCall("{ ? = call registarOperacaoSemeadura(?,?,?,?,?,?,?) }");
 
             callStmt.registerOutParameter(1, OracleTypes.NUMBER);
 
-            callStmt.setString(2, designacaoOperacaoAgricola);
+            callStmt.setString(2, "Semeadura");
             callStmt.setString(3, tipoUnidade);
             callStmt.setDouble(4, quantidade);
 
@@ -136,9 +136,8 @@ public class OperacaoRepository {
             callStmt.setDate(5, sqlDataOp);
 
             callStmt.setString(6, nomeParcela);
-            callStmt.setString(7, desigEstadoFenologico);
-            callStmt.setString(8, nomeComum);
-            callStmt.setString(9, variedade);
+            callStmt.setString(7, nomeComum);
+            callStmt.setString(8, variedade);
 
             callStmt.execute();
 

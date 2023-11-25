@@ -6,6 +6,7 @@ import project.ui.console.utils.Utils;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -21,7 +22,6 @@ public class RegistarOperacaoSemeaduraUI implements Runnable {
     private String nomeParcela;
     private String tipoUnidade;
     private Double quantidade;
-    private String desigEstadoFenologico;
     private String nomeComum;
     private String variedade;
     private String permanencia;
@@ -45,19 +45,19 @@ public class RegistarOperacaoSemeaduraUI implements Runnable {
             nomeParcela = fields.get(index);
 
             List<String> cultures = controller.getCultures();
-             index = Utils.showAndSelectIndexNoCancel(cultures, "Selecione a cultura:");
+            index = Utils.showAndSelectIndexNoCancel(cultures, "Selecione a cultura:");
             String cultura = cultures.get(index);
-            String[] culturaInfo = cultura.split(" ");
-            nomeComum = culturaInfo[0];
-            variedade = culturaInfo[1];
-            permanencia = culturaInfo[2];
+            processCultureChoice(cultura);
 
-            if (permanencia.equals("Permanente")){
+            if (permanencia.equals("Permanente")) {
                 tipoUnidade = "un";
+            } else {
+                List<String> unitTypes = new ArrayList<>();
+                unitTypes.add("ha");
+                unitTypes.add("m2");
+                index = Utils.showAndSelectIndexNoCancel(unitTypes, "Indique o tipo de unidade:");
+                tipoUnidade = unitTypes.get(index);
             }
-            List<String> unitTypes = controller.getUnitTypes();
-            index = Utils.showAndSelectIndexNoCancel(unitTypes, "Indique o tipo de unidade:");
-            tipoUnidade = unitTypes.get(index);
 
             System.out.print("Data da operação (formato: dd/mm/yyyy): ");
             String dataOp = scanner.next();
@@ -67,20 +67,45 @@ public class RegistarOperacaoSemeaduraUI implements Runnable {
 
             quantidade = Utils.readDoubleFromConsole("Indique a quantidade a semear:");
 
-            boolean exists = controller.verifyIfOperationExists(nomeParcela, designacaoOperacaoAgricola, nomeComum, variedade, dataOperacao, tipoUnidade, quantidade);
-
-            if (!exists){
-                boolean opStatus = controller.registerOperation(nomeParcela, desigEstadoFenologico, designacaoOperacaoAgricola, nomeComum, variedade, dataOperacao, tipoUnidade, quantidade);
-                if (opStatus){
-                    System.out.println("\nOperação de semeadura registada com sucesso.\n");
-                }else {
-                    System.out.println("\nFalha em registar a operação de semeadura.\n");
-                }
-            }else {
-                throw new SQLException("Os dados introduzidos se encontram no registo de uma operação já existente no sistema.");
+            boolean opStatus = controller.registerOperation(nomeParcela, nomeComum, variedade, dataOperacao, tipoUnidade, quantidade);
+            if (opStatus) {
+                System.out.println("\nOperação de semeadura registada com sucesso.\n");
+            } else {
+                System.out.println("\nFalha em registar a operação de semeadura.\n");
             }
         } catch (ParseException | SQLException e) {
-            System.out.println("\nFalha em registar a operação de semeadura.\n" + e.getMessage());
+            System.out.println("\nFalha em registar a operação de semeadura.\n" + e.getMessage().split("\n")[0].substring(11) + "\n");
+        }
+    }
+
+    private void processCultureChoice(String cultura) {
+        String[] culturaInfo = cultura.split("\\|");
+        permanencia = culturaInfo[1].trim();
+
+        String[] plantaInfo = culturaInfo[0].split(" ");
+        for (String info : plantaInfo) {
+            boolean justUpper = true;
+            for (char c : info.toCharArray()) {
+                if (Character.isLowerCase(c)) {
+                    justUpper = false;
+                    break;
+                }
+            }
+            if (!justUpper) {
+                nomeComum = concatenateWithSpace(nomeComum, info);
+            } else {
+                variedade = concatenateWithSpace(variedade, info);
+            }
+        }
+        variedade = variedade.trim();
+        nomeComum = nomeComum.trim();
+    }
+
+    private String concatenateWithSpace(String original, String info) {
+        if (original == null) {
+            return info;
+        } else {
+            return original + " " + info;
         }
     }
 

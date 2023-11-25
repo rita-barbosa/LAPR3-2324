@@ -64,8 +64,8 @@ public class RegistarOperacaoSemeaduraController {
         return cultureRepository.getCultures();
     }
 
-    public boolean registerOperation(String nomeParcela, String desigEstadoFenologico, String designacaoOperacaoAgricola, String nomeComum, String variedade, Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
-        return operacaoRepository.registerSemeaduraOperation(nomeParcela, desigEstadoFenologico, designacaoOperacaoAgricola, nomeComum, variedade, dataOperacao, tipoUnidade, quantidade);
+    public boolean registerOperation(String nomeParcela , String nomeComum, String variedade, Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
+        return operacaoRepository.registerSemeaduraOperation(nomeParcela, nomeComum, variedade, dataOperacao, tipoUnidade, quantidade);
     }
 
     public boolean verifyIfOperationExists(String nomeParcela, String designacaoOperacaoAgricola, String nomeComum, String variedade, Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
@@ -73,7 +73,4 @@ public class RegistarOperacaoSemeaduraController {
 
     }
 
-    public List<String> showPlantGrowthStage() {
-        return cultureRepository.getPlantGrowthStage();
-    }
 }

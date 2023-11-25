@@ -5,8 +5,8 @@ import java.util.*;
 
 public class MST {
 
-    public static <V, E extends Comparable<E>> MapGraph<V, E> getMstWithKruskallAlgorithm(Graph<V, E> g) {
-        MapGraph<V, E> mst = new MapGraph<>(true);
+    public static <V, E extends Comparable<E>> MapGraph<V, E > getMstWithKruskallAlgorithm(Graph<V, E> g) {
+        MapGraph<V, E> mst = new MapGraph<>(false);
 
         ArrayList<V> vertices = g.vertices();
         for (V vert : vertices) {
@@ -49,25 +49,6 @@ public class MST {
 
         return result;
     }
-
-
-
-//            Algorithm void prim(Graph<V,E> redeDistribuicao){
-//            for (all V vertices in redeDistribuicao) {dist[V]=∞ path[V]=-1 visited[v]=false }
-//            vOrig <- 0
-//            dist[vOrig]=0
-//            while (vOrig != -1){
-//                make vOrig as visited
-//                for (each vAdj of vOrig){
-//                    get edge between vOrig and vAdj
-//                    if (!visited[vAdj] && dist[vAdj] > edge.getWeight()){
-//                        dist[vAdj] = edge.getWeight()
-//                        path[vAdj] = vOrig }
-//                }
-//                vOrig = getVertMinDist(dist, visited)
-//            }
-//            mst=buildMst(path,dist)
-//        }
 
 
     public static <V, E extends Number> MapGraph<V, E> getMstWithPrimAlgorithm(Graph<V, E> redeDistribuicao) {

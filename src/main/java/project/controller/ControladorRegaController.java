@@ -46,7 +46,7 @@ public class ControladorRegaController {
 
     public boolean exportWateringPlan() {
         if (checkDate(LocalDate.now())) {
-            return SistemaDeRega.generateWateringDayRegister();
+            return SistemaDeRega.generateWateringRegisters();
         } else {
             return false;
         }

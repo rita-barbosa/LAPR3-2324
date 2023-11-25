@@ -10,7 +10,7 @@ public class RedeLigacaoMinimaController {
         return MST.getMstWithKruskallAlgorithm(redeDistribuicao);
     }
 
-    public <V extends CommonGraph> int getTotalWeightOfMinimumSpanningTree(V mst) {
+    public int getTotalWeightOfMinimumSpanningTree(MapGraph<Local, Integer>  mst) {
         return MST.totalWeightMinimumSpanningTree(mst);
     }
 }

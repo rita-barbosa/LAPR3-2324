@@ -15,7 +15,7 @@ import static org.junit.Assert.assertTrue;
 
 public class ControladorRegaControllerTest {
     private static final ControladorRegaController controller = new ControladorRegaController();
-    private static final LocalDate dataInicio = LocalDate.of(2023, 10, 20);
+    private static final LocalDate dataInicio = /*LocalDate.of(2023, 10, 20)*/ LocalDate.now();
 
     @Before
     public void setUp() {
@@ -79,14 +79,9 @@ public class ControladorRegaControllerTest {
         assertEquals(expected, controller.checkIfPlanIsPresent());
     }
 
-//    @Disabled
-//    public void testExportWateringPlan() {
-//        assertTrue(controller.exportWateringPlan());
-//    }
-
-//    @Disabled
-//    public void testExportWateringPlanForSimulatedTime() {
-//        assertTrue(controller.exportWateringPlanForSimulatedTime(LocalDate.of(2023, 10, 24)));
-//    }
+    @Test
+    public void testExportWateringPlan() {
+        assertTrue(controller.exportWateringPlan());
+    }
 
 }

@@ -1,4 +1,4 @@
-package project.ui.console;
+package project.ui.console.rede;
 
 import project.controller.RedeLigacaoMinimaController;
 import project.domain.Local;

@@ -2,6 +2,9 @@ package project.ui.console.menu;
 
 import project.controller.PercursoMinimoController;
 import project.ui.console.*;
+import project.ui.console.rede.LocalizacaoIdealHubsUI;
+import project.ui.console.rede.PercursoMinimoUI;
+import project.ui.console.rede.RedeLigacaoMinimaUI;
 import project.ui.console.utils.Utils;
 
 import java.util.ArrayList;
@@ -21,7 +24,7 @@ public class MenuRedeDistribuicao implements Runnable {
         options.add(new MenuItem("Rede de ligação mínima.", new RedeLigacaoMinimaUI()));
         int option = 0;
         do {
-            option = Utils.showAndSelectIndex(options, "Rede de distribuição");
+            option = Utils.showAndSelectIndex(options, "Rede de Distribuição");
             if ((option >= 0) && (option < options.size())) {
                 options.get(option).run();
             }

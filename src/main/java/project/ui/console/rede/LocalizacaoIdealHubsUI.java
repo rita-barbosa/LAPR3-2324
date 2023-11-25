@@ -1,4 +1,4 @@
-package project.ui.console;
+package project.ui.console.rede;
 
 import project.controller.LocalizacaoIdealHubsController;
 import project.domain.Local;

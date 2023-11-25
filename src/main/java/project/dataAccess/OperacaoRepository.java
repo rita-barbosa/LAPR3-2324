@@ -11,13 +11,19 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.ZoneId;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 public class OperacaoRepository {
+
+    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
     public OperacaoRepository() {
     }
@@ -151,23 +157,33 @@ public class OperacaoRepository {
         return success;
     }
 
-    //VER COM O GRUPO
+
     public boolean registerRegaOperation(Rega rega) throws SQLException {
         CallableStatement callStmt = null;
         boolean success = false;
         try {
-            Connection connection = DatabaseConnection.getInstance().getConnection();
-            callStmt = connection.prepareCall("{ ? = call registarOperacaoRega(?,?,?,?) }");
+           Connection connection = DatabaseConnection.getInstance().getConnection();
+            callStmt = connection.prepareCall("{ ? = call registarOperacaoRega(?,?,?,?,?) }");
 
             callStmt.registerOutParameter(1, OracleTypes.NUMBER);
 
-            callStmt.setString(2, rega.getIdSetor());
-            callStmt.setString(3, rega.getHoraInicio().toString());
-            callStmt.setString(4, rega.getHoraFim().toString());
+            callStmt.setString(2, "Rega");
+            callStmt.setString(3, "min");
 
-            Date dataRega = Date.from(rega.getData().atStartOfDay(ZoneId.systemDefault()).toInstant());
-            java.sql.Date sqlDataOp = new java.sql.Date(dataRega.getTime());
-            callStmt.setDate(5, sqlDataOp);
+            //Quantidade (minutos de rega)
+            Duration duration = Duration.between(rega.getHoraInicio(), rega.getHoraFim());
+            callStmt.setDouble(4, duration.toMinutes());
+
+            LocalDate localDate = LocalDate.parse(rega.getData().toString(), dateFormatter);
+            LocalTime localTime = LocalTime.parse(rega.getHoraInicio().toString(), timeFormatter);
+
+            LocalDateTime localDateTime = LocalDateTime.of(localDate, localTime);
+            java.util.Date date = java.util.Date.from(localDateTime.atZone(java.time.ZoneId.systemDefault()).toInstant());
+           java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+            callStmt.setDate(5, sqlDate);
+
+            callStmt.setString(6, rega.getIdSetor());
 
             callStmt.execute();
 
@@ -176,6 +192,7 @@ public class OperacaoRepository {
 
             if (opStatus == 1) {
                 success = true;
+                System.out.println("sucess");
             }
 
             connection.commit();
@@ -275,7 +292,7 @@ public class OperacaoRepository {
 
             callStmt.setString(2, "Monda");
             callStmt.setString(3, tipoUnidade);
-            callStmt.setDouble(4, quantidade);
+            callStmt.setDouble(5, quantidade);
 
             java.sql.Date sqlDataOp = new java.sql.Date(dataOperacao.getTime());
             callStmt.setDate(5, sqlDataOp);

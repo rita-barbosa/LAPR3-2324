@@ -1,4 +1,4 @@
-package project.ui.console;
+package project.ui.console.operacoes;
 
 import project.controller.RegistarOperacaoSemeaduraController;
 import project.ui.console.utils.Utils;
@@ -24,6 +24,7 @@ public class RegistarOperacaoSemeaduraUI implements Runnable {
     private String desigEstadoFenologico;
     private String nomeComum;
     private String variedade;
+    private String permanencia;
 
     public RegistarOperacaoSemeaduraUI() {
         controller = new RegistarOperacaoSemeaduraController();
@@ -33,9 +34,9 @@ public class RegistarOperacaoSemeaduraUI implements Runnable {
     public void run() {
         try {
             int index;
-            System.out.println("-----------------------------------------");
-            System.out.println("Registar uma nova Operação de Semeadura");
-            System.out.println("-----------------------------------------");
+            System.out.println("-------------------------------------------");
+            System.out.println("| Registar uma nova Operação de Semeadura |");
+            System.out.println("-------------------------------------------");
 
             Scanner scanner = new Scanner(System.in);
 
@@ -49,16 +50,11 @@ public class RegistarOperacaoSemeaduraUI implements Runnable {
             String[] culturaInfo = cultura.split(" ");
             nomeComum = culturaInfo[0];
             variedade = culturaInfo[1];
+            permanencia = culturaInfo[2];
 
-            boolean statePlant = Utils.askDirectQuestion("Deseja identificar o estado fenológico da planta?");
-            if (statePlant){
-                List<String> growthStages = controller.showPlantGrowthStage();
-                index = Utils.showAndSelectIndexNoCancel(growthStages, "Selecione um estado fenológico:");
-                desigEstadoFenologico = growthStages.get(index);
-            }else {
-                desigEstadoFenologico = null;
+            if (permanencia.equals("Permanente")){
+                tipoUnidade = "un";
             }
-
             List<String> unitTypes = controller.getUnitTypes();
             index = Utils.showAndSelectIndexNoCancel(unitTypes, "Indique o tipo de unidade:");
             tipoUnidade = unitTypes.get(index);
@@ -71,7 +67,6 @@ public class RegistarOperacaoSemeaduraUI implements Runnable {
 
             quantidade = Utils.readDoubleFromConsole("Indique a quantidade a semear:");
 
-            //Adicionar estadoFenologico???
             boolean exists = controller.verifyIfOperationExists(nomeParcela, designacaoOperacaoAgricola, nomeComum, variedade, dataOperacao, tipoUnidade, quantidade);
 
             if (!exists){

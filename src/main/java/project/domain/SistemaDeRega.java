@@ -48,7 +48,7 @@ public class SistemaDeRega {
         return inicioDoPlanoDeRega;
     }
 
-    public static boolean generateWateringDayRegister() {
+    public static boolean generateWateringRegisters() {
         String dateString = inicioDoPlanoDeRega.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")).trim();
         String fileName = "WateringRegisters" + dateString + ".csv";
         File directory = new File("files\\WateringRegisters");
@@ -68,8 +68,8 @@ public class SistemaDeRega {
                 String dateString = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")).trim();
                 for (Rega rega : planoDeRega) {
                     if (rega.getData().equals(date)) {
-                        Duration durationMinutes = Duration.between(rega.getHoraInicio(), rega.getHoraFim());
-                        String line = String.format("%s,%s,%s,%s,%s\n", dateString, rega.getIdSetor(), durationMinutes.toMinutes(), rega.getHoraInicio(), rega.getHoraFim());
+                        Duration duration = Duration.between(rega.getHoraInicio(), rega.getHoraFim());
+                        String line = String.format("%s,%s,%s,%s,%s\n", dateString, rega.getIdSetor(), duration.toMinutes(), rega.getHoraInicio(), rega.getHoraFim());
                         fileWriter.write(line);
                     }
                 }
@@ -97,6 +97,7 @@ public class SistemaDeRega {
                 try {
                     sendToExternalDatabase(atual);
                 } catch (IOException | SQLException e) {
+                    System.out.println(e.getMessage());
                     throw new RuntimeException(e);
                 }
 

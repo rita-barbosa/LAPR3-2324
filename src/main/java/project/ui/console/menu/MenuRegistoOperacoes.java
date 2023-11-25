@@ -1,10 +1,10 @@
 package project.ui.console.menu;
 
 import project.ui.console.utils.Utils;
-import project.ui.console.RegistarOperacaoAplicacaoFatorProducaoUI;
-import project.ui.console.RegistarOperacaoColheitaUI;
-import project.ui.console.RegistarOperacaoMondaUI;
-import project.ui.console.RegistarOperacaoSemeaduraUI;
+import project.ui.console.operacoes.RegistarOperacaoAplicacaoFatorProducaoUI;
+import project.ui.console.operacoes.RegistarOperacaoColheitaUI;
+import project.ui.console.operacoes.RegistarOperacaoMondaUI;
+import project.ui.console.operacoes.RegistarOperacaoSemeaduraUI;
 
 
 import java.util.ArrayList;

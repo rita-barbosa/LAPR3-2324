@@ -3,10 +3,13 @@ package project.domain;
 import org.junit.Test;
 
 import java.io.*;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -14,54 +17,78 @@ import static org.junit.Assert.*;
 public class SistemaDeRegaTest {
 
 
-//    @Test
-//    public void testGenerateDailyFileOfWateringPlan() {
-//        SistemaDeRega.setInicioDoPlanoDeRega(LocalDate.parse("05-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-//        // 8, 11, 14, 17, ...
-//        Set<LocalTime> times = new LinkedHashSet<>();
-//        times.add(LocalTime.parse("07:00"));
-//        times.add(LocalTime.parse("18:30"));
-//
-//        SistemaDeRega.setTempoInicialDeRega(times);
-//
-//        Set<Rega> setores = new LinkedHashSet<>();
-//        setores.add(new Rega("Sector1", 30, "T"));
-//        setores.add(new Rega("Sector2", 45, "I"));
-//        setores.add(new Rega("Sector3", 12, "P"));
-//        setores.add(new Rega("Sector4", 5, "3"));
-//
-//        SistemaDeRega.setPlanoDeRega(setores);
-//
-//        LocalDate date = LocalDate.parse("15-10-2022", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-//
-//        boolean result = SistemaDeRega.generateWateringDayRegister(date);
-//
-//        assertTrue(result);
-//
-//        String filepath = "files/WateringRegisters/WateringRegisters15-10-2022.csv";
-//
-//        File file = new File(filepath);
-//
-//        try {
-//        BufferedReader reader = new BufferedReader(new FileReader(file));
-//        String header = reader.readLine();
-//        String line1 = reader.readLine();
-//        String line2 = reader.readLine();
-//        String line4 = reader.readLine();
-//        String line5 = reader.readLine();
-//        reader.close();
-//
-//        assertEquals("Dia,Sector,Duracao,Inicio,Final", header);
-//        assertEquals("15/10/2022,Sector1,30,07:00,07:30", line1);
-//        assertEquals("15/10/2022,Sector2,45,07:30,08:15", line2);
-//        assertEquals("15/10/2022,Sector1,30,18:30,19:00", line4);
-//        assertEquals("15/10/2022,Sector2,45,19:00,19:45", line5);
-//    } catch (IOException e) {
-//        fail("IOException occurred when reading the file.");
-//    }
-//        if (file.exists()) {
-//            file.delete();
-//        }
-//    }
+    @Test
+    public void testGenerateDailyFileOfWateringPlan() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        SistemaDeRega.setInicioDoPlanoDeRega(LocalDate.parse("05-10-2022", formatter));
+
+        List<Rega> setores = new ArrayList<>();
+
+        setores.add(new Rega("35", LocalTime.of(7, 0), LocalTime.of(7, 15), LocalDate.parse("05-10-2022", formatter)));
+        setores.add(new Rega("D", LocalTime.of(7, 15), LocalTime.of(7, 25), LocalDate.parse("05-10-2022", formatter)));
+        setores.add(new Rega("35", LocalTime.of(18, 30), LocalTime.of(18, 45), LocalDate.parse("05-10-2022", formatter)));
+        setores.add(new Rega("D", LocalTime.of(18, 45), LocalTime.of(18, 55), LocalDate.parse("05-10-2022", formatter)));
+
+
+        setores.add(new Rega("35", LocalTime.of(7, 0), LocalTime.of(7, 15), LocalDate.parse("06-10-2022", formatter)));
+        setores.add(new Rega("A", LocalTime.of(7, 15), LocalTime.of(7, 20), LocalDate.parse("06-10-2022", formatter)));
+        setores.add(new Rega("41", LocalTime.of(7, 20), LocalTime.of(7, 48), LocalDate.parse("06-10-2022", formatter)));
+        setores.add(new Rega("35", LocalTime.of(18, 30), LocalTime.of(18, 45), LocalDate.parse("06-10-2022", formatter)));
+        setores.add(new Rega("A", LocalTime.of(18, 45), LocalTime.of(18, 50), LocalDate.parse("06-10-2022", formatter)));
+        setores.add(new Rega("41", LocalTime.of(18, 50), LocalTime.of(19, 18), LocalDate.parse("06-10-2022", formatter)));
+
+
+        setores.add(new Rega("35", LocalTime.of(7, 0), LocalTime.of(7, 15), LocalDate.parse("07-10-2022", formatter)));
+        setores.add(new Rega("D", LocalTime.of(7, 15), LocalTime.of(7, 25), LocalDate.parse("07-10-2022", formatter)));
+        setores.add(new Rega("35", LocalTime.of(18, 30), LocalTime.of(18, 45), LocalDate.parse("07-10-2022", formatter)));
+        setores.add(new Rega("D", LocalTime.of(18, 45), LocalTime.of(18, 55), LocalDate.parse("07-10-2022", formatter)));
+
+
+        setores.add(new Rega("35", LocalTime.of(7, 0), LocalTime.of(7, 15), LocalDate.parse("08-10-2022", formatter)));
+        setores.add(new Rega("41", LocalTime.of(7, 15), LocalTime.of(7, 43), LocalDate.parse("08-10-2022", formatter)));
+        setores.add(new Rega("35", LocalTime.of(18, 30), LocalTime.of(18, 45), LocalDate.parse("08-10-2022", formatter)));
+        setores.add(new Rega("41", LocalTime.of(18, 45), LocalTime.of(19, 13), LocalDate.parse("08-10-2022", formatter)));
+
+
+        setores.add(new Rega("35", LocalTime.of(7, 0), LocalTime.of(7, 15), LocalDate.parse("09-10-2022", formatter)));
+        setores.add(new Rega("A", LocalTime.of(7, 15), LocalTime.of(7, 20), LocalDate.parse("09-10-2022", formatter)));
+        setores.add(new Rega("D", LocalTime.of(7, 20), LocalTime.of(8, 48), LocalDate.parse("09-10-2022", formatter)));
+        setores.add(new Rega("35", LocalTime.of(18, 30), LocalTime.of(18, 45), LocalDate.parse("09-10-2022", formatter)));
+        setores.add(new Rega("A", LocalTime.of(18, 45), LocalTime.of(18, 50), LocalDate.parse("09-10-2022", formatter)));
+        setores.add(new Rega("D", LocalTime.of(18, 50), LocalTime.of(19, 18), LocalDate.parse("09-10-2022", formatter)));
+
+        SistemaDeRega.setPlanoDeRega(setores);
+
+        boolean result = SistemaDeRega.generateWateringRegisters();
+
+        assertTrue(result);
+
+        String filepath = "files/WateringRegisters/WateringRegisters05-10-2022.csv";
+
+        File file = new File(filepath);
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String header = reader.readLine();
+            assertEquals("Dia,Sector,Duracao,Inicio,Final", header);
+            String line = reader.readLine();
+            Rega rega;
+
+            for (int j = 0; j < setores.size(); j++) {
+                rega = setores.get(j);
+                String lineFromRegaInfo = String.format("%s,%s,%s,%s,%s", rega.getData().format(formatter), rega.getIdSetor(), Duration.between(rega.getHoraInicio(), rega.getHoraFim()).toMinutes(), rega.getHoraInicio(), rega.getHoraFim());
+                assertEquals(lineFromRegaInfo, line);
+                line = reader.readLine();
+            }
+
+            reader.close();
+
+        } catch (IOException e) {
+            fail("IOException occurred when reading the file.");
+        }
+        if (file.exists()) {
+            file.delete();
+        }
+    }
 
 }

@@ -2,15 +2,17 @@ package project.domain;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class ControladorRegaTest {
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    public void setUp() {
         ImportarFicheiro.importWateringPlan("src/test/java/project/testFiles/ficheiroCorretoV2.txt");
         LocalDate dataInicio = LocalDate.of(2023, 11, 19);
         SistemaDeRega.setInicioDoPlanoDeRega(dataInicio);
@@ -38,6 +40,12 @@ public class ControladorRegaTest {
 
         Assertions.assertEquals(SistemaDeRega.getControladorRega().checkIsWateringHour(tempoFora, dataImpar), "Não há parcelas a serem regadas agora.");
 
+    }
+
+    @AfterEach
+    void teardown(){
+        SistemaDeRega.setPlanoDeRega(null);
+        SistemaDeRega.setInicioDoPlanoDeRega(null);
     }
 
 

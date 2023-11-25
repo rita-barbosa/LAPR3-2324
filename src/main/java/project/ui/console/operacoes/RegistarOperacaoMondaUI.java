@@ -1,4 +1,4 @@
-package project.ui.console;
+package project.ui.console.operacoes;
 
 import project.controller.RegistarOperacaoMondaController;
 import project.domain.Planta;

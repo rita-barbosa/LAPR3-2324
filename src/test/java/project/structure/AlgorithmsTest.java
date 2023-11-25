@@ -1,5 +1,7 @@
 package project.structure;
 
+import org.junit.Before;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +24,7 @@ class AlgorithmsTest {
     MapGraph<Local, Integer> redeGrafo;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         try {
             String locais = "files/locais_small.csv";
             String distancias = "files/distancias_small.csv";
@@ -110,6 +112,12 @@ class AlgorithmsTest {
         int kruskallTotalWeight = MST.totalWeightMinimumSpanningTree(mst2);
 
         assertEquals(primTotalWeight, kruskallTotalWeight);
+    }
+
+
+    @AfterEach
+    void teardown(){
+        redeGrafo = null;
     }
 
 }

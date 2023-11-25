@@ -27,7 +27,7 @@ public class CultureRepository {
             callStmt.execute();
             resultSet = (ResultSet) callStmt.getObject(1);
 
-            list = Utils.resultSetTypeToList(resultSet, "nome");
+            list = Utils.resultSetTypeToList(resultSet, "cultura");
         } finally {
             if (!Objects.isNull(callStmt)) {
                 callStmt.close();

@@ -3,7 +3,8 @@ create or replace FUNCTION novoIdOperacao
     RETURN NUMBER AS
     newIdOperation NUMBER;
 BEGIN
-    SELECT NVL(MAX(idOperacao), 0) + 1 INTO newIdOperation
+    SELECT NVL(MAX(idOperacao), 0) + 1
+    INTO newIdOperation
     FROM operacao;
     RETURN newIdOperation;
 END;
@@ -11,29 +12,27 @@ END;
 -------------------------------------------------------------------------------------------------------
 -- Função --
 -------------------------------------------------------------------------------------------------------
-create or replace NONEDITIONABLE FUNCTION registarOperacaoSemeadura(
+create or replace FUNCTION registarOperacaoSemeadura(
     desigOp IN tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE,
     desigUnidade IN tipoUnidade.designacaoUnidade%TYPE,
     qtd IN NUMBER,
     dataOp IN DATE,
     nomeParcela IN parcela.nomeParcela%TYPE,
-    desigEstadoFen IN VARCHAR2,
-    nomeComum IN planta.nomeComum%TYPE,
-    variedade IN planta.variedade%TYPE
+    nomePlanta IN planta.nomeComum%TYPE,
+    var IN planta.variedade%TYPE
 ) RETURN NUMBER IS
     success NUMBER := 0;
     idOp    NUMBER;
-    estadoFenologico_exists NUMBER := 0;
+    qtdIsValid NUMBER := 0;
 BEGIN
     BEGIN
-        SELECT NVL(COUNT(*),0) INTO estadoFenologico_exists
-        FROM estadoFenologico
-        WHERE designacao = desigEstadoFen;
 
-        IF estadoFenologico_exists >= 0 THEN
+        qtdisvalid := validarArea(desigUnidade, qtd, nomeParcela);
+
+        IF qtdIsvalid = 1 THEN
 
             INSERT INTO culturaInstalada (dataInicial, nomeParcela, variedade, nomeComum, designacaoUnidade, designacaoEstadoFenologico, dataFinal, quantidade)
-            VALUES (dataOp, nomeParcela, variedade, nomeComum, desigUnidade, desigEstadoFen, NULL, qtd);
+            VALUES (dataOp, nomeParcela, var, nomePlanta, desigUnidade, NULL, NULL, qtd);
 
             idOp := novoIdOperacao();
 
@@ -41,9 +40,10 @@ BEGIN
             VALUES (idOp, desigOp, desigUnidade, qtd, dataOp);
 
             INSERT INTO operacaocultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade)
-            VALUES (idOp, nomeParcela, dataOp, nomeComum, variedade);
+            VALUES (idOp, nomeParcela, dataOp, nomePlanta, var);
 
             success := 1;
+
         END IF;
 
     EXCEPTION
@@ -54,39 +54,117 @@ BEGIN
     RETURN success;
 END;
 
-
 -------------------------------------------------------------------------------------------------------
--- Bloco Anónimo --
--------------------------------------------------------------------------------------------------------
-SET SERVEROUTPUT ON;
 
-DECLARE
-    v_desigOp tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE := 'Semeadura';
-    v_desigUnidade tipoUnidade.DESIGNACAOUNIDADE%TYPE := 'ha';
-    v_qtd NUMBER := 13;
-    v_desigEstadoFen VARCHAR2(50) := NULL;
-    v_dataOp DATE := TO_DATE('16/03/2022', 'DD/MM/YYYY');
-    v_nomeParcela parcela.nomeParcela%TYPE := 'Vinha';
-    v_nomeComum planta.nomeComum%TYPE := 'Cenoura';
-    v_variedade planta.variedade%TYPE := 'CARSON HYBRID';
-
-    v_success NUMBER;
+create or replace FUNCTION validarArea(
+    desigUnidade IN operacao.designacaoUnidade%TYPE,
+    qtd IN NUMBER,
+    parcelaNome IN parcela.nomeParcela%TYPE
+) RETURN NUMBER IS
+    isValid      NUMBER := 0;
+    areaParcela  NUMBER;
+    areaOcupada  NUMBER;
+    areaRestante NUMBER;
 BEGIN
-    v_success := registarOperacaoSemeadura(v_desigOp, v_desigUnidade, v_qtd, v_dataOp, v_nomeParcela, v_desigEstadoFen, v_nomeComum, v_variedade);
+    BEGIN
+        SELECT area
+        INTO areaParcela
+        FROM parcela p
+        WHERE p.nomeparcela LIKE parcelaNome;
 
-    IF v_success = 1 THEN
-        DBMS_OUTPUT.PUT_LINE('Operation registered successfully!');
-    ELSE
-        DBMS_OUTPUT.PUT_LINE('Failed to register operation.');
-    END IF;
+        areaOcupada := obterAreaOcupadaPorCulturas(parcelaNome);
+
+        areaRestante := areaParcela - areaOcupada;
+
+        IF desigUnidade LIKE 'ha' AND qtd < areaRestante THEN
+            isValid := 1;
+        ELSIF desigUnidade LIKE 'm2' AND (qtd / 10000) < areaRestante THEN
+            isValid := 1;
+        END IF;
+
+    EXCEPTION
+        WHEN OTHERS THEN
+            isValid := 0;
+    END;
+
+    RETURN isValid;
 END;
 /
 
 -------------------------------------------------------------------------------------------------------
--- Confirmação --
+
+create or replace FUNCTION obterAreaOcupadaPorCulturas(
+    parcelaNome IN parcela.nomeParcela%TYPE
+) RETURN NUMBER IS
+    areaOcupada  NUMBER;
+    areas        SYS_REFCURSOR;
+    qtd          NUMBER;
+    desigUnidade VARCHAR2(50);
+BEGIN
+
+    OPEN areas FOR
+        SELECT QUANTIDADE, DESIGNACAOUNIDADE
+        FROM CULTURAINSTALADA c
+        WHERE c.NOMEPARCELA LIKE parcelaNome
+          AND DATAFINAL IS NULL;
+
+
+    FETCH areas INTO qtd, desigUnidade;
+
+    IF areas%ROWCOUNT != 0 THEN
+
+        LOOP
+
+            IF desigUnidade LIKE 'ha' THEN
+                areaOcupada := areaOcupada + qtd;
+            ELSIF desigUnidade LIKE 'm2' THEN
+                qtd := qtd / 10000;
+                areaOcupada := areaOcupada + qtd;
+            END IF;
+
+            FETCH areas INTO qtd, desigUnidade;
+            EXIT WHEN areas%NOTFOUND;
+
+        END LOOP;
+
+    end if;
+
+    return areaOcupada;
+END;
+/
+
 -------------------------------------------------------------------------------------------------------
-SELECT *
-FROM operacao op
-         INNER JOIN operacaoCultura opCul ON opCul.idOperacao = op.idOperacao
-         INNER JOIN culturaInstalada culInst ON culInst.datainicial = op.dataOperacao
-WHERE dataOperacao = TO_DATE('16/03/2022', 'DD/MM/YYYY');
+-- Bloco Anónimo --
+-------------------------------------------------------------------------------------------------------
+-- SET SERVEROUTPUT ON;
+--
+-- DECLARE
+--     v_desigOp tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE := 'Semeadura';
+--     v_desigUnidade tipoUnidade.DESIGNACAOUNIDADE%TYPE := 'ha';
+--     v_qtd NUMBER := 13;
+--     v_desigEstadoFen VARCHAR2(50) := NULL;
+--     v_dataOp DATE := TO_DATE('16/03/2022', 'DD/MM/YYYY');
+--     v_nomeParcela parcela.nomeParcela%TYPE := 'Vinha';
+--     v_nomeComum planta.nomeComum%TYPE := 'Cenoura';
+--     v_variedade planta.variedade%TYPE := 'CARSON HYBRID';
+--
+--     v_success NUMBER;
+-- BEGIN
+--     v_success := registarOperacaoSemeadura(v_desigOp, v_desigUnidade, v_qtd, v_dataOp, v_nomeParcela, v_desigEstadoFen, v_nomeComum, v_variedade);
+--
+--     IF v_success = 1 THEN
+--         DBMS_OUTPUT.PUT_LINE('Operation registered successfully!');
+--     ELSE
+--         DBMS_OUTPUT.PUT_LINE('Failed to register operation.');
+--     END IF;
+-- END;
+-- /
+--
+-- -------------------------------------------------------------------------------------------------------
+-- -- Confirmação --
+-- -------------------------------------------------------------------------------------------------------
+-- SELECT *
+-- FROM operacao op
+--          INNER JOIN operacaoCultura opCul ON opCul.idOperacao = op.idOperacao
+--          INNER JOIN culturaInstalada culInst ON culInst.datainicial = op.dataOperacao
+-- WHERE dataOperacao = TO_DATE('16/03/2022', 'DD/MM/YYYY');

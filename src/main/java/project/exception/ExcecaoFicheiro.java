@@ -62,7 +62,7 @@ public class ExcecaoFicheiro extends Exception {
     }
 
     private static void validarLinha(String linha) throws ExcecaoFicheiro {
-        if (!linha.matches("^[A-Za-z],\\d{1,2},[TIP3]$")) {
+        if (!linha.matches("^[A-Za-z0-9]+,\\d{1,2},[TIP3]$")) {
             throw new ExcecaoFicheiro("ERRO: Conteúdo ficheiro não corresponde ao esperado.\nAs linhas com os setores a serem regados deve ter o seguinte formato:\n <parcela: [A-Z], duração, regularidade: [T,I,P,3]>, por exemplo A,14,T.");
         }
     }

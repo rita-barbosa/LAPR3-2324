@@ -7,10 +7,6 @@ import java.util.Date;
 
 public class Operacao {
 
-//    public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
-//
-//    public static Date defaultDate = (Date) formatter.parse("0-00-0000");
-
     private final Integer idOperacao;
 
     private final String designacaoOperacaoAgricola;

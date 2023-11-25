@@ -1,4 +1,4 @@
-package project.ui.console;
+package project.ui.console.rede;
 
 //import static project.controller.PercursoMinimoController.getShortestPathForFurthestNodes;
 import project.controller.PercursoMinimoController;

@@ -7,18 +7,7 @@
 >Nesta user story é necessário atualizar as informações existentes no modelo relacional, lógico e físico, previamente criados para a US BD02 e BD03 respetivamente.
 
 
-
-### 1.2. Clarificações
-
-**Feitas pelo cliente:** 
-
-> **Questão:** 
-> 
-> **Resposta:**
-
-
-
-### 1.3. Planeamento
+### 1.2. Planeamento
 
 > Após o momento de avaliação realizado pelo grupo, no âmbito da disciplina de Base de Dados e de feedback dado pelo nosso professor, o grupo decidiu realizar algumas alterações.
 
@@ -39,6 +28,13 @@
 
 * **Verificações de atributos**
 > Criação de checks para datas(a dataFinal não pode ser primeiro que a dataInicial) na tabela CulturaInstalada e para as percentagens na tabela ConstituicaoQuimica.
+ 
+* **Verificações para casas decimais**
+> Colocação de casas decimais em alguns atributos, como por exemplo ph em FatorProducao e quantidade em Operacao, CulturaInstalada e ConstituicaoQuimica e area em Parcela.
+
+* **Criação de novas tabelas**
+> Foram criadas as tabelas Setor, SetorCulturaInstalada, Colheita e Rega
+
 
 #### Modelo Relacional Físico
 

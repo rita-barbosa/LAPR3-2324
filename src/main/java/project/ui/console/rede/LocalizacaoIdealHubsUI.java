@@ -8,71 +8,32 @@ import project.ui.console.utils.Utils;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
+/**
+ * The type Localizacao ideal hubs ui.
+ */
 public class LocalizacaoIdealHubsUI implements Runnable {
-
-    private final LocalizacaoIdealHubsController controller;
-
-
-    public LocalizacaoIdealHubsUI(){
-        this.controller = new LocalizacaoIdealHubsController();
-    }
+    private final LocalizacaoIdealHubsController controller = new LocalizacaoIdealHubsController();
 
     /**
      * Runs this operation.
      */
     @Override
     public void run() {
-        Scanner scanner = new Scanner(System.in);
         RedeHub redeHub = RedeHub.getInstance();
         MapGraph<Local, Integer> graph = redeHub.getRedeDistribuicao();
 
         String question = "Insira um valor N para o número de Hubs a serem selecionados:";
-        int n;
-
-        System.out.println("Choose an option:");
-        System.out.println("1. Influence");
-        System.out.println("2. Proximity");
-        System.out.println("3. Centrality");
-        System.out.println("4. TOP N Influence");
-        System.out.println("5. TOP N Proximity");
-        System.out.println("6. TOP N Centrality");
-        System.out.println("7. FINAL");
-
-        String option = scanner.nextLine();
-
-        switch (option) {
-            case "1":
-                printOptimalHubs(redeHub.calculateInfluence(graph), option);
-                break;
-            case "2":
-                printOptimalHubs(redeHub.calculateProximity(graph), option);
-                break;
-            case "3":
-                printOptimalHubs(redeHub.calculateCentrality(graph), option);
-                break;
-            case "4":
-                n = Utils.readIntegerFromConsole(question);
-                printOptimalHubs(controller.getTopNInfluenceMap(graph, n), option);
-                break;
-            case "5":
-                n = Utils.readIntegerFromConsole(question);
-                printOptimalHubs(controller.getTopNProximityMap(graph, n), option);
-                break;
-            case "6":
-                n = Utils.readIntegerFromConsole(question);
-                printOptimalHubs(controller.getTopNCentralityMap(graph, n), option);
-                break;
-            case "7":
-                n = Utils.readIntegerFromConsole(question);
-                printTopNHubs(controller.getTopNTotal(graph, n), n);
-                break;
-            default:
-                System.out.println("Invalid option");
-        }
+        int n = Utils.readIntegerFromConsole(question);
+        printTopNHubs(controller.getTopNTotal(graph, n), n);
     }
 
+    /**
+     * Makes the output for the Top N hubs
+     *
+     * @param hubs map with the information about the bus
+     * @param n number of the top
+     */
     private void printTopNHubs(Map<Local, List<Integer>> hubs, Integer n){
         System.out.println("\n-----------------------------------------------------------------------------------------------------");
         System.out.println("|                                  Top " + n + " localidades para os Hubs:                                  |");
@@ -88,33 +49,11 @@ public class LocalizacaoIdealHubsUI implements Runnable {
             System.out.print(" | Proximity: " + values.get(1) + " m");
             System.out.println();
         }
-    }
-
-    private void printOptimalHubs(Map<Local, Integer> hubs, String option) {
-        System.out.println("Optimal Hub Locations:");
-        System.out.println("=====================");
-
-        for (Map.Entry<Local, Integer> entry : hubs.entrySet()) {
-            Local hub = entry.getKey();
-            System.out.print("Localidade: " + hub.getNumId() + " | Horário: " + getHubOperatingHours(hub.getNumId()));
-
-            if (option.equals("1") || option.equals("4")) {
-                System.out.print(" | Influence: " + entry.getValue());
-            }
-
-            if (option.equals("2") || option.equals("5") ) {
-                System.out.print(" | Proximity: " + entry.getValue());
-            }
-
-            if (option.equals("3") || option.equals("6") || option.equals("7")) {
-                System.out.print(" | Centrality: " + entry.getValue());
-            }
-            System.out.println();
-        }
+        System.out.println();
     }
 
     /**
-     * Gets the operating hours for a hub based on its identifier.
+     * Gets the hours for a hub based on the identifier.
      *
      * @param numId the hub identifier
      * @return the operating hours as a String

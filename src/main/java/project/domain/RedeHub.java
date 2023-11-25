@@ -80,22 +80,6 @@ public class RedeHub {
         return centrality;
     }
 
-    public Map<Local, Integer> getTopNHubsSeparate(Map<Local,Integer> map, Integer n){
-        Map<Local, Integer> topNHubsMap = new LinkedHashMap<>();
-
-        int count = 0;
-        for (Map.Entry<Local, Integer> entry : map.entrySet()) {
-            if (count < n) {
-                topNHubsMap.put(entry.getKey(), entry.getValue());
-                count++;
-            } else {
-                break;
-            }
-        }
-
-        return topNHubsMap;
-    }
-
     public Map<Local, List<Integer>> getTopNMap(Map<Local, List<Integer>> map, Integer n){
         List<Map.Entry<Local, List<Integer>>> entries = new ArrayList<>(map.entrySet());
         entries.sort((entry1, entry2) -> {

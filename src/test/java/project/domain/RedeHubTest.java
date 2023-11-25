@@ -1,5 +1,7 @@
 package project.domain;
 
+
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import project.exception.ExcecaoFicheiro;
@@ -13,9 +15,20 @@ import static project.domain.RedeHub.*;
 
 class RedeHubTest {
 
+    RedeHub redeHub = RedeHub.getInstance();
+    MapGraph<Local, Integer> redeGrafo;
+
     @BeforeEach
     void setUp() throws ExcecaoFicheiro, IOException {
-        ImportarFicheiro.importRedeDistribuicao("files/locais_small.csv","files/distancias_small.csv");
+            String locais = "files/locais_small.csv";
+            String distancias = "files/distancias_small.csv";
+            ImportarFicheiro.importRedeDistribuicao(locais,distancias);
+            redeGrafo = redeHub.getRedeDistribuicao();
+    }
+
+    @AfterEach
+    void tearDown() {
+        redeGrafo = null;
     }
 
     @Test
@@ -40,8 +53,6 @@ class RedeHubTest {
 
     @Test
     void calculateInfluenceWorks() {
-        RedeHub redeHub = RedeHub.getInstance();
-        MapGraph<Local, Integer> graph = redeHub.getRedeDistribuicao();
         Local local1 = new Local("CT15", new CoordenadasGps(41.7, -8.8333));
         Local local2 = new Local("CT12", new CoordenadasGps(41.1495, -8.6108));
         Local local3 = new Local("CT1", new CoordenadasGps(40.6389, -8.6553));
@@ -68,7 +79,7 @@ class RedeHubTest {
         expected.put(local7, influenceValue7);
 
 
-        Map<Local, Integer> result = redeHub.calculateInfluence(graph);
+        Map<Local, Integer> result = redeHub.calculateInfluence(redeGrafo);
 
         for (Map.Entry<Local, Integer> entry : expected.entrySet()) {
             Local key = entry.getKey();
@@ -80,8 +91,6 @@ class RedeHubTest {
 
     @Test
     void calculateInfluenceFails() {
-        RedeHub redeHub = RedeHub.getInstance();
-        MapGraph<Local, Integer> graph = redeHub.getRedeDistribuicao();
         Local local1 = new Local("CT15", new CoordenadasGps(41.7, -8.8333));
         Local local2 = new Local("CT12", new CoordenadasGps(41.1495, -8.6108));
         Local local3 = new Local("CT1", new CoordenadasGps(40.6389, -8.6553));
@@ -107,7 +116,7 @@ class RedeHubTest {
         expected.put(local6, influenceValue6);
         expected.put(local7, influenceValue7);
 
-        Map<Local, Integer> result = redeHub.calculateInfluence(graph);
+        Map<Local, Integer> result = redeHub.calculateInfluence(redeGrafo);
 
         for (Map.Entry<Local, Integer> entry : expected.entrySet()) {
             Local key = entry.getKey();
@@ -119,8 +128,6 @@ class RedeHubTest {
 
     @Test
     void calculateProximityWorks() {
-        RedeHub redeHub = RedeHub.getInstance();
-        MapGraph<Local, Integer> graph = redeHub.getRedeDistribuicao();
         Local local1 = new Local("CT15", new CoordenadasGps(41.7, -8.8333));
         Local local2 = new Local("CT12", new CoordenadasGps(41.1495, -8.6108));
         Local local3 = new Local("CT1", new CoordenadasGps(40.6389, -8.6553));
@@ -147,7 +154,7 @@ class RedeHubTest {
         expected.put(local7, proximityValue7);
 
 
-        Map<Local, Integer> result = redeHub.calculateProximity(graph);
+        Map<Local, Integer> result = redeHub.calculateProximity(redeGrafo);
 
         for (Map.Entry<Local, Integer> entry : expected.entrySet()) {
             Local key = entry.getKey();
@@ -159,8 +166,6 @@ class RedeHubTest {
 
     @Test
     void calculateProximityFails() {
-        RedeHub redeHub = RedeHub.getInstance();
-        MapGraph<Local, Integer> graph = redeHub.getRedeDistribuicao();
         Local local1 = new Local("CT15", new CoordenadasGps(41.7, -8.8333));
         Local local2 = new Local("CT12", new CoordenadasGps(41.1495, -8.6108));
         Local local3 = new Local("CT1", new CoordenadasGps(40.6389, -8.6553));
@@ -187,7 +192,7 @@ class RedeHubTest {
         expected.put(local7, proximityValue7);
 
 
-        Map<Local, Integer> result = redeHub.calculateProximity(graph);
+        Map<Local, Integer> result = redeHub.calculateProximity(redeGrafo);
 
         for (Map.Entry<Local, Integer> entry : expected.entrySet()) {
             Local key = entry.getKey();
@@ -199,8 +204,6 @@ class RedeHubTest {
 
     @Test
     void calculateCentralityWorks() {
-        RedeHub redeHub = RedeHub.getInstance();
-        MapGraph<Local, Integer> graph = redeHub.getRedeDistribuicao();
         Local local1 = new Local("CT15", new CoordenadasGps(41.7, -8.8333));
         Local local2 = new Local("CT12", new CoordenadasGps(41.1495, -8.6108));
         Local local3 = new Local("CT1", new CoordenadasGps(40.6389, -8.6553));
@@ -227,7 +230,7 @@ class RedeHubTest {
         expected.put(local7, centralityValue7);
 
 
-        Map<Local, Integer> result = redeHub.calculateCentrality(graph);
+        Map<Local, Integer> result = redeHub.calculateCentrality(redeGrafo);
         for (Map.Entry<Local, Integer> entry : expected.entrySet()) {
             Local key = entry.getKey();
             Integer expectedValue = entry.getValue();
@@ -238,8 +241,6 @@ class RedeHubTest {
 
     @Test
     void calculateCentralityFails() {
-        RedeHub redeHub = RedeHub.getInstance();
-        MapGraph<Local, Integer> graph = redeHub.getRedeDistribuicao();
         Local local1 = new Local("CT15", new CoordenadasGps(41.7, -8.8333));
         Local local2 = new Local("CT12", new CoordenadasGps(41.1495, -8.6108));
         Local local3 = new Local("CT1", new CoordenadasGps(40.6389, -8.6553));
@@ -263,7 +264,7 @@ class RedeHubTest {
         expected.put(local6, centralityValue6);
 
 
-        Map<Local, Integer> result = redeHub.calculateCentrality(graph);
+        Map<Local, Integer> result = redeHub.calculateCentrality(redeGrafo);
 
         for (Map.Entry<Local, Integer> entry : expected.entrySet()) {
             Local key = entry.getKey();
@@ -275,7 +276,6 @@ class RedeHubTest {
 
     @Test
     void getTopNMapWorks(){
-        RedeHub redeHub = RedeHub.getInstance();
         Integer n = 3;
         Map<Local, List<Integer>> expectedMap = new LinkedHashMap<>();
         Map<Local, List<Integer>> realMap = new HashMap<>();
@@ -323,7 +323,6 @@ class RedeHubTest {
 
     @Test
     void getTopNMapFails(){
-        RedeHub redeHub = RedeHub.getInstance();
         Integer n = 2;
         Map<Local, List<Integer>> expectedWrongMap = new LinkedHashMap<>();
         Map<Local, List<Integer>> realMap = new HashMap<>();

@@ -43,8 +43,8 @@ DECLARE
     dataOperacao               Operacao.dataOperacao%type;
     operacoesInexistente EXCEPTION;
 BEGIN
-    listaOperacoesParcela := listaOperacoes('Lameiro da ponte', TO_DATE('2016-10-05', 'YYYY-MM-DD'),
-                                            TO_DATE('2020-10-11', 'YYYY-MM-DD'));
+    listaOperacoesParcela := listaOperacoes('Campo Novo', TO_DATE('01/07/2023', 'DD-MM-YYYY'),
+                                            TO_DATE('02/10/2023','DD-MM-YYYY'));
 
     FETCH listaOperacoesParcela INTO nomeParcela, designacaoOperacaoAgricola, quantidade, dataOperacao;
 
@@ -52,10 +52,14 @@ BEGIN
         RAISE operacoesInexistente;
     ELSE
         DBMS_OUTPUT.PUT_LINE('PARCELA: ' || nomeParcela);
-        DBMS_OUTPUT.PUT_LINE( RPAD('TIPO OPERAÇÃO',20, ' ') || '|  ' || RPAD('QUANTIDADE',20, ' ') ||  '|  ' || RPAD('DATA OPERAÇÃO',20, ' '));
+        DBMS_OUTPUT.PUT_LINE( RPAD('TIPO OPERAÇÃO',30, ' ') || '|  ' || RPAD('QUANTIDADE',20, ' ') ||  '|  ' || RPAD('DATA OPERAÇÃO',20, ' '));
         LOOP
             EXIT WHEN listaOperacoesParcela%notfound;
-            DBMS_OUTPUT.PUT_LINE(RPAD(designacaoOperacaoAgricola,20, ' ') || '|  ' || RPAD(quantidade,20, ' ') ||  '|  ' || RPAD(dataOperacao,20, ' '));
+            IF( quantidade < 1) THEN
+                DBMS_OUTPUT.PUT_LINE(RPAD(designacaoOperacaoAgricola,30, ' ') || '|  ' || RPAD(TO_CHAR(quantidade,'FM99999990.9999'),20, ' ') ||  '|  ' || RPAD(dataOperacao,20, ' '));
+            ELSE
+                DBMS_OUTPUT.PUT_LINE(RPAD(designacaoOperacaoAgricola,30, ' ') || '|  ' || RPAD(quantidade,20, ' ') ||  '|  ' || RPAD(dataOperacao,20, ' '));
+            END IF;
             FETCH listaOperacoesParcela INTO nomeParcela, designacaoOperacaoAgricola, quantidade, dataOperacao;
         END LOOP;
     END IF;
@@ -116,19 +120,34 @@ END;
 -----------------------------------------------
 --EXEMPLO OUTPUT-------------------------------
 
--- PARCELA: Lameiro da ponte
--- TIPO OPERAÇÃO       |  QUANTIDADE          |  DATA OPERAÇÃO
--- Plantação           |  90                  |  17.01.07 - 00:00
--- Plantação           |  60                  |  17.01.08 - 00:00
--- Plantação           |  40                  |  17.01.08 - 00:00
--- Rega                |  3                   |  17.07.10 - 00:00
--- Rega                |  3                   |  17.07.10 - 00:00
--- Rega                |  3                   |  17.07.10 - 00:00
--- Rega                |  3,5                 |  17.08.10 - 00:00
--- Rega                |  3,5                 |  17.08.10 - 00:00
--- Rega                |  3,5                 |  17.08.10 - 00:00
--- Rega                |  3                   |  17.09.10 - 00:00
--- Rega                |  3                   |  17.09.10 - 00:00
--- Rega                |  3                   |  17.09.10 - 00:00
--- Poda                |  90                  |  18.01.07 - 00:00
--- Poda                |  60                  |  18.01.08 - 00:00
+-- PARCELA: Campo Novo
+-- TIPO OPERAÇÃO                 |  QUANTIDADE          |  DATA OPERAÇÃO
+-- Rega                          |  120                 |  23.07.08 - 04:00
+-- Rega                          |  120                 |  23.07.15 - 04:00
+-- Rega                          |  150                 |  23.07.22 - 04:00
+-- Rega                          |  150                 |  23.07.29 - 04:00
+-- Rega                          |  120                 |  23.08.05 - 21:30
+-- Rega                          |  120                 |  23.08.12 - 21:30
+-- Rega                          |  120                 |  23.08.19 - 21:30
+-- Rega                          |  120                 |  23.08.26 - 21:30
+-- Rega                          |  120                 |  23.08.31 - 21:30
+-- Rega                          |  120                 |  23.09.05 - 21:30
+-- Rega                          |  120                 |  23.07.09 - 06:20
+-- Rega                          |  120                 |  23.07.16 - 06:20
+-- Rega                          |  120                 |  23.07.23 - 06:20
+-- Rega                          |  120                 |  23.07.30 - 06:20
+-- Rega                          |  120                 |  23.08.07 - 06:20
+-- Rega                          |  120                 |  23.08.14 - 06:20
+-- Rega                          |  120                 |  23.08.21 - 06:20
+-- Rega                          |  120                 |  23.08.28 - 06:20
+-- Rega                          |  120                 |  23.09.06 - 06:20
+-- Rega                          |  120                 |  23.09.13 - 07:00
+-- Rega                          |  120                 |  23.09.20 - 07:00
+-- Colheita                      |  8000                |  23.09.15 - 00:00
+-- Colheita                      |  5000                |  23.09.25 - 00:00
+-- Colheita                      |  900                 |  23.09.18 - 00:00
+-- Colheita                      |  1500                |  23.09.22 - 00:00
+-- Aplicação de fator de produção|  1800                |  23.07.03 - 00:00
+-- Semeadura                     |  1,2                 |  23.07.05 - 00:00
+-- Monda                         |  0.5                 |  23.08.08 - 00:00
+-- Mobilização do solo           |  0.6                 |  23.07.04 - 00:00

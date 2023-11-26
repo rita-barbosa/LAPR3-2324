@@ -8,10 +8,12 @@ import java.util.LinkedList;
 public class MST {
 
     public static <V, E extends Comparable<E>> MapGraph<V, E > getMstWithKruskallAlgorithm(Graph<V, E> g) {
-        MapGraph<V, E> mst = new MapGraph<>(false);
+        MapGraph<V, E> mst = new MapGraph<>(true);
 
         ArrayList<V> vertices = g.vertices();
-        mst.vertices().addAll(vertices);
+        for (V vert : vertices) {
+            mst.addVertex(vert);
+        }
 
 
         ArrayList<Edge<V, E>> edgesList = (ArrayList<Edge<V, E>>) g.edges();
@@ -97,7 +99,9 @@ public class MST {
         }
 
         MapGraph<V, E> result = new MapGraph<>(true);
-        result.vertices().addAll(mst.vertices());
+        for (V vert : mst.vertices()) {
+            result.addVertex(vert);
+        }
         for (Edge<V, E> edge : edges) {
             result.addEdge(edge.getVOrig(), edge.getVDest(), edge.getWeight());
         }

@@ -139,8 +139,7 @@ begin
             inner join culturaInstalada ci
                   on ci.nomeComum = p.nomeComum
                   and ci.variedade = p.variedade
-            where ci.nomeParcela = p_nomeParcela
-                  and ci.dataFinal is null;
+            where ci.nomeParcela = p_nomeParcela;
     exception
         when no_data_found then
             return null;

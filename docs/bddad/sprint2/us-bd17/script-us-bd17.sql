@@ -53,25 +53,25 @@ aplicacaoFatorProducaoInexistente   EXCEPTION;
     v_nome_Parcela                      Parcela.nomeParcela%type;
 	v_nome_comercial                    AplicacaoFatorProducao.nomeComercial%type;
     v_componente                        ConstituicaoQuimica.formulaQuimica%type;
-    v_quantidade                        ConstituicaoQuimica.quantidade%type;  --CHECK SE ESTA QUANTIDADE PODE SER DE CONSTITUICAOQUIMICA OU SE TEM DE SER DE OPERACAO
+    v_quantidade                        ConstituicaoQuimica.quantidade%type;
 BEGIN
-    listaComponentesParcela := fncListaComponentesFatores('Campo Novo',TO_DATE('2016-10-05', 'YYYY-MM-DD'), TO_DATE('2023-10-11', 'YYYY-MM-DD'));
+    listaComponentesParcela := fncListaComponentesFatores('Lameiro do moinho',TO_DATE('01/01/2019', 'DD/MM/YYYY'), TO_DATE('06/07/2023', 'DD/MM/YYYY'));
 
 FETCH listaComponentesParcela INTO v_nome_Parcela, v_nome_comercial, v_componente, v_quantidade;
 
-IF listaComponentesParcela%ROWCOUNT = 0 THEN
-        RAISE  aplicacaoFatorProducaoInexistente;
-ELSE
-        DBMS_OUTPUT.PUT_LINE('PARCELA: ' || v_nome_parcela);
-        DBMS_OUTPUT.PUT_LINE( RPAD('NOME COMERCIAL',28, ' ') || '|  ' || RPAD('COMPONENTE',20, ' ') ||  '|  ' || RPAD('QUANTIDADE (kg)',20, ' '));
-        LOOP
-DBMS_OUTPUT.PUT_LINE(RPAD(v_nome_comercial,28, ' ') || '|  ' || RPAD(v_componente,20, ' ') ||  '|  ' || RPAD(v_quantidade,20, ' '));
-FETCH listaComponentesParcela
-    INTO v_nome_Parcela, v_nome_comercial, v_componente, v_quantidade;
-EXIT WHEN  listaComponentesParcela%NOTFOUND;
-END LOOP;
-END IF;
-CLOSE listaComponentesParcela;
+    IF listaComponentesParcela%ROWCOUNT = 0 THEN
+            RAISE  aplicacaoFatorProducaoInexistente;
+    ELSE
+            DBMS_OUTPUT.PUT_LINE('PARCELA: ' || v_nome_parcela);
+            DBMS_OUTPUT.PUT_LINE( RPAD('NOME COMERCIAL',28, ' ') || '|  ' || RPAD('COMPONENTE',20, ' ') ||  '|  ' || RPAD('QUANTIDADE (kg)',20, ' '));
+            LOOP
+                DBMS_OUTPUT.PUT_LINE(RPAD(v_nome_comercial,28, ' ') || '|  ' || RPAD(v_componente,20, ' ') ||  '|  ' || RPAD(v_quantidade,20, ' '));
+                FETCH listaComponentesParcela
+                    INTO v_nome_Parcela, v_nome_comercial, v_componente, v_quantidade;
+                EXIT WHEN  listaComponentesParcela%NOTFOUND;
+            END LOOP;
+    END IF;
+    CLOSE listaComponentesParcela;
 
 EXCEPTION
     WHEN aplicacaoFatorProducaoInexistente THEN
@@ -122,3 +122,26 @@ EXCEPTION
     DBMS_OUTPUT.PUT_LINE('TESTE FALHOU');
 END;
 /
+
+-----------------------------------------------
+--EXEMPLO OUTPUT-------------------------------
+--PARCELA: Lameiro do moinho
+--NOME COMERCIAL              |  COMPONENTE          |  QUANTIDADE (kg)
+--BIOFERTIL N6                |  B                   |  ,00078
+--BIOFERTIL N6                |  Ca                  |  23,34
+--BIOFERTIL N6                |  K2O                 |  93,36
+--BIOFERTIL N6                |  Matéria Orgânica    |  2061,7
+--BIOFERTIL N6                |  MgO                 |  11,67
+--BIOFERTIL N6                |  N                   |  248,96
+--BIOFERTIL N6                |  P2O5                |  97,25
+--EPSO Microtop               |  B                   |  ,207
+--EPSO Microtop               |  Mg                  |  2,07
+--EPSO Microtop               |  Mn                  |  ,23
+--EPSO Microtop               |  S                   |  2,852
+--Fertimax Extrume de Cavalo  |  B                   |  ,00046
+--Fertimax Extrume de Cavalo  |  Ca                  |  18,4
+--Fertimax Extrume de Cavalo  |  K2O                 |  4,6
+--Fertimax Extrume de Cavalo  |  Matéria Orgânica    |  575
+--Fertimax Extrume de Cavalo  |  MgO                 |  3,45
+--Fertimax Extrume de Cavalo  |  N                   |  34,5
+--Fertimax Extrume de Cavalo  |  P2O5                |  9,2

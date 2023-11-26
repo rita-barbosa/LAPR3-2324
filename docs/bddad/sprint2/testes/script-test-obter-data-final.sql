@@ -1,31 +1,28 @@
 -----------------------------------------------
 --FUNÇÃO---------------------------------------
-CREATE OR REPLACE NONEDITIONABLE FUNCTION temDataFinal(nomePar IN parcela.nomeParcela%TYPE,
-                                                       nomeCom IN culturaInstalada.nomeComum%TYPE,
-                                                       vard IN culturaInstalada.variedade%TYPE,
-                                                       dataIni IN culturaInstalada.dataInicial%TYPE)
-    RETURN BOOLEAN IS
+CREATE OR REPLACE NONEDITIONABLE FUNCTION obterDataFinal(nomePar IN parcela.nomeParcela%TYPE,
+                                                         nomeCom IN culturaInstalada.nomeComum%TYPE,
+                                                         vard IN culturaInstalada.variedade%TYPE,
+                                                         dataIni IN culturaInstalada.dataInicial%TYPE)
+    RETURN DATE IS
     dataF CulturaInstalada.dataFinal%TYPE;
 BEGIN
     BEGIN
-        SELECT dataFinal
-        INTO dataF
+        SELECT dataFinal INTO dataF
         FROM culturaInstalada
         WHERE nomeParcela = nomePar
           AND nomeComum = nomeCom
           AND variedade = vard
           AND dataInicial = dataIni;
 
-        IF dataF IS NULL THEN
-            RETURN FALSE;
-        ELSE
-            RETURN TRUE;
-        END IF;
+        RETURN dataF;
+
     EXCEPTION
         WHEN OTHERS THEN
-            RETURN FALSE;
+            RETURN NULL;
     END;
 END;
+/
 --------------------------------------------------------------------------
 --TESTE--------------------------------------------------------------------
 --VERIFICA QUE PARA CULTURA INSTALADA QUE TEM DATA FINAL RETORNA A DATA CORRETA

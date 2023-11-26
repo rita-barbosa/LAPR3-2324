@@ -23,7 +23,7 @@ BEGIN
           AND cul.nomeParcela = nomeParcela;
     EXCEPTION
         WHEN OTHERS THEN
-            found := 1;
+            found := 0;
     END;
     RETURN found;
 END;
@@ -34,11 +34,11 @@ END;
 DECLARE
     test_desigOp tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE := 'Monda';
     test_desigUnidade tipoUnidade.DESIGNACAOUNIDADE%TYPE := 'ha';
-    test_qtd NUMBER := 0.7;
-    test_dataOp DATE := TO_DATE('22/11/2023 - 23:20', 'DD/MM/YYYY - HH24:MI');
+    test_qtd NUMBER := 0.5;
+    test_dataOp DATE := TO_DATE('08/08/2023', 'DD/MM/YYYY');
     test_nomeParcela parcela.nomeParcela%TYPE := 'Campo Novo';
-    test_nomeComum planta.nomeComum%TYPE := 'Tremoço';
-    test_variedade planta.variedade%TYPE := 'AMARELO';
+    test_nomeComum planta.nomeComum%TYPE := 'Cenoura';
+    test_variedade planta.variedade%TYPE := 'DANVERS HALF LONG';
     test_success NUMBER;
     failedTest EXCEPTION;
 BEGIN

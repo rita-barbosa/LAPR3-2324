@@ -18,13 +18,13 @@ public class RedeLigacaoMinimaUI implements Runnable {
      */
     @Override
     public void run() {
-        try {
+//        try {
             RedeHub rede = RedeHub.getInstance();
             MapGraph<Local, Integer> mst = controller.kruskallAlgorithm(rede.getRedeDistribuicao());
             printMinimumSpanningTree(mst);
-        } catch(Exception e){
-            System.out.println("ERRO: Não foi possível executar a funcionalidade.");
-        }
+//        } catch(Exception e){
+//            System.out.println("ERRO: Não foi possível executar a funcionalidade.");
+//        }
     }
 
     private void printMinimumSpanningTree(MapGraph<Local, Integer> mst) {

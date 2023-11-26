@@ -1,11 +1,11 @@
 ------------------------------------------------
 --FUNÇÕES---------------------------------------
-CREATE OR REPLACE  NONEDITIONABLE FUNCTION registarOperacaoMonda(desigOp IN tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE,
-                                                                 qtd IN NUMBER,
-                                                                 dataOp IN DATE,
-                                                                 nomePar IN parcela.nomeParcela%TYPE,
-                                                                 nomeCom IN planta.nomeComum%TYPE,
-                                                                 vard IN planta.variedade%TYPE)
+CREATE OR REPLACE NONEDITIONABLE FUNCTION registarOperacaoMonda(desigOp IN tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE,
+                                                                qtd IN NUMBER,
+                                                                dataOp IN DATE,
+                                                                nomePar IN parcela.nomeParcela%TYPE,
+                                                                nomeCom IN planta.nomeComum%TYPE,
+                                                                vard IN planta.variedade%TYPE)
     RETURN NUMBER IS
     success NUMBER := 1;
     desigUnidade tipoUnidade.designacaoUnidade%TYPE;
@@ -19,6 +19,7 @@ CREATE OR REPLACE  NONEDITIONABLE FUNCTION registarOperacaoMonda(desigOp IN tipo
 BEGIN
     BEGIN
         datas := obterdatainicialcultura(nomePar, nomeCom,vard);
+
         LOOP
             FETCH
                 datas
@@ -26,26 +27,27 @@ BEGIN
                 dataIni;
             EXIT WHEN datas%notfound;
             desigUnidade := obterUnidadeAreaCultura(nomePar,nomeCom,vard,dataIni);
-            IF(verificarSeOperacaoExiste('Monda', desigUnidade, qtd,dataOp,nomePar,nomeCom,vard) = 0) THEN
+
+            IF(verificarSeOperacaoExiste('Monda', desigUnidade, qtd ,dataOp, nomePar, nomeCom, vard) = 0) THEN
 
                 IF((obterAreaPlantada(nomePar,nomeCom,vard,dataIni) >= qtd) ) THEN
 
                     IF (qtd >= 0) THEN
                         dataF := obterDataFinal(nomePar,nomeCom,vard,dataIni);
 
-                        IF (dataOp BETWEEN dataIni AND dataF ) THEN
+                        IF (dataF < dataOp) THEN
+                            RAISE invalidCulture;
 
+                        ELSE
                             idOp := novoIdOperacao();
 
                             INSERT INTO operacao (idOperacao, designacaoOperacaoAgricola, designacaoUnidade, quantidade, dataOperacao)
                             VALUES (idOp, desigOp, desigUnidade, qtd, dataOp);
 
                             INSERT INTO operacaocultura (idOperacao, nomeParcela, dataInicial, nomeComum,variedade)
-                            VALUES (idOp, nomePar, dataIni, nomeCom, vard);
+                            VALUES (idOp, nomePar, dataIni,nomeCom,vard);
 
                             success := 0;
-                        ELSE
-                            RAISE invalidCulture;
                         END IF;
                     ELSE
                         RAISE invalidArea;
@@ -59,11 +61,11 @@ BEGIN
         END LOOP;
 
         IF( success = 1) THEN
+
             ROLLBACK;
         ELSE
             COMMIT;
         END IF;
-
 
     EXCEPTION
         WHEN invalidCulture THEN
@@ -105,6 +107,18 @@ BEGIN
         WHEN OTHERS THEN
             return null;
     END;
+END;
+/
+/
+----------------------------------------------------
+CREATE OR REPLACE FUNCTION novoIdOperacao
+    RETURN NUMBER AS
+    newIdOperation NUMBER;
+BEGIN
+    SELECT NVL(MAX(idOperacao), 0) + 1
+    INTO newIdOperation
+    FROM operacao;
+    RETURN newIdOperation;
 END;
 /
 ----------------------------------------------------
@@ -209,6 +223,7 @@ BEGIN
             RETURN NULL;
     END;
 END;
+/
 ------------------------------------------------
 --DADOS-----------------------------------------
 --08/09/2023,

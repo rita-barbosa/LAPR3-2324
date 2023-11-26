@@ -30,27 +30,6 @@ class RedeHubTest {
     void tearDown() {
         redeGrafo = null;
     }
-
-    @Test
-    void getInstance() {
-    }
-
-    @Test
-    void addHub() {
-    }
-
-    @Test
-    void addRoute() {
-    }
-
-    @Test
-    void testToString() {
-    }
-
-    @Test
-    void getRedeDistribuicao() {
-    }
-
     @Test
     void calculateInfluenceWorks() {
         Local local1 = new Local("CT15", new CoordenadasGps(41.7, -8.8333));

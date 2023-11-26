@@ -1,25 +1,39 @@
 package project.controller;
 
-import org.junit.Before;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import project.domain.*;
+import project.domain.CoordenadasGps;
+import project.domain.ImportarFicheiro;
+import project.domain.Local;
+import project.domain.RedeHub;
 import project.exception.ExcecaoFicheiro;
 import project.structure.EstruturaDeEntregaDeDados;
+import project.structure.MapGraph;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static project.controller.PercursoMinimoController.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static project.controller.PercursoMinimoController.analyzeData;
 
 class PercursoMinimoControllerTest {
+    RedeHub rede = RedeHub.getInstance();
+    MapGraph<Local, Integer> redeGrafo;
+
     @BeforeEach
     public void setUp() throws ExcecaoFicheiro, IOException {
-        ImportarFicheiro.importRedeDistribuicao("files/locais_small.csv","files/distancias_small.csv");
+        ImportarFicheiro.importRedeDistribuicao("files/locais_small.csv", "files/distancias_small.csv");
+        redeGrafo = rede.getRedeDistribuicao();
     }
+
+    @AfterEach
+    public void tearDown() {
+        redeGrafo = null;
+    }
+
     @Test
     void analyzeDataTestValid() {
         LinkedList<Local> path1 = new LinkedList<>();
@@ -46,10 +60,10 @@ class PercursoMinimoControllerTest {
 
         boolean flag = true;
 
-        EstruturaDeEntregaDeDados estruturaDeEntregaDeDados = new EstruturaDeEntregaDeDados(distancia,path1,indexDeCarregamentos,flag);
+        EstruturaDeEntregaDeDados estruturaDeEntregaDeDados = new EstruturaDeEntregaDeDados(distancia, path1, indexDeCarregamentos, flag);
         EstruturaDeEntregaDeDados estruturaDeEntregaDeDadosFunction = analyzeData(650000);
 
-        assertEquals(estruturaDeEntregaDeDados,estruturaDeEntregaDeDadosFunction);
+        assertEquals(estruturaDeEntregaDeDados, estruturaDeEntregaDeDadosFunction);
     }
 
     @Test
@@ -76,10 +90,10 @@ class PercursoMinimoControllerTest {
 
         boolean flag = true;
 
-        EstruturaDeEntregaDeDados estruturaDeEntregaDeDados = new EstruturaDeEntregaDeDados(distancia,path1,indexDeCarregamentos,flag);
+        EstruturaDeEntregaDeDados estruturaDeEntregaDeDados = new EstruturaDeEntregaDeDados(distancia, path1, indexDeCarregamentos, flag);
         EstruturaDeEntregaDeDados estruturaDeEntregaDeDadosFunction = analyzeData(650000);
 
-        assertNotEquals(estruturaDeEntregaDeDados,estruturaDeEntregaDeDadosFunction);
+        assertNotEquals(estruturaDeEntregaDeDados, estruturaDeEntregaDeDadosFunction);
     }
 
     @Test
@@ -108,10 +122,10 @@ class PercursoMinimoControllerTest {
 
         boolean flag = true;
 
-        EstruturaDeEntregaDeDados estruturaDeEntregaDeDados = new EstruturaDeEntregaDeDados(distancia,path1,indexDeCarregamentos,flag);
+        EstruturaDeEntregaDeDados estruturaDeEntregaDeDados = new EstruturaDeEntregaDeDados(distancia, path1, indexDeCarregamentos, flag);
         EstruturaDeEntregaDeDados estruturaDeEntregaDeDadosFunction = analyzeData(650000);
 
-        assertNotEquals(estruturaDeEntregaDeDados,estruturaDeEntregaDeDadosFunction);
+        assertNotEquals(estruturaDeEntregaDeDados, estruturaDeEntregaDeDadosFunction);
     }
 
     @Test
@@ -140,10 +154,10 @@ class PercursoMinimoControllerTest {
 
         boolean flag = false;
 
-        EstruturaDeEntregaDeDados estruturaDeEntregaDeDados = new EstruturaDeEntregaDeDados(distancia,path1,indexDeCarregamentos,flag);
+        EstruturaDeEntregaDeDados estruturaDeEntregaDeDados = new EstruturaDeEntregaDeDados(distancia, path1, indexDeCarregamentos, flag);
         EstruturaDeEntregaDeDados estruturaDeEntregaDeDadosFunction = analyzeData(650000);
 
-        assertNotEquals(estruturaDeEntregaDeDados,estruturaDeEntregaDeDadosFunction);
+        assertNotEquals(estruturaDeEntregaDeDados, estruturaDeEntregaDeDadosFunction);
     }
 
 }

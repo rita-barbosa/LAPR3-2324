@@ -1,14 +1,16 @@
 package project.controller;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import project.domain.Local;
 import project.domain.RedeHub;
+import project.structure.MapGraph;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ImportarFicheiroControllerTest {
 
@@ -16,32 +18,34 @@ public class ImportarFicheiroControllerTest {
     private static boolean resultImportLocais;
     private static boolean result;
     private static RedeHub r;
-
+    MapGraph<Local, Integer> redeGrafo;
 
     @Test
-    public void testImportWateringPlanSuccess() {
+    void testImportWateringPlanSuccess() {
         result = controller.importWateringPlan("src/test/java/project/testFiles/ficheiroCorreto.txt");
         assertTrue(result);
     }
 
     @Test
-    public void testImportWateringPlanFailure() {
+    void testImportWateringPlanFailure() {
         result = controller.importWateringPlan("src/test/java/project/testFiles/ficheiroHoraErrada.txt");
         assertFalse(result);
     }
 
     @Test
-    public void testImportRedeDistribuicaoCorrect() {
+    void testImportRedeDistribuicaoCorrect() {
         assertTrue(resultImportLocais);
     }
+
     @Test
-    public void testImportRedeDistribuicaoCorrectNumAdjVertices() {
+    void testImportRedeDistribuicaoCorrectNumAdjVertices() {
         Local l1 = new Local("CT156", 39.7478, -8.9322);
         int numArestas = r.getRedeDistribuicao().adjVertices(l1).size();
         assertEquals(4, numArestas);
     }
+
     @Test
-    public void testImportRedeDistribuicaoCorrectAdjVertices() {
+    void testImportRedeDistribuicaoCorrectAdjVertices() {
         List<Local> verts = new ArrayList<>();
 
         Local l1 = new Local("CT156", 39.7478, -8.9322);
@@ -59,7 +63,7 @@ public class ImportarFicheiroControllerTest {
     }
 
     @Test
-    public void testImportRedeDistribuicaoForValidVertex() {
+    void testImportRedeDistribuicaoForValidVertex() {
         Local l3 = new Local("CT156", 39.7478, -8.9322);
         boolean success1 = r.getRedeDistribuicao().validVertex(l3);
 
@@ -67,7 +71,7 @@ public class ImportarFicheiroControllerTest {
     }
 
     @Test
-    public void testImportRedeDistribuicaoCorrectWeight() {
+    void testImportRedeDistribuicaoCorrectWeight() {
         Local l1 = new Local("CT156", 39.7478, -8.9322);
         Local l2 = new Local("CT53", 39.6603, -8.8247);
         int expected = 14830;
@@ -79,7 +83,7 @@ public class ImportarFicheiroControllerTest {
     }
 
     @Test
-    public void testImportRedeDistribuicaoCorrectNumberVertex() {
+    void testImportRedeDistribuicaoCorrectNumberVertex() {
         int exp = 323;
         int actual = r.getRedeDistribuicao().numVerts;
 
@@ -87,16 +91,22 @@ public class ImportarFicheiroControllerTest {
     }
 
     @Test
-    public void testImportRedeDistribuicaoCorrectNumberEdges() {
+    void testImportRedeDistribuicaoCorrectNumberEdges() {
         int exp = 1566;
         int actual = r.getRedeDistribuicao().numEdges();
 
         assertEquals(exp, actual);
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
         resultImportLocais = controller.importRedeDistribuicao("src/test/java/project/testFiles/redeDistribuicao/locais_big.csv", "src/test/java/project/testFiles/redeDistribuicao/distancias_big.csv");
         r = RedeHub.getInstance();
+        redeGrafo = r.getRedeDistribuicao();
+    }
+
+    @AfterEach
+    public void tearDown() {
+        redeGrafo = null;
     }
 }

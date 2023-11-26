@@ -51,7 +51,7 @@ public class SistemaDeRega {
     public static boolean generateWateringRegisters() {
         String dateString = inicioDoPlanoDeRega.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")).trim();
         String fileName = "WateringRegisters" + dateString + ".csv";
-        File directory = new File("files\\WateringRegisters");
+        File directory = new File("files/watering-register");
         File file = new File(directory, fileName);
         if (!directory.exists()) {
             directory.mkdirs();
@@ -90,10 +90,9 @@ public class SistemaDeRega {
 
 
             long delay = calculateDelay(currentTime, scheduledTime);
-            System.out.println("Scheduled: " + atual);
 
             scheduler.schedule(() -> {
-                System.out.println("performing: " + atual);
+
                 try {
                     sendToExternalDatabase(atual);
                 } catch (IOException | SQLException e) {
@@ -111,10 +110,8 @@ public class SistemaDeRega {
 
     private static void sendToExternalDatabase(Rega rega) throws IOException, SQLException {
         boolean success = controladorRega.sendRegisterToDataBase(rega);
-        if (success) {
-            System.out.println("Sending to database: " + rega);
-        } else {
-            throw new SQLException("Não foi possível registar a operação de rega na base de dados.");
+        if (!success) {
+            throw new SQLException("ERRO: Não foi possível registar a operação de rega na base de dados.");
         }
     }
 

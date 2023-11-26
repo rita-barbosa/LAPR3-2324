@@ -1,7 +1,5 @@
 package project.structure;
 
-import org.junit.Before;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,10 +39,6 @@ class AlgorithmsTest {
     }
 
     @Test
-    void breadthFirstSearch() {
-    }
-
-    @Test
     void depthFirstSearch() {
         assertNull(Algorithms.DepthFirstSearch(redeGrafo, new Local("Sardinha")));
 
@@ -68,31 +62,6 @@ class AlgorithmsTest {
         }
         assertEquals(expected, pathIds);
     }
-
-    @Test
-    void allPaths() {
-    }
-
-    @Test
-    void shortestPathDijkstra() {
-    }
-
-    @Test
-    void shortestPath() {
-    }
-
-    @Test
-    void initializePathDist() {
-    }
-
-    @Test
-    void shortestPaths() {
-    }
-
-    @Test
-    void betweennessCentrality() {
-    }
-
     @Test
     void minimumSpanningTreeAlgorithmsTest() {
         MapGraph<Local, Integer> mst1 = MST.getMstWithPrimAlgorithm(redeGrafo);
@@ -113,11 +82,4 @@ class AlgorithmsTest {
 
         assertEquals(primTotalWeight, kruskallTotalWeight);
     }
-
-
-    @AfterEach
-    void teardown(){
-        redeGrafo = null;
-    }
-
 }

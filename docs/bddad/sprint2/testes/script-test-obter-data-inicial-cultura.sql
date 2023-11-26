@@ -1,8 +1,8 @@
 -----------------------------------------------
 --FUNÇÃO---------------------------------------
-CREATE OR REPLACE NONEDITIONABLE FUNCTION obterDataInicialCultura(nomePar IN parcela.nomeParcela%TYPE,
-                                                 nomeCom IN planta.nomeComum%TYPE,
-                                                 vard IN planta.variedade%TYPE)
+CREATE OR REPLACE FUNCTION obterdatainicialcultura(nomePar IN parcela.nomeParcela%TYPE,
+                                                   nomeCom IN planta.nomeComum%TYPE,
+                                                   vard IN planta.variedade%TYPE)
     RETURN SYS_REFCURSOR IS
     datas SYS_REFCURSOR;
 BEGIN
@@ -16,6 +16,8 @@ BEGIN
         return datas;
     EXCEPTION
         WHEN no_data_found THEN
+            return null;
+        WHEN OTHERS THEN
             return null;
     END;
 END;

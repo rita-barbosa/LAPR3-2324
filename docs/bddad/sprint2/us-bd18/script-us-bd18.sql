@@ -150,4 +150,4 @@ END;
 -- Aplicação de fator de produção|  1800                |  23.07.03 - 00:00
 -- Semeadura                     |  1,2                 |  23.07.05 - 00:00
 -- Monda                         |  0.5                 |  23.08.08 - 00:00
--- Mobilização do solo           |  0.6                 |  23.07.04 - 00:00
+-- Mobilização do solo           |  0.5                 |  23.07.04 - 00:00

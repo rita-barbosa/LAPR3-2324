@@ -21,7 +21,7 @@ BEGIN
     IF NOT verificarDadosDeInsercao(desigOp, desigUnidade, qtd, dataOp, nmFator) THEN
         RAISE invalidInputs;
     ELSE
-        IF verificarSeOperacaoExiste(desigOp, desigUnidade, qtd, dataOp, nmFator) = 0 THEN
+        IF verificarSeAplicacaoFatorProducaoExiste(desigOp, desigUnidade, qtd, dataOp, nmFator) = 0 THEN
             BEGIN
                 INSERT INTO operacao (idOperacao, designacaoOperacaoAgricola, designacaoUnidade, quantidade, dataOperacao)
                 VALUES (idOp, desigOp, desigUnidade, qtd, dataOp);
@@ -60,7 +60,7 @@ EXCEPTION
 END;
 /
 --------Verificação se a Operação já existia--------
-CREATE OR REPLACE FUNCTION verificarSeOperacaoExiste(
+CREATE OR REPLACE FUNCTION verificarSeAplicacaoFatorProducaoExiste(
     desigOp IN tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE,
     desigUnidade IN tipoUnidade.designacaoUnidade%TYPE,
     qtd IN NUMBER,

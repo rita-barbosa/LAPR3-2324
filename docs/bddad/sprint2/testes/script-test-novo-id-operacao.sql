@@ -21,7 +21,7 @@ BEGIN
     SELECT COUNT(*) INTO test_idOperacao FROM OPERACAO;
     test_novoIdOperacao := novoIdOperacao();
 
-    IF test_novoIdOperacao = (test_idOperacao +1)   THEN
+    IF test_novoIdOperacao = (test_idOperacao + 1)   THEN
         DBMS_OUTPUT.PUT_LINE('TESTE PASSOU');
     ELSE
         RAISE failedTest;

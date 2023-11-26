@@ -39,8 +39,8 @@ BEGIN
                 INSERT INTO operacao (idOperacao, designacaoOperacaoAgricola, designacaoUnidade, quantidade, dataOperacao)
                 VALUES (idOp, desigOp, desigUnidadeOperacao, qtdOp, dataOp);
 
-                INSERT INTO culturaInstalada (dataInicial, nomeParcela, variedade, nomeComum, designacaoUnidade, dataFinal, quantidade)
-                VALUES (dataOp, nomeParcela, variedade, nomeComum, desigUnidadeCultura, NULL, qtdCultura);
+                INSERT INTO culturaInstalada (dataInicial, nomeParcela, variedade, nomeComum, designacaoUnidade, quantidade,dataFinal)
+                VALUES (dataOp, nomeParcela, variedade, nomeComum, desigUnidadeCultura, qtdCultura,NULL);
 
                 INSERT INTO operacaocultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade)
                 VALUES (idOp, nomeParcela, dataOp, nomeComum, variedade);
@@ -77,7 +77,7 @@ BEGIN
 
     RETURN success;
 END;
-
+    /
 --------------------------------------------------------------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION obterAreaOcupadaPorCulturas(
@@ -116,7 +116,7 @@ EXCEPTION
         CLOSE areas;
         RETURN NULL;
 END;
-
+/
 --------------------------------------------------------------------------------------------------------------
 
 create or replace NONEDITIONABLE FUNCTION validarArea(
@@ -155,7 +155,7 @@ BEGIN
         RETURN isValid;
     END;
 END;
-
+/
 ------------------------------------------------
 ------------------BLOCO ANÓNIMO-----------------
 ------------------------------------------------

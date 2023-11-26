@@ -58,14 +58,14 @@ BEGIN
     test_result := verificarDadosDeInsercao(test_desigOp,test_desigUnidade,test_qtd,test_dataOp,test_nmFator);
 
     IF(test_result = TRUE) THEN
-        DBMS_OUTPUT.PUT_LINE('TESTE PASSOU');
+        DBMS_OUTPUT.PUT_LINE('TESTE FALHOU.');
     ELSE
         RAISE failedTest;
     END IF;
 
 EXCEPTION
     WHEN failedTest THEN
-        DBMS_OUTPUT.PUT_LINE('TESTE FALHOU.');
+        DBMS_OUTPUT.PUT_LINE('TESTE PASSOU.');
 END;
 /
 -------------Teste: Inputs Inválidos(tipo de unidade)------------
@@ -81,14 +81,14 @@ BEGIN
     test_result := verificarDadosDeInsercao(test_desigOp,test_desigUnidade,test_qtd,test_dataOp,test_nmFator);
 
     IF(test_result = TRUE) THEN
-        DBMS_OUTPUT.PUT_LINE('TESTE PASSOU');
+        DBMS_OUTPUT.PUT_LINE('TESTE FALHOU.');
     ELSE
         RAISE failedTest;
     END IF;
 
 EXCEPTION
     WHEN failedTest THEN
-        DBMS_OUTPUT.PUT_LINE('TESTE FALHOU.');
+        DBMS_OUTPUT.PUT_LINE('TESTE PASSOU.');
 END;
 /
 -------------Teste: Inputs Inválidos(qtd)------------
@@ -104,13 +104,13 @@ BEGIN
     test_result := verificarDadosDeInsercao(test_desigOp,test_desigUnidade,test_qtd,test_dataOp,test_nmFator);
 
     IF(test_result = TRUE) THEN
-        DBMS_OUTPUT.PUT_LINE('TESTE PASSOU');
+        DBMS_OUTPUT.PUT_LINE('TESTE FALHOU.');
     ELSE
         RAISE failedTest;
     END IF;
 
 EXCEPTION
     WHEN failedTest THEN
-        DBMS_OUTPUT.PUT_LINE('TESTE FALHOU.');
+        DBMS_OUTPUT.PUT_LINE('TESTE PASSOU.');
 END;
 /

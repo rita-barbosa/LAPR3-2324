@@ -8,7 +8,6 @@ import project.structure.MapGraph;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 
 public class RedeLigacaoMinimaUI implements Runnable {
 
@@ -19,9 +18,13 @@ public class RedeLigacaoMinimaUI implements Runnable {
      */
     @Override
     public void run() {
-        RedeHub rede = RedeHub.getInstance();
-        MapGraph<Local, Integer> mst = controller.kruskallAlgorithm(rede.getRedeDistribuicao());
-        printMinimumSpanningTree(mst);
+        try {
+            RedeHub rede = RedeHub.getInstance();
+            MapGraph<Local, Integer> mst = controller.kruskallAlgorithm(rede.getRedeDistribuicao());
+            printMinimumSpanningTree(mst);
+        } catch(Exception e){
+            System.out.println("ERRO: Não foi possível executar a funcionalidade.");
+        }
     }
 
     private void printMinimumSpanningTree(MapGraph<Local, Integer> mst) {

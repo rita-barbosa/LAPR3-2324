@@ -23,15 +23,12 @@ public class RegistarOperacaoMondaUI implements Runnable {
         controller = new RegistarOperacaoMondaController();
     }
 
-    /*
-       FAZER QUESTÃO SOBRE AS MAQUINAS!!!!!!
-    */
     @Override
     public void run() {
         try {
             int index;
             System.out.println("-----------------------------------------");
-            System.out.println("Registar operação de monda");
+            System.out.println("--Registar operação de monda-------------");
             System.out.println("-----------------------------------------");
 
             List<String> fields = controller.getFieldsNames();
@@ -44,16 +41,11 @@ public class RegistarOperacaoMondaUI implements Runnable {
             verificarIndex(index);
             cultura = culturasInstaladas.get(index);
 
-            List<String> unitTypes = controller.getUnitTypes();
-            index = Utils.showAndSelectIndex(unitTypes, "Indique o tipo de unidade:");
-            verificarIndex(index);
-            tipoUnidade = unitTypes.get(index);
+            quantidade = Utils.readDoubleFromConsole("Indique a quantidade a mondar:");
 
             dataOperacao = Utils.readDateFromConsole("Indique a data da operação (formato: dd/mm/yyyy): \n");
 
-            quantidade = Utils.readDoubleFromConsole("Indique a quantidade a mondar:");
-
-            boolean opStatus = controller.registerMondaOperation(nomeParcela, cultura, dataOperacao, tipoUnidade, quantidade);
+            boolean opStatus = controller.registerMondaOperation(nomeParcela, cultura, dataOperacao, quantidade);
 
             if (opStatus) {
                 System.out.println("\nOperação de monda registada com sucesso.\n");

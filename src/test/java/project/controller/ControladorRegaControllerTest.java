@@ -2,7 +2,6 @@ package project.controller;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.Disabled;
 import project.domain.ImportarFicheiro;
 import project.domain.SistemaDeRega;
 
@@ -34,14 +33,14 @@ public class ControladorRegaControllerTest {
     @Test
     public void testCheckWateringInSimulatedTimeExists1() {
         LocalDate date1 = dataInicio.plusDays(3);
-        LocalTime time1 = LocalTime.of(8, 35);
-        String expected1 = "Parcela a ser regada neste momento: D | Tempo restante: 14 minutos.\n";
+        LocalTime time1 = LocalTime.of(8, 5);
+        String expected1 = "Parcela a ser regada neste momento: A | Tempo restante: 9 minutos.\n";
 
         assertEquals(expected1, controller.checkWateringInSimulatedTime(date1, time1));
 
         LocalDate date2 = dataInicio.plusDays(5);
-        LocalTime time2 = LocalTime.of(8, 55);
-        String expected2 = "Parcela a ser regada neste momento: E | Tempo restante: 1 minutos.\n";
+        LocalTime time2 = LocalTime.of(9, 55);
+        String expected2 = "Não há parcelas a serem regadas agora.";
         assertEquals(expected2, controller.checkWateringInSimulatedTime(date2, time2));
     }
 
@@ -54,7 +53,7 @@ public class ControladorRegaControllerTest {
 
         LocalDate date2 = dataInicio.plusDays(10);
         LocalTime time2 = LocalTime.of(17, 18);
-        String expected2 = "Parcela a ser regada neste momento: B | Tempo restante: 4 minutos.\n";
+        String expected2 = "Parcela a ser regada neste momento: D | Tempo restante: 23 minutos.\n";
         assertEquals(expected2, controller.checkWateringInSimulatedTime(date2, time2));
     }
 

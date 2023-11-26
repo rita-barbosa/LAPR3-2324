@@ -16,15 +16,6 @@ Nesta user story é necessário fazer uma funcionalidade que irá tratar do regi
 * Não é possível registar operação monda que envolva plantas permanentes ou temporárias que não existem na parcela.
 
 
-### 1.2. Clarificações
-
-**Feitas pelo cliente:** 
-
-> **Questão:** 
-> 
-> **Resposta:** 
-
-
 ### 1.3. Design
 
 Criação das classes:

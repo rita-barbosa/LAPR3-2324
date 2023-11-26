@@ -67,7 +67,7 @@ public class RegistarOperacaoMondaController {
         return cultureRepository.getCulturesByField(nomeParcela);
     }
 
-    public boolean registerMondaOperation(String nomeParcela, Planta cultura,Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
-        return operacaoRepository.registarOperacaoMonda(nomeParcela, cultura.getNomeComum(), cultura.getVariedade(), dataOperacao, tipoUnidade, quantidade);
+    public boolean registerMondaOperation(String nomeParcela, Planta cultura,Date dataOperacao,  Double quantidade) throws SQLException {
+        return operacaoRepository.registarOperacaoMonda(nomeParcela, cultura.getNomeComum(), cultura.getVariedade(), dataOperacao, quantidade);
     }
 }

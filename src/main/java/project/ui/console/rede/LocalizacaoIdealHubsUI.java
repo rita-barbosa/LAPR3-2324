@@ -20,21 +20,26 @@ public class LocalizacaoIdealHubsUI implements Runnable {
      */
     @Override
     public void run() {
-        RedeHub redeHub = RedeHub.getInstance();
-        MapGraph<Local, Integer> graph = redeHub.getRedeDistribuicao();
+        try {
+            RedeHub redeHub = RedeHub.getInstance();
+            MapGraph<Local, Integer> graph = redeHub.getRedeDistribuicao();
 
-        String question = "Insira um valor N para o número de Hubs a serem selecionados:";
-        int n = Utils.readIntegerFromConsole(question);
-        printTopNHubs(controller.getTopNTotal(graph, n), n);
+            String question = "Insira um valor N para o número de Hubs a serem selecionados:";
+            int n = Utils.readIntegerFromConsole(question);
+            printTopNHubs(controller.getTopNTotal(graph, n), n);
+        } catch (Exception e) {
+            System.out.println("ERRO: Não foi possível executar a funcionalidade.");
+        }
+
     }
 
     /**
      * Makes the output for the Top N hubs
      *
      * @param hubs map with the information about the bus
-     * @param n number of the top
+     * @param n    number of the top
      */
-    private void printTopNHubs(Map<Local, List<Integer>> hubs, Integer n){
+    private void printTopNHubs(Map<Local, List<Integer>> hubs, Integer n) {
         System.out.println("\n-----------------------------------------------------------------------------------------------------");
         System.out.println("|                                  Top " + n + " localidades para os Hubs:                                  |");
         System.out.println("-----------------------------------------------------------------------------------------------------");

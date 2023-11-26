@@ -17,7 +17,6 @@ public class MainMenuUI implements Runnable {
      * Runs the main menu user interface.
      */
     public void run() {
-        System.out.println("Farm Coordinator");
         List<MenuItem> options = new ArrayList<MenuItem>();
         options.add(new MenuItem("Sistema de Rega", new MenuSistemaDeRega()));
         options.add(new MenuItem("Registo de Operações", new MenuRegistoOperacoes()));

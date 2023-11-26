@@ -286,25 +286,24 @@ public class OperacaoRepository {
     }
 
 
-    public boolean registarOperacaoMonda(String nomeParcela, String nomeComum, String variedade, Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
+    public boolean registarOperacaoMonda(String nomeParcela, String nomeComum, String variedade, Date dataOperacao, Double quantidade) throws SQLException {
         CallableStatement callStmt = null;
         boolean success = false;
         try {
             Connection connection = DatabaseConnection.getInstance().getConnection();
-            callStmt = connection.prepareCall("{ ? = call registarOperacaoMonda(?,?,?,?,?,?,?) }");
+            callStmt = connection.prepareCall("{ ? = call registarOperacaoMonda(?,?,?,?,?,?) }");
 
             callStmt.registerOutParameter(1, OracleTypes.NUMBER);
 
             callStmt.setString(2, "Monda");
-            callStmt.setString(3, tipoUnidade);
-            callStmt.setDouble(4, quantidade);
+            callStmt.setDouble(3, quantidade);
 
             java.sql.Date sqlDataOp = new java.sql.Date(dataOperacao.getTime());
-            callStmt.setDate(5, sqlDataOp);
+            callStmt.setDate(4, sqlDataOp);
 
-            callStmt.setString(6, nomeParcela);
-            callStmt.setString(7, nomeComum);
-            callStmt.setString(8, variedade);
+            callStmt.setString(5, nomeParcela);
+            callStmt.setString(6, nomeComum);
+            callStmt.setString(7, variedade);
 
             callStmt.execute();
 

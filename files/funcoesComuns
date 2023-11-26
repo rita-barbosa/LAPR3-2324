@@ -146,3 +146,44 @@ begin
     end;
     return cultures;
 end;
+/
+
+--------------------------------------------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION obterIntroProdutos(p_variedade IN CulturaInstalada.variedade%TYPE,
+                                              p_nomeComum IN CulturaInstalada.nomeComum%TYPE)
+RETURN SYS_REFCURSOR
+    IS
+        products SYS_REFCURSOR;
+BEGIN
+    BEGIN
+        OPEN products for
+            SELECT DISTINCT pr.nomeProduto
+                FROM Planta p
+                INNER JOIN Producao pr ON p.nomeComum = pr.nomeComum AND P.variedade = pr.variedade
+                WHERE p.variedade = p_variedade
+                  AND p.nomeComum = p_nomeComum;
+    EXCEPTION
+    WHEN no_data_found THEN
+        RETURN NULL;
+    END;
+    RETURN products;
+END;
+/
+
+-------------------------------------------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION obterTipoPermanencia(p_variedade IN CulturaInstalada.variedade%TYPE,
+                                              p_nomeComum IN CulturaInstalada.nomeComum%TYPE)
+RETURN VARCHAR2
+    IS
+        v_designacao_tipo_permanencia VARCHAR2(15);
+    BEGIN
+            SELECT DISTINCT p.designacaoTipoPermanencia INTO v_designacao_tipo_permanencia
+                FROM Planta p
+                WHERE p.variedade = p_variedade
+                  AND p.nomeComum = p_nomeComum;
+    RETURN v_designacao_tipo_permanencia;
+    EXCEPTION
+        WHEN no_data_found THEN
+            RETURN NULL;
+END;
+/

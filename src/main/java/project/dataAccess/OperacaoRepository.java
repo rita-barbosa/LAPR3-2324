@@ -3,14 +3,12 @@ package project.dataAccess;
 import oracle.jdbc.OracleTypes;
 import project.domain.Operacao;
 import project.domain.OperacaoCultura;
+import project.domain.Planta;
 import project.domain.Rega;
 import project.ui.console.utils.Utils;
 
 import java.math.BigDecimal;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -250,16 +248,18 @@ public class OperacaoRepository {
     }
 
 
-    //mudar para estar de acordo com o novo modelo relacional
-    public void registerColheitaOperation(Integer idParcela, Integer idCultura, Date dataInicio, Date dataFim, Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
+
+    public boolean registerColheitaOperation(String nomeParcela, String nomeComum, String variedade, String nomeProduto, Date dataOperacao, String tipoUnidade, Double quantidade, Date dataFim) throws SQLException {
         CallableStatement callStmt = null;
+        boolean success = false;
         try {
             Connection connection = DatabaseConnection.getInstance().getConnection();
-            callStmt = connection.prepareCall("{ call registarOperacaoColheita(?,?,?,?,?,?,?,?,?) }");
+            callStmt = connection.prepareCall("{? = call registarOperacaoColheita(?,?,?,?,?,?,?,?,?) }");
 
-            int idOperacao = Utils.getNewIdOperation();
+//            int idOperacao = Utils.getNewIdOperation();
 
-            callStmt.setInt(1, idOperacao);
+            callStmt.registerOutParameter(1, OracleTypes.NUMBER);
+//            callStmt.setInt(1, idOperacao);
             callStmt.setString(2, "Colheita");
             callStmt.setString(3, tipoUnidade);
             callStmt.setDouble(4, quantidade);
@@ -267,23 +267,35 @@ public class OperacaoRepository {
             java.sql.Date sqlDataOp = new java.sql.Date(dataOperacao.getTime());
             callStmt.setDate(5, sqlDataOp);
 
-            callStmt.setInt(6, idParcela);
-            callStmt.setInt(7, idCultura);
+            callStmt.setString(6, nomeParcela);
+            callStmt.setString(7, nomeComum);
+            callStmt.setString(8, variedade);
+            callStmt.setString(9, nomeProduto);
 
-            java.sql.Date sqlDataInicio = new java.sql.Date(dataInicio.getTime());
-            callStmt.setDate(8, sqlDataInicio);
-
-            java.sql.Date sqlDataFim = new java.sql.Date(dataFim.getTime());
-            callStmt.setDate(9, sqlDataFim);
+            //java.sql.Date sqlDataFinal = new java.sql.Date(dataFim.getTime());
+            //callStmt.setDate(9, sqlDataFinal);
+            callStmt.setNull(10, java.sql.Types.DATE);
 
             callStmt.execute();
+
+            BigDecimal bigDecimalValue = (BigDecimal) callStmt.getObject(1);
+            int opStatus = bigDecimalValue.intValue();
+
+            if (opStatus == 0) {
+                success = true;
+            }
+
             connection.commit();
+
         } finally {
             if (!Objects.isNull(callStmt)) {
                 callStmt.close();
             }
         }
+
+        return success;
     }
+
 
 
     public boolean registarOperacaoMonda(String nomeParcela, String nomeComum, String variedade, Date dataOperacao, Double quantidade) throws SQLException {

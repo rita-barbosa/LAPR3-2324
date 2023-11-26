@@ -236,9 +236,9 @@ public class Utils {
 
     public static int selectYesOrNoOption(){
         List<String> options = new ArrayList<>();
-        options.add("Yes");
-        options.add("No");
-        return showAndSelectIndex(options, "Deseja terminar a Cultura selecionada?");
+        options.add("Sim");
+        options.add("Não");
+        return showAndSelectIndex(options, "Deseja finalizar a Cultura selecionada?");
     }
 
     public static int showAndSelectIndexNoCancel(List<?> list, String header) {

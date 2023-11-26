@@ -1,6 +1,7 @@
 package project.controller;
 
 import project.dataAccess.*;
+import project.domain.Planta;
 
 import java.sql.SQLException;
 import java.util.Date;
@@ -12,6 +13,8 @@ public class RegistarOperacaoColheitaController {
     private UnitsRepository unitsRepository;
     private FieldsRepository fieldsRepository;
     private CultureRepository cultureRepository;
+    private ProductsRepository productsRepository;
+    private PlantsRepository plantsRepository;
     private DatesRepository datesRepository;
 
     public RegistarOperacaoColheitaController() {
@@ -20,6 +23,8 @@ public class RegistarOperacaoColheitaController {
         getCultureRepository();
         getFieldsRepository();
         getDatesRepository();
+        getProductsRepository();
+        getPlantsRepository();
     }
 
     private OperacaoRepository getOperacaoRepository() {
@@ -54,6 +59,22 @@ public class RegistarOperacaoColheitaController {
         return fieldsRepository;
     }
 
+    private ProductsRepository getProductsRepository() {
+        if (Objects.isNull(productsRepository)) {
+            Repositories repositories = Repositories.getInstance();
+            productsRepository = repositories.getProductsRepository();
+        }
+        return productsRepository;
+    }
+
+    private PlantsRepository getPlantsRepository() {
+        if (Objects.isNull(plantsRepository)) {
+            Repositories repositories = Repositories.getInstance();
+            plantsRepository = repositories.getPlantsRepository();
+        }
+        return plantsRepository;
+    }
+
     private DatesRepository getDatesRepository() {
         if (Objects.isNull(datesRepository)) {
             Repositories repositories = Repositories.getInstance();
@@ -66,19 +87,23 @@ public class RegistarOperacaoColheitaController {
         return unitsRepository.getUnitDesignations();
     }
 
-    public List<String> getFieldsIDs() throws SQLException {
+    public List<String> getFieldsNames() throws SQLException {
         return fieldsRepository.getFieldsNames();
     }
 
-    public List<String> getCulturesIDs() throws SQLException {
-        return cultureRepository.getCultures();
+    public List<Planta> getCulturesByField(String nomeParcela) throws SQLException {
+        return cultureRepository.getCulturesByField(nomeParcela);
     }
 
-    public Date getEndDate() throws  SQLException {
-        return datesRepository.getBeginDate();
+    public List<String> getProductsByField(String variedade, String nomeComum) throws SQLException {
+        return productsRepository.getProductsByField(variedade, nomeComum);
     }
 
-    public void registerOperation(Integer idParcela, Integer idCultura, Date dataInicio, Date dataFim, Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
-        operacaoRepository.registerColheitaOperation(idParcela, idCultura, dataOperacao, dataInicio, dataFim, tipoUnidade, quantidade);
+    public List<String> getPermanencyType(String variedade, String nomeComum) throws SQLException {
+        return plantsRepository.getPermanencyType(variedade, nomeComum);
+    }
+
+    public boolean registerOperation(String nomeParcela, Planta cultura, String nomeProduto, Date dataOperacao, String tipoUnidade, Double quantidade, Date dataFim) throws SQLException {
+        return operacaoRepository.registerColheitaOperation(nomeParcela, cultura.getNomeComum(), cultura.getVariedade(), nomeProduto, dataOperacao, tipoUnidade, quantidade, dataFim);
     }
 }

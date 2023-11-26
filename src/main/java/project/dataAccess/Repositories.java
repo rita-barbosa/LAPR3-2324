@@ -4,10 +4,11 @@ public class Repositories {
 
     private static final Repositories instance = new Repositories();
     private OperacaoRepository operacaoRepository;
-
     private UnitsRepository unitsRepository;
     private FieldsRepository fieldsRepository;
     private CultureRepository cultureRepository;
+    private ProductsRepository productsRepository;
+    private PlantsRepository plantsRepository;
     private DatesRepository datesRepository;
 
     public UnitsRepository getUnitsRepository() {
@@ -28,6 +29,8 @@ public class Repositories {
         fieldsRepository = new FieldsRepository();
         cultureRepository = new CultureRepository();
         datesRepository = new DatesRepository();
+        productsRepository = new ProductsRepository();
+        plantsRepository = new PlantsRepository();
     }
 
     public static Repositories getInstance() {
@@ -36,6 +39,14 @@ public class Repositories {
 
     public OperacaoRepository getOperacaoRepository() {
         return operacaoRepository;
+    }
+
+    public ProductsRepository getProductsRepository(){
+        return productsRepository;
+    }
+
+    public PlantsRepository getPlantsRepository(){
+        return plantsRepository;
     }
 
     public DatesRepository getDatesRepository(){

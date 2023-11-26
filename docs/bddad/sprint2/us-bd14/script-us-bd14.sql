@@ -1,17 +1,21 @@
 SET SERVEROUTPUT ON;
 -------Função em si--------
-CREATE OR REPLACE PROCEDURE RegistoAplicacaoFatorProducao(
-    desigOp IN tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE,
-    desigUnidade IN tipoUnidade.designacaoUnidade%TYPE,
-    qtd IN NUMBER,
-    dataOp IN DATE,
-    nmFator IN aplicacaofatorproducao.nomecomercial%TYPE
-) IS
+CREATE OR REPLACE FUNCTION RegistoAplicacaoFatorProducao(desigOp IN tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE,
+                                                         desigUnidade IN tipoUnidade.designacaoUnidade%TYPE,
+                                                         qtd IN NUMBER,
+                                                         dataOp IN DATE,
+                                                         nmFator IN aplicacaofatorproducao.nomecomercial%TYPE,
+                                                         nmParcela IN operacaocultura.nomeparcela%TYPE,
+                                                         dataIni IN operacaocultura.datainicial%TYPE,
+                                                         nmComum IN operacaocultura.nomecomum%TYPE,
+                                                         varie IN operacaocultura.variedade%TYPE
+) RETURN NUMBER IS
+    resultado NUMBER := 0;
+    idOp NUMBER;
     invalidOperacao EXCEPTION;
     invalidInputs EXCEPTION;
-    idOp NUMBER;
 BEGIN
-    SAVEPOINT antesDoRegisto;
+    BEGIN
     idOp := novoIdOperacao();
 
     IF NOT verificarDadosDeInsercao(desigOp, desigUnidade, qtd, dataOp, nmFator) THEN
@@ -22,36 +26,37 @@ BEGIN
                 INSERT INTO operacao (idOperacao, designacaoOperacaoAgricola, designacaoUnidade, quantidade, dataOperacao)
                 VALUES (idOp, desigOp, desigUnidade, qtd, dataOp);
 
-                IF SQL%ROWCOUNT > 0 THEN
-                    DBMS_OUTPUT.PUT_LINE('Operação de aplicação do fator de produção inserida com sucesso.(1/2)');
-                ELSE
-                    RAISE_APPLICATION_ERROR(-20001, 'Erro durante a inserção.');
-                END IF;
+                INSERT INTO operacaocultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade)
+                VALUES (idOp, nmParcela, dataIni, nmComum, varie);
 
                 INSERT INTO aplicacaofatorproducao (nomecomercial, idoperacao)
                 VALUES (nmFator, idOp);
 
-                IF SQL%ROWCOUNT > 0 THEN
-                    DBMS_OUTPUT.PUT_LINE('Operação de aplicação do fator de produção inserida com sucesso.(2/2)');
-                ELSE
-                    RAISE_APPLICATION_ERROR(-20001, 'Erro durante a inserção.');
-                END IF;
+                INSERT INTO operacaoparcela (idOperacao, nomeParcela)
+                VALUES (idOp, nmParcela);
+
             EXCEPTION
                 WHEN OTHERS THEN
-                    RAISE_APPLICATION_ERROR(-20001, 'Erro durante a inserção.');
+                   resultado := 1;
+                   DBMS_OUTPUT.PUT_LINE('ERRO: OPERAÇÃO NÃO REALIZADA DEVIDO A ERRO DURANTE A SUA REALIZAÇÃO.');
+                   RETURN resultado;
             END;
         ELSE
-            RAISE invalidOperacao;
+           RAISE invalidOperacao;
         END IF;
     END IF;
---------Exceções---------
+    END;
+    RETURN resultado;
+---------Exceções-----------------------------------
 EXCEPTION
     WHEN invalidOperacao THEN
-        RAISE_APPLICATION_ERROR(-20001, 'ERRO: A operação já existe na base de dados.');
-        ROLLBACK TO SAVEPOINT antesDoRegisto;
+        resultado := 1;
+        DBMS_OUTPUT.PUT_LINE('ERRO: OPERAÇÃO JÁ EXISTENTE NA BASE DE DADOS.');
+        RETURN resultado;
     WHEN invalidInputs THEN
-        RAISE_APPLICATION_ERROR(-20001, 'ERRO: Os inputs estão incorretos.');
-        ROLLBACK TO SAVEPOINT antesDoRegisto;
+        resultado := 1;
+        DBMS_OUTPUT.PUT_LINE('ERRO: INPUTS ERRADOS');
+        RETURN resultado;
 END;
 /
 --------Verificação se a Operação já existia--------
@@ -92,7 +97,7 @@ CREATE OR REPLACE FUNCTION verificarDadosDeInsercao(
 BEGIN
     IF desigOp IN ('Fertilização', 'Aplicação fitofármaco', 'Aplicação de fator de produção') THEN
         IF desigUnidade = 'kg' THEN
-            IF qtd < 100 THEN
+            IF qtd < 10 THEN
                 valid := TRUE;
             END IF;
         END IF;
@@ -111,15 +116,25 @@ BEGIN
 END;
 /
 --------Bloco Anónimo de Teste(Válido)--------
- DECLARE
+DECLARE
      desigOp tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE := 'Aplicação fitofármaco';
      desigUnidade tipoUnidade.designacaoUnidade%TYPE := 'kg';
      qtd NUMBER := 1;
      dataOp DATE := TO_DATE('23/11/2024', 'DD/MM/YYYY');
      nmFator aplicacaofatorproducao.nomecomercial%TYPE := 'BIOFERTIL N6';
- BEGIN
-     RegistoAplicacaoFatorProducao(desigOp, desigUnidade, qtd, dataOp, nmFator);
- END;
+     nmParcela operacaocultura.nomeparcela%TYPE := 'Campo Grande';
+     dataIni operacaocultura.datainicial%TYPE := TO_DATE('16/10/2006', 'DD/MM/YYYY');
+     nmComum operacaocultura.nomecomum%TYPE := 'Oliveira';
+     varie operacaocultura.variedade%TYPE := 'GALEGA';
+     resultado NUMBER;
+BEGIN
+    resultado := RegistoAplicacaoFatorProducao(desigOp, desigUnidade, qtd, dataOp, nmFator, nmParcela, dataIni, nmComum, varie);
+     IF(resultado = 0)THEN
+        DBMS_OUTPUT.PUT_LINE('TESTE (INPUT VÁLIDO) PASSADO COM SUCESSO.');
+     ELSE
+        DBMS_OUTPUT.PUT_LINE('TESTE (INPUT VÁLIDO) NÃO PASSADO.');
+     END IF;
+END;
 /
 --------Bloco Anónimo de Teste(Inválido)--------
  DECLARE
@@ -128,8 +143,18 @@ END;
      qtd NUMBER := 1;
      dataOp DATE := TO_DATE('23/11/2024', 'DD/MM/YYYY');
      nmFator aplicacaofatorproducao.nomecomercial%TYPE := 'BIOFERTIL N6';
+     nmParcela operacaocultura.nomeparcela%TYPE := 'Campo Grande';
+     dataIni operacaocultura.datainicial%TYPE := TO_DATE('16/10/2006', 'DD/MM/YYYY');
+     nmComum operacaocultura.nomecomum%TYPE := 'Oliveira';
+     varie operacaocultura.variedade%TYPE := 'GALEGA';
+     resultado NUMBER;
  BEGIN
-     RegistoAplicacaoFatorProducao(desigOp, desigUnidade, qtd, dataOp, nmFator);
+    resultado := RegistoAplicacaoFatorProducao(desigOp, desigUnidade, qtd, dataOp, nmFator, nmParcela, dataIni, nmComum, varie);
+     IF(resultado = 1)THEN
+        DBMS_OUTPUT.PUT_LINE('TESTE (INPUT VÁLIDO NOME DA OPERACAO) PASSADO COM SUCESSO.');
+     ELSE
+        DBMS_OUTPUT.PUT_LINE('TESTE (INPUT VÁLIDO NOME DA OPERACAO) NÃO PASSADO.');
+     END IF;
  END;
 /
 --------Bloco Anónimo de Teste(Inválido)--------
@@ -139,8 +164,18 @@ END;
      qtd NUMBER := 1;
      dataOp DATE := TO_DATE('23/11/2024', 'DD/MM/YYYY');
      nmFator aplicacaofatorproducao.nomecomercial%TYPE := 'BIOFERTIL N6';
+     nmParcela operacaocultura.nomeparcela%TYPE := 'Campo Grande';
+     dataIni operacaocultura.datainicial%TYPE := TO_DATE('16/10/2006', 'DD/MM/YYYY');
+     nmComum operacaocultura.nomecomum%TYPE := 'Oliveira';
+     varie operacaocultura.variedade%TYPE := 'GALEGA';
+     resultado NUMBER;
  BEGIN
-     RegistoAplicacaoFatorProducao(desigOp, desigUnidade, qtd, dataOp, nmFator);
+    resultado := RegistoAplicacaoFatorProducao(desigOp, desigUnidade, qtd, dataOp, nmFator, nmParcela, dataIni, nmComum, varie);
+     IF(resultado = 1)THEN
+        DBMS_OUTPUT.PUT_LINE('TESTE (INPUT INVÁLIDO TIPO DE UNIDADE) PASSADO COM SUCESSO.');
+     ELSE
+        DBMS_OUTPUT.PUT_LINE('TESTE (INPUT INVÁLIDO TIPO DE UNIDADE) NÃO PASSADO.');
+     END IF;
  END;
 /
 --------Bloco Anónimo de Teste(Inválido)--------
@@ -150,7 +185,17 @@ END;
      qtd NUMBER := 13444;
      dataOp DATE := TO_DATE('23/11/2024', 'DD/MM/YYYY');
      nmFator aplicacaofatorproducao.nomecomercial%TYPE := 'BIOFERTIL N6';
+     nmParcela operacaocultura.nomeparcela%TYPE := 'Campo Grande';
+     dataIni operacaocultura.datainicial%TYPE := TO_DATE('16/10/2006', 'DD/MM/YYYY');
+     nmComum operacaocultura.nomecomum%TYPE := 'Oliveira';
+     varie operacaocultura.variedade%TYPE := 'GALEGA';
+     resultado NUMBER;
  BEGIN
-     RegistoAplicacaoFatorProducao(desigOp, desigUnidade, qtd, dataOp, nmFator);
+    resultado := RegistoAplicacaoFatorProducao(desigOp, desigUnidade, qtd, dataOp, nmFator, nmParcela, dataIni, nmComum, varie);
+     IF(resultado = 1)THEN
+        DBMS_OUTPUT.PUT_LINE('TESTE (INPUT INVÁLIDO DE QUANTIDADE) PASSADO COM SUCESSO.');
+     ELSE
+        DBMS_OUTPUT.PUT_LINE('TESTE (INPUT INVÁLIDO DE QUANTIDADE) NÃO PASSADO.');
+     END IF;
  END;
 /

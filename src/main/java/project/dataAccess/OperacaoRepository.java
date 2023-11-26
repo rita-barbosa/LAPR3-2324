@@ -324,4 +324,89 @@ public class OperacaoRepository {
         }
         return success;
     }
+
+    public boolean registarAplicacaoFatorProducao(String designacaoOperacao, String designacaoUnidade, Integer qtd, Date dataOperacao, String nomeFator, String nomeParcela, Date dataInicial, String nomeComum, String variedade) throws SQLException {
+        CallableStatement callStmt = null;
+        boolean success = false;
+        try {
+            Connection connection = DatabaseConnection.getInstance().getConnection();
+            callStmt = connection.prepareCall("{ ? = call RegistoAplicacaoFatorProducao(?,?,?,?,?,?,?,?,?) }");
+
+            callStmt.registerOutParameter(1, OracleTypes.NUMBER);
+
+            callStmt.setString(2, designacaoOperacao);
+            callStmt.setString(3, designacaoUnidade);
+            callStmt.setDouble(4, qtd);
+
+            java.sql.Date sqlDataOp = new java.sql.Date(dataOperacao.getTime());
+            callStmt.setDate(5, sqlDataOp);
+
+            callStmt.setString(6, nomeFator);
+
+            callStmt.setString(7, nomeParcela);
+
+            java.sql.Date sqlDataInicial = new java.sql.Date(dataInicial.getTime());
+            callStmt.setDate(8, sqlDataInicial);
+
+            callStmt.setString(9, nomeComum);
+
+            callStmt.setString(10, variedade);
+
+            callStmt.execute();
+
+            BigDecimal bigDecimalValue = (BigDecimal) callStmt.getObject(1);
+            int opStatus = bigDecimalValue.intValue();
+
+            if (opStatus == 0) {
+                success = true;
+            }
+
+            connection.commit();
+
+        } finally {
+            if (!Objects.isNull(callStmt)) {
+                callStmt.close();
+            }
+        }
+        return success;
+    }
+
+    public boolean verifyIfAplicationOperationExists(String desigOp, String desigUnidade, Integer qtd, Date dataOp, String nmFator) throws SQLException {
+        CallableStatement callStmt = null;
+        boolean exists = false;
+        try {
+            Connection connection = DatabaseConnection.getInstance().getConnection();
+            callStmt = connection.prepareCall("{ ? = call verificarSeOperacaoExiste(?,?,?,?,?) }");
+
+            callStmt.registerOutParameter(1, OracleTypes.NUMBER);
+
+            callStmt.setString(2, desigOp);
+            callStmt.setString(3, desigUnidade);
+            callStmt.setDouble(4, qtd);
+
+            java.sql.Date sqlDataOp = new java.sql.Date(dataOp.getTime());
+            callStmt.setDate(5, sqlDataOp);
+
+            callStmt.setString(6, nmFator);
+
+            callStmt.execute();
+
+            BigDecimal bigDecimalValue = (BigDecimal) callStmt.getObject(1);
+            int foundOp = bigDecimalValue.intValue();
+
+            if (foundOp == 0) {
+                exists = true;
+            }
+
+            connection.commit();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (!Objects.isNull(callStmt)) {
+                callStmt.close();
+            }
+        }
+        return exists;
+    }
 }

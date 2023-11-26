@@ -4,24 +4,19 @@ import project.controller.RegistarOperacaoSemeaduraController;
 import project.ui.console.utils.Utils;
 
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Scanner;
 
 public class RegistarOperacaoSemeaduraUI implements Runnable {
 
     private RegistarOperacaoSemeaduraController controller;
 
-    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-
-    String designacaoOperacaoAgricola = "Semeadura";
     private Date dataOperacao;
     private String nomeParcela;
-    private String tipoUnidade;
-    private Double quantidade;
+    private String tipoUnidadeCultura;
+    private Double quantidadeOperacao;
+    private Double quantidadeCultura;
     private String nomeComum;
     private String variedade;
     private String permanencia;
@@ -38,42 +33,40 @@ public class RegistarOperacaoSemeaduraUI implements Runnable {
             System.out.println("| Registar uma nova Operação de Semeadura |");
             System.out.println("-------------------------------------------");
 
-            Scanner scanner = new Scanner(System.in);
-
             List<String> fields = controller.getFieldsNames();
-            index = Utils.showAndSelectIndexNoCancel(fields, "Selecione a parcela:");
+            index = Utils.showAndSelectIndex(fields, "Selecione a parcela:");
+            verificarIndex(index);
             nomeParcela = fields.get(index);
 
             List<String> cultures = controller.getCultures();
-            index = Utils.showAndSelectIndexNoCancel(cultures, "Selecione a cultura:");
+            index = Utils.showAndSelectIndex(cultures, "Selecione a cultura:");
             String cultura = cultures.get(index);
+            verificarIndex(index);
             processCultureChoice(cultura);
 
             if (permanencia.equals("Permanente")) {
-                tipoUnidade = "un";
+                tipoUnidadeCultura = "un";
             } else {
                 List<String> unitTypes = new ArrayList<>();
                 unitTypes.add("ha");
                 unitTypes.add("m2");
-                index = Utils.showAndSelectIndexNoCancel(unitTypes, "Indique o tipo de unidade:");
-                tipoUnidade = unitTypes.get(index);
+                index = Utils.showAndSelectIndex(unitTypes, "Indique o tipo de unidade:");
+                tipoUnidadeCultura = unitTypes.get(index);
             }
 
-            System.out.print("Data da operação (formato: dd/mm/yyyy): ");
-            String dataOp = scanner.next();
-            Utils.validateDate(dataOp);
-            dataOp = dataOp.replace("/", "-");
-            dataOperacao = formatter.parse(dataOp);
+            quantidadeCultura = Utils.readDoubleFromConsole("Indique a extensão da área a semear: ");
 
-            quantidade = Utils.readDoubleFromConsole("Indique a quantidade a semear:");
+            quantidadeOperacao = Utils.readDoubleFromConsole("Indique a quantidade de sementes a utilizar (kg): ");
 
-            boolean opStatus = controller.registerOperation(nomeParcela, nomeComum, variedade, dataOperacao, tipoUnidade, quantidade);
+            dataOperacao = Utils.readDateFromConsole("Indique a data da operação (formato: dd/mm/yyyy): ");
+
+            boolean opStatus = controller.registerOperation(nomeParcela, nomeComum, quantidadeCultura, variedade, dataOperacao, tipoUnidadeCultura, quantidadeOperacao);
             if (opStatus) {
                 System.out.println("\nOperação de semeadura registada com sucesso.\n");
             } else {
                 System.out.println("\nFalha em registar a operação de semeadura.\n");
             }
-        } catch (ParseException | SQLException e) {
+        } catch (SQLException e) {
             System.out.println("\nFalha em registar a operação de semeadura.\n" + e.getMessage().split("\n")[0].substring(11) + "\n");
         }
     }
@@ -106,6 +99,12 @@ public class RegistarOperacaoSemeaduraUI implements Runnable {
             return info;
         } else {
             return original + " " + info;
+        }
+    }
+
+    private void verificarIndex(int index) {
+        if (index == -1) {
+            throw new RuntimeException("\nA cancelar registo da operação ...\n");
         }
     }
 

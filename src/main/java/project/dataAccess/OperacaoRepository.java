@@ -23,7 +23,7 @@ import java.util.Objects;
 
 public class OperacaoRepository {
 
-    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
     public OperacaoRepository() {
@@ -119,25 +119,28 @@ public class OperacaoRepository {
         return operacoes;
     }
 
-    public boolean registerSemeaduraOperation(String nomeParcela , String nomeComum, String variedade, Date dataOperacao, String tipoUnidade, Double quantidade) throws SQLException {
+    public boolean registerSemeaduraOperation(String nomeParcela , String nomeComum, Double quantidadeCultura, String variedade, Date dataOperacao, String tipoUnidadeCultura, Double quantidadeOperacao) throws SQLException {
         CallableStatement callStmt = null;
         boolean success = false;
         try {
             Connection connection = DatabaseConnection.getInstance().getConnection();
-            callStmt = connection.prepareCall("{ ? = call registarOperacaoSemeadura(?,?,?,?,?,?,?) }");
+            callStmt = connection.prepareCall("{ ? = call registarOperacaoSemeadura(?,?,?,?,?,?,?,?,?) }");
 
             callStmt.registerOutParameter(1, OracleTypes.NUMBER);
 
             callStmt.setString(2, "Semeadura");
-            callStmt.setString(3, tipoUnidade);
-            callStmt.setDouble(4, quantidade);
+            callStmt.setString(3, tipoUnidadeCultura);
+            callStmt.setDouble(4, quantidadeCultura);
+
+            callStmt.setString(5, "kg");
+            callStmt.setDouble(6, quantidadeOperacao);
 
             java.sql.Date sqlDataOp = new java.sql.Date(dataOperacao.getTime());
-            callStmt.setDate(5, sqlDataOp);
+            callStmt.setDate(7, sqlDataOp);
 
-            callStmt.setString(6, nomeParcela);
-            callStmt.setString(7, nomeComum);
-            callStmt.setString(8, variedade);
+            callStmt.setString(8, nomeParcela);
+            callStmt.setString(9, nomeComum);
+            callStmt.setString(10, variedade);
 
             callStmt.execute();
 
@@ -183,7 +186,7 @@ public class OperacaoRepository {
 
             callStmt.setDate(5, sqlDate);
 
-            callStmt.setString(6, rega.getIdSetor());
+            callStmt.setInt(6, Integer.parseInt(rega.getIdSetor()));
 
             callStmt.execute();
 
@@ -192,7 +195,9 @@ public class OperacaoRepository {
 
             if (opStatus == 1) {
                 success = true;
-                System.out.println("sucess");
+                System.out.println("success");
+            }else{
+                System.out.println("failure");
             }
 
             connection.commit();

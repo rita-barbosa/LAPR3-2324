@@ -1,6 +1,7 @@
 package project.domain;
 
 import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -34,5 +35,11 @@ private static boolean result;
         String wrongHoursFile = "src/test/java/project/testFiles/ficheiroHoraErrada.txt";
         result = ImportarFicheiro.importWateringPlan(wrongHoursFile);
         assertFalse(result);
+    }
+
+    @AfterEach
+    void teardown(){
+        SistemaDeRega.setPlanoDeRega(null);
+        SistemaDeRega.setInicioDoPlanoDeRega(null);
     }
 }

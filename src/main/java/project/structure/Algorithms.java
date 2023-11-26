@@ -28,9 +28,10 @@ public class Algorithms {
 
         visited[g.key(vOrig)] = true;
 
+        qdfs.add(vOrig);
+
         for (V vertex : g.adjVertices(vOrig)) {
-            if (! visited[g.key(vertex)]) {
-                qdfs.add(vertex);
+            if (!visited[g.key(vertex)]) {
                 DepthFirstSearch(g, vertex, visited, qdfs);
             }
         }
@@ -49,13 +50,13 @@ public class Algorithms {
             return null;
         }
 
-        LinkedList<V> resultQueue = new LinkedList<>();
-        resultQueue.add(vert);
-        boolean[] knownVertices = new boolean[g.numVertices()];
+        boolean visited[] = new boolean[g.numVertices()];
 
-        DepthFirstSearch(g, vert, knownVertices, resultQueue);
+        LinkedList<V> result = new LinkedList<>();
 
-        return resultQueue;
+        DepthFirstSearch(g, vert, visited, result);
+
+        return result;
     }
 
     /** Returns all paths from vOrig to vDest

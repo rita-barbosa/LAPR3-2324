@@ -1,7 +1,9 @@
 package project.structure;
 
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedList;
 
 public class MST {
 
@@ -9,9 +11,8 @@ public class MST {
         MapGraph<V, E> mst = new MapGraph<>(false);
 
         ArrayList<V> vertices = g.vertices();
-        for (V vert : vertices) {
-            mst.addVertex(vert);
-        }
+        mst.vertices().addAll(vertices);
+
 
         ArrayList<Edge<V, E>> edgesList = (ArrayList<Edge<V, E>>) g.edges();
         edgesList.sort(Comparator.comparing(Edge::getWeight));
@@ -26,10 +27,10 @@ public class MST {
             }
         }
 
-        return filterMstKruskkall(mst);
+        return filterMstKruskall(mst);
     }
 
-    private static <V, E extends Comparable<E>> MapGraph<V, E> filterMstKruskkall(MapGraph<V, E> mst) {
+    private static <V, E extends Comparable<E>> MapGraph<V, E> filterMstKruskall(Graph<V, E> mst) {
         ArrayList<Edge<V,E>> edgesList = new ArrayList<>(mst.edges());
         edgesList.sort(Comparator.comparing(Edge::getWeight));
 

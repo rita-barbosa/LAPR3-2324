@@ -1,6 +1,7 @@
 package project.ui.console.menu;
 
 import project.ui.console.DatabaseConnectionTestUI;
+import project.ui.console.RegaTesteUI;
 import project.ui.console.SelectStatementTestUI;
 import project.ui.console.utils.Utils;
 
@@ -14,7 +15,8 @@ public class MenuManagement implements Runnable {
     public void run() {
         List<MenuItem> options = new ArrayList<MenuItem>();
         options.add(new MenuItem("Testar conexão à Base de Dados", new DatabaseConnectionTestUI()));
-        options.add(new MenuItem("Testar SELECT", new SelectStatementTestUI()));
+//        options.add(new MenuItem("Testar SELECT", new SelectStatementTestUI()));
+//        options.add(new MenuItem("Testar registo de rega", new RegaTesteUI()));
         int option = 0;
         do {
             option = Utils.showAndSelectIndex(options, "\n\nMenu gerenciamento:");

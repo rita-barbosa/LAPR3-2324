@@ -1,43 +1,46 @@
 create or replace NONEDITIONABLE FUNCTION registarOperacaoSemeadura(
     desigOp IN tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE,
-    desigUnidade IN tipoUnidade.designacaoUnidade%TYPE,
-    qtd IN NUMBER,
+    desigUnidadeCultura IN tipoUnidade.designacaoUnidade%TYPE,
+    qtdCultura IN NUMBER,
+    desigUnidadeOperacao IN tipoUnidade.designacaoUnidade%TYPE,
+    qtdOp IN NUMBER,
     dataOp IN DATE,
     nomeParcela IN parcela.nomeParcela%TYPE,
     nomeComum IN planta.nomeComum%TYPE,
     variedade IN planta.variedade%TYPE
 ) RETURN NUMBER IS
-    success     NUMBER := 0;
-    idOp        NUMBER;
-    qtdIsValid  NUMBER := 0;
-    areaOcupada NUMBER;
+    success NUMBER := 0;
+    idOp    NUMBER;
+    qtdIsValid NUMBER := 0;
+    areaOcupada  NUMBER;
     alreadyExists EXCEPTION;
     semAreaDisponivel EXCEPTION;
-    qtdZero EXCEPTION;
+    qtdCulturaZero EXCEPTION;
+    qtdOpZero EXCEPTION;
     quantidadeMaiorAreaParcela EXCEPTION;
 BEGIN
     BEGIN
 
-        IF qtd <= 0 THEN
-            RAISE qtdZero;
+        IF (qtdCultura <=0) THEN
+            RAISE qtdCulturaZero;
+        ELSIF (qtdOp <= 0) THEN
+            RAISE qtdOpZero;
         END IF;
 
-        IF verificarSeOperacaoExiste(desigOp, desigUnidade, qtd, dataOp, nomeParcela, nomeComum, variedade) = 0 THEN
+        IF verificarSeOperacaoExiste(desigOp, desigUnidadeOperacao, qtdOp, dataOp, nomeParcela, nomeComum, variedade)= 0 THEN
             areaOcupada := obterAreaOcupadaPorCulturas(nomeParcela);
 
-            qtdIsValid := validarArea(areaOcupada, desigUnidade, qtd, nomeParcela);
+            qtdIsValid := validarArea(areaOcupada, desigUnidadeCultura, qtdCultura, nomeParcela);
 
             IF qtdIsValid = 1 THEN
 
                 idOp := novoIdOperacao();
 
-                INSERT INTO operacao (idOperacao, designacaoOperacaoAgricola, designacaoUnidade, quantidade,
-                                      dataOperacao)
-                VALUES (idOp, desigOp, desigUnidade, qtd, dataOp);
+                INSERT INTO operacao (idOperacao, designacaoOperacaoAgricola, designacaoUnidade, quantidade, dataOperacao)
+                VALUES (idOp, desigOp, desigUnidadeOperacao, qtdOp, dataOp);
 
-                INSERT INTO culturaInstalada (dataInicial, nomeParcela, variedade, nomeComum, designacaoUnidade,
-                                              dataFinal, quantidade)
-                VALUES (dataOp, nomeParcela, variedade, nomeComum, desigUnidade, NULL, qtd);
+                INSERT INTO culturaInstalada (dataInicial, nomeParcela, variedade, nomeComum, designacaoUnidade, dataFinal, quantidade)
+                VALUES (dataOp, nomeParcela, variedade, nomeComum, desigUnidadeCultura, NULL, qtdCultura);
 
                 INSERT INTO operacaocultura (idOperacao, nomeParcela, dataInicial, nomeComum, variedade)
                 VALUES (idOp, nomeParcela, dataOp, nomeComum, variedade);
@@ -59,14 +62,16 @@ BEGIN
             RAISE_APPLICATION_ERROR(-20001, 'ERRO: Os dados introduzidos já existem no sistema.');
             ROLLBACK;
         WHEN semAreaDisponivel THEN
-            RAISE_APPLICATION_ERROR(-20002,
-                                    'ERRO: A parcela selecionada não têm área disponível para instalar uma nova cultura.');
+            RAISE_APPLICATION_ERROR(-20002, 'ERRO: A parcela selecionada não têm área disponível para instalar uma nova cultura.');
             ROLLBACK;
         WHEN quantidadeMaiorAreaParcela THEN
             RAISE_APPLICATION_ERROR(-20003, 'ERRO: A quantidade indicada supera a área da parcela escolhida.');
             ROLLBACK;
-        WHEN qtdZero THEN
-            RAISE_APPLICATION_ERROR(-20004, 'ERRO: A quantidade indicada é inválida.');
+        WHEN qtdCulturaZero THEN
+            RAISE_APPLICATION_ERROR(-20004, 'ERRO: A quantidade indicada é inválida. Não pode plantar 0 ' || desigUnidadeCultura || '.');
+            ROLLBACK;
+        WHEN qtdOpZero THEN
+            RAISE_APPLICATION_ERROR(-20005, 'ERRO: A quantidade indicada é inválida. Não pode plantar nada com 0 kg de sementes.');
             ROLLBACK;
     END;
 
@@ -158,9 +163,11 @@ SET SERVEROUTPUT ON;
 
 DECLARE
     v_desigOp      tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE := 'Semeadura';
-    v_desigUnidade tipoUnidade.DESIGNACAOUNIDADE%TYPE                   := 'm2';
-    v_qtd          NUMBER                                               := 1;
-    v_dataOp       DATE                                                 := TO_DATE('14/03/2022', 'DD/MM/YYYY');
+    v_desigUnidadeCultura tipoUnidade.DESIGNACAOUNIDADE%TYPE                   := 'm2';
+    v_qtdCultura          NUMBER                                               := 0;
+    v_desigUnidadeOperacao tipoUnidade.DESIGNACAOUNIDADE%TYPE                   := 'kg';
+    v_qtdOp          NUMBER                                               := 3;
+    v_dataOp       DATE                                                 := TO_DATE('01/03/2022', 'DD/MM/YYYY');
     v_nomeParcela  parcela.nomeParcela%TYPE                             := 'Campo Grande';
     v_nomeComum    planta.nomeComum%TYPE                                := 'Cenoura';
     v_variedade    planta.variedade%TYPE                                := 'CARSON HYBRID';
@@ -176,7 +183,7 @@ BEGIN
 
     areaOcupada := obterAreaOcupadaPorCulturas(v_nomeParcela);
 
-    v_success := registarOperacaoSemeadura(v_desigOp, v_desigUnidade, v_qtd, v_dataOp, v_nomeParcela, v_nomeComum,
+    v_success := registarOperacaoSemeadura(v_desigOp, v_desigUnidadeCultura, v_qtdCultura, v_desigUnidadeOperacao, v_qtdOp, v_dataOp, v_nomeParcela, v_nomeComum,
                                            v_variedade);
 
     DBMS_OUTPUT.PUT_LINE('Area da Parcela: ' || areaParcela || ' Area Ocupada Antes do Registo: ' || areaOcupada);
@@ -200,22 +207,24 @@ END;
 ------------------------------------------------
 -------------------CONFIRMAÇÃO------------------
 ------------------------------------------------
-SELECT op.IDOPERACAO                 IDOPERACAO,
-       op.DESIGNACAOOPERACAOAGRICOLA DESIGNACAOOPERACAOAGRICOLA,
-       op.DESIGNACAOUNIDADE          DESIGNACAOUNIDADE,
-       op.QUANTIDADE                 QUANTIDADE,
-       op.DATAOPERACAO               DATAOPERACAO,
-       opCul.NOMEPARCELA             NOMEPARCELA,
-       opCul.DATAINICIAL             DATAINICIAL,
-       opCul.NOMECOMUM               NOMECOMUM,
-       opCul.VARIEDADE               VARIEDADE,
-       culInst.DATAFINAL             DATAFINAL
+SELECT op.IDOPERACAO "ID_OPERACAO",
+       op.DATAOPERACAO AS "DATA OPERACAO",
+       opCul.NOMEPARCELA AS "PARCELA",
+       op.DESIGNACAOOPERACAOAGRICOLA AS "TIPO OPERACAO AGRICOLA",
+       op.QUANTIDADE AS "QUANTIDADE OPERACAO",
+       op.DESIGNACAOUNIDADE AS "UNIDADE OPERACAO",
+       opCul.NOMECOMUM AS "NOME COMUM",
+       opCul.VARIEDADE VARIEDADE,
+       culInst.QUANTIDADE AS "QUANTIDADE CULTURA",
+       culInst.DESIGNACAOUNIDADE AS "UNIDADE CULTURA",
+       culInst.DATAINICIAL AS "DATA INICIAL",
+       culInst.DATAFINAL AS "DATA FINAL"
 FROM operacao op
          INNER JOIN operacaoCultura opCul ON opCul.idOperacao = op.idOperacao
          INNER JOIN culturaInstalada culInst ON culInst.datainicial = op.dataOperacao
 WHERE op.designacaoOperacaoAgricola = 'Semeadura'
   AND culInst.datafinal IS NULL;
 --||----||----||----||----||----||----||----||--
-select *
-from parcela;
+SELECT *
+FROM parcela;
 --||----||----||----||----||----||----||----||--

@@ -30,9 +30,9 @@ create or replace FUNCTION obterIntroCulturas
     listIntroCulturas SYS_REFCURSOR;
 BEGIN
     OPEN listIntroCulturas FOR
-        SELECT DISTINCT (nomeComum || ' ' || variedade) AS nome
+        SELECT DISTINCT (NOMECOMUM || ' ' || VARIEDADE || ' | ' || DESIGNACAOTIPOPERMANENCIA) AS cultura
         FROM planta
-        ORDER BY nome;
+        ORDER BY cultura;
     RETURN listIntroCulturas;
 END;
 /
@@ -50,29 +50,6 @@ END;
 /
 
 -------------------------------------------------------------------------------------------------------------------
-create or replace FUNCTION mostrarOperacaoSemeadura
-    RETURN SYS_REFCURSOR AS
-    operacoes SYS_REFCURSOR;
-BEGIN
-    OPEN operacoes FOR
-        SELECT DISTINCT op.idOperacao,
-                        op.designacaooperacaoagricola,
-                        op.designacaounidade,
-                        op.quantidade,
-                        op.dataoperacao,
-                        cul.nomeParcela,
-                        cul.nomeComum,
-                        cul.variedade,
-                        inst.datainicial,
-                        inst.datafinal
-        FROM operacao op
-                 INNER JOIN operacaoCultura cul ON cul.idOperacao = op.idOperacao
-                 INNER JOIN culturaInstalada inst ON cul.datainicial = inst.datainicial
-        WHERE designacaoOperacaoAgricola = 'Semeadura'
-        ORDER BY op.idOperacao;
-    RETURN operacoes;
-END;
-/
 
 -------------------------------------------------------------------------------------------------------------------
 

@@ -46,6 +46,7 @@ public class RegistarOperacaoSemeaduraUI implements Runnable {
 
             if (permanencia.equals("Permanente")) {
                 tipoUnidadeCultura = "un";
+                System.out.println("\nCultura é do tipo Permanente - unidade por defeito 'un'.");
             } else {
                 List<String> unitTypes = new ArrayList<>();
                 unitTypes.add("ha");
@@ -54,7 +55,11 @@ public class RegistarOperacaoSemeaduraUI implements Runnable {
                 tipoUnidadeCultura = unitTypes.get(index);
             }
 
-            quantidadeCultura = Utils.readDoubleFromConsole("Indique a extensão da área a semear: ");
+            if (permanencia.equals("Permanente")) {
+                quantidadeCultura = Utils.readDoubleFromConsole("Indique as unidades de plantas que vai semear: ");
+            } else {
+                quantidadeCultura = Utils.readDoubleFromConsole("Indique a extensão da área a semear: ");
+            }
 
             quantidadeOperacao = Utils.readDoubleFromConsole("Indique a quantidade de sementes a utilizar (kg): ");
 

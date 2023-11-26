@@ -13,10 +13,10 @@ registo de uma operação de cultura - tipo "Semeadura". Além disso, serão nec
 #### **Critérios Aceitação BD11:**
 
 * Conforme aplicável, a parcela, operação, planta, fruto, fator de produção, etc., têm de existir.
-* Não é possível registar operação monda no futuro (não usar SYSDATE numa função, que ela deixa de ser testável!).
-* Não é possível registar operação monda que envolva área superior à de uma dada parcela.
-* Não é possível registar operação monda que envolva um número de plantas permanentes superior à existente na parcela.
-* Não é possível registar operação monda que envolva plantas permanentes ou temporárias que não existem na parcela.
+* Não é possível registar operação semeadura no futuro (não usar SYSDATE numa função, que ela deixa de ser testável!).
+* Não é possível registar operação semeadura que envolva área superior à de uma dada parcela.
+* Não é possível registar operação semeadura que envolva um número de plantas superior à área disponível (sem estar
+  ocupada) na parcela.
 
 ### 1.2. Clarificações
 
@@ -84,10 +84,12 @@ Quando a funcionalidade de registar uma operacao de semeadura é escolhida, uma 
 mostrada. Desta forma garante-se que a escolha da parcela para a operação será sempre válida. O mesmo ocorre com a lista
 de todas as culturas da base de dados disponíveis para selecionar. A partir da escolha de cultura obtém-se o nome comum
 da planta, a variedade e com a permanência.
-Caso a permanência seja "Permanente" então o tipo e unidade é definida como "un", caso contrário dá-se a escolha de
+Caso a permanência seja "Permanente" então o tipo de unidade da cultura é definida como "un", caso contrário dá-se a
+escolha de
 unidade, entre "ha" e "m2".
 
-O input do utilizador termina com a quantidade e a data da operação.
+O input do utilizador termina com a quantidade de cultura (área correspondente à operação), a da operação (referente às
+sementes a usar - em kg), e a data da operação.
 
 A quantidade não pode ser negativa e nem superior ao tamanho da cultura instalada. Estas validações são feitas na função
 sql da basse de dados.

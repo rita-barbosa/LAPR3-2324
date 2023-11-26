@@ -41,7 +41,6 @@ BEGIN
     ELSE
         DBMS_OUTPUT.PUT_LINE('O teste falhou. A exceção qtdCulturaZero não foi lançada.');
     END IF;
-
 END;
 
 --------------------------------------------------------------------------
@@ -139,7 +138,7 @@ SET SERVEROUTPUT ON;
 DECLARE
     v_desigOp      tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE := 'Semeadura';
     v_desigUnidadeCultura tipoUnidade.DESIGNACAOUNIDADE%TYPE                   := 'm2';
-    v_qtdCultura          NUMBER                                               := 12;
+    v_qtdCultura          NUMBER                                               := 5;
     v_desigUnidadeOperacao tipoUnidade.DESIGNACAOUNIDADE%TYPE                   := 'kg';
     v_qtdOp          NUMBER                                               := 3;
     v_dataOp       DATE                                                 := TO_DATE('02/03/2022', 'DD/MM/YYYY');
@@ -184,7 +183,7 @@ SET SERVEROUTPUT ON;
 DECLARE
     v_desigOp      tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE := 'Semeadura';
     v_desigUnidadeCultura tipoUnidade.DESIGNACAOUNIDADE%TYPE                   := 'm2';
-    v_qtdCultura          NUMBER                                               := 12;
+    v_qtdCultura          NUMBER                                               := 5;
     v_desigUnidadeOperacao tipoUnidade.DESIGNACAOUNIDADE%TYPE                   := 'kg';
     v_qtdOp          NUMBER                                               := 3;
     v_dataOp       DATE                                                 := TO_DATE('02/03/2022', 'DD/MM/YYYY');
@@ -224,6 +223,9 @@ END;
 --TESTE 5-------------------------------------------------------------------
 --Verifica que a função lança a exceção semAreaDisponivel - não existe área disponível na parcela escolhida para instalar
 --uma nova cultura.
+
+--ESTE TESTE QUER QUE A PARCELA 'CAMPO GRANDE' ESTEJA VAZIA, ISTO É SEM TER CULTURAS INSTALADAS ATIVAS (COM DATA FINAL NULL)
+
 SET SERVEROUTPUT ON;
 
 DECLARE
@@ -233,7 +235,7 @@ DECLARE
     v_desigUnidadeOperacao tipoUnidade.DESIGNACAOUNIDADE%TYPE                   := 'kg';
     v_qtdOp          NUMBER                                               := 2.3;
     v_dataOp       DATE                                                 := TO_DATE('03/03/2023', 'DD/MM/YYYY');
-    v_nomeParcela  parcela.nomeParcela%TYPE                             := 'Campo Grande';
+        v_nomeParcela  parcela.nomeParcela%TYPE                             := 'Campo Grande';
     v_nomeComum    planta.nomeComum%TYPE                                := 'Cenoura';
     v_variedade    planta.variedade%TYPE                                := 'CARSON HYBRID';
     v_success      NUMBER;

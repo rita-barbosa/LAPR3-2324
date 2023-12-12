@@ -1,6 +1,8 @@
 package project.domain;
 
+import project.controller.rede.LocalizacaoIdealHubsController;
 import project.exception.ExcecaoFicheiro;
+import project.structure.MapGraph;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,6 +20,7 @@ public class ImportarFicheiro {
 
     private static final String DIAS_IMPARES = "I";
     private static final String TRES_DIAS = "3";
+    private static final Integer N = 5;
     private static final Set<LocalTime> timeTurns = new TreeSet<>();
     private static final Map<String, List<String>> lineRega = new LinkedHashMap<>();
 
@@ -94,8 +97,21 @@ public class ImportarFicheiro {
     public static boolean importRedeDistribuicao(String locais, String distancias) throws ExcecaoFicheiro, IOException {
         importFicheiroLocais(locais);
         importFicheiroDistancias(distancias);
-
+        setHubs();
         return true;
+    }
+
+    private static void setHubs() {
+        LocalizacaoIdealHubsController controller = new LocalizacaoIdealHubsController();
+        RedeHub rede = RedeHub.getInstance();
+        MapGraph<Local, Integer> graph = rede.getRedeDistribuicao();
+        Map<Local, List<Integer>> topNMap = controller.getTopNTotal(graph, N);
+
+        for (Local ideal : topNMap.keySet()) {
+            if (graph.validVertex(ideal)) {
+                graph.vertex(p -> p.equals(ideal)).setHub(true);
+            }
+        }
     }
 
     private static void importFicheiroDistancias(String distancias) throws IOException {

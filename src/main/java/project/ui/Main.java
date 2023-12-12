@@ -1,6 +1,6 @@
 package project.ui;
 
-import project.dataAccess.DatabaseConnection;
+import project.data_access.DatabaseConnection;
 import project.ui.console.menu.MainMenuUI;
 
 import java.io.IOException;

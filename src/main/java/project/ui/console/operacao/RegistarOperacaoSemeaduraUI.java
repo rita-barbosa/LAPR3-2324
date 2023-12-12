@@ -1,6 +1,6 @@
-package project.ui.console.operacoes;
+package project.ui.console.operacao;
 
-import project.controller.RegistarOperacaoSemeaduraController;
+import project.controller.operacao.RegistarOperacaoSemeaduraController;
 import project.ui.console.utils.Utils;
 
 import java.sql.SQLException;

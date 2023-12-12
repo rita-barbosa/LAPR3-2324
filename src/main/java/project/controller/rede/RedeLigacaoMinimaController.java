@@ -1,4 +1,4 @@
-package project.controller;
+package project.controller.rede;
 
 import project.domain.Local;
 import project.structure.*;

@@ -1,6 +1,6 @@
-package project.ui.console;
+package project.ui.console.sistema_rega;
 
-import project.controller.ControladorRegaController;
+import project.controller.sistema_rega.ControladorRegaController;
 import project.exception.ExcecaoData;
 import project.exception.ExcecaoHora;
 import project.ui.console.utils.Utils;

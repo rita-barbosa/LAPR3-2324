@@ -2,7 +2,7 @@ package project.ui.console;
 
 
 import project.controller.DatabaseConnectionTestController;
-import project.dataAccess.DatabaseConnection;
+import project.data_access.DatabaseConnection;
 
 import java.sql.SQLException;
 

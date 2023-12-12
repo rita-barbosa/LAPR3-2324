@@ -1,6 +1,6 @@
-package project.ui.console;
+package project.ui.console.sistema_rega;
 
-import project.dataAccess.OperacaoRepository;
+import project.data_access.OperacaoRepository;
 import project.domain.Rega;
 
 import java.sql.SQLException;

@@ -17,7 +17,7 @@ import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static project.controller.PercursoMinimoController.analyzeData;
+import static project.controller.rede.PercursoMinimoController.analyzeData;
 
 class PercursoMinimoControllerTest {
     RedeHub rede = RedeHub.getInstance();

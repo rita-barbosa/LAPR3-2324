@@ -1,7 +1,7 @@
 package project.domain;
 
-import project.dataAccess.OperacaoRepository;
-import project.dataAccess.Repositories;
+import project.data_access.OperacaoRepository;
+import project.data_access.Repositories;
 
 import java.sql.SQLException;
 import java.time.LocalDate;

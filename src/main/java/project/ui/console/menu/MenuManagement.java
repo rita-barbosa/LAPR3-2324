@@ -1,8 +1,6 @@
 package project.ui.console.menu;
 
 import project.ui.console.DatabaseConnectionTestUI;
-import project.ui.console.RegaTesteUI;
-import project.ui.console.SelectStatementTestUI;
 import project.ui.console.utils.Utils;
 
 import java.util.ArrayList;

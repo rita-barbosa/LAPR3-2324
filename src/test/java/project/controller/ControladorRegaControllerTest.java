@@ -2,6 +2,7 @@ package project.controller;
 
 import org.junit.Before;
 import org.junit.Test;
+import project.controller.sistema_rega.ControladorRegaController;
 import project.domain.ImportarFicheiro;
 import project.domain.SistemaDeRega;
 

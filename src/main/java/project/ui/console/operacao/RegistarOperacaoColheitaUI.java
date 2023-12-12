@@ -1,13 +1,10 @@
-package project.ui.console.operacoes;
+package project.ui.console.operacao;
 
-import project.controller.RegistarOperacaoColheitaController;
+import project.controller.operacao.RegistarOperacaoColheitaController;
 import project.domain.Planta;
-import project.exception.ExcecaoData;
 import project.ui.console.utils.Utils;
 
-import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 

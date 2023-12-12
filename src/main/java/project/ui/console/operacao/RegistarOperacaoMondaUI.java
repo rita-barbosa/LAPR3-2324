@@ -1,6 +1,6 @@
-package project.ui.console.operacoes;
+package project.ui.console.operacao;
 
-import project.controller.RegistarOperacaoMondaController;
+import project.controller.operacao.RegistarOperacaoMondaController;
 import project.domain.Planta;
 import project.ui.console.utils.Utils;
 

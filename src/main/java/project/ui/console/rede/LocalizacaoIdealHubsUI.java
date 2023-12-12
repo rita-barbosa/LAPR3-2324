@@ -1,6 +1,6 @@
 package project.ui.console.rede;
 
-import project.controller.LocalizacaoIdealHubsController;
+import project.controller.rede.LocalizacaoIdealHubsController;
 import project.domain.Local;
 import project.domain.RedeHub;
 import project.structure.MapGraph;

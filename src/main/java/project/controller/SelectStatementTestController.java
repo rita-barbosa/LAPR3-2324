@@ -1,8 +1,8 @@
 package project.controller;
 
 import project.domain.OperacaoCultura;
-import project.dataAccess.OperacaoRepository;
-import project.dataAccess.Repositories;
+import project.data_access.OperacaoRepository;
+import project.data_access.Repositories;
 
 import java.sql.SQLException;
 

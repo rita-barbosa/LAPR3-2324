@@ -1,4 +1,4 @@
-package project.dataAccess;
+package project.data_access;
 
 import oracle.jdbc.pool.OracleDataSource;
 

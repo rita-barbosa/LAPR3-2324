@@ -1,6 +1,6 @@
 package project.ui.console.rede;
 
-import project.controller.RedeLigacaoMinimaController;
+import project.controller.rede.RedeLigacaoMinimaController;
 import project.domain.Local;
 import project.domain.RedeHub;
 import project.structure.Edge;

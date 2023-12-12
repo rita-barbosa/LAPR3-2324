@@ -1,21 +1,18 @@
-package project.controller;
+package project.controller.operacao;
 
-import project.dataAccess.*;
-import project.domain.Planta;
+import project.data_access.*;
 
+import java.util.*;
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
 
-public class RegistarOperacaoAplicacaoFatoresController {
+public class RegistarOperacaoSemeaduraController {
 
     private OperacaoRepository operacaoRepository;
     private UnitsRepository unitsRepository;
     private FieldsRepository fieldsRepository;
     private CultureRepository cultureRepository;
 
-    public RegistarOperacaoAplicacaoFatoresController() {
+    public RegistarOperacaoSemeaduraController() {
         getOperacaoRepository();
         getUnitsRepository();
         getCultureRepository();
@@ -54,11 +51,6 @@ public class RegistarOperacaoAplicacaoFatoresController {
         return fieldsRepository;
     }
 
-
-    public List<String> getUnitTypes() throws SQLException {
-        return unitsRepository.getUnitDesignations();
-    }
-
     public  List<String> getFieldsNames() throws SQLException {
         return fieldsRepository.getFieldsNames();
     }
@@ -67,17 +59,8 @@ public class RegistarOperacaoAplicacaoFatoresController {
         return cultureRepository.getCultures();
     }
 
-    public List<Planta> getCulturesByField(String nomeParcela) throws SQLException {
-        return cultureRepository.getCulturesByField(nomeParcela);
+    public boolean registerOperation(String nomeParcela , String nomeComum, Double quantidadeCultura, String variedade, Date dataOperacao, String tipoUnidadeCultura, Double quantidadeOperacao) throws SQLException {
+        return operacaoRepository.registerSemeaduraOperation(nomeParcela, nomeComum, quantidadeCultura, variedade, dataOperacao, tipoUnidadeCultura, quantidadeOperacao);
     }
-    public boolean registerAplication(String designacaoOperacao, String designacaoUnidade, Integer qtd, Date dataOperacao, String nomeFator, String nomeParcela, Date dataInicial, String nomeComum, String variedade) throws SQLException {
-        return operacaoRepository.registarAplicacaoFatorProducao(designacaoOperacao, designacaoUnidade, qtd, dataOperacao, nomeFator, nomeParcela, dataInicial, nomeComum, variedade);
-    }
-
-    public boolean verifyIfOperationExists(String desigOp, String desigUnidade, Integer qtd, Date dataOp, String nmFator) throws SQLException {
-        return operacaoRepository.verifyIfAplicationOperationExists(desigOp, desigUnidade, qtd, dataOp, nmFator);
-
-    }
-
 
 }

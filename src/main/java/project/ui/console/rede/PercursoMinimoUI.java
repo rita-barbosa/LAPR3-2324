@@ -1,13 +1,13 @@
 package project.ui.console.rede;
 
-//import static project.controller.PercursoMinimoController.getShortestPathForFurthestNodes;
+//import static project.controller.rede.PercursoMinimoController.getShortestPathForFurthestNodes;
 
-import project.controller.PercursoMinimoController;
+import project.controller.rede.PercursoMinimoController;
 import project.structure.EstruturaDeEntregaDeDados;
 
 import java.util.Scanner;
 
-import static project.controller.PercursoMinimoController.analyzeData;
+import static project.controller.rede.PercursoMinimoController.analyzeData;
 
 
 public class PercursoMinimoUI implements Runnable {

@@ -1,4 +1,4 @@
-package project.controller;
+package project.controller.sistema_rega;
 import project.domain.SistemaDeRega;
 import java.time.LocalDate;
 import java.time.LocalTime;

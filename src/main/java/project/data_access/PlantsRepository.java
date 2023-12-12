@@ -1,4 +1,4 @@
-package project.dataAccess;
+package project.data_access;
 
 import oracle.jdbc.OracleTypes;
 import project.ui.console.utils.Utils;
@@ -10,15 +10,16 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
-public class ProductsRepository {
-    public List<String> getProductsByField(String variedade, String nomeComum) throws SQLException {
+public class PlantsRepository {
+
+    public List<String> getPermanencyType(String variedade, String nomeComum) throws SQLException {
         CallableStatement callStmt = null;
         ResultSet resultSet = null;
         List<String> list;
 
         try {
             Connection connection = DatabaseConnection.getInstance().getConnection();
-            callStmt = connection.prepareCall("{ ? = call obterIntroProdutos(?,?) }");
+            callStmt = connection.prepareCall("{ ? = call obterTipoPermanencia(?,?) }");
 
             callStmt.registerOutParameter(1, OracleTypes.CURSOR);
 
@@ -28,7 +29,7 @@ public class ProductsRepository {
             callStmt.execute();
             resultSet = (ResultSet) callStmt.getObject(1);
 
-            list = Utils.resultSetTypeToList(resultSet, "nomeProduto");
+            list = Utils.resultSetTypeToList(resultSet, "designacaoTipoPermanencia");
         } finally {
             if (!Objects.isNull(callStmt)) {
                 callStmt.close();

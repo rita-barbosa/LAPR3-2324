@@ -1,6 +1,7 @@
 package project.ui.console.menu;
 
 import project.ui.console.*;
+import project.ui.console.sistema_rega.ControladorRegaUI;
 import project.ui.console.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;

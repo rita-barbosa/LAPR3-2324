@@ -1,4 +1,4 @@
-package project.dataAccess;
+package project.data_access;
 
 import oracle.jdbc.OracleTypes;
 import project.ui.console.utils.Utils;
@@ -7,25 +7,24 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
-public class UnitsRepository {
-    public List<String> getUnitDesignations() throws SQLException {
+public class FieldsRepository {
+    public List<String> getFieldsNames() throws SQLException {
         CallableStatement callStmt = null;
         ResultSet resultSet = null;
-        List<String> unidades;
+        List<String> list;
 
         try {
             Connection connection = DatabaseConnection.getInstance().getConnection();
-            callStmt = connection.prepareCall("{ ? = call obterListaUnidade() }");
+            callStmt = connection.prepareCall("{ ? = call obterIntroParcelas() }");
 
             callStmt.registerOutParameter(1, OracleTypes.CURSOR);
 
             callStmt.execute();
             resultSet = (ResultSet) callStmt.getObject(1);
 
-            unidades = Utils.resultSetTypeToList(resultSet, "designacaoUnidade");
+            list = Utils.resultSetTypeToList(resultSet, "nomeParcela");
         } finally {
             if (!Objects.isNull(callStmt)) {
                 callStmt.close();
@@ -34,8 +33,7 @@ public class UnitsRepository {
                 resultSet.close();
             }
         }
-        return unidades;
+        return list;
     }
-
 
 }

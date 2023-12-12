@@ -1,6 +1,6 @@
 package project.controller;
 
-import project.dataAccess.DatabaseConnection;
+import project.data_access.DatabaseConnection;
 
 import java.sql.SQLException;
 

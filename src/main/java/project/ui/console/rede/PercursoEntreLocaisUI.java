@@ -30,11 +30,39 @@ public class PercursoEntreLocaisUI implements Runnable {
      */
     @Override
     public void run() {
+        ArrayList<LinkedList<Local>> newPaths = new ArrayList<>();
+        ArrayList<ArrayList<Integer>> newDists = new ArrayList<>();
+
         autonomia = Utils.readIntegerFromConsole("Indique a autonomia do veículo:");
         veloMedia = Utils.readDoubleFromConsole("Indique a velocidade média de deslocamente:");
         localOrigem = Utils.readLineFromConsole("Indique o local de origem do percurso:");
         hub = Utils.readLineFromConsole("Indique o hub que pretende alcançar:");
 
-        ArrayList<LinkedList<Local>> a  = controller.getPathsBetweenLocations(localOrigem,hub,veloMedia,autonomia);
+        ArrayList<LinkedList<Local>> paths = controller.getPathsBetweenLocations(localOrigem, hub);
+        ArrayList<ArrayList<Integer>> distances = controller.getDistancesOfPaths(paths);
+        controller.filterPaths(paths, distances, autonomia, newPaths, newDists);
+        ArrayList<Double> time = controller.getTotalTime(newDists, veloMedia);
+        printResults(newPaths, newDists, time);
+    }
+
+    private void printResults(ArrayList<LinkedList<Local>> paths, ArrayList<ArrayList<Integer>> distances, ArrayList<Double> time) {
+        for (int i = 0; i < paths.size(); i++) {
+            System.out.println("PERCURSO " + (i + 1));
+            System.out.println("=================================");
+            printPath(paths.get(i), distances.get(i), time.get(i));
+        }
+    }
+
+    private void printPath(LinkedList<Local> locals, ArrayList<Integer> integers, Double aDouble) {
+        System.out.println("DISTÂNCIA TOTAL: " + integers.get(0));
+        System.out.println("TEMPO TOTAL: " + aDouble);
+        System.out.printf("|%30s  <>  %-30s|%-20s|\n", "DE", "PARA", "DISTÂNCIA (m)");
+        if (locals.size() > 1) {
+            for (int i = 0; i < locals.size() - 1; i++) {
+                                String format2 = "|%30s  <>  %-30s|%-20d|\n";
+                System.out.printf(format2, locals.get(i), locals.get(i + 1), integers.get(i + 1));
+            }
+        }
+        System.out.println("\n");
     }
 }

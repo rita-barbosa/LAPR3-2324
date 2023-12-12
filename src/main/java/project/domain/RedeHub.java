@@ -173,41 +173,60 @@ public class RedeHub {
         return index;
     }
 
-    public ArrayList<LinkedList<Local>> getPathsBetweenLocations(Local org, Local hub, int autonomia) {
+    public ArrayList<LinkedList<Local>> getPathsBetweenLocations(Local org, Local hub) {
         return Algorithms.allPaths(redeDistribuicao, org, hub);
     }
 
-    public Integer calculateDistances(ArrayList<Integer> dists, ArrayList<LinkedList<Local>> paths) {
+    public ArrayList<ArrayList<Integer>> calculateDistances(ArrayList<LinkedList<Local>> paths) {
+        ArrayList<ArrayList<Integer>> distanciasPercurso = new ArrayList<>();
         int defaultValue = -1;
         int distTotal = 0;
         int d;
-        ArrayList<Integer> distanciasPercurso = new ArrayList<>();
+        int pathsSize = paths.size();
 
+        for (int j = 0; j < pathsSize; j++) {
+            LinkedList<Local> list = paths.get(j);
+            int listSize = list.size();
 
-        /// COLOCAR ARRAYLIST<ARRAYLISTS> (+-) QUE GUARDA AS LISTAS DAS DISTANCIAS PARA CADA PERCURSO ONDE NA POSIÇÃO 0 HÁ SEMPRE A DISTANCIA TOTAL
+            ArrayList<Integer> a = new ArrayList<>();
 
-
-        for (LinkedList<Local> list : paths) {
-            for (int i = 0; i < list.size(); i++) {
+            for (int i = 0; i < listSize - 1; i++) {
                 Edge<Local, Integer> e = redeDistribuicao.edge(list.get(i), list.get(i + 1));
                 if (e != null) {
                     d = e.getWeight();
                     distTotal += d;
-                    distanciasPercurso.add(d);
+                    a.add(d);
                 } else {
-                    distanciasPercurso.add(defaultValue);
+                    a.add(defaultValue);
                 }
             }
 
+            a.add(0, distTotal);
+            distTotal = 0;
+            distanciasPercurso.add(a);
         }
-        return distTotal;
+
+        return distanciasPercurso;
     }
 
-    public Double calculateTotalTime(Integer distTotal, double veloMedia) {
-        return (distTotal / veloMedia);
+    public ArrayList<Double> calculateTotalTime(ArrayList<ArrayList<Integer>> dists, double veloMedia) {
+        ArrayList<Double> velocity = new ArrayList<>();
+
+        for (ArrayList<Integer> d : dists) {
+            double velo = d.get(0) / veloMedia;
+            velocity.add(velo);
+        }
+
+        return velocity;
     }
 
-    public void filterPaths(ArrayList<LinkedList<Local>> paths, ArrayList<Integer>  d) {
-
+    public void filterPaths(ArrayList<LinkedList<Local>> paths, ArrayList<ArrayList<Integer>> dists, int autonomia,
+                            ArrayList<LinkedList<Local>> newPaths, ArrayList<ArrayList<Integer>> newDists) {
+        for (int i = 0; i < paths.size(); i++) {
+            if (dists.get(i).get(0) < autonomia) {
+                newPaths.add(paths.get(i));
+                newDists.add(dists.get(i));
+            }
+        }
     }
 }

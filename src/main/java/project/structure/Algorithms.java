@@ -8,7 +8,7 @@ public class Algorithms {
     /**
      * Performs breadth-first search of a Graph starting in a vertex
      *
-     * @param g Graph instance
+     * @param g    Graph instance
      * @param vert vertex that will be the source of the search
      * @return a LinkedList with the vertices of breadth-first search
      */
@@ -17,12 +17,13 @@ public class Algorithms {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    /** Performs depth-first search starting in a vertex
+    /**
+     * Performs depth-first search starting in a vertex
      *
-     * @param g Graph instance
-     * @param vOrig vertex of graph g that will be the source of the search
+     * @param g       Graph instance
+     * @param vOrig   vertex of graph g that will be the source of the search
      * @param visited set of previously visited vertices
-     * @param qdfs return LinkedList with vertices of depth-first search
+     * @param qdfs    return LinkedList with vertices of depth-first search
      */
     private static <V, E> void DepthFirstSearch(Graph<V, E> g, V vOrig, boolean[] visited, LinkedList<V> qdfs) {
 
@@ -37,11 +38,11 @@ public class Algorithms {
         }
     }
 
-    /** Performs depth-first search starting in a vertex
+    /**
+     * Performs depth-first search starting in a vertex
      *
-     * @param g Graph instance
+     * @param g    Graph instance
      * @param vert vertex of graph g that will be the source of the search
-
      * @return a LinkedList with the vertices of depth-first search
      */
     public static <V, E> LinkedList<V> DepthFirstSearch(Graph<V, E> g, V vert) {
@@ -59,7 +60,8 @@ public class Algorithms {
         return result;
     }
 
-    /** Returns all paths from vOrig to vDest
+    /**
+     * Returns all paths from vOrig to vDest
      *
      * @param g       Graph instance
      * @param vOrig   Vertex that will be the source of the path
@@ -68,13 +70,43 @@ public class Algorithms {
      * @param path    stack with vertices of the current path (the path is in reverse order)
      * @param paths   ArrayList with all the paths (in correct order)
      */
-    private static <V, E> void allPaths(Graph<V, E> g, V vOrig, V vDest, boolean[] visited,
-                                        LinkedList<V> path, ArrayList<LinkedList<V>> paths) {
+    public static <V, E> void allPaths(Graph<V, E> g, V vOrig, V vDest, boolean[] visited,
+                                       LinkedList<V> path, ArrayList<LinkedList<V>> paths) {
 
-        throw new UnsupportedOperationException("Not supported yet.");
+        visited[g.key(vOrig)] = true;
+        path.push(vOrig);
+        for (V vAdj : g.adjVertices(vOrig)) {
+            if (vAdj.equals(vDest)) {
+                path.push(vDest);
+                paths.add(revPath(path));
+                path.pop();
+            } else {
+                if (!visited[g.key(vAdj)]) {
+                    allPaths(g, vAdj, vDest, visited, path, paths);
+                }
+            }
+        }
+        V vertex = path.pop();
+        visited[g.key(vertex)] = false;
     }
 
-    /** Returns all paths from vOrig to vDest
+    /**
+     * Reverses the path
+     *
+     * @param path stack with path
+     */
+    public static <V> LinkedList<V> revPath(List<V> path) {
+        LinkedList<V> pathcopy = new LinkedList<>(path);
+        LinkedList<V> pathrev = new LinkedList<>();
+
+        while (!pathcopy.isEmpty()) {
+            pathrev.push(pathcopy.pop());
+        }
+        return pathrev;
+    }
+
+    /**
+     * Returns all paths from vOrig to vDest
      *
      * @param g     Graph instance
      * @param vOrig information of the Vertex origin
@@ -82,8 +114,14 @@ public class Algorithms {
      * @return paths ArrayList with all paths from vOrig to vDest
      */
     public static <V, E> ArrayList<LinkedList<V>> allPaths(Graph<V, E> g, V vOrig, V vDest) {
+        ArrayList<LinkedList<V>> paths = new ArrayList<>();
+        LinkedList<V> path = new LinkedList<>();
+        boolean[] visited = new boolean[g.numVertices()];
 
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (g.validVertex(vOrig) && g.validVertex(vDest)) {
+            allPaths(g, vOrig, vDest, visited, path, paths);
+        }
+        return paths;
     }
 
     /**
@@ -132,36 +170,37 @@ public class Algorithms {
     }
 
 
-    /** Shortest-path between two vertices
+    /**
+     * Shortest-path between two vertices
      *
-     * @param g graph
-     * @param vOrig origin vertex
-     * @param vDest destination vertex
-     * @param ce comparator between elements of type E
-     * @param sum sum two elements of type E
-     * @param zero neutral element of the sum in elements of type E
+     * @param g         graph
+     * @param vOrig     origin vertex
+     * @param vDest     destination vertex
+     * @param ce        comparator between elements of type E
+     * @param sum       sum two elements of type E
+     * @param zero      neutral element of the sum in elements of type E
      * @param shortPath returns the vertices which make the shortest path
      * @return if vertices exist in the graph and are connected, true, false otherwise
      */
     public static <V, E> E shortestPath(Graph<V, E> g, V vOrig, V vDest,
                                         Comparator<E> ce, BinaryOperator<E> sum, E zero,
                                         LinkedList<V> shortPath) {
-        if(!g.validVertex(vOrig) || !g.validVertex(vDest)){
+        if (!g.validVertex(vOrig) || !g.validVertex(vDest)) {
             return null;
         }
 
         shortPath.clear();
         int numVerts = g.numVertices();
         boolean[] visited = new boolean[numVerts];
-        V[] pathKeys = (V[]) new Object [numVerts];
-        E[] dist = (E[]) new Object [numVerts];
+        V[] pathKeys = (V[]) new Object[numVerts];
+        E[] dist = (E[]) new Object[numVerts];
         initializePathDist(numVerts, pathKeys, dist);
 
         shortestPathDijkstra(g, vOrig, ce, sum, zero, visited, pathKeys, dist);
 
         E lengthPath = dist[g.key(vDest)];
 
-        if(lengthPath != null){
+        if (lengthPath != null) {
             getPath(g, vOrig, vDest, pathKeys, shortPath);
             return lengthPath;
         }
@@ -169,9 +208,9 @@ public class Algorithms {
         return null;
     }
 
-    public static <V, E> void initializePathDist(int numVerts, V[] pathKeys, E[] dist){
+    public static <V, E> void initializePathDist(int numVerts, V[] pathKeys, E[] dist) {
         for (int i = 0; i < numVerts; i++) {
-            pathKeys[i]=null;
+            pathKeys[i] = null;
             dist[i] = null;
         }
     }

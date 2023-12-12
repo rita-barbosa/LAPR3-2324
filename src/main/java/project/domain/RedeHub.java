@@ -1,6 +1,7 @@
 package project.domain;
 
 import project.structure.Algorithms;
+import project.structure.Edge;
 import project.structure.EstruturaDeEntregaDeDados;
 import project.structure.MapGraph;
 
@@ -80,7 +81,7 @@ public class RedeHub {
         return centrality;
     }
 
-    public Map<Local, List<Integer>> getTopNMap(Map<Local, List<Integer>> map, Integer n){
+    public Map<Local, List<Integer>> getTopNMap(Map<Local, List<Integer>> map, Integer n) {
         List<Map.Entry<Local, List<Integer>>> entries = new ArrayList<>(map.entrySet());
         entries.sort((entry1, entry2) -> {
             List<Integer> values1 = entry1.getValue();
@@ -107,7 +108,7 @@ public class RedeHub {
         return getTopNHubs(sortedFinalMap, n);
     }
 
-    public Map<Local, List<Integer>> getTopNHubs(Map<Local,List<Integer>> map, Integer n){
+    public Map<Local, List<Integer>> getTopNHubs(Map<Local, List<Integer>> map, Integer n) {
         Map<Local, List<Integer>> topNHubsMap = new LinkedHashMap<>();
 
         int count = 0;
@@ -123,26 +124,26 @@ public class RedeHub {
         return topNHubsMap;
     }
 
-    public static EstruturaDeEntregaDeDados analyzeData(int autonomia){
+    public static EstruturaDeEntregaDeDados analyzeData(int autonomia) {
         ArrayList<Integer> indexDeCarregamentos = new ArrayList<>();
         LinkedList<Local> percurso = getShortestPathForFurthestNodes();
-        int distanciaPercorrida = 0, bateria=autonomia;
+        int distanciaPercorrida = 0, bateria = autonomia;
         boolean flag = true;
-        for (int i = 0; i < percurso.size()-1; i++) {
-            int distanciaEntrePontos = instance.getRedeDistribuicao().edge(percurso.get(i),percurso.get(i+1)).getWeight();
+        for (int i = 0; i < percurso.size() - 1; i++) {
+            int distanciaEntrePontos = instance.getRedeDistribuicao().edge(percurso.get(i), percurso.get(i + 1)).getWeight();
             distanciaPercorrida += distanciaEntrePontos;
-            if(distanciaEntrePontos > bateria){
-                if (distanciaEntrePontos <= autonomia){
+            if (distanciaEntrePontos > bateria) {
+                if (distanciaEntrePontos <= autonomia) {
                     indexDeCarregamentos.add(i);
                     bateria = autonomia;
-                }else{
+                } else {
                     flag = false;
                 }
-            }else{
+            } else {
                 bateria -= distanciaEntrePontos;
             }
         }
-        return new EstruturaDeEntregaDeDados(distanciaPercorrida,percurso,indexDeCarregamentos,flag);
+        return new EstruturaDeEntregaDeDados(distanciaPercorrida, percurso, indexDeCarregamentos, flag);
     }
 
     public static LinkedList<Local> getShortestPathForFurthestNodes() {
@@ -152,8 +153,8 @@ public class RedeHub {
             ArrayList<LinkedList<Local>> path = new ArrayList<>();
             ArrayList<Integer> dist = new ArrayList<>();
 
-            shortestPaths(instance.getRedeDistribuicao(),local,Comparator.naturalOrder(), Integer::sum, 0,path,dist);
-            if(dist.get(getBiggestDist(dist)) > maxDist){
+            shortestPaths(instance.getRedeDistribuicao(), local, Comparator.naturalOrder(), Integer::sum, 0, path, dist);
+            if (dist.get(getBiggestDist(dist)) > maxDist) {
                 maxDist = dist.get(getBiggestDist(dist));
                 tempPath = path.get(getBiggestDist(dist));
             }
@@ -161,15 +162,52 @@ public class RedeHub {
         return tempPath;
     }
 
-    public static int getBiggestDist(ArrayList<Integer> dist){
-        int temp = 0, index=0;
+    public static int getBiggestDist(ArrayList<Integer> dist) {
+        int temp = 0, index = 0;
         for (int i = 0; i < dist.size(); i++) {
-            if (dist.get(i) != null && temp < dist.get(i)){
+            if (dist.get(i) != null && temp < dist.get(i)) {
                 temp = dist.get(i);
-                index=i;
+                index = i;
             }
         }
         return index;
     }
 
+    public ArrayList<LinkedList<Local>> getPathsBetweenLocations(Local org, Local hub, int autonomia) {
+        return Algorithms.allPaths(redeDistribuicao, org, hub);
+    }
+
+    public Integer calculateDistances(ArrayList<Integer> dists, ArrayList<LinkedList<Local>> paths) {
+        int defaultValue = -1;
+        int distTotal = 0;
+        int d;
+        ArrayList<Integer> distanciasPercurso = new ArrayList<>();
+
+
+        /// COLOCAR ARRAYLIST<ARRAYLISTS> (+-) QUE GUARDA AS LISTAS DAS DISTANCIAS PARA CADA PERCURSO ONDE NA POSIÇÃO 0 HÁ SEMPRE A DISTANCIA TOTAL
+
+
+        for (LinkedList<Local> list : paths) {
+            for (int i = 0; i < list.size(); i++) {
+                Edge<Local, Integer> e = redeDistribuicao.edge(list.get(i), list.get(i + 1));
+                if (e != null) {
+                    d = e.getWeight();
+                    distTotal += d;
+                    distanciasPercurso.add(d);
+                } else {
+                    distanciasPercurso.add(defaultValue);
+                }
+            }
+
+        }
+        return distTotal;
+    }
+
+    public Double calculateTotalTime(Integer distTotal, double veloMedia) {
+        return (distTotal / veloMedia);
+    }
+
+    public void filterPaths(ArrayList<LinkedList<Local>> paths, ArrayList<Integer>  d) {
+
+    }
 }

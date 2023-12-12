@@ -1,7 +1,7 @@
 package project.ui.console.utils;
 
 import oracle.jdbc.OracleTypes;
-import project.dataAccess.DatabaseConnection;
+import project.data_access.DatabaseConnection;
 import project.exception.ExcecaoData;
 
 import java.io.BufferedReader;

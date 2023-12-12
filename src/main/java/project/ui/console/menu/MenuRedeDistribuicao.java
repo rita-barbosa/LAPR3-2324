@@ -19,6 +19,7 @@ public class MenuRedeDistribuicao implements Runnable {
     public void run() {
         List<MenuItem> options = new ArrayList<>();
         options.add(new MenuItem("Importar ficheiros dos dados.", new ImportarFicheiroUI("Rede Distruição")));
+        options.add(new MenuItem("Importar ficheiro horário", new ImportarFicheiroUI("Novos Horários")));
         options.add(new MenuItem("Localização ideal de N hubs.", new LocalizacaoIdealHubsUI()));
         options.add(new MenuItem("Percurso mínimo possível.", new PercursoMinimoUI()));
         options.add(new MenuItem("Rede de ligação mínima.", new RedeLigacaoMinimaUI()));

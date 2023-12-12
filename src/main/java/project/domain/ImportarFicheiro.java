@@ -139,4 +139,23 @@ public class ImportarFicheiro {
             redeHub.addHub(line[0], Double.parseDouble(line[1]), Double.parseDouble(line[2]));
         }
     }
+
+    public static Map<String, Horario> importarFicheiroHorarios(String ficheiro) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(ficheiro));
+        String linha;
+        Map<String, Horario> novosHorarios = new LinkedHashMap<>();
+        while ((linha = br.readLine()) != null) {
+            String[] partes = linha.split(",");
+            if (partes.length == 3) {
+                String hubId = partes[0].trim();
+                LocalTime horaAbertura = LocalTime.parse(partes[1].trim());
+                LocalTime horaFecho = LocalTime.parse(partes[2].trim());
+                Horario novoHorario = new Horario(horaAbertura, horaFecho);
+                novosHorarios.put(hubId, novoHorario);
+            } else {
+                System.out.println("Erro na linha: " + linha + ". Formato incorreto.");
+            }
+        }
+        return novosHorarios;
+    }
 }

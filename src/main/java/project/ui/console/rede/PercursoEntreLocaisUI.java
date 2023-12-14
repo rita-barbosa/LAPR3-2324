@@ -33,8 +33,9 @@ public class PercursoEntreLocaisUI implements Runnable {
         ArrayList<LinkedList<Local>> newPaths = new ArrayList<>();
         ArrayList<ArrayList<Integer>> newDists = new ArrayList<>();
 
-        autonomia = Utils.readIntegerFromConsole("Indique a autonomia do veículo:");
-        veloMedia = Utils.readDoubleFromConsole("Indique a velocidade média de deslocamente:");
+        autonomia = Utils.readIntegerFromConsole("Indique a autonomia do veículo (km):");
+        autonomia *= 1000;
+        veloMedia = Utils.readDoubleFromConsole("Indique a velocidade média de deslocamente (m/s):");
         localOrigem = Utils.readLineFromConsole("Indique o local de origem do percurso:");
         hub = Utils.readLineFromConsole("Indique o hub que pretende alcançar:");
 
@@ -54,12 +55,12 @@ public class PercursoEntreLocaisUI implements Runnable {
     }
 
     private void printPath(LinkedList<Local> locals, ArrayList<Integer> integers, Double aDouble) {
-        System.out.println("DISTÂNCIA TOTAL: " + integers.get(0));
-        System.out.println("TEMPO TOTAL: " + aDouble);
-        System.out.printf("|%30s  <>  %-30s|%-20s|\n", "DE", "PARA", "DISTÂNCIA (m)");
+        System.out.println("DISTÂNCIA TOTAL: " + integers.get(0) + " m");
+        System.out.println("TEMPO TOTAL: " + aDouble + " s");
+        System.out.printf("|%40s  <>  %-40s|%-20s|\n", "DE", "PARA", "DISTÂNCIA (m)");
         if (locals.size() > 1) {
             for (int i = 0; i < locals.size() - 1; i++) {
-                                String format2 = "|%30s  <>  %-30s|%-20d|\n";
+                String format2 = "|%40s  <>  %-40s|%-20d|\n";
                 System.out.printf(format2, locals.get(i), locals.get(i + 1), integers.get(i + 1));
             }
         }

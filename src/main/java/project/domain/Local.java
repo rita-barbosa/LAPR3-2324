@@ -81,6 +81,9 @@ public class Local {
 
     @Override
     public String toString() {
-        return "[" + numId + " - " + coordenadas.toString() + "]";
+        if(isHub){
+            return "[HUB - " + numId + "]";
+        }
+        return "[" + numId + "]";
     }
 }

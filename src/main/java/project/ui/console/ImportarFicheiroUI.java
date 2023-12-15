@@ -55,33 +55,35 @@ public class ImportarFicheiroUI implements Runnable {
                 try {
                     System.out.println("Insira o caminho para o ficheiro dos horários:");
                     String horariosFilePath = getfilepath();
-                    ExcecaoFicheiro.verificarFicheiro(horariosFilePath, ".csv");
-                    Map<String, Horario> novosHorarios = ImportarFicheiro.importarFicheiroHorarios(horariosFilePath);
+                    Map<String, Horario> novosHorarios = new LinkedHashMap<>();
+                   successfulImport = controller.importarFicheiroHorarios(horariosFilePath, novosHorarios);
+
                     RedeHub rede = RedeHub.getInstance();
                     MapGraph<Local, Integer> graph = rede.getRedeDistribuicao();
                     for (String hubId : novosHorarios.keySet()) {
                         boolean hubExiste = false;
                         for (Local vertex : graph.vertices()) {
-                            if (vertex.getNumId().equals(hubId)) {
+                            if (vertex.getNumId().equals(hubId) && vertex.isHub()) {
                                 Horario novoHorario = novosHorarios.get(hubId);
                                 vertex.setHorario(novoHorario);
                                 System.out.println("Horários redefinidos para o hub " + hubId);
+                                System.out.println("Novos Horários:" + vertex.getHorario() + "\n");
                                 hubExiste = true;
-                                break;
+//                                break;
                             }
                         }
                         if (!hubExiste) {
-                            System.out.println("Hub " + hubId + " não encontrado!");
+                            System.out.println("Hub " + hubId + " não encontrado!\n");
                         }
                     }
                     System.out.println();
-                    successfulImport = true;
+//                    successfulImport = true;
 
                     //Apenas para verificação se os horários mudaram ---> RETIRAR
-                    System.out.println("Novos horários dos hubs:");
-                    for (Local entry : graph.vertices) {
-                        System.out.println("Hub: " + entry.getNumId() + " - Horário: " + entry.getHorario() + " Hub: " + entry.isHub());
-                    }
+//                    System.out.println("Novos horários dos hubs:");
+//                    for (Local entry : graph.vertices) {
+//                        System.out.println("Hub: " + entry.getNumId() + " - Horário: " + entry.getHorario() + " Hub: " + entry.isHub());
+//                    }
                 } catch (Exception e) {
                     System.out.printf("%s\n\n", e.getMessage());
                 }

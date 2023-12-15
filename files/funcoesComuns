@@ -150,17 +150,21 @@ END;
 -------------------------------------------------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION obterTipoPermanencia(p_variedade IN CulturaInstalada.variedade%TYPE,
                                               p_nomeComum IN CulturaInstalada.nomeComum%TYPE)
-RETURN VARCHAR2
+RETURN SYS_REFCURSOR
     IS
-        v_designacao_tipo_permanencia VARCHAR2(15);
+        v_designacao_tipo_permanencia SYS_REFCURSOR;
+BEGIN
     BEGIN
-            SELECT DISTINCT p.designacaoTipoPermanencia INTO v_designacao_tipo_permanencia
+        OPEN v_designacao_tipo_permanencia FOR
+            SELECT DISTINCT p.designacaoTipoPermanencia
                 FROM Planta p
                 WHERE p.variedade = p_variedade
                   AND p.nomeComum = p_nomeComum;
-    RETURN v_designacao_tipo_permanencia;
+
     EXCEPTION
         WHEN no_data_found THEN
             RETURN NULL;
 END;
+ RETURN v_designacao_tipo_permanencia;
+ END;
 /

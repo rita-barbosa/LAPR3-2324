@@ -109,4 +109,25 @@ public class ExcecaoFicheiro extends Exception {
         }
 
     }
+
+    public static void verificarFicheiroHorarios(File ficheiro) throws ExcecaoFicheiro, ExcecaoHora {
+        try (BufferedReader br = new BufferedReader(new FileReader(ficheiro))) {
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                verificarLinhaHorarios(linha);
+                String[] partes = linha.split(",");
+                    for (int i = 1; i < 3; i++) {
+                        ExcecaoHora.verificarHora(partes[i].trim());
+                    }
+            }
+        } catch (IOException e) {
+            throw new ExcecaoFicheiro("ERRO: Problemas na verificação da estrutura do ficheiro.");
+        }
+    }
+
+    private static void verificarLinhaHorarios(String linha) throws ExcecaoFicheiro {
+        if (!linha.matches("^CT\\d+,[0-9]{2}:[0-9]{2},[0-9]{2}:[0-9]{2}$")) {
+            throw new ExcecaoFicheiro("ERRO: Conteúdo do ficheiro não corresponde ao esperado.\nAs linhas com os horários dos hubs devem ter o seguinte formato: CT[1-213],hh:mm,hh:mm.");
+        }
+    }
 }

@@ -2,12 +2,10 @@ package project.domain;
 
 import project.controller.rede.LocalizacaoIdealHubsController;
 import project.exception.ExcecaoFicheiro;
+import project.exception.ExcecaoHora;
 import project.structure.MapGraph;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -140,22 +138,24 @@ public class ImportarFicheiro {
         }
     }
 
-    public static Map<String, Horario> importarFicheiroHorarios(String ficheiro) throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader(ficheiro));
-        String linha;
-        Map<String, Horario> novosHorarios = new LinkedHashMap<>();
-        while ((linha = br.readLine()) != null) {
-            String[] partes = linha.split(",");
-            if (partes.length == 3) {
+    public static boolean importarFicheiroHorarios(String ficheiro, Map<String, Horario> novosHorarios) {
+        try {
+            ExcecaoFicheiro.verificarFicheiro(ficheiro, ".csv");
+            ExcecaoFicheiro.verificarFicheiroHorarios(new File(ficheiro));
+
+            BufferedReader br = new BufferedReader(new FileReader(ficheiro));
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] partes = linha.split(",");
                 String hubId = partes[0].trim();
                 LocalTime horaAbertura = LocalTime.parse(partes[1].trim());
                 LocalTime horaFecho = LocalTime.parse(partes[2].trim());
                 Horario novoHorario = new Horario(horaAbertura, horaFecho);
                 novosHorarios.put(hubId, novoHorario);
-            } else {
-                System.out.println("Erro na linha: " + linha + ". Formato incorreto.");
             }
+            return true;
+        } catch (ExcecaoFicheiro | ExcecaoHora |IOException e) {
+            return false;
         }
-        return novosHorarios;
     }
 }

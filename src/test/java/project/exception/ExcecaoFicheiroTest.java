@@ -42,4 +42,22 @@ public class ExcecaoFicheiroTest {
             throw new RuntimeException(e);
         }
     }
+
+    @Test (expected =  ExcecaoFicheiro.class)
+    public void verificarFicheiroHorariosLinhasErrado() throws ExcecaoFicheiro, ExcecaoHora {
+        String ficheiro = "src/test/java/project/testFiles/horariosErrados.csv";
+        ExcecaoFicheiro.verificarFicheiroHorarios(new File(ficheiro));
+    }
+
+    @Test (expected =  ExcecaoFicheiro.class)
+    public void verificarFicheiroHorariosHorarioErrado() throws ExcecaoFicheiro, ExcecaoHora {
+        String ficheiro = "src/test/java/project/testFiles/horariosErrados.csv";
+        ExcecaoFicheiro.verificarFicheiroHorarios(new File(ficheiro));
+    }
+
+    @Test
+    public void verificarFicheiroHorariosCorreto() throws ExcecaoFicheiro, ExcecaoHora {
+        String ficheiro = "files/horariosTESTE.csv";
+        ExcecaoFicheiro.verificarFicheiroHorarios(new File(ficheiro));
+    }
 }

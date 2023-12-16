@@ -84,24 +84,78 @@ END;
 /
 -------------------------------------------------------------------------------------------------------------------
 
-create or replace FUNCTION obterDataInicial(
-        p_idParcela IN NUMBER,
-        p_idCultura IN NUMBER
-    ) RETURN DATE
-    IS
-        v_dataInicial DATE;
+create or replace FUNCTION registarOperacaoRega(
+    desigOp IN tipoOperacaoAgricola.designacaoOperacaoAgricola%TYPE,
+    desigUnidade IN tipoUnidade.designacaoUnidade%TYPE,
+    qtd IN NUMBER,
+    dataOp IN DATE,
+    idSetor IN setor.idsetor%TYPE
+) RETURN NUMBER IS
+    success          NUMBER := 0;
+    idOp             NUMBER;
+    plantaInfoCursor SYS_REFCURSOR;
+    dataInicio       DATE;
+    nomeParcela      varchar2(50);
+    nomeComum        varchar2(50);
+    variedade        varchar2(50);
+    semCulturas      EXCEPTION;
+BEGIN
     BEGIN
-        SELECT dataInicial
-        INTO v_dataInicial
-        FROM CulturaInstalada
-        WHERE idParcela = p_idParcela
-        AND idCultura = p_idCultura;
 
-        RETURN v_dataInicial;
+        plantaInfoCursor := obterInfoPlantaSetor(idSetor);
+
+        FETCH plantaInfoCursor INTO nomeParcela, nomeComum, variedade, dataInicio;
+
+        IF plantaInfoCursor%ROWCOUNT != 0 THEN
+
+            LOOP
+                idOp := novoIdOperacao();
+
+                INSERT INTO operacao(IDOPERACAO, DESIGNACAOOPERACAOAGRICOLA, DESIGNACAOUNIDADE, QUANTIDADE,
+                                     DATAOPERACAO)
+                VALUES (idOp, desigOp, desigUnidade, qtd, dataOp);
+
+                INSERT INTO OperacaoCultura (IDOPERACAO, NOMEPARCELA, DATAINICIAL, NOMECOMUM, VARIEDADE)
+                VALUES (idOp, nomeParcela, dataInicio, nomeComum, variedade);
+
+                INSERT INTO rega(idOperacao, designacaoSetor)
+                VALUES (idOp, idSetor);
+
+                FETCH plantaInfoCursor INTO nomeParcela, nomeComum, variedade, dataInicio;
+
+                EXIT WHEN plantaInfoCursor%NOTFOUND;
+
+            END LOOP;
+
+            success := 1;
+
+        ELSE
+            RAISE semCulturas;
+        END IF;
+
     EXCEPTION
-        WHEN NO_DATA_FOUND THEN
-            RETURN NULL;
+        WHEN semCulturas THEN
+            success := 0;
+            RAISE_APPLICATION_ERROR(-20001, 'Não existem culturas instaladas definidas para o setor escolhido.');
+            ROLLBACK;
     END;
+
+    RETURN success;
+END;
+/
+
+--------------------------------------------------------------------------
+create or replace FUNCTION obterInfoPlantaSetor(
+    idSetor IN setor.idsetor%TYPE
+) RETURN SYS_REFCURSOR IS
+    infoPlanta SYS_REFCURSOR;
+BEGIN
+    OPEN infoPlanta FOR
+        SELECT NOMEPARCELA, NOMECOMUM, VARIEDADE, DATAINICIALCULTURAINSTALADA
+        FROM SETORCULTURAINSTALADA
+        WHERE DESIGNACAO = idSetor;
+    RETURN infoPlanta;
+END;
 /
 
 -------------------------------------------------------------------------------------------------------------------

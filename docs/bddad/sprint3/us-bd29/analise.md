@@ -16,24 +16,42 @@
 * **Remoção de ID's**
 > Verificamos que em tabelas como Parcela e Edificio, a existência de atributos únicos, tal como nomeParcela e nomeEdificio, respetivamente.
 >
-> Assim, optamos pela remoção das primary keys existentes em cada tabela (idParcela e idEdificio), passando aqueles atributos a ser as PK. 
+> Assim, optamos pela remoção das primary keys existentes em cada tabela (idParcela e idEdificio), recorrendo a chaves primarias naturais. 
 
 * **CalendarioFenologico**
 > Na tabela CalendarioFenologico existiam os atributos: sementeira, poda, colheita e floracao. Estes eram representados pelos intervalos de tempo em que aconteciam.
 > 
 > Optamos por remover esses atributos e criar novas tabelas, sendo elas TipoFenologia, DataFenologia e DataFenologiaCalendarioFenologico.
 
-* **Verificações de atributos**
-> Criação de checks para datas (a dataFinal não pode ser primeiro que a dataInicial) na tabela CulturaInstalada e para as percentagens na tabela ConstituicaoQuimica.
+* **Verificações de atributos e exceções**
+> Costumização das exceções relativamente às condicionantes dos vários atributos das tabelas da base de dados.
  
 * **Verificações para casas decimais**
-> Colocação de casas decimais em alguns atributos, como, por exemplo, ph em FatorProducao e quantidade em Operacao, CulturaInstalada e ConstituicaoQuimica e area em Parcela.
+> Colocação de casas decimais em alguns atributos, como, por exemplo, ph em FatorProducao, area em Parcela, e quantidade em Operacao, CulturaInstalada e ConstituicaoQuimica.
 
 * **Criação de novas tabelas**
 > Foram criadas as tabelas Setor, SetorCulturaInstalada, Colheita e Rega.
 
 * **Remoção de Tabelas**
-> Optamos pela remoção da tabela FichaTecnica e Cultura, visto não terem informações relevantes.
+> Optamos pela remoção da tabela SetorCulturaInstalada, visto não ter informação relevante.
+
+* **Inclusão de Estados**
+> Inclusão dos estados fenológicos que uma colheita pode ter.
+> Inclusão dos estados que uma operacao pode ter.
+
+* **Desdobramento de Planta**
+> Tendo em conta a dependência da permanência da planta apenas com o nome comum desta, criou-se uma nova tabela para representar esta relação.
+
+* **Inclusão da Fertirrega**
+> Conjugação de uma operação de rega com uma ou mais aplicações de fatores de produção.
+> Adição do Catálogo das misturas de fertirrega.
+
+* **Alterações em Colheita**
+> Numa operação de colheita podem-se obter vários produtos. Posto isto, a tabela colheita foi substituida por ProdutosColhidos.
+
+* **Log**
+> Criou-se uma tabela Log, que regista as operacoes e as suas alterações.
+
 
 #### Modelo Relacional Físico
 

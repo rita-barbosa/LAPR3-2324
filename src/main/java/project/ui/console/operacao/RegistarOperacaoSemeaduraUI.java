@@ -40,8 +40,8 @@ public class RegistarOperacaoSemeaduraUI implements Runnable {
 
             List<String> cultures = controller.getCultures();
             index = Utils.showAndSelectIndex(cultures, "Selecione a cultura:");
-            String cultura = cultures.get(index);
             verificarIndex(index);
+            String cultura = cultures.get(index);
             processCultureChoice(cultura);
 
             if (permanencia.equals("Permanente")) {
@@ -73,6 +73,8 @@ public class RegistarOperacaoSemeaduraUI implements Runnable {
             }
         } catch (SQLException e) {
             System.out.println("\nFalha em registar a operação de semeadura.\n" + e.getMessage().split("\n")[0].substring(11) + "\n");
+        } catch (RuntimeException e){
+            System.out.println(e.getMessage());
         }
     }
 

@@ -1,4 +1,4 @@
-#include "function.h"
+#include "functions.h"
 #include <string.h>
 #include <stdio.h>
 #include <sys/stat.h>
@@ -6,8 +6,6 @@
 #include <errno.h>
 #include <stdlib.h>
 
-//#DEFINE NUM 10
-//int v[NUM]
 
 void alocateProcessadorDeDados(char c[]){	
 	DIR* dir = opendir(c);
@@ -38,25 +36,16 @@ BufferCircular *allocBufferCircular() {
         return NULL;
     }
 
-    buffer->array = (int *)malloc(NUM * sizeof(int));
-    buffer->read = (int *)malloc(sizeof(int));
-    buffer->write = (int *)malloc(sizeof(int));
+    buffer->array = (int *)calloc(NUM, sizeof(int));
+    buffer->read = BUFFER_VARIABLES;
+    buffer->write = BUFFER_VARIABLES;
     buffer->size = NUM;
 
-    if (buffer->array == NULL || buffer->read == NULL || buffer->write == NULL) {
+    if (buffer->array == NULL) {
         free(buffer->array);
-        free(buffer->read);
-        free(buffer->write);
         free(buffer);
         return NULL;
     }
-
-	//Inicializar os apontadores para o read e para o write
-	for (int i = 0; i < NUM; i++) {
-        buffer->array[i] = 0;
-    }
-    *(buffer->read) = 0;
-    *(buffer->write) = 0;
 
     return buffer;
 }
@@ -78,8 +67,6 @@ BufferCircular *reallocBufferCircular(BufferCircular *buffer, int newSize){
 void freeBufferCircular(BufferCircular *buffer) {
     if (buffer != NULL) {
         free(buffer->array);
-        free(buffer->read);
-        free(buffer->write);
         free(buffer);
     }
 }
@@ -88,15 +75,11 @@ void freeBufferCircular(BufferCircular *buffer) {
 //------------------------------ARRAY MEDIAS-----------------------------------
 
 int *allocArrayMedias(){
-	int *array = (int *) malloc(NUM * sizeof(int *));
+	int *array = (int *) calloc(NUM, sizeof(int *));
 	
 	if (array==NULL){
 		 return NULL;
 	 }
-	 
-	 for (int i = 0; i < NUM; i++) {
-        array[i] = 0;
-    }
 	 
 	 return array;
 }
@@ -141,31 +124,19 @@ Sensor *allocSensor(int bufferSize, int arrayMediasSize) {
         free(sensor);
         return NULL;
     }
-    
-    sensor->instanteTemporal = 0;
-	sensor->timeOut = 0;
-	sensor->write_counter = 0;
-	sensor->sensor_id = 0;
-	strcpy(sensor->type, "");
-    strcpy(sensor->unit, ""); 
-
+	
     return sensor;
 }
 
-//NÃO ESTÁ PRESENTE UM MÉTODO ESPECÍFICO PARA FAZER O FREE DO SENSOR, PORQUE 
 
 //------------------------------VECTOR SENSORES-----------------------------------
 
 Sensor **allocVetorSensores(){
-	Sensor **vetorSensores = (Sensor **)malloc(VECTOR_SIZE * sizeof(Sensor *));
+	Sensor **vetorSensores = (Sensor **)calloc(VECTOR_SIZE, sizeof(Sensor *));
 	if (vetorSensores == NULL) {
 		exit(-1);
 	}
-	
-	 for (int i = 0; i < VECTOR_SIZE; ++i) {
-            vetorSensores[i] = NULL;
-        }
-	
+
 	return vetorSensores;
 }
 

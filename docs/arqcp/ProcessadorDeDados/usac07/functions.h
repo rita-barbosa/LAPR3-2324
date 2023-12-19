@@ -1,19 +1,20 @@
 #ifndef FUNCTION_H
 #define FUNCTION_H
 
-#define NUM 10 //usar para o buffer e para o array
+#define NUM 10 
 #define VECTOR_SIZE 20
 #define TYPE_SIZE 23
 #define UNIT_SIZE 10
+#define BUFFER_VARIABLES 0
 
-// Definição da estrutura para o Buffer Circular
+
 typedef struct {
     int *array;     
-    int *read;      
-    int *write;      
+    int read;      
+    int write;      
     int size;      
 } BufferCircular;
-	//VAI TER TAMANHO 32 BYTES PORQUE K=8 (APONTADOR) (tem um GAP de 4 bytes no final)
+	//VAI TER TAMANHO 24 BYTES PORQUE K=8 (APONTADOR) (tem um GAP de 4 bytes no final)
 
 typedef struct {
 	BufferCircular *buffer;

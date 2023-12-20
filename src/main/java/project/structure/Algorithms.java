@@ -185,31 +185,36 @@ public class Algorithms {
                                                    Comparator<E> ce, BinaryOperator<E> sum, E zero,
                                                    boolean[] visited, V[] pathKeys, E[] dist) {
 
-        int vKey = g.key(vOrig);
-        dist[vKey] = zero;
-        pathKeys[vKey] = vOrig;
+        int vkey = g.key(vOrig);
+        dist[vkey] = zero;
+        pathKeys[vkey] = vOrig;
 
         while (vOrig != null) {
-            vKey = g.key(vOrig);
-            visited[vKey] = true;
+            vkey = g.key(vOrig);
+            visited[vkey] = true;
+
             for (Edge<V, E> edge : g.outgoingEdges(vOrig)) {
-                int keyVAdj = g.key(edge.getVDest());
-                if (!visited[keyVAdj]) {
-                    E s = sum.apply(dist[vKey], edge.getWeight());
-                    if (dist[keyVAdj] == null || (ce.compare(dist[keyVAdj], s) > 0 && ce.compare(autonomia, s) > 0)) {
-                        dist[keyVAdj] = s;
-                        pathKeys[keyVAdj] = vOrig;
+                int vkeyAdj = g.key(edge.getVDest());
+                if (!visited[vkeyAdj]) {
+                    E remainingAutonomy = sum.apply(autonomia, dist[vkey]);
+                    if (ce.compare(edge.getWeight(), remainingAutonomy) <= 0) {
+                        E s = sum.apply(dist[vkey], edge.getWeight());
+                        if (dist[vkeyAdj] == null || ce.compare(dist[vkeyAdj], s) > 0) {
+                            dist[vkeyAdj] = s;
+                            pathKeys[vkeyAdj] = vOrig;
+                        }
                     }
                 }
             }
 
             E minDist = null;
             vOrig = null;
-            for (V vertex : g.vertices()) {
-                int vertexKey = g.key(vertex);
-                if (!visited[vertexKey] && (dist[vertexKey] != null) && ((minDist == null) || ce.compare(dist[vertexKey], minDist) < 0)) {
-                    minDist = dist[vertexKey];
-                    vOrig = vertex;
+
+            for (V vert : g.vertices()) {
+                int i = g.key(vert);
+                if (!visited[i] && (dist[i] != null) && ((minDist == null) || ce.compare(dist[i], minDist) < 0)) {
+                    minDist = dist[i];
+                    vOrig = vert;
                 }
             }
         }

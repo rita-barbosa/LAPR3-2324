@@ -124,7 +124,7 @@ public class RedeHub {
 
         return topNHubsMap;
     }
-
+// ----------------------------------------------------US EI07--START--------------------------------------------------------------------------//
     public static EstruturaDeEntregaDeDados calculateBestDeliveryRoute(Local localInicio, LocalTime hora, int autonomia, double averageVelocity, int tempoRecarga, int tempoDescarga) {
         int hubsAindaAbertosNumero = 0;
         Local tempLocal = localInicio;
@@ -135,7 +135,7 @@ public class RedeHub {
 
         while (!hubsAindaAbertos.isEmpty()) {
             for (Local hub : hubsAindaAbertos) {
-                if(!hasBeenVisited(hub, locaisVisitados)){
+                if (!hasBeenVisited(hub, locaisVisitados)) {
                     Algorithms.shortestPathWithAutonomy(instance.getRedeDistribuicao(), autonomia, tempLocal, hub, Comparator.naturalOrder(), Integer::sum, 0, caminho);
                     tempHora = getFinishingTimeWithEverything(caminho, hora, autonomia, averageVelocity, tempoRecarga, tempoDescarga);
                     if (getStillOpenHubs(tempHora).size() > hubsAindaAbertosNumero) {
@@ -153,7 +153,7 @@ public class RedeHub {
                 melhorCaminho.removeLast();
                 melhorCaminho.addAll(tempCaminho);
             }
-            tempLocal = melhorCaminho.get(melhorCaminho.size()-1);
+            tempLocal = melhorCaminho.get(melhorCaminho.size() - 1);
             locaisVisitados.add(tempLocal);
             hora = getFinishingTimeWithEverything(melhorCaminho, hora, autonomia, averageVelocity, tempoRecarga, tempoDescarga);
             hubsAindaAbertos = getStillOpenHubs(hora);
@@ -164,9 +164,9 @@ public class RedeHub {
         return estruturaDeEntregaDeDados;
     }
 
-    public static boolean hasBeenVisited(Local hub, List<Local> locaisVisitados){
-        for (Local local:locaisVisitados) {
-            if(local == hub){
+    public static boolean hasBeenVisited(Local hub, List<Local> locaisVisitados) {
+        for (Local local : locaisVisitados) {
+            if (local == hub) {
                 return true;
             }
         }
@@ -176,21 +176,21 @@ public class RedeHub {
     public static LocalTime getFinishingTimeWithEverything(LinkedList<Local> caminho, LocalTime horaComeco, int autonomia, double averageVelocity, int tempoRecarga, int tempoDescarga) {
         LocalTime horaFim = horaComeco;
         EstruturaDeEntregaDeDados estruturaDeEntregaDeDados = analyzeData(autonomia, caminho);
-        horaFim=addTime(horaFim,getFinishingTimeRoute(estruturaDeEntregaDeDados,horaComeco,autonomia,averageVelocity,tempoRecarga,tempoDescarga));
+        horaFim = addTime(horaFim, getFinishingTimeRoute(estruturaDeEntregaDeDados, horaComeco, autonomia, averageVelocity, tempoRecarga, tempoDescarga));
         for (int i = 0; i < estruturaDeEntregaDeDados.getCarregamentos().size(); i++) {
-            double tempoDouble = (double)tempoRecarga/60;
+            double tempoDouble = (double) tempoRecarga / 60;
             LocalTime tempoPercurso = LocalTime.of((int) tempoDouble, (int) ((tempoDouble - (int) tempoDouble) * 60));
             horaFim = addTime(horaFim, tempoPercurso);
         }
 
-        double tempoDouble = (double)tempoDescarga/60;
+        double tempoDouble = (double) tempoDescarga / 60;
         LocalTime tempoPercurso = LocalTime.of((int) tempoDouble, (int) ((tempoDouble - (int) tempoDouble) * 60));
         horaFim = addTime(horaFim, tempoPercurso);
         return horaFim;
     }
 
     public static LocalTime getFinishingTimeRoute(EstruturaDeEntregaDeDados estruturaDeEntregaDeDados, LocalTime horaComeco, int autonomia, double averageVelocity, int tempoRecarga, int tempoDescarga) {
-        LocalTime horaFim = LocalTime.of(0,0);
+        LocalTime horaFim = LocalTime.of(0, 0);
         double tempoPercursoDouble = ((double) (estruturaDeEntregaDeDados.getDistanciaTotal()) / 1000) / averageVelocity;
         LocalTime tempoPercurso = LocalTime.of((int) tempoPercursoDouble, (int) ((tempoPercursoDouble - (int) tempoPercursoDouble) * 60));
         horaFim = addTime(horaFim, tempoPercurso);
@@ -201,21 +201,36 @@ public class RedeHub {
         Map<Local, List<LocalTime>> timeTable = new LinkedHashMap<>();
         for (int i = 1; i < estruturaDeEntregaDeDados.getPercurso().size(); i++) {
             LinkedList<Local> caminhoTemp = new LinkedList<>();
-            caminhoTemp.add(estruturaDeEntregaDeDados.getPercurso().get(i-1));
+            caminhoTemp.add(estruturaDeEntregaDeDados.getPercurso().get(i - 1));
             caminhoTemp.add(estruturaDeEntregaDeDados.getPercurso().get(i));
             LocalTime afterEverything = getFinishingTimeWithEverything(caminhoTemp, horaComeco, autonomia, averageVelocity, tempoRecarga, tempoDescarga);
-            List<LocalTime> listOfTimes = new ArrayList<>();
-            if (estruturaDeEntregaDeDados.getPercurso().get(i).isHub()) {
-                listOfTimes.add(afterEverything.minusMinutes(tempoDescarga));
-                listOfTimes.add(afterEverything);
-                timeTable.put(estruturaDeEntregaDeDados.getPercurso().get(i), listOfTimes);
-                horaComeco = afterEverything;
-            } else {
-                listOfTimes.add(afterEverything);
-                timeTable.put(estruturaDeEntregaDeDados.getPercurso().get(i), listOfTimes);
-                horaComeco = afterEverything.minusMinutes(tempoDescarga);
-            }
 
+                List<LocalTime> listOfTimes = new ArrayList<>();
+                if(estruturaDeEntregaDeDados.getCarregamentos().contains(i)) {
+                    if (estruturaDeEntregaDeDados.getPercurso().get(i).isHub()) {
+                        listOfTimes.add(afterEverything.minusMinutes(tempoDescarga));
+                        listOfTimes.add(afterEverything.plusMinutes(tempoRecarga));
+                        timeTable.put(estruturaDeEntregaDeDados.getPercurso().get(i), listOfTimes);
+                        horaComeco = afterEverything.plusMinutes(tempoRecarga);
+                    } else {
+                        listOfTimes.add(afterEverything);
+                        listOfTimes.add(afterEverything.plusMinutes(tempoRecarga));
+                        timeTable.put(estruturaDeEntregaDeDados.getPercurso().get(i), listOfTimes);
+                        horaComeco = afterEverything.plusMinutes(tempoRecarga);
+                    }
+                }else{
+                    if (estruturaDeEntregaDeDados.getPercurso().get(i).isHub()) {
+                        listOfTimes.add(afterEverything.minusMinutes(tempoDescarga));
+                        listOfTimes.add(afterEverything);
+                        timeTable.put(estruturaDeEntregaDeDados.getPercurso().get(i), listOfTimes);
+                        horaComeco = afterEverything;
+                    } else {
+                        listOfTimes.add(afterEverything);
+                        listOfTimes.add(afterEverything);
+                        timeTable.put(estruturaDeEntregaDeDados.getPercurso().get(i), listOfTimes);
+                        horaComeco = afterEverything;
+                    }
+                }
         }
         return timeTable;
     }
@@ -238,6 +253,7 @@ public class RedeHub {
         return result;
     }
 
+// ----------------------------------------------------US EI07--END--------------------------------------------------------------------------//
 
     public static EstruturaDeEntregaDeDados analyzeData(int autonomia, LinkedList<Local> caminho) {
         ArrayList<Integer> indexDeCarregamentos = new ArrayList<>();

@@ -79,11 +79,7 @@ public class MaiorPercursoHubsUI implements Runnable {
                 System.out.println(String.format("| %9s | %19s | %19s |", estruturaDeEntregaDeDados.getPercurso().get(0).getNumId(), "Local Inicial", hora));
                 for (Local local : estruturaDeEntregaDeDados.getTemposDeChegada().keySet()) {
                     if (!local.equals(estruturaDeEntregaDeDados.getPercurso().get(estruturaDeEntregaDeDados.getPercurso().size() - 1))) {
-                        if (local.isHub()) {
-                            System.out.println(String.format("| %9s | %19s | %19s |", local.getNumId(), estruturaDeEntregaDeDados.getTemposDeChegada().get(local).get(0), estruturaDeEntregaDeDados.getTemposDeChegada().get(local).get(1)));
-                        } else {
-                            System.out.println(String.format("| %9s | %19s |------Não-É-Hub------|", local.getNumId(), estruturaDeEntregaDeDados.getTemposDeChegada().get(local).get(0)));
-                        }
+                        System.out.println(String.format("| %9s | %19s | %19s |", local.getNumId(), estruturaDeEntregaDeDados.getTemposDeChegada().get(local).get(0), estruturaDeEntregaDeDados.getTemposDeChegada().get(local).get(1)));
                     } else {
                         System.out.println(String.format("| %9s | %19s |---Final-da-Viagem---|", local.getNumId(), estruturaDeEntregaDeDados.getTemposDeChegada().get(local).get(0)));
                     }

@@ -1,5 +1,7 @@
 package project.structure;
 
+import project.domain.Local;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -219,6 +221,19 @@ public class MapGraph<V, E> extends CommonGraph<V, E> {
             }
         }
         return true;
+    }
+
+    public ArrayList<V> getHubsVertexList() {
+        ArrayList<V> hubs = new ArrayList<>();
+        for (V vertex : vertices){
+            if (vertex.getClass().getSimpleName().equals("Local")){
+                Local place = (Local) vertex;
+                if (place.isHub()){
+                    hubs.add(vertex);
+                }
+            }
+        }
+        return hubs;
     }
 
     //Returns a clone of the graph

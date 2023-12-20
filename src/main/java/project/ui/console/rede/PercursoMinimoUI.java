@@ -3,8 +3,11 @@ package project.ui.console.rede;
 //import static project.controller.rede.PercursoMinimoController.getShortestPathForFurthestNodes;
 
 import project.controller.rede.PercursoMinimoController;
+import project.domain.Local;
+import project.domain.RedeHub;
 import project.structure.EstruturaDeEntregaDeDados;
 
+import java.util.LinkedList;
 import java.util.Scanner;
 
 import static project.controller.rede.PercursoMinimoController.analyzeData;
@@ -30,7 +33,8 @@ public class PercursoMinimoUI implements Runnable {
             System.out.println("|-------------------------------------------------------|");
             System.out.println(String.format("|                       AUTONOMIA: %7d (m)          |", autonomia));
             System.out.println("|-------------------------------------------------------|");
-            EstruturaDeEntregaDeDados estruturaDeEntregaDeDados = analyzeData(autonomia);
+            LinkedList<Local> caminho = RedeHub.getShortestPathForFurthestNodes();
+            EstruturaDeEntregaDeDados estruturaDeEntregaDeDados = analyzeData(autonomia, caminho);
             if (estruturaDeEntregaDeDados.isFlag()) {
                 System.out.println(String.format("| Local Inicial: %11s | Local Final: %11s |", estruturaDeEntregaDeDados.getPercurso().get(0).getNumId(), estruturaDeEntregaDeDados.getPercurso().get(estruturaDeEntregaDeDados.getPercurso().size() - 1).getNumId()));
                 System.out.println("|-------------------------------------------------------|");

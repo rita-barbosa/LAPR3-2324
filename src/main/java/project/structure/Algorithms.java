@@ -1,5 +1,6 @@
 package project.structure;
 
+import java.time.LocalTime;
 import java.util.*;
 import java.util.function.BinaryOperator;
 
@@ -169,6 +170,51 @@ public class Algorithms {
         }
     }
 
+    /**
+     * Computes shortest-path distance from a source vertex to all reachable
+     * vertices of a graph g with non-negative edge weights
+     * This implementation uses Dijkstra's algorithm
+     *
+     * @param g        Graph instance
+     * @param vOrig    Vertex that will be the source of the path
+     * @param visited  set of previously visited vertices
+     * @param pathKeys minimum path vertices keys
+     * @param dist     minimum distances
+     */
+    public static <V, E> void shortestPathDijkstraWithAutonomy(Graph<V, E> g,E autonomia, V vOrig,
+                                                   Comparator<E> ce, BinaryOperator<E> sum, E zero,
+                                                   boolean[] visited, V[] pathKeys, E[] dist) {
+
+        int vKey = g.key(vOrig);
+        dist[vKey] = zero;
+        pathKeys[vKey] = vOrig;
+
+        while (vOrig != null) {
+            vKey = g.key(vOrig);
+            visited[vKey] = true;
+            for (Edge<V, E> edge : g.outgoingEdges(vOrig)) {
+                int keyVAdj = g.key(edge.getVDest());
+                if (!visited[keyVAdj]) {
+                    E s = sum.apply(dist[vKey], edge.getWeight());
+                    if (dist[keyVAdj] == null || (ce.compare(dist[keyVAdj], s) > 0 && ce.compare(autonomia, s) > 0)) {
+                        dist[keyVAdj] = s;
+                        pathKeys[keyVAdj] = vOrig;
+                    }
+                }
+            }
+
+            E minDist = null;
+            vOrig = null;
+            for (V vertex : g.vertices()) {
+                int vertexKey = g.key(vertex);
+                if (!visited[vertexKey] && (dist[vertexKey] != null) && ((minDist == null) || ce.compare(dist[vertexKey], minDist) < 0)) {
+                    minDist = dist[vertexKey];
+                    vOrig = vertex;
+                }
+            }
+        }
+    }
+
 
     /**
      * Shortest-path between two vertices
@@ -197,6 +243,44 @@ public class Algorithms {
         initializePathDist(numVerts, pathKeys, dist);
 
         shortestPathDijkstra(g, vOrig, ce, sum, zero, visited, pathKeys, dist);
+
+        E lengthPath = dist[g.key(vDest)];
+
+        if (lengthPath != null) {
+            getPath(g, vOrig, vDest, pathKeys, shortPath);
+            return lengthPath;
+        }
+
+        return null;
+    }
+
+    /**
+     * Shortest-path between two vertices
+     *
+     * @param g         graph
+     * @param vOrig     origin vertex
+     * @param vDest     destination vertex
+     * @param ce        comparator between elements of type E
+     * @param sum       sum two elements of type E
+     * @param zero      neutral element of the sum in elements of type E
+     * @param shortPath returns the vertices which make the shortest path
+     * @return if vertices exist in the graph and are connected, true, false otherwise
+     */
+    public static <V, E> E shortestPathWithAutonomy(Graph<V, E> g,E autonomy, V vOrig, V vDest,
+                                        Comparator<E> ce, BinaryOperator<E> sum, E zero,
+                                        LinkedList<V> shortPath) {
+        if (!g.validVertex(vOrig) || !g.validVertex(vDest)) {
+            return null;
+        }
+
+        shortPath.clear();
+        int numVerts = g.numVertices();
+        boolean[] visited = new boolean[numVerts];
+        V[] pathKeys = (V[]) new Object[numVerts];
+        E[] dist = (E[]) new Object[numVerts];
+        initializePathDist(numVerts, pathKeys, dist);
+
+        shortestPathDijkstraWithAutonomy(g, autonomy, vOrig, ce, sum, zero, visited, pathKeys, dist);
 
         E lengthPath = dist[g.key(vDest)];
 

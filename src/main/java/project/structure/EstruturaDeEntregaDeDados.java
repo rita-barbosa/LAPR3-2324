@@ -3,14 +3,18 @@ package project.structure;
 import project.domain.Local;
 
 import java.lang.reflect.Array;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class EstruturaDeEntregaDeDados {
 
     private int distanciaTotal;
     private LinkedList<Local> percurso;
     private ArrayList<Integer> carregamentos;
+    private Map<Local, List<LocalTime>> temposDeChegada;
     private boolean flag;
 
     public EstruturaDeEntregaDeDados(int distanciaTotal, LinkedList<Local> percurso, ArrayList<Integer> carregamentos, boolean flag) {
@@ -18,6 +22,14 @@ public class EstruturaDeEntregaDeDados {
         this.percurso = percurso;
         this.carregamentos = carregamentos;
         this.flag = flag;
+    }
+
+    public EstruturaDeEntregaDeDados(int distanciaTotal, LinkedList<Local> percurso, ArrayList<Integer> carregamentos, Map<Local, List<LocalTime>> temposDeChegada, boolean flag) {
+        this.distanciaTotal = distanciaTotal;
+        this.percurso = percurso;
+        this.carregamentos = carregamentos;
+        this.temposDeChegada = temposDeChegada;
+        this.flag = true;
     }
 
     public int getDistanciaTotal() {
@@ -44,6 +56,14 @@ public class EstruturaDeEntregaDeDados {
         this.carregamentos = carregamentos;
     }
 
+    public Map<Local, List<LocalTime>> getTemposDeChegada() {
+        return temposDeChegada;
+    }
+
+    public void setTemposDeChegada(Map<Local, List<LocalTime>> temposDeChegada) {
+        this.temposDeChegada = temposDeChegada;
+    }
+
     public void setFlag(boolean flag) {
         this.flag = flag;
     }
@@ -54,15 +74,10 @@ public class EstruturaDeEntregaDeDados {
 
     @Override
     public boolean equals(Object o) {
-
-        // If the object is compared with itself then return true
         if (o == this) {
             return true;
         }
-
-        // typecast o to Complex so that we can compare data members
         EstruturaDeEntregaDeDados c = (EstruturaDeEntregaDeDados) o;
-
         if(c.isFlag() == (this.isFlag() && c.carregamentos.equals(this.carregamentos) && c.distanciaTotal == this.distanciaTotal && c.percurso.equals(this.percurso))){
             return true;
         }

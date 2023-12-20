@@ -1,10 +1,7 @@
 package project.ui.console.menu;
 
 import project.ui.console.ImportarFicheiroUI;
-import project.ui.console.rede.LocalizacaoIdealHubsUI;
-import project.ui.console.rede.PercursoEntreLocaisUI;
-import project.ui.console.rede.PercursoMinimoUI;
-import project.ui.console.rede.RedeLigacaoMinimaUI;
+import project.ui.console.rede.*;
 import project.ui.console.utils.Utils;
 
 import java.util.ArrayList;
@@ -23,6 +20,7 @@ public class MenuRedeDistribuicao implements Runnable {
         options.add(new MenuItem("Localização ideal de N hubs.", new LocalizacaoIdealHubsUI()));
         options.add(new MenuItem("Percurso mínimo possível.", new PercursoMinimoUI()));
         options.add(new MenuItem("Rede de ligação mínima.", new RedeLigacaoMinimaUI()));
+        options.add(new MenuItem("Rede de ligação maxíma.", new MaiorPercursoHubsUI()));
         options.add(new MenuItem("Percursos entre local e hub.", new PercursoEntreLocaisUI()));
         int option = 0;
         do {

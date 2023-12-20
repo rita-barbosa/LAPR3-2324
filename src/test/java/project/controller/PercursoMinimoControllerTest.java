@@ -61,7 +61,7 @@ class PercursoMinimoControllerTest {
         boolean flag = true;
 
         EstruturaDeEntregaDeDados estruturaDeEntregaDeDados = new EstruturaDeEntregaDeDados(distancia, path1, indexDeCarregamentos, flag);
-        EstruturaDeEntregaDeDados estruturaDeEntregaDeDadosFunction = analyzeData(650000);
+        EstruturaDeEntregaDeDados estruturaDeEntregaDeDadosFunction = analyzeData(650000, RedeHub.getShortestPathForFurthestNodes());
 
         assertEquals(estruturaDeEntregaDeDados, estruturaDeEntregaDeDadosFunction);
     }
@@ -91,7 +91,7 @@ class PercursoMinimoControllerTest {
         boolean flag = true;
 
         EstruturaDeEntregaDeDados estruturaDeEntregaDeDados = new EstruturaDeEntregaDeDados(distancia, path1, indexDeCarregamentos, flag);
-        EstruturaDeEntregaDeDados estruturaDeEntregaDeDadosFunction = analyzeData(650000);
+        EstruturaDeEntregaDeDados estruturaDeEntregaDeDadosFunction = analyzeData(650000, RedeHub.getShortestPathForFurthestNodes());
 
         assertNotEquals(estruturaDeEntregaDeDados, estruturaDeEntregaDeDadosFunction);
     }
@@ -123,7 +123,7 @@ class PercursoMinimoControllerTest {
         boolean flag = true;
 
         EstruturaDeEntregaDeDados estruturaDeEntregaDeDados = new EstruturaDeEntregaDeDados(distancia, path1, indexDeCarregamentos, flag);
-        EstruturaDeEntregaDeDados estruturaDeEntregaDeDadosFunction = analyzeData(650000);
+        EstruturaDeEntregaDeDados estruturaDeEntregaDeDadosFunction = analyzeData(650000, RedeHub.getShortestPathForFurthestNodes());
 
         assertNotEquals(estruturaDeEntregaDeDados, estruturaDeEntregaDeDadosFunction);
     }
@@ -155,7 +155,7 @@ class PercursoMinimoControllerTest {
         boolean flag = false;
 
         EstruturaDeEntregaDeDados estruturaDeEntregaDeDados = new EstruturaDeEntregaDeDados(distancia, path1, indexDeCarregamentos, flag);
-        EstruturaDeEntregaDeDados estruturaDeEntregaDeDadosFunction = analyzeData(650000);
+        EstruturaDeEntregaDeDados estruturaDeEntregaDeDadosFunction = analyzeData(650000, RedeHub.getShortestPathForFurthestNodes());
 
         assertNotEquals(estruturaDeEntregaDeDados, estruturaDeEntregaDeDadosFunction);
     }

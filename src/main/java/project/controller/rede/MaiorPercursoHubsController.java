@@ -21,6 +21,6 @@ public class MaiorPercursoHubsController {
     }
 
     public static LocalTime getFinishingTimeRoute(EstruturaDeEntregaDeDados estruturaDeEntregaDeDados, LocalTime horaComeco, int autonomia, double averageVelocity, int tempoRecarga, int tempoDescarga){
-        return RedeHub.getFinishingTimeRoute(estruturaDeEntregaDeDados,horaComeco,autonomia,averageVelocity,tempoRecarga,tempoDescarga);
+        return RedeHub.getFinishingTimeRoute(estruturaDeEntregaDeDados.getDistanciaTotal() ,averageVelocity, horaComeco);
     }
 }

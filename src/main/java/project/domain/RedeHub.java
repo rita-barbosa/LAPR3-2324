@@ -173,9 +173,9 @@ public class RedeHub {
 
 
     public static LocalTime getFinishingTimeWithEverything(LinkedList<Local> caminho, LocalTime horaComeco, int autonomia, double averageVelocity, int tempoRecarga, int tempoDescarga, int numeroDescargas) {
-        LocalTime horaFim = horaComeco;
+        LocalTime horaFim = LocalTime.of(0,0);
         EstruturaDeEntregaDeDados estruturaDeEntregaDeDados = analyzeData(autonomia, caminho);
-        horaFim = addTime(horaFim, getFinishingTimeRoute(estruturaDeEntregaDeDados, horaComeco, autonomia, averageVelocity, tempoRecarga, tempoDescarga));
+        horaFim = addTime(horaFim, getFinishingTimeRoute(estruturaDeEntregaDeDados.getDistanciaTotal(), averageVelocity,horaComeco));
         for (int i = 0; i < estruturaDeEntregaDeDados.getCarregamentos().size(); i++) {
             horaFim = addTime(horaFim, intToLocalTime(tempoRecarga));
         }
@@ -191,36 +191,26 @@ public class RedeHub {
         return tempoPercurso;
     }
 
-    public static LocalTime getFinishingTimeRoute(EstruturaDeEntregaDeDados estruturaDeEntregaDeDados, LocalTime horaComeco, int autonomia, double averageVelocity, int tempoRecarga, int tempoDescarga) {
+    public static LocalTime getFinishingTimeRoute(int distanciaTotal ,double averageVelocity, LocalTime horaComeco) {
         LocalTime horaFim = LocalTime.of(0, 0);
-        double tempoPercursoDouble = ((double) (estruturaDeEntregaDeDados.getDistanciaTotal()) / 1000) / averageVelocity;
+        double tempoPercursoDouble = ((double) (distanciaTotal) / 1000) / averageVelocity;
         LocalTime tempoPercurso = LocalTime.of((int) tempoPercursoDouble, (int) ((tempoPercursoDouble - (int) tempoPercursoDouble) * 60));
-        horaFim = addTime(horaFim, tempoPercurso);
+        horaFim = addTime(horaComeco, tempoPercurso);
         return horaFim;
     }
 
     public static Map<Local, List<LocalTime>> getTimeTable(EstruturaDeEntregaDeDados estruturaDeEntregaDeDados, LocalTime horaComeco, int autonomia, double averageVelocity, int tempoRecarga, int tempoDescarga) {
         Map<Local, List<LocalTime>> timeTable = new LinkedHashMap<>();
-        int j = 0;
         for (int i = 1; i < estruturaDeEntregaDeDados.getPercurso().size(); i++) {
-            LinkedList<Local> caminhoTemp = new LinkedList<>();
-            caminhoTemp.add(estruturaDeEntregaDeDados.getPercurso().get(i - 1));
-            caminhoTemp.add(estruturaDeEntregaDeDados.getPercurso().get(i));
-            if (estruturaDeEntregaDeDados.getPercurso().get(i - 1).isHub()) {
-                j++;
-            }
-            if (estruturaDeEntregaDeDados.getPercurso().get(i).isHub()) {
-                j++;
-            }
-            LocalTime afterEverything = getFinishingTimeWithEverything(caminhoTemp, horaComeco, autonomia, averageVelocity, tempoRecarga, tempoDescarga, j);
+            LocalTime afterEverything = getFinishingTimeRoute(instance.redeDistribuicao.edge(estruturaDeEntregaDeDados.getPercurso().get(i-1),estruturaDeEntregaDeDados.getPercurso().get(i)).getWeight(), averageVelocity, horaComeco);
 
             List<LocalTime> listOfTimes = new ArrayList<>();
             if (estruturaDeEntregaDeDados.getCarregamentos().contains(i)) {
                 if (estruturaDeEntregaDeDados.getPercurso().get(i).isHub()) {
-                    listOfTimes.add(afterEverything.minusMinutes(tempoDescarga));
+                    listOfTimes.add(afterEverything.plusMinutes(tempoDescarga));
                     listOfTimes.add(afterEverything.plusMinutes(tempoRecarga));
                     timeTable.put(estruturaDeEntregaDeDados.getPercurso().get(i), listOfTimes);
-                    horaComeco = afterEverything.plusMinutes(tempoRecarga);
+                    horaComeco = afterEverything.plusMinutes(tempoRecarga).plusMinutes(tempoDescarga);
                 } else {
                     listOfTimes.add(afterEverything);
                     listOfTimes.add(afterEverything.plusMinutes(tempoRecarga));
@@ -229,10 +219,10 @@ public class RedeHub {
                 }
             } else {
                 if (estruturaDeEntregaDeDados.getPercurso().get(i).isHub()) {
-                    listOfTimes.add(afterEverything.minusMinutes(tempoDescarga));
                     listOfTimes.add(afterEverything);
+                    listOfTimes.add(afterEverything.plusMinutes(tempoDescarga));
                     timeTable.put(estruturaDeEntregaDeDados.getPercurso().get(i), listOfTimes);
-                    horaComeco = afterEverything;
+                    horaComeco = afterEverything.plusMinutes(tempoDescarga);
                 } else {
                     listOfTimes.add(afterEverything);
                     listOfTimes.add(afterEverything);
@@ -240,15 +230,14 @@ public class RedeHub {
                     horaComeco = afterEverything;
                 }
             }
-            j = 0;
         }
         return timeTable;
     }
 
     public static List<Local> getAllHubsInCourse(LinkedList<Local> caminho, List<Local> locaisVisitados) {
         List<Local> lista = new ArrayList<>();
-        for (int i = 0; i < caminho.size(); i++) {
-            if (caminho.get(i).isHub() && !locaisVisitados.contains(caminho.get(i))) {
+        for (int i = 1; i < caminho.size(); i++) {
+            if (caminho.get(i).isHub()) {
                 lista.add(caminho.get(i));
             }
         }

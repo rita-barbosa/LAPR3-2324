@@ -6,16 +6,52 @@ import java.util.function.BinaryOperator;
 
 public class Algorithms {
 
-    /**
-     * Performs breadth-first search of a Graph starting in a vertex
-     *
-     * @param g    Graph instance
-     * @param vert vertex that will be the source of the search
-     * @return a LinkedList with the vertices of breadth-first search
-     */
-    public static <V, E> LinkedList<V> BreadthFirstSearch(Graph<V, E> g, V vert) {
 
-        throw new UnsupportedOperationException("Not supported yet.");
+    private static <V> boolean isNotVisited(V x, List<V> path) {
+        return !path.contains(x);
+    }
+
+    /**
+     * Returns all paths from vOrig to vDest
+     *
+     * @param g       Graph instance
+     * @param vDest   Vertex that will be the end of the path
+     * @param currentPath LinkedList of the vertices from the current path
+     * @param allPaths   ArrayList with all the paths (in correct order)
+     */
+    private static <V, E> void findPaths(Graph<V, E> g, V vDest, ArrayList<LinkedList<V>> allPaths, LinkedList<V> currentPath) {
+        V last = currentPath.get(currentPath.size() - 1);
+
+        if (last.equals(vDest)) {
+            allPaths.add(new LinkedList<>(currentPath));
+        }
+
+        Collection<Edge<V, E>> incomingEdges = g.incomingEdges(last);
+
+        for (Edge<V, E> edge : incomingEdges) {
+            V neighbor = edge.getVOrig();
+            if (isNotVisited(neighbor, currentPath)) {
+                currentPath.add(neighbor);
+                findPaths(g, vDest, allPaths, currentPath);
+                currentPath.removeLast();
+            }
+        }
+    }
+
+    /**
+     * Returns all paths from vOrig to vDest
+     *
+     * @param g     Graph instance
+     * @param vOrig information of the Vertex origin
+     * @param vDest information of the Vertex destination
+     * @return paths ArrayList with all paths from vOrig to vDest
+     */
+    public static <V, E> ArrayList<LinkedList<V>> findPaths(Graph<V, E> g, V vOrig, V vDest) {
+        ArrayList<LinkedList<V>> allPaths = new ArrayList<>();
+        LinkedList<V> initialPath = new LinkedList<>();
+        initialPath.add(vOrig);
+        findPaths(g, vDest, allPaths, initialPath);
+        return allPaths;
     }
 
     /**

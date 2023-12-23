@@ -338,7 +338,7 @@ public class RedeHub {
     }
 
     public ArrayList<LinkedList<Local>> getPathsBetweenLocations(Local org, Local hub) {
-        return Algorithms.allPaths(redeDistribuicao, org, hub);
+        return Algorithms.findPaths(redeDistribuicao, org, hub);
     }
 
     public ArrayList<ArrayList<Integer>> calculateDistances(ArrayList<LinkedList<Local>> paths) {

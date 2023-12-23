@@ -1,5 +1,6 @@
 package project.structure;
 
+import java.time.LocalTime;
 import java.util.*;
 import java.util.function.BinaryOperator;
 
@@ -169,6 +170,56 @@ public class Algorithms {
         }
     }
 
+    /**
+     * Computes shortest-path distance from a source vertex to all reachable
+     * vertices of a graph g with non-negative edge weights
+     * This implementation uses Dijkstra's algorithm
+     *
+     * @param g        Graph instance
+     * @param vOrig    Vertex that will be the source of the path
+     * @param visited  set of previously visited vertices
+     * @param pathKeys minimum path vertices keys
+     * @param dist     minimum distances
+     */
+    public static <V, E> void shortestPathDijkstraWithAutonomy(Graph<V, E> g,E autonomia, V vOrig,
+                                                   Comparator<E> ce, BinaryOperator<E> sum, E zero,
+                                                   boolean[] visited, V[] pathKeys, E[] dist) {
+
+        int vkey = g.key(vOrig);
+        dist[vkey] = zero;
+        pathKeys[vkey] = vOrig;
+
+        while (vOrig != null) {
+            vkey = g.key(vOrig);
+            visited[vkey] = true;
+
+            for (Edge<V, E> edge : g.outgoingEdges(vOrig)) {
+                int vkeyAdj = g.key(edge.getVDest());
+                if (!visited[vkeyAdj]) {
+                    E remainingAutonomy = sum.apply(autonomia, dist[vkey]);
+                    if (ce.compare(edge.getWeight(), remainingAutonomy) <= 0) {
+                        E s = sum.apply(dist[vkey], edge.getWeight());
+                        if (dist[vkeyAdj] == null || ce.compare(dist[vkeyAdj], s) > 0) {
+                            dist[vkeyAdj] = s;
+                            pathKeys[vkeyAdj] = vOrig;
+                        }
+                    }
+                }
+            }
+
+            E minDist = null;
+            vOrig = null;
+
+            for (V vert : g.vertices()) {
+                int i = g.key(vert);
+                if (!visited[i] && (dist[i] != null) && ((minDist == null) || ce.compare(dist[i], minDist) < 0)) {
+                    minDist = dist[i];
+                    vOrig = vert;
+                }
+            }
+        }
+    }
+
 
     /**
      * Shortest-path between two vertices
@@ -197,6 +248,44 @@ public class Algorithms {
         initializePathDist(numVerts, pathKeys, dist);
 
         shortestPathDijkstra(g, vOrig, ce, sum, zero, visited, pathKeys, dist);
+
+        E lengthPath = dist[g.key(vDest)];
+
+        if (lengthPath != null) {
+            getPath(g, vOrig, vDest, pathKeys, shortPath);
+            return lengthPath;
+        }
+
+        return null;
+    }
+
+    /**
+     * Shortest-path between two vertices
+     *
+     * @param g         graph
+     * @param vOrig     origin vertex
+     * @param vDest     destination vertex
+     * @param ce        comparator between elements of type E
+     * @param sum       sum two elements of type E
+     * @param zero      neutral element of the sum in elements of type E
+     * @param shortPath returns the vertices which make the shortest path
+     * @return if vertices exist in the graph and are connected, true, false otherwise
+     */
+    public static <V, E> E shortestPathWithAutonomy(Graph<V, E> g,E autonomy, V vOrig, V vDest,
+                                        Comparator<E> ce, BinaryOperator<E> sum, E zero,
+                                        LinkedList<V> shortPath) {
+        if (!g.validVertex(vOrig) || !g.validVertex(vDest)) {
+            return null;
+        }
+
+        shortPath.clear();
+        int numVerts = g.numVertices();
+        boolean[] visited = new boolean[numVerts];
+        V[] pathKeys = (V[]) new Object[numVerts];
+        E[] dist = (E[]) new Object[numVerts];
+        initializePathDist(numVerts, pathKeys, dist);
+
+        shortestPathDijkstraWithAutonomy(g, autonomy, vOrig, ce, sum, zero, visited, pathKeys, dist);
 
         E lengthPath = dist[g.key(vDest)];
 
@@ -286,7 +375,6 @@ public class Algorithms {
         }
     }
 
-
     /**
      * Calculates the betweenness centrality for each vertex in the graph using Brandes' algorithm.
      * Betweenness centrality measures the extent to which a vertex lies on the shortest paths
@@ -299,6 +387,7 @@ public class Algorithms {
      */
     public static <V, E> Map<V, Integer> betweennessCentrality(Graph<V, E> graph) {
         Map<V, Integer> centrality = new HashMap<>();
+
 
         for (V vertex : graph.vertices()) {
             centrality.put(vertex, 0);
@@ -343,4 +432,225 @@ public class Algorithms {
         }
         return centrality;
     }
+
+
+    // following Brandes' algorithm to calculate the betweeness/centrality of an edge with BFS
+    public static <V, E> Map<Map<Edge<V, E>, Double>, Set<Set<V>>> edgeBetweennessCentrality(Graph<V, E> graph, List<V> vertexes) {
+
+        // Vertice -> (Adjacente, Betweenness)
+        Map<V, Map<V, Double>> edgeBetweenness = new HashMap<>();
+
+        // Vertice -> (Adjacente, 0.0)
+        for (V v : vertexes) {
+            Map<V, Double> adjacentMap = new HashMap<>();
+            for (V adj : graph.adjVertices(v)) {
+                adjacentMap.put(adj, 0.0);
+            }
+            edgeBetweenness.put(v, adjacentMap);
+        }
+
+        // set com as comunidades que passam a existir
+        Set<Set<V>> comRes = new HashSet<>();
+        // valores default para o score do vertice e da edge
+        List<Double> nodeScoreValuesDefault = new ArrayList<>();
+        nodeScoreValuesDefault.add(0.0);
+        nodeScoreValuesDefault.add(1.0);
+
+
+        // first we select a node v to start, and perform bfs to assign node score and edge credits
+        // where node_score contains {node: [node_score, edge_credit]}
+        for (V vertex : graph.vertices()) {
+            Set<V> visited = new HashSet<>();
+            List<V> src = new ArrayList<>();
+            src.add(vertex);
+            Map<V, List<Double>> nodeScore = new HashMap<>();
+            nodeScore.put(vertex, new ArrayList<>(nodeScoreValuesDefault));
+            nodeScore.get(vertex).set(0, nodeScore.get(vertex).get(0) + 1.0);
+            List<Map<V, List<V>>> edgePath = new ArrayList<>();
+            Map<V, List<V>> curLevelEdge = new HashMap<>();
+
+
+            // calcular o score dos vértices
+            while (true) {
+                visited.addAll(src);
+                Set<V> nextSrc = new HashSet<>();
+                curLevelEdge.clear();
+
+                for (V node : src) {
+                    List<V> destinations = graph.adjVertices(node).stream().toList();
+                    for (V nextNode : destinations) {
+                        if (!visited.contains(nextNode)) {
+                            nextSrc.add(nextNode);
+                            if (!nodeScore.containsKey(nextNode)) {
+                                nodeScore.put(nextNode, new ArrayList<>(nodeScoreValuesDefault));
+                            }
+                            double scoreNode = nodeScore.get(node).get(0);
+                            nodeScore.get(nextNode).set(0, nodeScore.get(nextNode).get(0) + scoreNode);
+                            // check this
+                            curLevelEdge.computeIfAbsent(nextNode, k -> new ArrayList<>()).add(node);
+                        }
+                    }
+                }
+
+                //alocacao de comunidades
+                if (nextSrc.isEmpty()) {
+                    HashSet<V> set = new HashSet<>();
+                    if (!graph.vertices().contains(vertex)) {
+                        set.add(vertex);
+                        comRes.add(set);
+                    } else {
+                        set.addAll(visited);
+                        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! suposed to sort them
+                        comRes.add(set);
+                    }
+                    break;
+                } else {
+                    edgePath.add((curLevelEdge));
+                    src = new ArrayList<>(nextSrc);
+                }
+            }
+
+            // next, we compute the betweenness value and the edge credit to the next node
+            for (int i = edgePath.size() - 1; i >= 0; i--) {
+                Map<V, List<V>> levelNodes = edgePath.get(i);
+
+                for (V vNode : levelNodes.keySet()) {
+                    Map<V, Double> edgeMap = edgeBetweenness.getOrDefault(vNode, new HashMap<>());
+                    List<V> edges = levelNodes.get(vNode);
+                    for (V nextNode : edges) {
+                        // Edge(vNode, nextNode) -> (1 + Sum(incoming edge credit)) * [(scoreVDest) / (scoreVOrig)]
+                        Double btwVal = nodeScore.get(vNode).get(1) * nodeScore.get(nextNode).get(0) / nodeScore.get(vNode).get(0);
+                        edgeMap.put(nextNode, btwVal);
+                        edgeBetweenness.put(vNode, edgeMap);
+                        nodeScore.get(nextNode).set(1, nodeScore.get(nextNode).get(1) + btwVal);
+                    }
+                }
+            }
+        }
+        Map<Map<Edge<V, E>, Double>, Set<Set<V>>> result = new HashMap<>();
+        result.put(scaleBetweenness(graph, edgeBetweenness), comRes);
+        return result;
+    }
+
+    private static <E, V> Map<Edge<V, E>, Double> scaleBetweenness(Graph<V, E> graph, Map<V, Map<V, Double>> edgeBetweenness) {
+        Map<Edge<V, E>, Double> result = new HashMap<>();
+        for (V source : edgeBetweenness.keySet()) {
+            Map<V, Double> edges = edgeBetweenness.get(source);
+            for (V dest : edges.keySet()) {
+                Double betweenness = edges.get(dest) / 2;
+                result.put(graph.edge(source, dest), betweenness);
+            }
+        }
+        // sort, maybe?
+        return result;
+    }
+
+    public static <V, E> double computeModularity(MapGraph<V, E> originalGraph, MapGraph<V, E> updateGraph, int numEdges, Set<Set<V>> communities) {
+        double res = 0;
+        for (Set<V> com : communities) {
+            for (Edge<V, E> edge : getCommunityEdges(originalGraph, com)) {
+                V vOrig = edge.getVOrig();
+                V vDest = edge.getVDest();
+                int A = 0;
+                if (originalGraph.adjVertices(vOrig).contains(vDest) && originalGraph.adjVertices(vDest).contains(vOrig)) {
+                    A = 1;
+                }
+                int ki = updateGraph.adjVertices(vOrig).size();
+                int kj = updateGraph.adjVertices(vDest).size();
+                res += A - (ki * kj) / (2.0 * numEdges);
+            }
+        }
+        return res / (2.0 * numEdges);
+    }
+
+    private static <E, V> Set<Edge<V, E>> getCommunityEdges(Graph<V, E> originalGraph, Set<V> com) {
+        Set<Edge<V, E>> edges = new HashSet<>();
+        List<Edge<V, E>> originalGraphEdges = originalGraph.edges().stream().toList();
+        for (V source : com) {
+            for (V dest : com) {
+                Edge<V, E> testEdge = new Edge<>(source, dest);
+                if (source != dest && originalGraphEdges.contains(testEdge)) {
+                    edges.add(testEdge);
+                }
+            }
+        }
+        return edges;
+    }
+
+
+    public static <V, E> void removeHighestBetweennessEdge(MapGraph<V, E> edgeDict, Map<Edge<V, E>, Double> edgeBtwDict) {
+        double largestBtwVal = Double.NEGATIVE_INFINITY;
+
+        for (Edge<V, E> edge : edgeBtwDict.keySet()) {
+            if (edgeBtwDict.get(edge) > largestBtwVal) {
+                largestBtwVal = edgeBtwDict.get(edge);
+            }
+        }
+
+        //assinalar para remover todas as edges que tenham o valor da betweenness maior
+        List<Edge<V, E>> removeEdgeList = new ArrayList<>();
+        for (Edge<V, E> edge : edgeBtwDict.keySet()) {
+            if (Math.round(edgeBtwDict.get(edge) * 100000) == Math.round(largestBtwVal * 100000)) {
+                removeEdgeList.add(edge);
+            }
+        }
+
+        System.out.println("Remove edges " + removeEdgeList + " with betweenness value around " + Math.round(largestBtwVal));
+
+        // remove betweenness maior + a edge reversa
+        for (Edge<V, E> edge : removeEdgeList) {
+            V vOrig = edge.getVOrig();
+            V vDest = edge.getVDest();
+            edgeDict.removeEdge(vOrig, vDest);
+            edgeDict.removeEdge(vDest, vOrig);
+        }
+    }
+
+
+    public static <V, E> Set<Set<V>> computeOptCommunities(MapGraph<V, E> edgeDict, List<V> vertices, int numClusters, boolean verbose) {
+
+        double maxModularity = Double.NEGATIVE_INFINITY;
+        Set<Edge<V, E>> edgeSet = new HashSet<>(edgeDict.edges());
+
+        int edgeCount = edgeSet.size();
+        MapGraph<V,E> updateGraph = edgeDict;
+
+        Map<Map<Edge<V, E>, Double>, Set<Set<V>>> btwResult = Algorithms.edgeBetweennessCentrality(updateGraph, vertices);
+        Map.Entry<Map<Edge<V, E>, Double>, Set<Set<V>>> firstEntry = btwResult.entrySet().iterator().next();
+        Map<Edge<V, E>, Double> edgeBtwDict = firstEntry.getKey();
+        Set<Set<V>> currentBestCommunity = new HashSet<>();
+
+        //int iterations = 0; // Track the number of iterations
+
+        while (true) {
+            removeHighestBetweennessEdge(updateGraph, edgeBtwDict);
+
+            btwResult = Algorithms.edgeBetweennessCentrality(updateGraph, vertices);
+            firstEntry = btwResult.entrySet().iterator().next();
+            edgeBtwDict = firstEntry.getKey();
+
+            Set<Set<V>> nextCommunity = firstEntry.getValue();
+
+            double currentModularity = computeModularity(edgeDict, updateGraph, edgeCount, nextCommunity);
+
+            if (currentModularity >= maxModularity) {
+                if (verbose) {
+                    System.out.println("Update best modularity of community split " + maxModularity + " ---> " + currentModularity + "\n");
+                }
+                maxModularity = currentModularity;
+                currentBestCommunity = nextCommunity;
+            } else{
+                if (verbose) {
+                    System.out.println("Modularity after split = " + currentModularity + ", which is lower than best split " + maxModularity + "\n");
+                }
+                break;
+            }
+
+            // iterations++; // Increment the iteration counter
+        }
+        return currentBestCommunity;
+    }
+
+
+
 }

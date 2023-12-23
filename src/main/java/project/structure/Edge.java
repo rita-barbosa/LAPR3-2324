@@ -19,6 +19,13 @@ public class Edge<V, E> {
         this.weight = weight;
     }
 
+    public Edge(V vOrig, V vDest) {
+        if ((vOrig == null) || (vDest == null)) throw new RuntimeException("Edge vertices cannot be null!");
+        this.vOrig = vOrig;
+        this.vDest = vDest;
+        this.weight = null;
+    }
+
     public V getVOrig() {
         return vOrig;
     }

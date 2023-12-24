@@ -125,7 +125,6 @@ designacaoUnidade          varchar2(5) CONSTRAINT nnOperacaoDesignacaoUnidade NO
 idEstadoOperacao           number(1) CONSTRAINT nnOperacaoIdEstadoOperacao NOT NULL,
 quantidade                 number(10, 1) CONSTRAINT nnOperacaoQuantidade NOT NULL,
 dataOperacao               date CONSTRAINT nnOperacaoDataOperacao NOT NULL,
-duracao                    number(5) CONSTRAINT nnOperacaoDuracao NOT NULL,
 instanteRegistoOperacao    timestamp(0) with local time zone DEFAULT CURRENT_TIMESTAMP CONSTRAINT nnOperacaoInstanteRegistoOperacao  NOT NULL,
 CONSTRAINT pkOperacaoIdOperacao PRIMARY KEY (idOperacao));
 ---------------------------------------------------------------------------------------------------------------------
@@ -155,6 +154,14 @@ nomeComum                 varchar2(50) CONSTRAINT nnPlantaNomeComum NOT NULL,
 especie                   varchar2(50) CONSTRAINT nnPlantaEspecie NOT NULL,
 CONSTRAINT pkPlantaVariedadeNomeComum PRIMARY KEY (variedade,
                                                nomeComum));
+
+CREATE TABLE Plantacao (
+idOperacao          number(2) CONSTRAINT nnPlantacaoIdOperacao NOT NULL,
+nomeParcela         varchar2(50) CONSTRAINT nnPlantacaoNomeParcela NOT NULL,
+variedade           varchar2(50) CONSTRAINT nnPlantacaoVariedade NOT NULL,
+nomeComum           varchar2(50) CONSTRAINT nnPlantacaoNomeComum NOT NULL,
+dataInicial         date CONSTRAINT nnPlantacaoDataInicial NOT NULL,
+distanciaEntreFilas number(10) CONSTRAINT nnPlantacaoDistanciaEntreFilas NOT NULL);
 
 CREATE TABLE PlantaPermanencia (
 nomeComum                 varchar2(50) CONSTRAINT nnPlantaPermanenciaNomeComum NOT NULL,
@@ -186,6 +193,8 @@ CONSTRAINT pkReceitaFertirregaIdReceitaFertirrega PRIMARY KEY (idReceitaFertirre
 CREATE TABLE Rega (
 idOperacao      number(2) CONSTRAINT nnRegaIdOperacao NOT NULL,
 designacaoSetor varchar2(10) CONSTRAINT nnRegaDesignacaoSetor NOT NULL,
+idReceitaFertirrega number(1),
+duracao             number(5) CONSTRAINT nnRegaDuracao NOT NULL,
 CONSTRAINT pkRegaIdOperacao PRIMARY KEY (idOperacao));
 
 CREATE TABLE Setor (
@@ -274,3 +283,6 @@ ALTER TABLE Log ADD CONSTRAINT FKRegistosLogDesignacaoUnidade FOREIGN KEY (desig
 ALTER TABLE Log ADD CONSTRAINT FKRegistosLogDesignacaoOperacaoAgricola FOREIGN KEY (designacaoOperacaoAgricola) REFERENCES TipoOperacaoAgricola (designacaoOperacaoAgricola);
 ALTER TABLE Log ADD CONSTRAINT FKRegistosLogNomeParcela FOREIGN KEY (nomeParcela) REFERENCES Parcela (nomeParcela);
 ALTER TABLE Log ADD CONSTRAINT FKRegistosLogIdEstadoOperacao FOREIGN KEY (idEstadoOperacao) REFERENCES EstadoOperacao (idEstadoOperacao);
+ALTER TABLE Rega ADD CONSTRAINT FKRegaIdReceitaFertirrega FOREIGN KEY (idReceitaFertirrega) REFERENCES ReceitaFertirrega (idReceitaFertirrega);
+ALTER TABLE Plantacao ADD CONSTRAINT FKPlantacaoIdOperacao FOREIGN KEY (idOperacao) REFERENCES Operacao (idOperacao);
+ALTER TABLE Plantacao ADD CONSTRAINT FKPlantacaoAtributosPKCulturaInstalada FOREIGN KEY (nomeParcela, variedade, nomeComum, dataInicial) REFERENCES CulturaInstalada (nomeParcela, variedade, nomeComum, dataInicial);

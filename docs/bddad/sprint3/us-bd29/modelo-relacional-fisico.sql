@@ -161,7 +161,8 @@ nomeParcela         varchar2(50) CONSTRAINT nnPlantacaoNomeParcela NOT NULL,
 variedade           varchar2(50) CONSTRAINT nnPlantacaoVariedade NOT NULL,
 nomeComum           varchar2(50) CONSTRAINT nnPlantacaoNomeComum NOT NULL,
 dataInicial         date CONSTRAINT nnPlantacaoDataInicial NOT NULL,
-distanciaEntreFilas number(10) CONSTRAINT nnPlantacaoDistanciaEntreFilas NOT NULL);
+distanciaEntreFilas number(10) CONSTRAINT nnPlantacaoDistanciaEntreFilas NOT NULL,
+CONSTRAINT pkPlantacaoIdOperacao PRIMARY KEY (idOperacao));
 
 CREATE TABLE PlantaPermanencia (
 nomeComum                 varchar2(50) CONSTRAINT nnPlantaPermanenciaNomeComum NOT NULL,

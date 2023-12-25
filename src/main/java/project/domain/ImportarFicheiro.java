@@ -25,8 +25,8 @@ public class ImportarFicheiro {
     public static boolean importWateringPlan(String filepath) {
         try {
             ExcecaoFicheiro.verificarFicheiro(filepath, ".txt");
-            ExcecaoFicheiro.validarPlanoRega(new File(filepath));
             ExcecaoFicheiro.verificarEstruturaFicheiro(new File(filepath));
+            ExcecaoFicheiro.validarPlanoRega(new File(filepath));
 
             List<Rega> plano = new ArrayList<>();
             readDataFromWateringPlanFile(filepath);

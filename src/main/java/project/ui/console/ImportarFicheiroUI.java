@@ -2,7 +2,6 @@ package project.ui.console;
 
 import project.controller.ImportarFicheiroController;
 import project.domain.Horario;
-import project.domain.ImportarFicheiro;
 import project.domain.Local;
 import project.domain.RedeHub;
 import project.exception.ExcecaoFicheiro;

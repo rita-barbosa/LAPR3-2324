@@ -5,7 +5,7 @@ package project.ui.console.rede;
 import project.controller.rede.PercursoMinimoController;
 import project.domain.Local;
 import project.domain.RedeHub;
-import project.structure.EstruturaDeEntregaDeDados;
+import project.structure.Path;
 
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -34,27 +34,27 @@ public class PercursoMinimoUI implements Runnable {
             System.out.println(String.format("|                       AUTONOMIA: %7d (m)          |", autonomia));
             System.out.println("|-------------------------------------------------------|");
             LinkedList<Local> caminho = RedeHub.getShortestPathForFurthestNodes();
-            EstruturaDeEntregaDeDados estruturaDeEntregaDeDados = analyzeData(autonomia, caminho);
-            if (estruturaDeEntregaDeDados.isFlag()) {
-                System.out.println(String.format("| Local Inicial: %11s | Local Final: %11s |", estruturaDeEntregaDeDados.getPercurso().get(0).getNumId(), estruturaDeEntregaDeDados.getPercurso().get(estruturaDeEntregaDeDados.getPercurso().size() - 1).getNumId()));
+            Path path = analyzeData(autonomia, caminho);
+            if (path.isFlag()) {
+                System.out.println(String.format("| Local Inicial: %11s | Local Final: %11s |", path.getPercurso().get(0).getNumId(), path.getPercurso().get(path.getPercurso().size() - 1).getNumId()));
                 System.out.println("|-------------------------------------------------------|");
                 System.out.println("|                        Percurso:                      |");
                 System.out.println("|-------------------------------------------------------|");
-                System.out.println(String.format("|               Distância Total Percorrida: %6d (m)  |", estruturaDeEntregaDeDados.getDistanciaTotal()));
+                System.out.println(String.format("|               Distância Total Percorrida: %6d (m)  |", path.getDistanciaTotal()));
                 System.out.println("|-------------------------------------------------------|");
-                System.out.println(String.format("| %27s                           |", estruturaDeEntregaDeDados.getPercurso().get(0).getNumId()));
-                for (int i = 1; i < estruturaDeEntregaDeDados.getPercurso().size(); i++) {
+                System.out.println(String.format("| %27s                           |", path.getPercurso().get(0).getNumId()));
+                for (int i = 1; i < path.getPercurso().size(); i++) {
                     System.out.println(String.format("| %26s                            |", "V"));
-                    System.out.println(String.format("| %27s                           |", estruturaDeEntregaDeDados.getPercurso().get(i).getNumId()));
+                    System.out.println(String.format("| %27s                           |", path.getPercurso().get(i).getNumId()));
                 }
                 System.out.println("|-------------------------------------------------------|");
                 System.out.println("|                     Carregamentos:                    |");
                 System.out.println("|-------------------------------------------------------|");
-                for (int i = 0; i < estruturaDeEntregaDeDados.getCarregamentos().size(); i++) {
-                    System.out.println(String.format("| %27s                           |", estruturaDeEntregaDeDados.getPercurso().get(estruturaDeEntregaDeDados.getCarregamentos().get(i))));
+                for (int i = 0; i < path.getCarregamentos().size(); i++) {
+                    System.out.println(String.format("| %27s                           |", path.getPercurso().get(path.getCarregamentos().get(i))));
                 }
                 System.out.println("|-------------------------------------------------------|");
-                System.out.println(String.format("|                Numero De Carregamentos: %3d           |", estruturaDeEntregaDeDados.getCarregamentos().size()));
+                System.out.println(String.format("|                Numero De Carregamentos: %3d           |", path.getCarregamentos().size()));
                 System.out.println("|-------------------------------------------------------|");
             } else {
                 System.out.println("|             A Autonomia Não É O Suficiente            |");

@@ -2,14 +2,13 @@ package project.structure;
 
 import project.domain.Local;
 
-import java.lang.reflect.Array;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class EstruturaDeEntregaDeDados {
+public class Path {
 
     private int distanciaTotal;
     private LinkedList<Local> percurso;
@@ -17,14 +16,14 @@ public class EstruturaDeEntregaDeDados {
     private Map<Local, List<LocalTime>> temposDeChegada;
     private boolean flag;
 
-    public EstruturaDeEntregaDeDados(int distanciaTotal, LinkedList<Local> percurso, ArrayList<Integer> carregamentos, boolean flag) {
+    public Path(int distanciaTotal, LinkedList<Local> percurso, ArrayList<Integer> carregamentos, boolean flag) {
         this.distanciaTotal = distanciaTotal;
         this.percurso = percurso;
         this.carregamentos = carregamentos;
         this.flag = flag;
     }
 
-    public EstruturaDeEntregaDeDados(int distanciaTotal, LinkedList<Local> percurso, ArrayList<Integer> carregamentos, Map<Local, List<LocalTime>> temposDeChegada, boolean flag) {
+    public Path(int distanciaTotal, LinkedList<Local> percurso, ArrayList<Integer> carregamentos, Map<Local, List<LocalTime>> temposDeChegada, boolean flag) {
         this.distanciaTotal = distanciaTotal;
         this.percurso = percurso;
         this.carregamentos = carregamentos;
@@ -77,7 +76,7 @@ public class EstruturaDeEntregaDeDados {
         if (o == this) {
             return true;
         }
-        EstruturaDeEntregaDeDados c = (EstruturaDeEntregaDeDados) o;
+        Path c = (Path) o;
         if(c.isFlag() == (this.isFlag() && c.carregamentos.equals(this.carregamentos) && c.distanciaTotal == this.distanciaTotal && c.percurso.equals(this.percurso))){
             return true;
         }

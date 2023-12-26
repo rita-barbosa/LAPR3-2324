@@ -8,7 +8,7 @@ import project.domain.ImportarFicheiro;
 import project.domain.Local;
 import project.domain.RedeHub;
 import project.exception.ExcecaoFicheiro;
-import project.structure.EstruturaDeEntregaDeDados;
+import project.structure.Path;
 import project.structure.MapGraph;
 
 import java.io.IOException;
@@ -60,10 +60,10 @@ class PercursoMinimoControllerTest {
 
         boolean flag = true;
 
-        EstruturaDeEntregaDeDados estruturaDeEntregaDeDados = new EstruturaDeEntregaDeDados(distancia, path1, indexDeCarregamentos, flag);
-        EstruturaDeEntregaDeDados estruturaDeEntregaDeDadosFunction = analyzeData(650000, RedeHub.getShortestPathForFurthestNodes());
+        Path path = new Path(distancia, path1, indexDeCarregamentos, flag);
+        Path pathFunction = analyzeData(650000, RedeHub.getShortestPathForFurthestNodes());
 
-        assertEquals(estruturaDeEntregaDeDados, estruturaDeEntregaDeDadosFunction);
+        assertEquals(path, pathFunction);
     }
 
     @Test
@@ -90,10 +90,10 @@ class PercursoMinimoControllerTest {
 
         boolean flag = true;
 
-        EstruturaDeEntregaDeDados estruturaDeEntregaDeDados = new EstruturaDeEntregaDeDados(distancia, path1, indexDeCarregamentos, flag);
-        EstruturaDeEntregaDeDados estruturaDeEntregaDeDadosFunction = analyzeData(650000, RedeHub.getShortestPathForFurthestNodes());
+        Path path = new Path(distancia, path1, indexDeCarregamentos, flag);
+        Path pathFunction = analyzeData(650000, RedeHub.getShortestPathForFurthestNodes());
 
-        assertNotEquals(estruturaDeEntregaDeDados, estruturaDeEntregaDeDadosFunction);
+        assertNotEquals(path, pathFunction);
     }
 
     @Test
@@ -122,10 +122,10 @@ class PercursoMinimoControllerTest {
 
         boolean flag = true;
 
-        EstruturaDeEntregaDeDados estruturaDeEntregaDeDados = new EstruturaDeEntregaDeDados(distancia, path1, indexDeCarregamentos, flag);
-        EstruturaDeEntregaDeDados estruturaDeEntregaDeDadosFunction = analyzeData(650000, RedeHub.getShortestPathForFurthestNodes());
+        Path path = new Path(distancia, path1, indexDeCarregamentos, flag);
+        Path pathFunction = analyzeData(650000, RedeHub.getShortestPathForFurthestNodes());
 
-        assertNotEquals(estruturaDeEntregaDeDados, estruturaDeEntregaDeDadosFunction);
+        assertNotEquals(path, pathFunction);
     }
 
     @Test
@@ -154,10 +154,10 @@ class PercursoMinimoControllerTest {
 
         boolean flag = false;
 
-        EstruturaDeEntregaDeDados estruturaDeEntregaDeDados = new EstruturaDeEntregaDeDados(distancia, path1, indexDeCarregamentos, flag);
-        EstruturaDeEntregaDeDados estruturaDeEntregaDeDadosFunction = analyzeData(650000, RedeHub.getShortestPathForFurthestNodes());
+        Path path = new Path(distancia, path1, indexDeCarregamentos, flag);
+        Path pathFunction = analyzeData(650000, RedeHub.getShortestPathForFurthestNodes());
 
-        assertNotEquals(estruturaDeEntregaDeDados, estruturaDeEntregaDeDadosFunction);
+        assertNotEquals(path, pathFunction);
     }
 
 }

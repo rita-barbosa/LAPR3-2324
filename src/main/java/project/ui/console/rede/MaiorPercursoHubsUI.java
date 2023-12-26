@@ -5,14 +5,13 @@ import project.domain.Local;
 import project.domain.RedeHub;
 import project.exception.ExcecaoData;
 import project.exception.ExcecaoHora;
-import project.structure.EstruturaDeEntregaDeDados;
+import project.structure.Path;
 import project.ui.console.utils.Utils;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -53,22 +52,22 @@ public class MaiorPercursoHubsUI implements Runnable {
             double averageVelocity = Double.parseDouble(getVariable("Qual A Velocidade Média Do Veiculo? (Km/h)"));
             int tempoRecarga = Integer.parseInt(getVariable("Qual O Tempo De Recarga Do Veiculo? (Min)"));
             int tempoDescarga = Integer.parseInt(getVariable("Qual O Tempo De Descarga De Cabazes Do Veiculo? (Min)"));
-            EstruturaDeEntregaDeDados estruturaDeEntregaDeDados = controller.calculateBestDeliveryRoute(localInicio, hora, autonomia, averageVelocity, tempoRecarga, tempoDescarga);
-            double tempoTotal = (double) estruturaDeEntregaDeDados.getDistanciaTotal() / (averageVelocity * 1000);
-            if (estruturaDeEntregaDeDados.isFlag()) {
-                System.out.println(String.format("| Local Inicial: %11s | Local Final: %11s |", estruturaDeEntregaDeDados.getPercurso().get(0).getNumId(), estruturaDeEntregaDeDados.getPercurso().get(estruturaDeEntregaDeDados.getPercurso().size() - 1).getNumId()));
+            Path path = controller.calculateBestDeliveryRoute(localInicio, hora, autonomia, averageVelocity, tempoRecarga, tempoDescarga);
+            double tempoTotal = (double) path.getDistanciaTotal() / (averageVelocity * 1000);
+            if (path.isFlag()) {
+                System.out.println(String.format("| Local Inicial: %11s | Local Final: %11s |", path.getPercurso().get(0).getNumId(), path.getPercurso().get(path.getPercurso().size() - 1).getNumId()));
                 System.out.println("|-------------------------------------------------------|");
                 System.out.println("|                        Percurso:                      |");
                 System.out.println("|-------------------------------------------------------|");
-                System.out.println(String.format("|               Distância Total Percorrida: %6d (m)  |", estruturaDeEntregaDeDados.getDistanciaTotal()));
+                System.out.println(String.format("|               Distância Total Percorrida: %6d (m)  |", path.getDistanciaTotal()));
                 System.out.println("|-------------------------------------------------------|");
-                System.out.println(String.format("| %27s                           |", estruturaDeEntregaDeDados.getPercurso().get(0).getNumId()));
-                for (int i = 1; i < estruturaDeEntregaDeDados.getPercurso().size(); i++) {
+                System.out.println(String.format("| %27s                           |", path.getPercurso().get(0).getNumId()));
+                for (int i = 1; i < path.getPercurso().size(); i++) {
                     System.out.println(String.format("| %26s                            |", "V"));
-                    if (estruturaDeEntregaDeDados.getPercurso().get(i).isHub()) {
-                        System.out.println(String.format("| HUB %23s                           |", estruturaDeEntregaDeDados.getPercurso().get(i).getNumId()));
+                    if (path.getPercurso().get(i).isHub()) {
+                        System.out.println(String.format("| HUB %23s                           |", path.getPercurso().get(i).getNumId()));
                     } else {
-                        System.out.println(String.format("| %27s                           |", estruturaDeEntregaDeDados.getPercurso().get(i).getNumId()));
+                        System.out.println(String.format("| %27s                           |", path.getPercurso().get(i).getNumId()));
                     }
                 }
                 System.out.println("|-------------------------------------------------------|");
@@ -76,26 +75,26 @@ public class MaiorPercursoHubsUI implements Runnable {
                 System.out.println("|-------------------------------------------------------|");
                 System.out.println("|   Local   |   Horário Chegada   |    Horário Saída    |");
                 System.out.println("|-------------------------------------------------------|");
-                System.out.println(String.format("| %9s | %19s | %19s |", estruturaDeEntregaDeDados.getPercurso().get(0).getNumId(), "Local Inicial", hora));
-                for (Local local : estruturaDeEntregaDeDados.getTemposDeChegada().keySet()) {
-                    if (!local.equals(estruturaDeEntregaDeDados.getPercurso().get(estruturaDeEntregaDeDados.getPercurso().size() - 1))) {
-                        System.out.println(String.format("| %9s | %19s | %19s |", local.getNumId(), estruturaDeEntregaDeDados.getTemposDeChegada().get(local).get(0), estruturaDeEntregaDeDados.getTemposDeChegada().get(local).get(1)));
+                System.out.println(String.format("| %9s | %19s | %19s |", path.getPercurso().get(0).getNumId(), "Local Inicial", hora));
+                for (Local local : path.getTemposDeChegada().keySet()) {
+                    if (!local.equals(path.getPercurso().get(path.getPercurso().size() - 1))) {
+                        System.out.println(String.format("| %9s | %19s | %19s |", local.getNumId(), path.getTemposDeChegada().get(local).get(0), path.getTemposDeChegada().get(local).get(1)));
                     } else {
-                        System.out.println(String.format("| %9s | %19s |---Final-da-Viagem---|", local.getNumId(), estruturaDeEntregaDeDados.getTemposDeChegada().get(local).get(0)));
+                        System.out.println(String.format("| %9s | %19s |---Final-da-Viagem---|", local.getNumId(), path.getTemposDeChegada().get(local).get(0)));
                     }
                 }
                 System.out.println("|-------------------------------------------------------|");
                 System.out.println("|                Tempo Total Do Percurso:               |");
                 System.out.println("|-------------------------------------------------------|");
-                System.out.println(String.format("| %26s Horas                      |", controller.getFinishingTimeRoute(estruturaDeEntregaDeDados, LocalTime.of(0, 0), autonomia, averageVelocity, tempoRecarga, tempoDescarga)));
+                System.out.println(String.format("| %26s Horas                      |", controller.getFinishingTimeRoute(path, LocalTime.of(0, 0), autonomia, averageVelocity, tempoRecarga, tempoDescarga)));
                 System.out.println("|-------------------------------------------------------|");
                 System.out.println("|                     Carregamentos:                    |");
                 System.out.println("|-------------------------------------------------------|");
-                for (int i = 0; i < estruturaDeEntregaDeDados.getCarregamentos().size(); i++) {
-                    System.out.println(String.format("| %27s                           |", estruturaDeEntregaDeDados.getPercurso().get(estruturaDeEntregaDeDados.getCarregamentos().get(i))));
+                for (int i = 0; i < path.getCarregamentos().size(); i++) {
+                    System.out.println(String.format("| %27s                           |", path.getPercurso().get(path.getCarregamentos().get(i))));
                 }
                 System.out.println("|-------------------------------------------------------|");
-                System.out.println(String.format("|                Numero De Carregamentos: %3d           |", estruturaDeEntregaDeDados.getCarregamentos().size()));
+                System.out.println(String.format("|                Numero De Carregamentos: %3d           |", path.getCarregamentos().size()));
                 System.out.println("|-------------------------------------------------------|");
 
                 System.out.println("");

@@ -2,25 +2,17 @@ package project.controller.rede;
 
 import project.domain.Local;
 import project.domain.RedeHub;
-import project.structure.Algorithms;
-import project.structure.EstruturaDeEntregaDeDados;
+import project.structure.Path;
 
-import java.lang.reflect.Array;
-import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.temporal.TemporalAmount;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 public class MaiorPercursoHubsController {
 
-    public static EstruturaDeEntregaDeDados calculateBestDeliveryRoute(Local localInicio, LocalTime hora, int autonomia, double averageVelocity, int tempoRecarga, int tempoDescarga) {
+    public static Path calculateBestDeliveryRoute(Local localInicio, LocalTime hora, int autonomia, double averageVelocity, int tempoRecarga, int tempoDescarga) {
         return RedeHub.calculateBestDeliveryRoute(localInicio,hora,autonomia,averageVelocity,tempoRecarga,tempoDescarga);
     }
 
-    public static LocalTime getFinishingTimeRoute(EstruturaDeEntregaDeDados estruturaDeEntregaDeDados, LocalTime horaComeco, int autonomia, double averageVelocity, int tempoRecarga, int tempoDescarga){
-        return RedeHub.getFinishingTimeRoute(estruturaDeEntregaDeDados.getDistanciaTotal() ,averageVelocity, horaComeco);
+    public static LocalTime getFinishingTimeRoute(Path path, LocalTime horaComeco, int autonomia, double averageVelocity, int tempoRecarga, int tempoDescarga){
+        return RedeHub.getFinishingTimeRoute(path.getDistanciaTotal() ,averageVelocity, horaComeco);
     }
 }

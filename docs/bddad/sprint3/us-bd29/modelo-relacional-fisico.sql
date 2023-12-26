@@ -14,7 +14,9 @@ CONSTRAINT pkCalendarioAcaoAgricolaPKComponente PRIMARY KEY (variedade, nomeComu
 CREATE TABLE CatalogoReceitaFertirrega (
 idReceitaFertirrega number(1) CONSTRAINT nnCatalogoReceitaFertirregaIdReceitaFertirrega NOT NULL,
 nomeComercial       varchar2(50) CONSTRAINT nnCatalogoReceitaFertirregaNomeComercial NOT NULL,
-CONSTRAINT nnCatalogoReceitaFertirregaIdReceitaFertirregaNomeComercial PRIMARY KEY (idReceitaFertirrega, nomeComercial));
+designacaoUnidade   varchar2(5) CONSTRAINT nnCatalogoReceitaFertirregaDesignacaoUnidade NOT NULL,
+quantidade          number(10) CONSTRAINT nnCatalogoReceitaFertirregaQuantidade NOT NULL,
+CONSTRAINT pkCatalogoReceitaFertirrega PRIMARY KEY (idReceitaFertirrega, nomeComercial));
 
 CREATE TABLE Classificacao (
 classificacao varchar2(50) CONSTRAINT nnClassificacaoClassificacao  NOT NULL,
@@ -35,21 +37,24 @@ CONSTRAINT ckConstituicaoQuimicaQuantidadePercentagem CHECK (quantidade BETWEEN 
 
 ---------------------------------------------------------------------------------------------------------------------
 CREATE TABLE CulturaInstalada (
+nomeParcela                varchar2(50) CONSTRAINT nnCulturaInstaladaNomeParcela NOT NULL,
+variedade                  varchar2(50) CONSTRAINT nnCulturaInstaladaVariedade NOT NULL,
+nomeComum                  varchar2(50) CONSTRAINT nnCulturaInstaladaNomeComum NOT NULL,
+dataInicial                date CONSTRAINT nnCulturaInstaladaDataInicial NOT NULL,
+designacaoUnidade          varchar2(5) CONSTRAINT nnCulturaInstaladaDesignacaoUnidade NOT NULL,
+idSetor                    varchar2(10) CONSTRAINT nnCulturaInstaladaIdSetor NOT NULL,
+quantidade                 number(11, 2) CONSTRAINT nnCulturaInstaladaQuantidade NOT NULL,
+dataFinal                  date,
+PRIMARY KEY (nomeParcela, variedade, nomeComum, dataInicial),
+CONSTRAINT ckCulturaInstaladaData CHECK (dataFinal >= dataInicial));
+
+CREATE TABLE CulturaInstaladaEstadoFenologico (
 nomeParcela                varchar2(50) NOT NULL,
 variedade                  varchar2(50) NOT NULL,
 nomeComum                  varchar2(50) NOT NULL,
 dataInicial                date NOT NULL,
-designacaoUnidade          varchar2(5) NOT NULL,
 designacaoEstadoFenologico varchar2(100) NOT NULL,
-idSetor                    varchar2(10) NOT NULL,
-quantidade                 number(11, 2) NOT NULL,
-dataFinal                  date,
-PRIMARY KEY (nomeParcela,
-variedade,
-nomeComum,
-dataInicial),
-CONSTRAINT dataVerification
-CHECK (dataFinal >= dataInicial));
+PRIMARY KEY (nomeParcela,variedade,nomeComum,dataInicial,designacaoEstadoFenologico));
 ---------------------------------------------------------------------------------------------------------------------
 
 CREATE TABLE DataAcaoAgricola (
@@ -98,19 +103,12 @@ CREATE TABLE Log (
 idRegistoLog               date NOT NULL,
 idOperacao                 number(2) NOT NULL,
 designacaoOperacaoAgricola varchar2(50) NOT NULL,
-idEstadoOperacao           number(1) NOT NULL,
-nomeParcela                varchar2(50) NOT NULL,
 designacaoUnidade          varchar2(5) NOT NULL,
+idEstadoOperacao           number(1) NOT NULL,
+quantidade                 number(10, 1) NOT NULL,
 dataOperacao               date NOT NULL,
 duracao                    number(5) NOT NULL,
-variedade                  varchar2(50),
-nomeComum                  varchar2(50),
-culturaDataInical          date,
-culturaDataFinal           date,
-culturaDesignacaoUnidade   varchar2(5),
-idSetor                    varchar2(10),
-culturaQuantidade          number(11, 2),
-designacaoEstadoFenologico varchar2(100),
+dadosAdicionais            number(255) NOT NULL,
 PRIMARY KEY (idRegistoLog));
 ---------------------------------------------------------------------------------------------------------------------
 
@@ -155,14 +153,11 @@ especie                   varchar2(50) CONSTRAINT nnPlantaEspecie NOT NULL,
 CONSTRAINT pkPlantaVariedadeNomeComum PRIMARY KEY (variedade,
                                                nomeComum));
 
-CREATE TABLE Plantacao (
-idOperacao          number(2) CONSTRAINT nnPlantacaoIdOperacao NOT NULL,
-nomeParcela         varchar2(50) CONSTRAINT nnPlantacaoNomeParcela NOT NULL,
-variedade           varchar2(50) CONSTRAINT nnPlantacaoVariedade NOT NULL,
-nomeComum           varchar2(50) CONSTRAINT nnPlantacaoNomeComum NOT NULL,
-dataInicial         date CONSTRAINT nnPlantacaoDataInicial NOT NULL,
-distanciaEntreFilas number(10) CONSTRAINT nnPlantacaoDistanciaEntreFilas NOT NULL,
-CONSTRAINT pkPlantacaoIdOperacao PRIMARY KEY (idOperacao));
+CREATE TABLE PlantacaoPermanente (
+idOperacao          number(2) CONSTRAINT nnPlantacaoPermanenteIdOperacao NOT NULL,
+distanciaEntreFilas number(10) CONSTRAINT nnPlantacaoPermanenteDistanciaEntreFilas NOT NULL,
+compasso number(10) CONSTRAINT nnPlantacaoPermanenteCompasso NOT NULL,
+CONSTRAINT pkPlantacaoPermanenteIdOperacao PRIMARY KEY (idOperacao));
 
 CREATE TABLE PlantaPermanencia (
 nomeComum                 varchar2(50) CONSTRAINT nnPlantaPermanenciaNomeComum NOT NULL,
@@ -194,7 +189,6 @@ CONSTRAINT pkReceitaFertirregaIdReceitaFertirrega PRIMARY KEY (idReceitaFertirre
 CREATE TABLE Rega (
 idOperacao      number(2) CONSTRAINT nnRegaIdOperacao NOT NULL,
 designacaoSetor varchar2(10) CONSTRAINT nnRegaDesignacaoSetor NOT NULL,
-idReceitaFertirrega number(1),
 duracao             number(5) CONSTRAINT nnRegaDuracao NOT NULL,
 CONSTRAINT pkRegaIdOperacao PRIMARY KEY (idOperacao));
 
@@ -241,6 +235,7 @@ ALTER TABLE Stock ADD CONSTRAINT FKStockNomeEdificio FOREIGN KEY (nomeEdificio) 
 ALTER TABLE FatorProducao ADD CONSTRAINT FKFatorProducaoMetodoAplicacao FOREIGN KEY (metodoAplicacao) REFERENCES MetodoAplicacao (metodoAplicacao);
 ALTER TABLE FatorProducao ADD CONSTRAINT FKFatorProducaoClassificacao FOREIGN KEY (classificacao) REFERENCES Classificacao (classificacao);
 ALTER TABLE FatorProducao ADD CONSTRAINT FKFatorProducaoEstadoMateria FOREIGN KEY (estadoMateria) REFERENCES Formulacao (estadoMateria);
+ALTER TABLE CatalogoReceitaFertirrega ADD CONSTRAINT FKCatalogoReceitaFertirregaDesignacaoUnidade FOREIGN KEY (designacaoUnidade) REFERENCES TipoUnidade (designacaoUnidade);
 ALTER TABLE AplicacaoFatorProducao ADD CONSTRAINT FKAplicacaoFatorProducaoNomeComercial FOREIGN KEY (nomeComercial) REFERENCES FatorProducao (nomeComercial);
 ALTER TABLE Edificio ADD CONSTRAINT FKEdificioDesignacaoTipoEdificio FOREIGN KEY (designacaoTipoEdificio) REFERENCES TipoEdificio (designacaoTipoEdificio);
 ALTER TABLE FatorProducao ADD CONSTRAINT FKFatorProducaoIdStock FOREIGN KEY (idStock) REFERENCES Stock (idStock);
@@ -271,7 +266,6 @@ ALTER TABLE Planta ADD CONSTRAINT FKPlantaNomeComum FOREIGN KEY (nomeComum) REFE
 ALTER TABLE CulturaInstalada ADD CONSTRAINT FKCulturaInstaladaDesignacaoUnidade FOREIGN KEY (designacaoUnidade) REFERENCES TipoUnidade (designacaoUnidade);
 ALTER TABLE CulturaInstalada ADD CONSTRAINT FKCulturaInstaladaNomeParcela FOREIGN KEY (nomeParcela) REFERENCES Parcela (nomeParcela);
 ALTER TABLE CulturaInstalada ADD CONSTRAINT FKCulturaInstaladaVariedadeNomeComum FOREIGN KEY (variedade, nomeComum) REFERENCES Planta (variedade, nomeComum);
-ALTER TABLE CulturaInstalada ADD CONSTRAINT FKCulturaInstaladaDesignacaoEstadoFenologico FOREIGN KEY (designacaoEstadoFenologico) REFERENCES EstadoFenologico (designacaoEstadoFenologico);
 ALTER TABLE CulturaInstalada ADD CONSTRAINT FKCulturaInstaladaIdSetor FOREIGN KEY (idSetor) REFERENCES Setor (idSetor);
 ALTER TABLE CatalogoReceitaFertirrega ADD CONSTRAINT FKCatalogoReceitaFertirregaNomeComercial FOREIGN KEY (nomeComercial) REFERENCES FatorProducao (nomeComercial);
 ALTER TABLE CatalogoReceitaFertirrega ADD CONSTRAINT FKCatalogoReceitaFertirregaIdReceitaFertirrega FOREIGN KEY (idReceitaFertirrega) REFERENCES ReceitaFertirrega (idReceitaFertirrega);
@@ -280,10 +274,5 @@ ALTER TABLE Log ADD CONSTRAINT FKRegistosLogIdOperacao FOREIGN KEY (idOperacao) 
 ALTER TABLE ProdutoColhido ADD CONSTRAINT FKProdutoColhidoNomeProduto FOREIGN KEY (nomeProduto) REFERENCES Produto (nomeProduto);
 ALTER TABLE ProdutoColhido ADD CONSTRAINT FKProdutoColhidoDesignacaoUnidade FOREIGN KEY (designacaoUnidade) REFERENCES TipoUnidade (designacaoUnidade);
 ALTER TABLE ProdutoColhido ADD CONSTRAINT FKProdutoColhidoIdOperacao FOREIGN KEY (idOperacao) REFERENCES Operacao (idOperacao);
-ALTER TABLE Log ADD CONSTRAINT FKRegistosLogDesignacaoUnidade FOREIGN KEY (designacaoUnidade) REFERENCES TipoUnidade (designacaoUnidade);
-ALTER TABLE Log ADD CONSTRAINT FKRegistosLogDesignacaoOperacaoAgricola FOREIGN KEY (designacaoOperacaoAgricola) REFERENCES TipoOperacaoAgricola (designacaoOperacaoAgricola);
-ALTER TABLE Log ADD CONSTRAINT FKRegistosLogNomeParcela FOREIGN KEY (nomeParcela) REFERENCES Parcela (nomeParcela);
-ALTER TABLE Log ADD CONSTRAINT FKRegistosLogIdEstadoOperacao FOREIGN KEY (idEstadoOperacao) REFERENCES EstadoOperacao (idEstadoOperacao);
-ALTER TABLE Rega ADD CONSTRAINT FKRegaIdReceitaFertirrega FOREIGN KEY (idReceitaFertirrega) REFERENCES ReceitaFertirrega (idReceitaFertirrega);
-ALTER TABLE Plantacao ADD CONSTRAINT FKPlantacaoIdOperacao FOREIGN KEY (idOperacao) REFERENCES Operacao (idOperacao);
-ALTER TABLE Plantacao ADD CONSTRAINT FKPlantacaoAtributosPKCulturaInstalada FOREIGN KEY (nomeParcela, variedade, nomeComum, dataInicial) REFERENCES CulturaInstalada (nomeParcela, variedade, nomeComum, dataInicial);
+ALTER TABLE PlantacaoPermanente ADD CONSTRAINT FKPlantacaoPermanenteIdOperacao FOREIGN KEY (idOperacao) REFERENCES Operacao (idOperacao);
+ALTER TABLE CulturaInstaladaEstadoFenologico ADD CONSTRAINT FKCulturaInstaladaDesignacaoEstadoFenologico FOREIGN KEY (designacaoEstadoFenologico) REFERENCES EstadoFenologico (designacaoEstadoFenologico);

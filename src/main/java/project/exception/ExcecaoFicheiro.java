@@ -120,15 +120,13 @@ public class ExcecaoFicheiro extends Exception {
         for (int i = 2; i < 29; i++) {
             day++;
             LocalDate dataPlano = LocalDate.now().withDayOfMonth(dayNumber).plusDays((day - dayNumber));
+
             if (dataPlano.getMonthValue() != LocalDate.now().getMonthValue()) {
                 day = 1;
             }
-            if (i % recorrencia == 0) {
-                boolean isEvenDay = day % 2 == 0;
 
-                if ((isEvenDay && reg.equalsIgnoreCase("i")) || (!isEvenDay && reg.equalsIgnoreCase("p"))) {
-                    throw new ExcecaoFicheiro("ERRO: Inválida recorrência da fertirrega para a regularidade apresentada - " + String.join(", ", info));
-                }
+            if ((i % recorrencia == 0) && ((day % 2 == 0 && reg.equalsIgnoreCase("i")) || (day % 2 != 0 && reg.equalsIgnoreCase("p")) || (day % 3 != 0 && reg.equalsIgnoreCase("3")))) {
+                throw new ExcecaoFicheiro("ERRO: Inválida recorrência da fertirrega para a regularidade apresentada - " + String.join(", ", info));
             }
         }
     }

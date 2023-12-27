@@ -35,6 +35,7 @@ public class ImportarFicheiro {
             SistemaDeRega.setInicioDoPlanoDeRega(LocalDate.now());
             return true;
         } catch (ExcecaoFicheiro | IOException e) {
+            System.out.println(e.getMessage());
             return false;
         }
     }

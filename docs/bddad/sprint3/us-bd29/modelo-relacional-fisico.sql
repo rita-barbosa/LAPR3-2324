@@ -42,11 +42,21 @@ nomeParcela                varchar2(50) CONSTRAINT nnCulturaInstaladaNomeParcela
 variedade                  varchar2(50) CONSTRAINT nnCulturaInstaladaVariedade NOT NULL,
 nomeComum                  varchar2(50) CONSTRAINT nnCulturaInstaladaNomeComum NOT NULL,
 designacaoUnidade          varchar2(5) CONSTRAINT nnCulturaInstaladaDesignacaoUnidade NOT NULL,
-idSetor                    varchar2(10) CONSTRAINT nnCulturaInstaladaIdSetor NOT NULL,
 quantidade                 number(11, 2) CONSTRAINT nnCulturaInstaladaQuantidade NOT NULL,
 dataFinal                  date,
 PRIMARY KEY (nomeParcela, variedade, nomeComum, dataInicial),
 CONSTRAINT ckCulturaInstaladaData CHECK (dataFinal >= dataInicial));
+
+CREATE TABLE PlanoRega (
+dataInicial date CONSTRAINT nnPlanoRegaDataInicial NOT NULL,
+nomeParcela varchar2(50) CONSTRAINT nnPlanoRegaNomeParcela NOT NULL,
+variedade   varchar2(50) CONSTRAINT nnPlanoRegaVariedade NOT NULL,
+nomeComum   varchar2(50) CONSTRAINT nnPlanoRegaNomeComum NOT NULL,
+idSetor     varchar2(10) CONSTRAINT nnPlanoRegaIdSetor NOT NULL,
+dataInicio  date CONSTRAINT nnPlanoRegaDataInicio NOT NULL,
+dataFim     date,
+PRIMARY KEY (dataInicial, nomeParcela, variedade, nomeComum, idSetor),
+CONSTRAINT ckPlanoRegaData CHECK (dataFim >= dataInicial));
 
 CREATE TABLE CulturaInstaladaEstadoFenologico (
 nomeParcela                varchar2(50) NOT NULL,
@@ -105,8 +115,8 @@ idOperacao                 number(5) CONSTRAINT nnLogIdOperacao NOT NULL,
 designacaoOperacaoAgricola varchar2(50) CONSTRAINT nnLogDesignacaoOperacaoAgricola NOT NULL,
 designacaoUnidade          varchar2(5) CONSTRAINT nnLogDesignacaoUnidade NOT NULL,
 idEstadoOperacao           number(1) CONSTRAINT nnLogIdEstadoOperacao NOT NULL,
-quantidade                 number(10, 1) CONSTRAINT nnLogIdRegistoLog NOT NULL,
-dataOperacao               date CONSTRAINT nnLogQuantidade NOT NULL,
+quantidade                 number(10, 1) CONSTRAINT nnLogQuantidade NOT NULL,
+dataOperacao               date CONSTRAINT nnLogDataOperacao NOT NULL,
 duracao                    number(5) CONSTRAINT nnLogDuracao NOT NULL,
 dadosAdicionais            varchar2(255)  CONSTRAINT nnLogDadosAdicionais NOT NULL,
 CONSTRAINT pkLogIdRegistoLog PRIMARY KEY (idRegistoLog));
@@ -266,7 +276,6 @@ ALTER TABLE Planta ADD CONSTRAINT FKPlantaNomeComum FOREIGN KEY (nomeComum) REFE
 ALTER TABLE CulturaInstalada ADD CONSTRAINT FKCulturaInstaladaDesignacaoUnidade FOREIGN KEY (designacaoUnidade) REFERENCES TipoUnidade (designacaoUnidade);
 ALTER TABLE CulturaInstalada ADD CONSTRAINT FKCulturaInstaladaNomeParcela FOREIGN KEY (nomeParcela) REFERENCES Parcela (nomeParcela);
 ALTER TABLE CulturaInstalada ADD CONSTRAINT FKCulturaInstaladaVariedadeNomeComum FOREIGN KEY (variedade, nomeComum) REFERENCES Planta (variedade, nomeComum);
-ALTER TABLE CulturaInstalada ADD CONSTRAINT FKCulturaInstaladaIdSetor FOREIGN KEY (idSetor) REFERENCES Setor (idSetor);
 ALTER TABLE CatalogoReceitaFertirrega ADD CONSTRAINT FKCatalogoReceitaFertirregaNomeComercial FOREIGN KEY (nomeComercial) REFERENCES FatorProducao (nomeComercial);
 ALTER TABLE CatalogoReceitaFertirrega ADD CONSTRAINT FKCatalogoReceitaFertirregaIdReceitaFertirrega FOREIGN KEY (idReceitaFertirrega) REFERENCES ReceitaFertirrega (idReceitaFertirrega);
 ALTER TABLE OperacaoCultura ADD CONSTRAINT FKOperacaoCulturaNomeParcelaVariedadeNomeComumDataInicial FOREIGN KEY (nomeParcela, variedade, nomeComum, dataInicial) REFERENCES CulturaInstalada (nomeParcela, variedade, nomeComum, dataInicial);
@@ -276,3 +285,5 @@ ALTER TABLE ProdutoColhido ADD CONSTRAINT FKProdutoColhidoDesignacaoUnidade FORE
 ALTER TABLE ProdutoColhido ADD CONSTRAINT FKProdutoColhidoIdOperacao FOREIGN KEY (idOperacao) REFERENCES Operacao (idOperacao);
 ALTER TABLE PlantacaoPermanente ADD CONSTRAINT FKPlantacaoPermanenteIdOperacao FOREIGN KEY (idOperacao) REFERENCES Operacao (idOperacao);
 ALTER TABLE CulturaInstaladaEstadoFenologico ADD CONSTRAINT FKCulturaInstaladaDesignacaoEstadoFenologico FOREIGN KEY (designacaoEstadoFenologico) REFERENCES EstadoFenologico (designacaoEstadoFenologico);
+ALTER TABLE PlanoRega ADD CONSTRAINT FKPlanoRegaNomeParcelaVariedadeNomeComumDataInicial FOREIGN KEY (dataInicial, nomeParcela, variedade, nomeComum) REFERENCES CulturaInstalada (dataInicial, nomeParcela, variedade, nomeComum);
+ALTER TABLE PlanoRega ADD CONSTRAINT FKPlanoRegaIdSetor FOREIGN KEY (idSetor) REFERENCES Setor (idSetor);

@@ -100,16 +100,16 @@ CONSTRAINT pkFormulacaoEstadoMateria PRIMARY KEY (estadoMateria));
 
 ---------------------------------------------------------------------------------------------------------------------
 CREATE TABLE Log (
-idRegistoLog               date NOT NULL,
-idOperacao                 number(5) NOT NULL,
-designacaoOperacaoAgricola varchar2(50) NOT NULL,
-designacaoUnidade          varchar2(5) NOT NULL,
-idEstadoOperacao           number(1) NOT NULL,
-quantidade                 number(10, 1) NOT NULL,
-dataOperacao               date NOT NULL,
-duracao                    number(5) NOT NULL,
-dadosAdicionais            number(255) NOT NULL,
-PRIMARY KEY (idRegistoLog));
+idRegistoLog               date CONSTRAINT nnLogIdRegistoLog NOT NULL,
+idOperacao                 number(5) CONSTRAINT nnLogIdOperacao NOT NULL,
+designacaoOperacaoAgricola varchar2(50) CONSTRAINT nnLogDesignacaoOperacaoAgricola NOT NULL,
+designacaoUnidade          varchar2(5) CONSTRAINT nnLogDesignacaoUnidade NOT NULL,
+idEstadoOperacao           number(1) CONSTRAINT nnLogIdEstadoOperacao NOT NULL,
+quantidade                 number(10, 1) CONSTRAINT nnLogIdRegistoLog NOT NULL,
+dataOperacao               date CONSTRAINT nnLogQuantidade NOT NULL,
+duracao                    number(5) CONSTRAINT nnLogDuracao NOT NULL,
+dadosAdicionais            varchar2(255)  CONSTRAINT nnLogDadosAdicionais NOT NULL,
+CONSTRAINT pkLogIdRegistoLog PRIMARY KEY (idRegistoLog));
 ---------------------------------------------------------------------------------------------------------------------
 
 CREATE TABLE MetodoAplicacao (

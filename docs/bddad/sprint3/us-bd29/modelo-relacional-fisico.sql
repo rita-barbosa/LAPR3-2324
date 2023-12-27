@@ -1,6 +1,6 @@
 CREATE TABLE AplicacaoFatorProducao (
 nomeComercial varchar2(50) CONSTRAINT nnAplicacaoFatorProducaoNomeComercial NOT NULL,
-idOperacao    number(3) CONSTRAINT nnAplicacaoFatorProducaoIdOperacao NOT NULL,
+idOperacao    number(5) CONSTRAINT nnAplicacaoFatorProducaoIdOperacao NOT NULL,
 CONSTRAINT pkAplicacaoFatorProducaoIdOperacaoNomeComercial PRIMARY KEY (nomeComercial,
                                                                         idOperacao));
 
@@ -12,7 +12,7 @@ nomeComum                  varchar2(50) CONSTRAINT nnCalendarioAcaoAgricolaNomeC
 CONSTRAINT pkCalendarioAcaoAgricolaPKComponente PRIMARY KEY (variedade, nomeComum, designacaoTipoAcaoAgricola, intervaloTempo));
 
 CREATE TABLE CatalogoReceitaFertirrega (
-idReceitaFertirrega number(2) CONSTRAINT nnCatalogoReceitaFertirregaIdReceitaFertirrega NOT NULL,
+idReceitaFertirrega number(5) CONSTRAINT nnCatalogoReceitaFertirregaIdReceitaFertirrega NOT NULL,
 nomeComercial       varchar2(50) CONSTRAINT nnCatalogoReceitaFertirregaNomeComercial NOT NULL,
 designacaoUnidade   varchar2(5) CONSTRAINT nnCatalogoReceitaFertirregaDesignacaoUnidade NOT NULL,
 quantidade          number(10) CONSTRAINT nnCatalogoReceitaFertirregaQuantidade NOT NULL,
@@ -37,10 +37,10 @@ CONSTRAINT ckConstituicaoQuimicaQuantidadePercentagem CHECK (quantidade BETWEEN 
 
 ---------------------------------------------------------------------------------------------------------------------
 CREATE TABLE CulturaInstalada (
+dataInicial                date CONSTRAINT nnCulturaInstaladaDataInicial NOT NULL,
 nomeParcela                varchar2(50) CONSTRAINT nnCulturaInstaladaNomeParcela NOT NULL,
 variedade                  varchar2(50) CONSTRAINT nnCulturaInstaladaVariedade NOT NULL,
 nomeComum                  varchar2(50) CONSTRAINT nnCulturaInstaladaNomeComum NOT NULL,
-dataInicial                date CONSTRAINT nnCulturaInstaladaDataInicial NOT NULL,
 designacaoUnidade          varchar2(5) CONSTRAINT nnCulturaInstaladaDesignacaoUnidade NOT NULL,
 idSetor                    varchar2(10) CONSTRAINT nnCulturaInstaladaIdSetor NOT NULL,
 quantidade                 number(11, 2) CONSTRAINT nnCulturaInstaladaQuantidade NOT NULL,
@@ -101,7 +101,7 @@ CONSTRAINT pkFormulacaoEstadoMateria PRIMARY KEY (estadoMateria));
 ---------------------------------------------------------------------------------------------------------------------
 CREATE TABLE Log (
 idRegistoLog               date NOT NULL,
-idOperacao                 number(3) NOT NULL,
+idOperacao                 number(5) NOT NULL,
 designacaoOperacaoAgricola varchar2(50) NOT NULL,
 designacaoUnidade          varchar2(5) NOT NULL,
 idEstadoOperacao           number(1) NOT NULL,
@@ -117,7 +117,7 @@ metodoAplicacao varchar2(50) CONSTRAINT nnMetodoAplicacaoMetodoAplicacao  NOT NU
 CONSTRAINT pkMetodoAplicacaoMetodoAplicacao PRIMARY KEY (metodoAplicacao));
 ---------------------------------------------------------------------------------------------------------------------
 CREATE TABLE Operacao (
-idOperacao                 number(3) CONSTRAINT nnOperacaoIdOperacao NOT NULL,
+idOperacao                 number(5) CONSTRAINT nnOperacaoIdOperacao NOT NULL,
 designacaoOperacaoAgricola varchar2(50) CONSTRAINT nnOperacaoDesignacaoOperacaoAgricola NOT NULL,
 designacaoUnidade          varchar2(5) CONSTRAINT nnOperacaoDesignacaoUnidade NOT NULL,
 idEstadoOperacao           number(1) CONSTRAINT nnOperacaoIdEstadoOperacao NOT NULL,
@@ -128,7 +128,7 @@ CONSTRAINT pkOperacaoIdOperacao PRIMARY KEY (idOperacao));
 ---------------------------------------------------------------------------------------------------------------------
 
 CREATE TABLE OperacaoCultura (
-idOperacao  number(3) CONSTRAINT nnOperacaoCulturaIdOperacao NOT NULL,
+idOperacao  number(5) CONSTRAINT nnOperacaoCulturaIdOperacao NOT NULL,
 nomeParcela varchar2(50) CONSTRAINT nnOperacaoCulturaNomeParcela NOT NULL,
 variedade   varchar2(50) CONSTRAINT nnOperacaoCulturaVariedade  NOT NULL,
 nomeComum   varchar2(50) CONSTRAINT nnOperacaoCulturaNomeComum NOT NULL,
@@ -136,7 +136,7 @@ dataInicial date CONSTRAINT nnOperacaoCulturaDataInicial NOT NULL,
 CONSTRAINT pkOperacaoCulturaIdOperacao PRIMARY KEY (idOperacao));
 
 CREATE TABLE OperacaoParcela (
-idOperacao  number(3) CONSTRAINT nnOperacaoParcelaIdOperacao NOT NULL,
+idOperacao  number(5) CONSTRAINT nnOperacaoParcelaIdOperacao NOT NULL,
 nomeParcela varchar2(50) CONSTRAINT nnOperacaoParcelaNomeParcela NOT NULL,
 CONSTRAINT pkOperacaoParcelaIdOperacao PRIMARY KEY (idOperacao));
 
@@ -154,7 +154,7 @@ CONSTRAINT pkPlantaVariedadeNomeComum PRIMARY KEY (variedade,
                                                nomeComum));
 
 CREATE TABLE PlantacaoPermanente (
-idOperacao          number(3) CONSTRAINT nnPlantacaoPermanenteIdOperacao NOT NULL,
+idOperacao          number(5) CONSTRAINT nnPlantacaoPermanenteIdOperacao NOT NULL,
 distanciaEntreFilas number(10) CONSTRAINT nnPlantacaoPermanenteDistanciaEntreFilas NOT NULL,
 compasso number(10) CONSTRAINT nnPlantacaoPermanenteCompasso NOT NULL,
 CONSTRAINT pkPlantacaoPermanenteIdOperacao PRIMARY KEY (idOperacao));
@@ -176,18 +176,18 @@ idStock     number(5) CONSTRAINT nnProdutoIdStock NOT NULL,
 CONSTRAINT pkProdutoNomeProduto PRIMARY KEY (nomeProduto));
 
 CREATE TABLE ProdutoColhido (
-idOperacao        number(3) CONSTRAINT nnProdutoColhidoIdOperacao NOT NULL,
+idOperacao        number(5) CONSTRAINT nnProdutoColhidoIdOperacao NOT NULL,
 nomeProduto       varchar2(50) CONSTRAINT nnProdutoColhidoNomeProduto NOT NULL,
 designacaoUnidade varchar2(5) CONSTRAINT nnProdutoColhidoDesignacaoUnidade NOT NULL,
 quantidade        number(10) CONSTRAINT nnProdutoColhidoQuantidade NOT NULL,
 CONSTRAINT pkProdutoColhidoIdOperacaoNomeProduto PRIMARY KEY (idOperacao, nomeProduto));
 
 CREATE TABLE ReceitaFertirrega (
-idReceitaFertirrega number(2) CONSTRAINT nnReceitaFertirregaIdReceitaFertirrega NOT NULL,
+idReceitaFertirrega number(5) CONSTRAINT nnReceitaFertirregaIdReceitaFertirrega NOT NULL,
 CONSTRAINT pkReceitaFertirregaIdReceitaFertirrega PRIMARY KEY (idReceitaFertirrega));
 
 CREATE TABLE Rega (
-idOperacao      number(3) CONSTRAINT nnRegaIdOperacao NOT NULL,
+idOperacao      number(5) CONSTRAINT nnRegaIdOperacao NOT NULL,
 designacaoSetor varchar2(10) CONSTRAINT nnRegaDesignacaoSetor NOT NULL,
 duracao             number(5) CONSTRAINT nnRegaDuracao NOT NULL,
 CONSTRAINT pkRegaIdOperacao PRIMARY KEY (idOperacao));

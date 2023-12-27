@@ -42,6 +42,9 @@
 * **Desdobramento de Planta**
 > Tendo em conta a dependência da permanência da planta apenas com o nome comum desta, criou-se uma nova tabela para representar esta relação.
 
+* **Plantas Permanentes** 
+> Com a fertirrega é necessário manter registo da distância das filas das plantas permanentes e o seu espaçamento, por isso foi criada a tabela PlantacaoPermanente.
+
 * **Inclusão da Fertirrega**
 > Conjugação de uma operação de rega com uma ou mais aplicações de fatores de produção.
 > Adição do Catálogo das misturas de fertirrega.

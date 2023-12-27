@@ -330,18 +330,18 @@ INSERT INTO Setor(idSetor, nomeEdificio, designacaoUnidade, dataInicio, dataFim,
 INSERT INTO Setor(idSetor, nomeEdificio, designacaoUnidade, dataInicio, dataFim, caudalMaximo) VALUES (42, 'Tanque do campo grande', 'l/h', TO_DATE('01/04/2023', 'DD/MM/YYYY'), TO_DATE('10/10/2023', 'DD/MM/YYYY'), 3500);
 
 --WORKS
-INSERT INTO TipoOperacaoAgricola(designacaoOperacaoAgricola) VALUES ('Aplicação de fator de produção');
-INSERT INTO TipoOperacaoAgricola(designacaoOperacaoAgricola) VALUES ('Monda');
-INSERT INTO TipoOperacaoAgricola(designacaoOperacaoAgricola) VALUES ('Mobilização do solo');
-INSERT INTO TipoOperacaoAgricola(designacaoOperacaoAgricola) VALUES ('Semeadura');
-INSERT INTO TipoOperacaoAgricola(designacaoOperacaoAgricola) VALUES ('Plantação');
-INSERT INTO TipoOperacaoAgricola(designacaoOperacaoAgricola) VALUES ('Rega');
-INSERT INTO TipoOperacaoAgricola(designacaoOperacaoAgricola) VALUES ('Poda');
-INSERT INTO TipoOperacaoAgricola(designacaoOperacaoAgricola) VALUES ('Fertilização');
+INSERT INTO TipoOperacaoAgricola(designacaoOperacaoAgricola) VALUES ('Aplicação de fator de produção'); --done
+INSERT INTO TipoOperacaoAgricola(designacaoOperacaoAgricola) VALUES ('Monda');--not necessary
+INSERT INTO TipoOperacaoAgricola(designacaoOperacaoAgricola) VALUES ('Mobilização do solo');--not necessary
+INSERT INTO TipoOperacaoAgricola(designacaoOperacaoAgricola) VALUES ('Semeadura');--not necessary
+INSERT INTO TipoOperacaoAgricola(designacaoOperacaoAgricola) VALUES ('Plantação'); --necessary
+INSERT INTO TipoOperacaoAgricola(designacaoOperacaoAgricola) VALUES ('Rega'); --done
+INSERT INTO TipoOperacaoAgricola(designacaoOperacaoAgricola) VALUES ('Poda');--not necessary
+INSERT INTO TipoOperacaoAgricola(designacaoOperacaoAgricola) VALUES ('Fertilização'); --done
 INSERT INTO TipoOperacaoAgricola(designacaoOperacaoAgricola) VALUES ('Aplicação fitofármaco');
-INSERT INTO TipoOperacaoAgricola(designacaoOperacaoAgricola) VALUES ('Sementeira');
-INSERT INTO TipoOperacaoAgricola(designacaoOperacaoAgricola) VALUES ('Colheita');
-INSERT INTO TipoOperacaoAgricola(designacaoOperacaoAgricola) VALUES ('Incorporação no solo');
+INSERT INTO TipoOperacaoAgricola(designacaoOperacaoAgricola) VALUES ('Sementeira'); --not necessary
+INSERT INTO TipoOperacaoAgricola(designacaoOperacaoAgricola) VALUES ('Colheita'); --necessary
+INSERT INTO TipoOperacaoAgricola(designacaoOperacaoAgricola) VALUES ('Incorporação no solo'); --not necessary
 
 --WORKS
 INSERT INTO CulturaInstalada (dataInicial, nomeParcela, variedade, nomeComum, designacaoUnidade, idSetor,quantidade,  dataFinal) VALUES (TO_DATE('05/04/2023', 'DD/MM/YYYY') , 'Campo Novo' , 41, UPPER('Sugarsnax Hybrid'), 'Cenoura', 'ha', 0.50, TO_DATE('28/06/2023', 'DD/MM/YYYY'));

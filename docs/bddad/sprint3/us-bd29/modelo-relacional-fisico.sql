@@ -117,8 +117,7 @@ designacaoUnidade          varchar2(5) CONSTRAINT nnLogDesignacaoUnidade NOT NUL
 idEstadoOperacao           number(1) CONSTRAINT nnLogIdEstadoOperacao NOT NULL,
 quantidade                 number(10, 1) CONSTRAINT nnLogQuantidade NOT NULL,
 dataOperacao               date CONSTRAINT nnLogDataOperacao NOT NULL,
-duracao                    number(5) CONSTRAINT nnLogDuracao NOT NULL,
-dadosAdicionais            varchar2(255)  CONSTRAINT nnLogDadosAdicionais NOT NULL,
+dadosAdicionais            varchar2(255),
 CONSTRAINT pkLogIdRegistoLog PRIMARY KEY (idRegistoLog));
 ---------------------------------------------------------------------------------------------------------------------
 

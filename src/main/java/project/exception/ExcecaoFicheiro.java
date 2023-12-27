@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ public class ExcecaoFicheiro extends Exception {
         super(s);
     }
 
-    public static void verificarFicheiro(String caminho,String extensao) throws ExcecaoFicheiro {
+    public static void verificarFicheiro(String caminho, String extensao) throws ExcecaoFicheiro {
         File ficheiro = new File(caminho);
 
         if (!ficheiro.exists()) {
@@ -62,8 +63,8 @@ public class ExcecaoFicheiro extends Exception {
     }
 
     private static void validarLinha(String linha) throws ExcecaoFicheiro {
-        if (!linha.matches("^[A-Za-z0-9]+,\\d{1,2},[TIP3]$")) {
-            throw new ExcecaoFicheiro("ERRO: Conteúdo ficheiro não corresponde ao esperado.\nAs linhas com os setores a serem regados deve ter o seguinte formato:\n <parcela: [A-Z], duração, regularidade: [T,I,P,3]>, por exemplo A,14,T.");
+        if (!linha.matches("^[A-Za-z0-9]+,\\d{1,2},[TIP3](,[A-Za-z0-9]+,\\d{1,2})?$")) {
+            throw new ExcecaoFicheiro("ERRO: Conteúdo ficheiro não corresponde ao esperado.\nAs linhas com os setores a serem regados devem ter o seguinte formato:\n <parcela: [A-Z], duração, regularidade: [T,I,P,3]>, por exemplo A,14,T, ou opcionalmente, com o campo adicional, por exemplo A,14,T,mix1,5.");
         }
     }
 
@@ -74,7 +75,7 @@ public class ExcecaoFicheiro extends Exception {
 
 
         try (BufferedReader br = new BufferedReader(new FileReader(ficheiro))) {
-            String linha =  br.readLine();
+            String linha = br.readLine();
             validarLinhaHoras(linha);
             getHorasRega(linha.split(","), horasRega);
 
@@ -96,12 +97,41 @@ public class ExcecaoFicheiro extends Exception {
                 if (tempoAtualI.isAfter(horasRega.get(1)) || tempoAtualP.isAfter(horasRega.get(1))) {
                     throw new ExcecaoFicheiro("ERRO: Sobreposição de horas de rega.");
                 }
+                if (info.length == 5) {
+                    validarFertirrega(info);
+                }
             }
         } catch (IOException e) {
             throw new ExcecaoFicheiro("ERRO: Problemas na validação plano de rega.");
         }
     }
 
+    public static void validarFertirrega(String[] info) throws ExcecaoFicheiro {
+        int dayNumber = LocalDate.now().getDayOfMonth();
+        String reg = info[2];
+        int recorrencia = Integer.parseInt(info[4]);
+
+        if (reg.equalsIgnoreCase("t")) {
+            return;
+        }
+
+        int day = dayNumber;
+
+        for (int i = 2; i < 29; i++) {
+            day++;
+            LocalDate dataPlano = LocalDate.now().withDayOfMonth(dayNumber).plusDays((day - dayNumber));
+            if (dataPlano.getMonthValue() != LocalDate.now().getMonthValue()) {
+                day = 1;
+            }
+            if (i % recorrencia == 0) {
+                boolean isEvenDay = day % 2 == 0;
+
+                if ((isEvenDay && reg.equalsIgnoreCase("i")) || (!isEvenDay && reg.equalsIgnoreCase("p"))) {
+                    throw new ExcecaoFicheiro("ERRO: Inválida recorrência da fertirrega para a regularidade apresentada - " + String.join(", ", info));
+                }
+            }
+        }
+    }
 
     private static void getHorasRega(String[] arrHorasRegas, List<LocalTime> horasRega) {
         for (int i = 0; i < arrHorasRegas.length; i++) {
@@ -116,9 +146,9 @@ public class ExcecaoFicheiro extends Exception {
             while ((linha = br.readLine()) != null) {
                 verificarLinhaHorarios(linha);
                 String[] partes = linha.split(",");
-                    for (int i = 1; i < 3; i++) {
-                        ExcecaoHora.verificarHora(partes[i].trim());
-                    }
+                for (int i = 1; i < 3; i++) {
+                    ExcecaoHora.verificarHora(partes[i].trim());
+                }
             }
         } catch (IOException e) {
             throw new ExcecaoFicheiro("ERRO: Problemas na verificação da estrutura do ficheiro.");

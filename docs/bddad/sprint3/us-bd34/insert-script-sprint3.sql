@@ -973,6 +973,7 @@ INSERT INTO PlantacaoPermanente (idOperacao, distanciaEntreFilas, compasso) VALU
 INSERT INTO PlantacaoPermanente (idOperacao, distanciaEntreFilas, compasso) VALUES (499, 5, 5);
 INSERT INTO PlantacaoPermanente (idOperacao, distanciaEntreFilas, compasso) VALUES (500, 5, 5);
 INSERT INTO PlantacaoPermanente (idOperacao, distanciaEntreFilas, compasso) VALUES (501, 5, 5);
+INSERT INTO PlantacaoPermanente (idOperacao, distanciaEntreFilas, compasso) VALUES (502, 6, 6);
 
 --WORKS
 INSERT INTO OperacaoParcela (idOperacao, nomeParcela) VALUES (89, 'Campo do poço');

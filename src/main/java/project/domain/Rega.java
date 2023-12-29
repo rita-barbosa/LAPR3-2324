@@ -17,6 +17,7 @@ public class Rega {
         this.horaInicio = horaInicio;
         this.horaFim = horaFim;
         this.data = data;
+        this.mixDay = false;
     }
 
     public Rega(String idSetor, LocalTime horaInicio, LocalTime horaFim, LocalDate data, String receita, Boolean mixDay) {
@@ -73,12 +74,12 @@ public class Rega {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Rega that = (Rega) o;
-        return Objects.equals(idSetor, that.idSetor) && Objects.equals(horaInicio, that.horaInicio) && Objects.equals(horaFim, that.horaFim) && Objects.equals(data, that.data) && Objects.equals(receita, that.receita);
+        return Objects.equals(idSetor, that.idSetor) && Objects.equals(horaInicio, that.horaInicio) && Objects.equals(horaFim, that.horaFim) && Objects.equals(data, that.data) && Objects.equals(receita, that.receita) && Objects.equals(mixDay, that.mixDay) ;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idSetor, horaInicio, horaFim, data, receita);
+        return Objects.hash(idSetor, horaInicio, horaFim, data, receita,mixDay);
     }
 
 
@@ -97,7 +98,7 @@ public class Rega {
                     ", horaInicio=" + horaInicio +
                     ", horaFim=" + horaFim +
                     ", data=" + data +
-                    ", receita=" + data +
+                    ", fertirrega=" + mixDay.toString() +
                     '}';
         }
     }

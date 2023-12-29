@@ -31,8 +31,7 @@ public class ImportarFicheiro {
 
             List<Rega> plano = new ArrayList<>();
             readDataFromWateringPlanFile(filepath);
-//            setWateringPlan(plano);
-            setFertirregaPlan(plano);
+            setWateringPlan(plano);
             SistemaDeRega.setPlanoDeRega(plano);
             SistemaDeRega.setInicioDoPlanoDeRega(LocalDate.now());
             return true;
@@ -43,29 +42,6 @@ public class ImportarFicheiro {
     }
 
     private static void setWateringPlan(List<Rega> plano) {
-        LocalDate currentDate = LocalDate.now();
-        for (int i = 0; i < 30; i++) {
-            for (LocalTime hora : timeTurns) {
-                if (LocalTime.now().isBefore(hora) || !currentDate.equals(LocalDate.now())) {
-                    LocalTime tempHora = hora;
-
-                    for (String setor : lineRega.keySet()) {
-                        String regularidade = lineRega.get(setor).get(1);
-                        int minutos = Integer.parseInt(lineRega.get(setor).get(0));
-
-                        if (isRegaDay(currentDate, regularidade)) {
-                            tempHora = tempHora.plusMinutes(minutos);
-                            plano.add(new Rega(setor, tempHora.minusMinutes(minutos), tempHora, currentDate));
-                        }
-                    }
-                }
-            }
-            currentDate = currentDate.plusDays(1);
-        }
-    }
-
-    //TALVEZ APENAS MUDAR NO OUTRO MÉTODO, NÃO É NECESSÁRIO 2 MÉTODOS
-    private static void setFertirregaPlan(List<Rega> plano) {
         LocalDate currentDate = LocalDate.now();
         for (int i = 1; i <= 30; i++) {
             for (LocalTime hora : timeTurns) {
@@ -80,7 +56,6 @@ public class ImportarFicheiro {
                             tempHora = tempHora.plusMinutes(minutos);
                             boolean aux = isFertirregaDay(lineFertirrega.get(setor).get(1), i);
                             plano.add(new Rega(setor, tempHora.minusMinutes(minutos), tempHora, currentDate, lineFertirrega.get(setor).get(0), aux));
-                            break;
                         } else if (isRegaDay(currentDate, regularidade)){
                             tempHora = tempHora.plusMinutes(minutos);
                             plano.add(new Rega(setor, tempHora.minusMinutes(minutos), tempHora, currentDate));
@@ -91,7 +66,6 @@ public class ImportarFicheiro {
             currentDate = currentDate.plusDays(1);
         }
     }
-
 
     private static boolean isRegaDay(LocalDate date, String regularidade) {
         return switch (regularidade) {

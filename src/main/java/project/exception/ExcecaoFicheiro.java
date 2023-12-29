@@ -126,7 +126,7 @@ public class ExcecaoFicheiro extends Exception {
             }
 
             if ((i % recorrencia == 0) && ((day % 2 == 0 && reg.equalsIgnoreCase("i")) || (day % 2 != 0 && reg.equalsIgnoreCase("p")) || (day % 3 != 0 && reg.equalsIgnoreCase("3")))) {
-                throw new ExcecaoFicheiro("ERRO: Inválida recorrência da fertirrega para a regularidade apresentada - " + String.join(", ", info));
+                throw new ExcecaoFicheiro("ERRO: Inválida recorrência da fertirrega para a regularidade apresentada - " + String.join(", ", info) + " Dom - " + day + " dop -"+i);
             }
         }
     }

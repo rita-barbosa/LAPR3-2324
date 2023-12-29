@@ -63,13 +63,18 @@ public class SistemaDeRega {
         LocalDate date = inicioDoPlanoDeRega;
         try {
             FileWriter fileWriter = new FileWriter(file);
-            fileWriter.write("Dia,Sector,Duracao,Inicio,Final\n");
+            fileWriter.write("Dia,Sector,Duracao,Inicio,Final,Fertirrega\n");
             while (date.compareTo(inicioDoPlanoDeRega.plusDays(30)) <= 0) {
                 String dateString = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")).trim();
                 for (Rega rega : planoDeRega) {
                     if (rega.getData().equals(date)) {
                         Duration duration = Duration.between(rega.getHoraInicio(), rega.getHoraFim());
-                        String line = String.format("%s,%s,%s,%s,%s\n", dateString, rega.getIdSetor(), duration.toMinutes(), rega.getHoraInicio(), rega.getHoraFim());
+                        String line;
+                        if (rega.getMixDay()) {
+                            line = String.format("%s,%s,%s,%s,%s,%s\n", dateString, rega.getIdSetor(), duration.toMinutes(), rega.getHoraInicio(), rega.getHoraFim(), rega.getReceita());
+                        } else {
+                            line = String.format("%s,%s,%s,%s,%s,%s\n", dateString, rega.getIdSetor(), duration.toMinutes(), rega.getHoraInicio(), rega.getHoraFim(), " -- ");
+                        }
                         fileWriter.write(line);
                     }
                 }

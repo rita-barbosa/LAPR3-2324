@@ -198,7 +198,6 @@ CONSTRAINT pkReceitaFertirregaIdReceitaFertirrega PRIMARY KEY (idReceitaFertirre
 CREATE TABLE Rega (
 idOperacao      number(5) CONSTRAINT nnRegaIdOperacao NOT NULL,
 designacaoSetor varchar2(10) CONSTRAINT nnRegaDesignacaoSetor NOT NULL,
-duracao             number(5) CONSTRAINT nnRegaDuracao NOT NULL,
 CONSTRAINT pkRegaIdOperacao PRIMARY KEY (idOperacao));
 
 CREATE TABLE Setor (

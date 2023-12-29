@@ -15,7 +15,7 @@ CREATE TABLE CatalogoReceitaFertirrega (
 idReceitaFertirrega number(5) CONSTRAINT nnCatalogoReceitaFertirregaIdReceitaFertirrega NOT NULL,
 nomeComercial       varchar2(50) CONSTRAINT nnCatalogoReceitaFertirregaNomeComercial NOT NULL,
 designacaoUnidade   varchar2(5) CONSTRAINT nnCatalogoReceitaFertirregaDesignacaoUnidade NOT NULL,
-quantidade          number(10) CONSTRAINT nnCatalogoReceitaFertirregaQuantidade NOT NULL,
+quantidade          number(10, 5) CONSTRAINT nnCatalogoReceitaFertirregaQuantidade NOT NULL,
 CONSTRAINT pkCatalogoReceitaFertirrega PRIMARY KEY (idReceitaFertirrega, nomeComercial));
 
 CREATE TABLE Classificacao (

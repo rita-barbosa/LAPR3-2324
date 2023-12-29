@@ -14,14 +14,14 @@ deverá ter a seguinte informação e formato:
 Nesta linha são definidos as horas que se inicia um ciclo de rega, por exemplo:
 `8:30 e 17:00`, significa que existem dois ciclos de rega diários que se iniciam respectivamente às 8:30 e 17:00.
 
-`<Sector, Dura¸c~ao, Regularidade,[Mix,Recorrencia]>`
+`<Sector, Duração, Regularidade,[Mix,Recorrencia]>`
 
 Existe uma linha para cada sector a regar. 
 * Sector (uma ou mais parcelas) identifica a zona a ser regada; 
 * Duração, o tempo em minutos que o sector deve receber rega;
 * Regularidade, a fórmula de recorrência que define os dias que o sector deve ser regado T, todos; I, ímpares, P, pares, 3, a cada 3 dias. 
 
-Opcionalmente a linha pode contar informaçãoo sobre a fertirrega a realizar, definida por um mix (composição de fatores de produção,
+Opcionalmente a linha pode contar informação sobre a fertirrega a realizar, definida por um mix (composição de fatores de produção,
 e a fórmula de recorrência da sua aplicação,por exemplo 7, significa que será aplicada nos
 ordinais 1, 8, 15,... (primeiro, oitavo e décimo quinto) do plano de fertirrega.
 
@@ -63,7 +63,28 @@ Ordinal porque não tem a ver com o dia 2 do calendário mas com o segundo dia d
 
 ### 1.3. Design
 
-> COLOCAR DIAGRAMAS
+#### DIAGRAMAS
+* Sequence Diagram Geral
+![Sequence_Diagram_SD_USLP10.png](Sequence_Diagram_SD_USLP10.png)
+
+* Validação do caminho do ficheiro forneccido
+![Validação_do_caminho_do_ficheiro_forncecido.png](Validação_do_caminho_do_ficheiro_forncecido.png)
+
+* Validação da Estrutura do Ficheiro
+![Validação_da_Estrutura_do_Ficheiro_Sequence_Diagram.png](Validação_da_Estrutura_do_Ficheiro_Sequence_Diagram.png)
+
+* Validação do Conteúdo do Plano de Rega Sequence Diagram
+![Validação_do_Conteúdo_do_Plano_de_Rega_Sequence_Diagram.png](Validação_do_Conteúdo_do_Plano_de_Rega_Sequence_Diagram.png)
+
+* Leitura do Plano de Rega
+![Leitura_do_Plano_de_Rega_Sequence_Diagram.png](Leitura_do_Plano_de_Rega_Sequence_Diagram.png)
+
+* Definição das Regas do Plano de Rega
+![Definição_das_Horas_das_Regas_Sequence_Diagram.png](Definição_das_Horas_das_Regas_Sequence_Diagram.png)
+
+* Agendamento de Operações
+![Agendamento_de_Operações_Sequence_Diagram.png](Agendamento_de_Operações_Sequence_Diagram.png)
+
 
 Classes utilizadas já existentes:
 * ImportarFicheiro
@@ -78,7 +99,7 @@ Classes utilizadas já existentes:
  * Atualizar a validação do plano de rega para que uma fertirrega não ocorra sem existir a rega. Posto isto, foi acrescentado 
 um método que, caso a linha tenha informação sobre a fertirrega, irá avaliar se nos 30 dias do plano existe algum dia onde é suposto efetuar uma 
 fertirrega, no entanto não é efetuada uma rega.
- * Atualizar o import de informação do ficheiro e, posterior, criação do plano de rega.
+ * Atualizar o import de informação do ficheiro, de modo a ter em conta a informação acerca da fertirrega, e, posterior, criação do plano de rega.
 
 ### Recursos
 Nenhum

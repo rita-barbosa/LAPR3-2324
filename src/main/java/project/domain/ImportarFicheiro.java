@@ -95,18 +95,14 @@ public class ImportarFicheiro {
         while ((currentLine = reader.readLine()) != null) {
             List<String> valores = new ArrayList<>();
             line = currentLine.split(",");
-            if (line.length == 3){
-                valores.add(line[1]);
-                valores.add(line[2]);
-                lineRega.put(line[0], valores);
-            } else {
-                List<String> valoresFertiRega = new ArrayList<>();
-                valores.add(line[1]);
-                valores.add(line[2]);
-                lineRega.put(line[0], valores);
-                valoresFertiRega.add(line[3]);
-                valoresFertiRega.add(line[4]);
-                lineFertirrega.put(line[0], valoresFertiRega);
+            valores.add(line[1]);
+            valores.add(line[2]);
+            lineRega.put(line[0], valores);
+            if (line.length == 5){
+                List<String> valoresFertirrega = new ArrayList<>();
+                valoresFertirrega.add(line[3]);
+                valoresFertirrega.add(line[4]);
+                lineFertirrega.put(line[0], valoresFertirrega);
             }
         }
         reader.close();

@@ -18,9 +18,10 @@ public class ImportarFicheiro {
 
     private static final String DIAS_IMPARES = "I";
     private static final String TRES_DIAS = "3";
-    private static final Integer N = 5;
+    private static final Integer N = 9;
     private static final Set<LocalTime> timeTurns = new TreeSet<>();
     private static final Map<String, List<String>> lineRega = new LinkedHashMap<>();
+    private static final Map<String, List<String>> lineFertirrega = new LinkedHashMap<>();
 
     public static boolean importWateringPlan(String filepath) {
         try {
@@ -30,7 +31,8 @@ public class ImportarFicheiro {
 
             List<Rega> plano = new ArrayList<>();
             readDataFromWateringPlanFile(filepath);
-            setWateringPlan(plano);
+//            setWateringPlan(plano);
+            setFertirregaPlan(plano);
             SistemaDeRega.setPlanoDeRega(plano);
             SistemaDeRega.setInicioDoPlanoDeRega(LocalDate.now());
             return true;
@@ -62,6 +64,35 @@ public class ImportarFicheiro {
         }
     }
 
+    //TALVEZ APENAS MUDAR NO OUTRO MÉTODO, NÃO É NECESSÁRIO 2 MÉTODOS
+    private static void setFertirregaPlan(List<Rega> plano) {
+        LocalDate currentDate = LocalDate.now();
+        for (int i = 1; i <= 30; i++) {
+            for (LocalTime hora : timeTurns) {
+                if (LocalTime.now().isBefore(hora) || !currentDate.equals(LocalDate.now())) {
+                    LocalTime tempHora = hora;
+
+                    for (String setor : lineRega.keySet()) {
+                        String regularidade = lineRega.get(setor).get(1);
+                        int minutos = Integer.parseInt(lineRega.get(setor).get(0));
+
+                        if (isRegaDay(currentDate, regularidade) && lineFertirrega.get(setor) != null) {
+                            tempHora = tempHora.plusMinutes(minutos);
+                            boolean aux = isFertirregaDay(lineFertirrega.get(setor).get(1), i);
+                            plano.add(new Rega(setor, tempHora.minusMinutes(minutos), tempHora, currentDate, lineFertirrega.get(setor).get(0), aux));
+                            break;
+                        } else if (isRegaDay(currentDate, regularidade)){
+                            tempHora = tempHora.plusMinutes(minutos);
+                            plano.add(new Rega(setor, tempHora.minusMinutes(minutos), tempHora, currentDate));
+                        }
+                    }
+                }
+            }
+            currentDate = currentDate.plusDays(1);
+        }
+    }
+
+
     private static boolean isRegaDay(LocalDate date, String regularidade) {
         return switch (regularidade) {
             case TODOS_DIAS -> true;
@@ -70,6 +101,11 @@ public class ImportarFicheiro {
             case TRES_DIAS -> date.getDayOfMonth() % 3 == 0;
             default -> false;
         };
+    }
+
+    private static boolean isFertirregaDay(String regularidade, int planDay){
+        int regularidadeValue = Integer.parseInt(regularidade);
+        return planDay % regularidadeValue == 0;
     }
 
     private static void readDataFromWateringPlanFile(String filepath) throws IOException {
@@ -85,9 +121,19 @@ public class ImportarFicheiro {
         while ((currentLine = reader.readLine()) != null) {
             List<String> valores = new ArrayList<>();
             line = currentLine.split(",");
-            valores.add(line[1]);
-            valores.add(line[2]);
-            lineRega.put(line[0], valores);
+            if (line.length == 3){
+                valores.add(line[1]);
+                valores.add(line[2]);
+                lineRega.put(line[0], valores);
+            } else {
+                List<String> valoresFertiRega = new ArrayList<>();
+                valores.add(line[1]);
+                valores.add(line[2]);
+                lineRega.put(line[0], valores);
+                valoresFertiRega.add(line[3]);
+                valoresFertiRega.add(line[4]);
+                lineFertirrega.put(line[0], valoresFertiRega);
+            }
         }
         reader.close();
     }

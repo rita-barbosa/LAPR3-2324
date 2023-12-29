@@ -10,6 +10,7 @@ public class Rega {
     private LocalTime horaFim;
     private LocalDate data;
     private String receita;
+    private Boolean mixDay;
 
     public Rega(String idSetor, LocalTime horaInicio, LocalTime horaFim, LocalDate data) {
         this.idSetor = idSetor;
@@ -18,12 +19,13 @@ public class Rega {
         this.data = data;
     }
 
-    public Rega(String idSetor, LocalTime horaInicio, LocalTime horaFim, LocalDate data, String receita) {
+    public Rega(String idSetor, LocalTime horaInicio, LocalTime horaFim, LocalDate data, String receita, Boolean mixDay) {
         this.idSetor = idSetor;
         this.horaInicio = horaInicio;
         this.horaFim = horaFim;
         this.data = data;
         this.receita = receita;
+        this.mixDay = mixDay;
     }
 
     public String getIdSetor() {
@@ -60,6 +62,10 @@ public class Rega {
 
     public String getReceita() {
         return receita;
+    }
+
+    public Boolean getMixDay(){
+        return mixDay;
     }
 
     @Override

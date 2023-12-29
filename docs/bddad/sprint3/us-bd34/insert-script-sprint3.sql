@@ -1721,12 +1721,6 @@ INSERT INTO Rega (idOperacao, designacaoSetor) VALUES (425,22);
 INSERT INTO Rega (idOperacao, designacaoSetor) VALUES (426,22);
 INSERT INTO Rega (idOperacao, designacaoSetor) VALUES (427,22);
 INSERT INTO Rega (idOperacao, designacaoSetor) VALUES (428,22);
-INSERT INTO Rega (idOperacao, designacaoSetor) VALUES (429,42);
-INSERT INTO Rega (idOperacao, designacaoSetor) VALUES (430,42);
-INSERT INTO Rega (idOperacao, designacaoSetor) VALUES (431,42);
-INSERT INTO Rega (idOperacao, designacaoSetor) VALUES (432,42);
-INSERT INTO Rega (idOperacao, designacaoSetor) VALUES (433,41);
-INSERT INTO Rega (idOperacao, designacaoSetor) VALUES (434,41);
 
 
 --TO BE TESTED

@@ -44,7 +44,7 @@ nomeComum                  varchar2(50) CONSTRAINT nnCulturaInstaladaNomeComum N
 designacaoUnidade          varchar2(5) CONSTRAINT nnCulturaInstaladaDesignacaoUnidade NOT NULL,
 quantidade                 number(11, 2) CONSTRAINT nnCulturaInstaladaQuantidade NOT NULL,
 dataFinal                  date,
-PRIMARY KEY (nomeParcela, variedade, nomeComum, dataInicial),
+CONSTRAINT pkCulturaInstaladaParcelaVariedadeNComumDataInicio PRIMARY KEY (nomeParcela, variedade, nomeComum, dataInicial),
 CONSTRAINT ckCulturaInstaladaData CHECK (dataFinal >= dataInicial));
 
 CREATE TABLE PlanoRega (
@@ -55,7 +55,7 @@ nomeComum   varchar2(50) CONSTRAINT nnPlanoRegaNomeComum NOT NULL,
 designacaoSetor     varchar2(10) CONSTRAINT nnPlanoRegaDesignacaoSetor NOT NULL,
 dataInicio  date CONSTRAINT nnPlanoRegaDataInicio NOT NULL,
 dataFim     date,
-PRIMARY KEY (dataInicial, nomeParcela, variedade, nomeComum, designacaoSetor),
+CONSTRAINT pkPlanoRegaParcelaVariedadeNComumDataInicioDesigSetor PRIMARY KEY (dataInicial, nomeParcela, variedade, nomeComum, designacaoSetor),
 CONSTRAINT ckPlanoRegaData CHECK (dataFim >= dataInicial));
 
 CREATE TABLE CulturaInstaladaEstadoFenologico (
@@ -64,7 +64,7 @@ variedade                  varchar2(50) NOT NULL,
 nomeComum                  varchar2(50) NOT NULL,
 dataInicial                date NOT NULL,
 designacaoEstadoFenologico varchar2(100) NOT NULL,
-PRIMARY KEY (nomeParcela,variedade,nomeComum,dataInicial,designacaoEstadoFenologico));
+CONSTRAINT pkCulturaInstaladaEstadoFenologicoParcVarNComumDataInicioDesigEstado PRIMARY KEY (nomeParcela,variedade,nomeComum,dataInicial,designacaoEstadoFenologico));
 ---------------------------------------------------------------------------------------------------------------------
 
 CREATE TABLE DataAcaoAgricola (

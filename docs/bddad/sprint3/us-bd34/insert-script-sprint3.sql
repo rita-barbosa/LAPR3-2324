@@ -322,12 +322,12 @@ INSERT INTO ConstituicaoQuimica(formulaQuimica, nomeComercial, designacaoUnidade
 
 
 --WORKS
-INSERT INTO Setor(idSetor, nomeEdificio, designacaoUnidade, dataInicio, dataFim, caudalMaximo) VALUES (10, 'Tanque do campo grande', 'l/h', TO_DATE('01/02/2017', 'DD/MM/YYYY'), NULL, 2500);
-INSERT INTO Setor(idSetor, nomeEdificio, designacaoUnidade, dataInicio, dataFim, caudalMaximo) VALUES (11, 'Tanque do campo grande', 'l/h', TO_DATE('01/05/2017', 'DD/MM/YYYY'), NULL, 1500);
-INSERT INTO Setor(idSetor, nomeEdificio, designacaoUnidade, dataInicio, dataFim, caudalMaximo) VALUES (21, 'Tanque do campo grande', 'l/h', TO_DATE('01/05/2017', 'DD/MM/YYYY'), NULL, 3500);
-INSERT INTO Setor(idSetor, nomeEdificio, designacaoUnidade, dataInicio, dataFim, caudalMaximo) VALUES (22, 'Tanque do campo grande', 'l/h', TO_DATE('01/05/2019', 'DD/MM/YYYY'), NULL, 3500);
-INSERT INTO Setor(idSetor, nomeEdificio, designacaoUnidade, dataInicio, dataFim, caudalMaximo) VALUES (41, 'Tanque do campo grande', 'l/h', TO_DATE('01/04/2023', 'DD/MM/YYYY'), TO_DATE('10/10/2023', 'DD/MM/YYYY'), 2500);
-INSERT INTO Setor(idSetor, nomeEdificio, designacaoUnidade, dataInicio, dataFim, caudalMaximo) VALUES (42, 'Tanque do campo grande', 'l/h', TO_DATE('01/04/2023', 'DD/MM/YYYY'), TO_DATE('10/10/2023', 'DD/MM/YYYY'), 3500);
+INSERT INTO Setor(designacaoSetor, nomeEdificio, designacaoUnidade, dataInicio, dataFim, caudalMaximo) VALUES (10, 'Tanque do campo grande', 'l/h', TO_DATE('01/02/2017', 'DD/MM/YYYY'), NULL, 2500);
+INSERT INTO Setor(designacaoSetor, nomeEdificio, designacaoUnidade, dataInicio, dataFim, caudalMaximo) VALUES (11, 'Tanque do campo grande', 'l/h', TO_DATE('01/05/2017', 'DD/MM/YYYY'), NULL, 1500);
+INSERT INTO Setor(designacaoSetor, nomeEdificio, designacaoUnidade, dataInicio, dataFim, caudalMaximo) VALUES (21, 'Tanque do campo grande', 'l/h', TO_DATE('01/05/2017', 'DD/MM/YYYY'), NULL, 3500);
+INSERT INTO Setor(designacaoSetor, nomeEdificio, designacaoUnidade, dataInicio, dataFim, caudalMaximo) VALUES (22, 'Tanque do campo grande', 'l/h', TO_DATE('01/05/2019', 'DD/MM/YYYY'), NULL, 3500);
+INSERT INTO Setor(designacaoSetor, nomeEdificio, designacaoUnidade, dataInicio, dataFim, caudalMaximo) VALUES (41, 'Tanque do campo grande', 'l/h', TO_DATE('01/04/2023', 'DD/MM/YYYY'), TO_DATE('10/10/2023', 'DD/MM/YYYY'), 2500);
+INSERT INTO Setor(designacaoSetor, nomeEdificio, designacaoUnidade, dataInicio, dataFim, caudalMaximo) VALUES (42, 'Tanque do campo grande', 'l/h', TO_DATE('01/04/2023', 'DD/MM/YYYY'), TO_DATE('10/10/2023', 'DD/MM/YYYY'), 3500);
 
 --WORKS
 INSERT INTO TipoOperacaoAgricola(designacaoOperacaoAgricola) VALUES ('Aplicação de fator de produção'); --done
@@ -1803,22 +1803,22 @@ INSERT INTO ProdutoColhido (idOperacao, nomeProduto, designacaoUnidade, quantida
 INSERT INTO ProdutoColhido (idOperacao, nomeProduto, designacaoUnidade, quantidade) VALUES (351,'Maçã','kg', 800);
 
 --TO BE TESTED
-INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,idSetor,dataInicio,dataFim) VALUES (TO_DATE('06/10/2016', 'DD/MM/YYYY'),'Campo Grande',  UPPER('Galega'), 'Oliveira',10, TO_DATE('01/05/2017', 'DD/MM/YYYY'), NULL);
-INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,idSetor,dataInicio,dataFim) VALUES (TO_DATE('10/10/2016', 'DD/MM/YYYY'),'Campo Grande',  UPPER('Picual'), 'Oliveira',10, TO_DATE('01/05/2017', 'DD/MM/YYYY'), NULL);
-INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,idSetor,dataInicio,dataFim) VALUES (TO_DATE('12/10/2016', 'DD/MM/YYYY'),'Campo Grande',  UPPER('Arbequina'), 'Oliveira',11, TO_DATE('01/05/2017', 'DD/MM/YYYY'), NULL);
-INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,idSetor,dataInicio,dataFim) VALUES (TO_DATE('07/01/2017', 'DD/MM/YYYY'),'Lameiro da ponte',  UPPER('Jonagored'), 'Macieira',21, TO_DATE('01/05/2017', 'DD/MM/YYYY'), NULL);
-INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,idSetor,dataInicio,dataFim) VALUES (TO_DATE('08/01/2017', 'DD/MM/YYYY'),'Lameiro da ponte',  UPPER('Fuji'), 'Macieira',21, TO_DATE('01/05/2017', 'DD/MM/YYYY'), NULL);
-INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,idSetor,dataInicio,dataFim) VALUES (TO_DATE('08/01/2017', 'DD/MM/YYYY'),'Lameiro da ponte',  UPPER('Royal Gala'), 'Macieira',21, TO_DATE('01/05/2017', 'DD/MM/YYYY'), NULL);
-INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,idSetor,dataInicio,dataFim) VALUES (TO_DATE('10/12/2018', 'DD/MM/YYYY'),'Lameiro da ponte',  UPPER('Royal Gala'), 'Macieira',21, TO_DATE('01/05/2019', 'DD/MM/YYYY'), NULL);
-INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,idSetor,dataInicio,dataFim) VALUES (TO_DATE('10/01/2019', 'DD/MM/YYYY'),'Lameiro do moinho',  UPPER('Pipo de Basto'), 'Macieira',21, TO_DATE('01/05/2019', 'DD/MM/YYYY'), NULL);
-INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,idSetor,dataInicio,dataFim) VALUES (TO_DATE('09/01/2019', 'DD/MM/YYYY'),'Lameiro do moinho',  UPPER('Porta da Loja'), 'Macieira',22, TO_DATE('01/05/2019', 'DD/MM/YYYY'), NULL);
-INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,idSetor,dataInicio,dataFim) VALUES (TO_DATE('09/01/2019', 'DD/MM/YYYY'),'Lameiro do moinho',  UPPER('Malápio'), 'Macieira',22, TO_DATE('01/05/2019', 'DD/MM/YYYY'), NULL);
-INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,idSetor,dataInicio,dataFim) VALUES (TO_DATE('10/01/2019', 'DD/MM/YYYY'),'Lameiro do moinho',  UPPER('Canada'), 'Macieira',22, TO_DATE('01/05/2019', 'DD/MM/YYYY'),NULL);
-INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,idSetor,dataInicio,dataFim) VALUES (TO_DATE('11/01/2019', 'DD/MM/YYYY'),'Lameiro do moinho',  UPPER('Grand Fay'), 'Macieira',22, TO_DATE('01/05/2019', 'DD/MM/YYYY'), NULL);
-INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,idSetor,dataInicio,dataFim) VALUES (TO_DATE('11/01/2019', 'DD/MM/YYYY'),'Lameiro do moinho',  UPPER('Gronho Doce'), 'Macieira',22, TO_DATE('01/05/2019', 'DD/MM/YYYY'), NULL);
-INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,idSetor,dataInicio,dataFim) VALUES (TO_DATE('05/04/2023', 'DD/MM/YYYY'),'Campo Novo',  UPPER('Sugarsnax Hybrid'), 'Cenoura',41, TO_DATE('05/04/2023', 'DD/MM/YYYY'), TO_DATE('31/05/2023', 'DD/MM/YYYY'));
-INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,idSetor,dataInicio,dataFim) VALUES (TO_DATE('05/07/2023', 'DD/MM/YYYY'),'Campo Novo',  UPPER('Danvers Half Long'), 'Cenoura',41, TO_DATE('05/04/2023', 'DD/MM/YYYY'), TO_DATE('08/10/2023', 'DD/MM/YYYY'));
-INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,idSetor,dataInicio,dataFim) VALUES (TO_DATE('06/04/2023', 'DD/MM/YYYY'),'Campo Novo',  UPPER('Butternut'), 'Abóbora Manteiga',42, TO_DATE('06/04/2023', 'DD/MM/YYYY'), TO_DATE('10/09/2023', 'DD/MM/YYYY'));
+INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,designacaoSetor,dataInicio,dataFim) VALUES (TO_DATE('06/10/2016', 'DD/MM/YYYY'),'Campo Grande',  UPPER('Galega'), 'Oliveira',10, TO_DATE('01/05/2017', 'DD/MM/YYYY'), NULL);
+INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,designacaoSetor,dataInicio,dataFim) VALUES (TO_DATE('10/10/2016', 'DD/MM/YYYY'),'Campo Grande',  UPPER('Picual'), 'Oliveira',10, TO_DATE('01/05/2017', 'DD/MM/YYYY'), NULL);
+INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,designacaoSetor,dataInicio,dataFim) VALUES (TO_DATE('12/10/2016', 'DD/MM/YYYY'),'Campo Grande',  UPPER('Arbequina'), 'Oliveira',11, TO_DATE('01/05/2017', 'DD/MM/YYYY'), NULL);
+INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,designacaoSetor,dataInicio,dataFim) VALUES (TO_DATE('07/01/2017', 'DD/MM/YYYY'),'Lameiro da ponte',  UPPER('Jonagored'), 'Macieira',21, TO_DATE('01/05/2017', 'DD/MM/YYYY'), NULL);
+INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,designacaoSetor,dataInicio,dataFim) VALUES (TO_DATE('08/01/2017', 'DD/MM/YYYY'),'Lameiro da ponte',  UPPER('Fuji'), 'Macieira',21, TO_DATE('01/05/2017', 'DD/MM/YYYY'), NULL);
+INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,designacaoSetor,dataInicio,dataFim) VALUES (TO_DATE('08/01/2017', 'DD/MM/YYYY'),'Lameiro da ponte',  UPPER('Royal Gala'), 'Macieira',21, TO_DATE('01/05/2017', 'DD/MM/YYYY'), NULL);
+INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,designacaoSetor,dataInicio,dataFim) VALUES (TO_DATE('10/12/2018', 'DD/MM/YYYY'),'Lameiro da ponte',  UPPER('Royal Gala'), 'Macieira',21, TO_DATE('01/05/2019', 'DD/MM/YYYY'), NULL);
+INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,designacaoSetor,dataInicio,dataFim) VALUES (TO_DATE('10/01/2019', 'DD/MM/YYYY'),'Lameiro do moinho',  UPPER('Pipo de Basto'), 'Macieira',21, TO_DATE('01/05/2019', 'DD/MM/YYYY'), NULL);
+INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,designacaoSetor,dataInicio,dataFim) VALUES (TO_DATE('09/01/2019', 'DD/MM/YYYY'),'Lameiro do moinho',  UPPER('Porta da Loja'), 'Macieira',22, TO_DATE('01/05/2019', 'DD/MM/YYYY'), NULL);
+INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,designacaoSetor,dataInicio,dataFim) VALUES (TO_DATE('09/01/2019', 'DD/MM/YYYY'),'Lameiro do moinho',  UPPER('Malápio'), 'Macieira',22, TO_DATE('01/05/2019', 'DD/MM/YYYY'), NULL);
+INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,designacaoSetor,dataInicio,dataFim) VALUES (TO_DATE('10/01/2019', 'DD/MM/YYYY'),'Lameiro do moinho',  UPPER('Canada'), 'Macieira',22, TO_DATE('01/05/2019', 'DD/MM/YYYY'),NULL);
+INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,designacaoSetor,dataInicio,dataFim) VALUES (TO_DATE('11/01/2019', 'DD/MM/YYYY'),'Lameiro do moinho',  UPPER('Grand Fay'), 'Macieira',22, TO_DATE('01/05/2019', 'DD/MM/YYYY'), NULL);
+INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,designacaoSetor,dataInicio,dataFim) VALUES (TO_DATE('11/01/2019', 'DD/MM/YYYY'),'Lameiro do moinho',  UPPER('Gronho Doce'), 'Macieira',22, TO_DATE('01/05/2019', 'DD/MM/YYYY'), NULL);
+INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,designacaoSetor,dataInicio,dataFim) VALUES (TO_DATE('05/04/2023', 'DD/MM/YYYY'),'Campo Novo',  UPPER('Sugarsnax Hybrid'), 'Cenoura',41, TO_DATE('05/04/2023', 'DD/MM/YYYY'), TO_DATE('31/05/2023', 'DD/MM/YYYY'));
+INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,designacaoSetor,dataInicio,dataFim) VALUES (TO_DATE('05/07/2023', 'DD/MM/YYYY'),'Campo Novo',  UPPER('Danvers Half Long'), 'Cenoura',41, TO_DATE('05/04/2023', 'DD/MM/YYYY'), TO_DATE('08/10/2023', 'DD/MM/YYYY'));
+INSERT INTO PlanoRega (dataInicial, nomeParcela,variedade,nomeComum,designacaoSetor,dataInicio,dataFim) VALUES (TO_DATE('06/04/2023', 'DD/MM/YYYY'),'Campo Novo',  UPPER('Butternut'), 'Abóbora Manteiga',42, TO_DATE('06/04/2023', 'DD/MM/YYYY'), TO_DATE('10/09/2023', 'DD/MM/YYYY'));
 
 
 

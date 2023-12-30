@@ -201,13 +201,13 @@ designacaoSetor varchar2(10) CONSTRAINT nnRegaDesignacaoSetor NOT NULL,
 CONSTRAINT pkRegaIdOperacao PRIMARY KEY (idOperacao));
 
 CREATE TABLE Setor (
-idSetor           varchar2(10) CONSTRAINT nnSetorIdSetor NOT NULL,
+designacaoSetor           varchar2(10) CONSTRAINT nnSetorDesignacaoSetor NOT NULL,
 nomeEdificio      varchar2(50) CONSTRAINT nnSetorNomeEdificio NOT NULL,
 designacaoUnidade varchar2(5) CONSTRAINT nnSetorDesignacaoUnidade NOT NULL,
 caudalMaximo      number(10) CONSTRAINT nnSetorCaudalMaximo NOT NULL,
 dataInicio        date CONSTRAINT nnSetorDataInicio NOT NULL,
 dataFim           date,
-CONSTRAINT pkSetorIdSetor PRIMARY KEY (idSetor),
+CONSTRAINT pkSetorDesignacaoSetor PRIMARY KEY (designacaoSetor),
 CONSTRAINT ckSetorDataVerificacao CHECK (dataFim >= dataInicio));
 
 CREATE TABLE Stock (

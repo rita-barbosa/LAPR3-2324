@@ -23,8 +23,11 @@ int main(int argc,char *argv[]) {
 	
 	alocateProcessadorDeDados(c);
 	
+	printf("\n");
+	
 //-------------TESTAR A ALOCAÇÃO DE UM SENSOR-------------
     Sensor *sensor1 = allocSensor(10, 5);
+    Sensor *sensor2 = allocSensor(16, 5);
 	if (sensor1 != NULL) {
 	printf("Sensor alocado com sucesso!\n");
 
@@ -33,16 +36,20 @@ int main(int argc,char *argv[]) {
 			printf("Vetor de Sensores alocado com sucesso!\n");
 
 			vetorSensores[0] = sensor1;
-
-			freeVectorSensores(vetorSensores, 1);
+			
+			vetorSensores = reallocVectorSensores(&vetorSensores, 40, VECTOR_SIZE);
+			
+			vetorSensores[25] = sensor2;
+			printf("Foi colocado com sucesso!\n");
+	
+			freeVectorSensores(vetorSensores, 40);
+	
 		} else {
 			printf("Falha na alocação do vetor de Sensores!\n");
 		}
 	} else {
 		printf("Falha na alocação do Sensor!\n");
-	}
-
-    
+	} 
 	
 	return 0;
 }

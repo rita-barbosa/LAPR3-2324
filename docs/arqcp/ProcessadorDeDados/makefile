@@ -32,10 +32,10 @@ serialize_info.o: serialize_info.c
 	gcc -g -Wall -Wextra -fanalyzer -c serialize_info.c -o serialize_info.o
 
 vg: prog
-	valgrind ./prog
+	valgrind ./prog /etc/ttyS0 config intermedio 15
 
 run: prog
-	./prog
+	./prog /etc/ttyS0 config intermedio 15
 
 clean:
 	rm -f *.o prog

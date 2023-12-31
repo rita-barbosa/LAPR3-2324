@@ -84,7 +84,7 @@ int *allocArrayMedias(){
 	 return array;
 }
 
-void *reallocArrayMedias(int *arrayMedias, int newSize){
+int *reallocArrayMedias(int *arrayMedias, int newSize){
 	int *newArray = (int *)realloc(arrayMedias, newSize * sizeof(int));
 	
 	if(newArray != NULL){
@@ -141,14 +141,21 @@ Sensor **allocVetorSensores(){
 }
 
 
-void reallocVectorSensores(Sensor ***vetorSensores, int newSize) {
+Sensor **reallocVectorSensores(Sensor ***vetorSensores, int newSize, int size) {
     Sensor **novoVetor = (Sensor **)realloc(*vetorSensores, newSize * sizeof(Sensor *));
     if (novoVetor != NULL) {
 		*vetorSensores = novoVetor;
-        *novoVetor = NULL;
     } else {
         exit(-1);
-    }
+    } 
+    
+     if (newSize > size) {
+		for (int i = size; i < newSize; i++) {
+			(*vetorSensores)[i] = 0;
+		}
+	}
+        
+    return *vetorSensores;
 }
 
 void freeVectorSensores(Sensor **vetorSensores, int size) {

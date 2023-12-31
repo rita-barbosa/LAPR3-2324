@@ -16,18 +16,18 @@ typedef struct {
     int write;      
     int size;      
 } BufferCircular;
-	//VAI TER TAMANHO 24 BYTES PORQUE K=8 (APONTADOR) (tem um GAP de 4 bytes no final)
+
 
 typedef struct {
 	BufferCircular *buffer;
 	int *arrayMedias;
 	int instanteTemporal;
-	short timeOut;
+	int timeOut;
     short write_counter;
     char sensor_id;
     char type[TYPE_SIZE];
     char unit[UNIT_SIZE];
-} Sensor;		//o tamanho será 69 bytes, que é multiplo de k=23 (tem um GAP de 11 bytes no final)
+} Sensor;
 
 //---------------------------------------------------------------------------------------
 void alocateProcessadorDeDados(char input[]);

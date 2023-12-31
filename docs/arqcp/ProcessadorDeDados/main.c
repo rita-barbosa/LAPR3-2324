@@ -6,7 +6,28 @@
 #include <time.h>
 //#include <sys/time.h>
 
-int main() {
+int main(int argc,char *argv[]) {
+	// ---> Criação do diretório
+	char a[20];
+	char b[20];
+	char c[20];
+	int d = -1;
+	
+	sscanf(argv[1], "%s", a);
+	sscanf(argv[2], "%s", b);
+	sscanf(argv[3], "%s", c);
+	sscanf(argv[4], "%d", &d);
+	
+	printf("Separação dos conteúdos passados pelo main:\n");
+	for(int i = 1; i < argc; i++){
+		printf("\nargv[%d]: %s", i, argv[i]);
+	}
+	printf("\n");
+	
+	alocateProcessadorDeDados(c);
+	
+	printf("\n");
+	
 	clock_t startClock = clock();
 	//conversao para milisegundos
 	double inseconds = (double) startClock / CLOCKS_PER_SEC;
@@ -16,7 +37,7 @@ int main() {
 	char *token = "time:";
 	int offset_time = -1;
 	
-	int d = 15;
+	
 	int counter = 0;
 	int *ptr_counter = &counter;
 	

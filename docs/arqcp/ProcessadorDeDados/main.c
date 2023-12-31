@@ -3,8 +3,19 @@
 #include "functions.h"
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
+//#include <sys/time.h>
 
 int main() {
+	clock_t startClock = clock();
+	//conversao para milisegundos
+	double inseconds = (double) startClock / CLOCKS_PER_SEC;
+	int elapsedMilliseconds = (int) ((((long double) startClock / CLOCKS_PER_SEC) * 1000.0) * 1000000);
+	int picoFirstTime = 0;
+	int* timePico = &picoFirstTime;
+	char *token = "time:";
+	int offset_time = -1;
+	
 	int d = 15;
 	int counter = 0;
 	int *ptr_counter = &counter;
@@ -38,9 +49,22 @@ int main() {
 		ptr_read = readString;
 		
 		// ---> Obtém uma linha de dados do ficheiro
-		fgets(ptr_read, 100, inputFile);		
+		fgets(ptr_read, 100, inputFile);	
+			
 		
 		if (*ptr_read != '\n') { 
+			if (counter == 0) {
+				remove_newline(ptr_read);
+				extract_token(ptr_read,token,timePico);
+				if (picoFirstTime > 0 && elapsedMilliseconds > 0){ 
+					printf("Time retrieved - Pi Pico: %d\n", picoFirstTime);
+					printf("Time retrieved seconds - (start - virtual machine): %f\n", inseconds);
+					printf("Time retrieved - (start - virtual machine): %d\n", elapsedMilliseconds);
+					offset_time = elapsedMilliseconds - picoFirstTime;
+					printf("offset value: %d\n", offset_time);
+				}
+			}
+			
 			// ---> Irá extrair os dados da linha e, de seguida, inseri-los na estrutura de dados.
 			insert_data_line(ptr_read, ptr_sensor,ptr_arr_size,ptr_counter);
 			
@@ -92,8 +116,12 @@ int main() {
 	// ---> Cálculo da mediana do sensor.
 		int medianaSensor = mediana(vec, 4);
 		
-	// ---> Serialização e insersão da informação no ficheiro de output.
-		serialize_info(sensor, medianaSensor, outputFile);
+	// ---> Serialização e insersão da informação no ficheiro de output, se o valor de offset for válido.
+		if (offset_time > 0){
+			serialize_info(sensor, medianaSensor, outputFile, offset_time);
+		}else{
+			printf("O valor de offset (diferença de tempo entre o programa e o Raspberry) é inválido.\n");
+		}
 	}
 	
 	// ---> Fecha o ficheiro.

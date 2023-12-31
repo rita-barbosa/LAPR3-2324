@@ -7,17 +7,19 @@
 /*
 * Avalia se o sensor em questão está numa situação de erro ou não
 */
-int isSensorInError(Sensor *sensorPtr){
+int isSensorInError(Sensor *sensorPtr, int offset_time){
 	//Tempo (em clock ticks) do instante do tempo de execucao do programa
 	clock_t instantClock = clock();
 	//conversao para milisegundos
-	long double elapsedMilliseconds = ((long double) instantClock * 1000.0) / CLOCKS_PER_SEC;
+	int elapsedMilliseconds = (int) ((((long double) instantClock / CLOCKS_PER_SEC) * 1000.0) * 1000000);
+	
+	elapsedMilliseconds -= offset_time;
+	
 	//Se a diferença entre o instante da ultima leitura do sensor e o instante atual for superior ao timeout
 	//entao retorna 1, caso contrario 0
-	 if((sensorPtr->instanteTemporal - (int)elapsedMilliseconds) > (int) sensorPtr->timeOut){
+	 if((sensorPtr->instanteTemporal - elapsedMilliseconds) > (int) sensorPtr->timeOut){
 		 return 1;
 	 }
-
 	return 0;
 }
 
@@ -25,7 +27,7 @@ int isSensorInError(Sensor *sensorPtr){
 /*
  * Serializa a informação contida num sensor com a adição da mediana para um ficheiro
 */
-void serialize_info(Sensor *sensorPtr, int mediana, FILE *outputFile){
+void serialize_info(Sensor *sensorPtr, int mediana, FILE *outputFile, int offset_time){
 	char *line = malloc(50); // Alocar memória para a nova linha a escrever no ficheiro
 
     if (line == NULL) {
@@ -36,7 +38,7 @@ void serialize_info(Sensor *sensorPtr, int mediana, FILE *outputFile){
     
     //---> Detetar possível situação de erro
     //Obtenção do instante atual (timestamp)
-    int isError = isSensorInError(sensorPtr);
+    int isError = isSensorInError(sensorPtr, offset_time);
     
     //sensor_id,write_counter,type,unit,mediana#
     if(isError == 1){

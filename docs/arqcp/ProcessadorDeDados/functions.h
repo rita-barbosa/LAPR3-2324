@@ -8,7 +8,7 @@
 #define TYPE_SIZE 25
 #define UNIT_SIZE 10
 #define BUFFER_VARIABLES 0
-#define TIME_OUT 3000 // 5 min
+#define TIME_OUT 300000 // 5 min
 
 typedef struct {
     int *array;     
@@ -29,9 +29,9 @@ typedef struct {
     char unit[UNIT_SIZE];
 } Sensor;		//o tamanho será 69 bytes, que é multiplo de k=23 (tem um GAP de 11 bytes no final)
 
-
-void alocateProcessadorDeDados(char input[]);
 //---------------------------------------------------------------------------------------
+void alocateProcessadorDeDados(char input[]);
+
 BufferCircular *allocBufferCircular();
 BufferCircular *reallocBufferCircular(BufferCircular *buffer, int newSize);
 void freeBufferCircular(BufferCircular *buffer);
@@ -44,6 +44,7 @@ Sensor **reallocVectorSensores(Sensor ***vetorSensores, int newSize, int size);
 void freeVectorSensores(Sensor **vetorSensores, int size) ;
 int extract_token(char* input, char* token, int* output);
 void enqueue_value(int* array, int length, int* read, int* write, int value);
+
 //---------------------------------------------------------------------------------------
 int extract_string(char* input_str, char* prefix,char size, char* result_str);
 void remove_newline(char* str);
@@ -53,12 +54,13 @@ Sensor *create_sensor(char *ptr_read, int counter,int sensor_id);
 void insert_data_sensor(Sensor **sensor_array, char *ptr_read, int counter, int sensor_id, int array_size);
 void print_sensor_data(Sensor **sensor_array, int pos);
 void insert_data_line(char *ptr_read, Sensor ***sensor_array,int *ptr_arr_size,int *ptr_counter);
-//---------------------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------------------
 void sort_array(int* vec, int num);
 int mediana(int* vec, int num);
 char* get_outputFileName();
-void serialize_info(Sensor *sensorPtr, int mediana, FILE *outputFile);
-int isSensorInError(Sensor *sensorPtr);
+void serialize_info(Sensor *sensorPtr, int mediana, FILE *outputFile, int offset_time);
+int isSensorInError(Sensor *sensorPtr, int offset_time);
+
 
 #endif

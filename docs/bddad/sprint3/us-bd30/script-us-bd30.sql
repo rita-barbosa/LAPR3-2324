@@ -47,7 +47,7 @@ DECLARE
     v_qtd NUMBER := 60;
     v_desigUnidade tipoUnidade.DESIGNACAOUNIDADE%TYPE := 'min';
     v_dataOperacao DATE := TO_DATE('29/12/2023 - 15:00', 'DD/MM/YYYY - HH24:MI');
-    v_setor Setor.idSetor%TYPE := 11;
+    v_setor Setor.designacaoSetor%TYPE := 11;
 BEGIN
     INSERT INTO Operacao (idOperacao, designacaoOperacaoAgricola, designacaoUnidade, idEstadoOperacao, quantidade, dataOperacao) VALUES (v_idOperacao, v_desigOp, v_desigUnidade, 1, v_qtd, v_dataOperacao);
     INSERT INTO Rega (idOperacao, designacaoSetor) VALUES (v_idOperacao, v_setor);

@@ -4,9 +4,7 @@ CREATE OR REPLACE TRIGGER preventUpdateDeleteLog
 BEFORE UPDATE OR DELETE ON Log
     FOR EACH ROW
 BEGIN
-    IF SYS_CONTEXT('USERENV', 'SESSION_USER') != 'SEU_USUARIO' THEN
-        RAISE_APPLICATION_ERROR(-20001, 'Ação não permitida. Atualizações ou exclusões na tabela Log são proibidas.');
-END IF;
+    RAISE_APPLICATION_ERROR(-20001, 'Ação não permitida. Atualizações ou exclusões na tabela Log são proibidas.');
 END;
 /
 

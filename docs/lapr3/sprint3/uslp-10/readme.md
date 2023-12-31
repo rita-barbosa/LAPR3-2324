@@ -65,24 +65,31 @@ Ordinal porque não tem a ver com o dia 2 do calendário mas com o segundo dia d
 
 #### DIAGRAMAS
 * Sequence Diagram Geral
+
 ![Sequence_Diagram_SD_USLP10.png](Sequence_Diagram_SD_USLP10.png)
 
-* Validação do caminho do ficheiro forneccido
+* Validação do caminho do ficheiro fornecido
+
 ![Validação_do_caminho_do_ficheiro_forncecido.png](Validação_do_caminho_do_ficheiro_forncecido.png)
 
 * Validação da Estrutura do Ficheiro
+
 ![Validação_da_Estrutura_do_Ficheiro_Sequence_Diagram.png](Validação_da_Estrutura_do_Ficheiro_Sequence_Diagram.png)
 
 * Validação do Conteúdo do Plano de Rega Sequence Diagram
+
 ![Validação_do_Conteúdo_do_Plano_de_Rega_Sequence_Diagram.png](Validação_do_Conteúdo_do_Plano_de_Rega_Sequence_Diagram.png)
 
 * Leitura do Plano de Rega
+
 ![Leitura_do_Plano_de_Rega_Sequence_Diagram.png](Leitura_do_Plano_de_Rega_Sequence_Diagram.png)
 
 * Definição das Regas do Plano de Rega
+
 ![Definição_das_Horas_das_Regas_Sequence_Diagram.png](Definição_das_Horas_das_Regas_Sequence_Diagram.png)
 
 * Agendamento de Operações
+
 ![Agendamento_de_Operações_Sequence_Diagram.png](Agendamento_de_Operações_Sequence_Diagram.png)
 
 

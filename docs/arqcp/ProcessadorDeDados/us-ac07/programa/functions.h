@@ -3,7 +3,7 @@
 
 #define NUM 10 
 #define VECTOR_SIZE 20
-#define TYPE_SIZE 23
+#define TYPE_SIZE 25
 #define UNIT_SIZE 10
 #define BUFFER_VARIABLES 0
 
@@ -37,6 +37,7 @@ int *allocArrayMedias();
 int *reallocArrayMedias(int *arrayMedias, int newSize);
 void freeArrayMedias(int *arrayMedias);
 Sensor *allocSensor(int bufferSize, int arrayMediasSize);
+void freeSensor(Sensor *sensor);
 Sensor **allocVetorSensores();
 Sensor **reallocVectorSensores(Sensor ***vetorSensores, int newSize, int size);
 void freeVectorSensores(Sensor **vetorSensores, int size) ;

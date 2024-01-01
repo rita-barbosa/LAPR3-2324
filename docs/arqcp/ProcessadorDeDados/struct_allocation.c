@@ -128,6 +128,14 @@ Sensor *allocSensor(int bufferSize, int arrayMediasSize) {
     return sensor;
 }
 
+void freeSensor(Sensor *sensor) {
+    if (sensor != NULL) {
+        freeBufferCircular(sensor->buffer);
+        freeArrayMedias(sensor->arrayMedias);
+        free(sensor);
+    }
+}
+
 
 //------------------------------VECTOR SENSORES-----------------------------------
 

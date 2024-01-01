@@ -30,6 +30,10 @@ int main(int argc,char *argv[]) {
     Sensor *sensor2 = allocSensor(16, 5);
 	if (sensor1 != NULL) {
 	printf("Sensor alocado com sucesso!\n");
+	
+	if(sensor2 != NULL){
+		printf("Sensor2 alocado com sucesso!\n");
+	}
 
 		Sensor **vetorSensores = allocVetorSensores();
 		if (vetorSensores != NULL) {

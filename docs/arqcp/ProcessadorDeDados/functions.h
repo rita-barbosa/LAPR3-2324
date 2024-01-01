@@ -39,6 +39,7 @@ int *allocArrayMedias();
 int *reallocArrayMedias(int *arrayMedias, int newSize);
 void freeArrayMedias(int *arrayMedias);
 Sensor *allocSensor(int bufferSize, int arrayMediasSize);
+void freeSensor(Sensor *sensor);
 Sensor **allocVetorSensores();
 Sensor **reallocVectorSensores(Sensor ***vetorSensores, int newSize, int size);
 void freeVectorSensores(Sensor **vetorSensores, int size) ;

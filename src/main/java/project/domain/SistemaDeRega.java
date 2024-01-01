@@ -87,7 +87,7 @@ public class SistemaDeRega {
         }
     }
 
-    private static void scheduleNextTask(int index) {
+    public static void scheduleNextTask(int index) {
         if (index < planoDeRega.size()) {
             Rega atual = planoDeRega.get(index);
             LocalTime currentTime = LocalTime.now();
@@ -120,7 +120,7 @@ public class SistemaDeRega {
         }
     }
 
-    private static long calculateDelay(LocalTime currentTime, LocalTime scheduledTime) {
+    public static long calculateDelay(LocalTime currentTime, LocalTime scheduledTime) {
         long currentMillis = currentTime.toNanoOfDay() / 1_000_000;
         long scheduledMillis = scheduledTime.toNanoOfDay() / 1_000_000;
 

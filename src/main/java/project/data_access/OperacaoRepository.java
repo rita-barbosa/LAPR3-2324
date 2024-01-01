@@ -67,11 +67,56 @@ public class OperacaoRepository {
     }
 
 
-    public boolean registerRegaOperation(Rega rega) throws SQLException {
+    public boolean registerFertirregaOperation(Rega rega) throws SQLException {
         CallableStatement callStmt = null;
         boolean success = false;
         try {
            Connection connection = DatabaseConnection.getInstance().getConnection();
+            callStmt = connection.prepareCall("{ ? = call registarFertirrega(?,?,?,?,?) }");
+
+            callStmt.registerOutParameter(1, OracleTypes.NUMBER);
+
+            Duration duration = Duration.between(rega.getHoraInicio(), rega.getHoraFim());
+            callStmt.setDouble(2, duration.toMinutes());
+
+            LocalDate localDate = LocalDate.parse(rega.getData().toString(), dateFormatter);
+            LocalTime localTime = LocalTime.parse(rega.getHoraInicio().toString(), timeFormatter);
+
+            callStmt.setString(3, String.valueOf(localDate));
+
+            callStmt.setString(4, String.valueOf(localTime));
+
+            callStmt.setInt(5, Integer.parseInt(rega.getIdSetor()));
+
+            callStmt.setInt(6, Integer.parseInt(rega.getReceita().substring(3)));
+
+            callStmt.execute();
+
+            BigDecimal bigDecimalValue = (BigDecimal) callStmt.getObject(1);
+            int opStatus = bigDecimalValue.intValue();
+
+            if (opStatus == 1) {
+                success = true;
+                System.out.println("success");
+            }else{
+                System.out.println("failure");
+            }
+
+            connection.commit();
+
+        } finally {
+            if (!Objects.isNull(callStmt)) {
+                callStmt.close();
+            }
+        }
+        return success;
+    }
+
+    public boolean registerRegaOperation(Rega rega) throws SQLException {
+        CallableStatement callStmt = null;
+        boolean success = false;
+        try {
+            Connection connection = DatabaseConnection.getInstance().getConnection();
             callStmt = connection.prepareCall("{ ? = call registarOperacaoRega(?,?,?,?,?) }");
 
             callStmt.registerOutParameter(1, OracleTypes.NUMBER);

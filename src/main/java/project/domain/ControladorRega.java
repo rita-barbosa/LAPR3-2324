@@ -51,6 +51,9 @@ public class ControladorRega {
     }
 
     public boolean sendRegisterToDataBase(Rega rega) throws SQLException {
-        return operacaoRepository.registerRegaOperation(rega);
+        if(rega.getMixDay() == false) {
+            return operacaoRepository.registerRegaOperation(rega);
+        }
+        return operacaoRepository.registerFertirregaOperation(rega);
     }
 }

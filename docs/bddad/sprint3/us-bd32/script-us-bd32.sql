@@ -1,6 +1,6 @@
 SET SERVEROUTPUT ON;
 -------Função em si--------
-CREATE OR REPLACE FUNCTION RegistarFertirrega(tmp IN NUMBER,
+CREATE OR REPLACE FUNCTION registarFertirrega(tmp IN NUMBER,
                                                          dataOp IN VARCHAR2,
                                                          horaCm IN VARCHAR2,
                                                          idStr IN setor.designacaosetor%TYPE,

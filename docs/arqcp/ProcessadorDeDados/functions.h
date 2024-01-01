@@ -59,8 +59,7 @@ void insert_data_line(char *ptr_read, Sensor ***sensor_array,int *ptr_arr_size,i
 void sort_array(int* vec, int num);
 int mediana(int* vec, int num);
 char* get_outputFileName();
-void serialize_info(Sensor *sensorPtr, int mediana, FILE *outputFile, int offset_time);
-int isSensorInError(Sensor *sensorPtr, int offset_time);
-
+void serialize_info(Sensor *sensorPtr, int mediana, FILE *outputFile, int offset_time, int instanteAtualMilissegundos);
+int isSensorInError(Sensor *sensorPtr, int offset_time, int instanteAtualMilissegundos);
 
 #endif

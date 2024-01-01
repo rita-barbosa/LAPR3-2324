@@ -7,6 +7,8 @@
 //#include <sys/time.h>
 
 int main(int argc,char *argv[]) {
+	clock_t startClock = clock();
+	
 	// ---> Criação do diretório
 	char a[20];
 	char b[20];
@@ -28,7 +30,7 @@ int main(int argc,char *argv[]) {
 	
 	printf("\n");
 	
-	clock_t startClock = clock();
+	
 	//conversao para milisegundos
 	double inseconds = (double) startClock / CLOCKS_PER_SEC;
 	int elapsedMilliseconds = (int) ((((long double) startClock / CLOCKS_PER_SEC) * 1000.0) * 1000000);
@@ -138,8 +140,9 @@ int main(int argc,char *argv[]) {
 		int medianaSensor = mediana(vec, 4);
 		
 	// ---> Serialização e insersão da informação no ficheiro de output, se o valor de offset for válido.
-		if (offset_time > 0){
-			serialize_info(sensor, medianaSensor, outputFile, offset_time);
+		if (offset_time >= 0){
+			int execucaoMilissegundos = (int) ((((long double) startClock / CLOCKS_PER_SEC) * 1000.0) * 1000000);
+			serialize_info(sensor, medianaSensor, outputFile, offset_time, execucaoMilissegundos);
 		}else{
 			printf("O valor de offset (diferença de tempo entre o programa e o Raspberry) é inválido.\n");
 		}

@@ -33,6 +33,7 @@ public class ImportarFicheiro {
             readDataFromWateringPlanFile(filepath);
             setWateringPlan(plano);
             SistemaDeRega.setPlanoDeRega(plano);
+            SistemaDeRega.scheduleNextTask(0);
             SistemaDeRega.setInicioDoPlanoDeRega(LocalDate.now());
             return true;
         } catch (ExcecaoFicheiro | IOException e) {

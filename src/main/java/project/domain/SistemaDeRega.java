@@ -29,7 +29,6 @@ public class SistemaDeRega {
 
     public static void setPlanoDeRega(List<Rega> planoDeRega) {
         SistemaDeRega.planoDeRega = planoDeRega;
-        scheduleNextTask(0);
     }
 
     public static List<Rega> getPlanoDeRegas() {

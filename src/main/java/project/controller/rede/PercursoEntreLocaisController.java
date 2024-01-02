@@ -17,11 +17,11 @@ public class PercursoEntreLocaisController {
         this.graph = rede.getRedeDistribuicao();
     }
 
-    public ArrayList<LinkedList<Local>> getPathsBetweenLocations(String localOrigem, String localHub) {
+    public ArrayList<LinkedList<Local>> getPathsBetweenLocations(String localOrigem, String localHub, int autonomia) {
         Local org = getVertex(localOrigem);
         Local hub = getVertex(localHub);
 
-        return rede.getPathsBetweenLocations(org, hub);
+        return rede.getPathsBetweenLocations(org, hub,autonomia);
     }
 
 
@@ -31,10 +31,6 @@ public class PercursoEntreLocaisController {
 
     public ArrayList<ArrayList<Integer>> getDistancesOfPaths(ArrayList<LinkedList<Local>> paths) {
         return rede.calculateDistances(paths);
-    }
-
-    public void filterPaths(ArrayList<LinkedList<Local>> paths, ArrayList<ArrayList<Integer>> distances, int autonomia, ArrayList<LinkedList<Local>> newPaths, ArrayList<ArrayList<Integer>> newDists) {
-        rede.filterPaths(paths, distances, autonomia, newPaths, newDists);
     }
 
     public ArrayList<Double> getTotalTime(ArrayList<ArrayList<Integer>> distances, double veloMedia) {

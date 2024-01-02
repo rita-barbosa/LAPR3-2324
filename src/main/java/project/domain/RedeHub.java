@@ -330,8 +330,8 @@ public class RedeHub {
         return null;
     }
 
-    public ArrayList<LinkedList<Local>> getPathsBetweenLocations(Local org, Local hub) {
-        return Algorithms.findPaths(redeDistribuicao, org, hub);
+    public ArrayList<LinkedList<Local>> getPathsBetweenLocations(Local org, Local hub, int autonomia) {
+        return Algorithms.findPaths(redeDistribuicao, org, hub, autonomia);
     }
 
     public ArrayList<ArrayList<Integer>> calculateDistances(ArrayList<LinkedList<Local>> paths) {
@@ -375,15 +375,5 @@ public class RedeHub {
         }
 
         return velocity;
-    }
-
-    public void filterPaths(ArrayList<LinkedList<Local>> paths, ArrayList<ArrayList<Integer>> dists, int autonomia,
-                            ArrayList<LinkedList<Local>> newPaths, ArrayList<ArrayList<Integer>> newDists) {
-        for (int i = 0; i < paths.size(); i++) {
-            if (dists.get(i).get(0) < autonomia) {
-                newPaths.add(paths.get(i));
-                newDists.add(dists.get(i));
-            }
-        }
     }
 }

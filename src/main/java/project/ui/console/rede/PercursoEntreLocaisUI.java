@@ -30,20 +30,16 @@ public class PercursoEntreLocaisUI implements Runnable {
      */
     @Override
     public void run() {
-        ArrayList<LinkedList<Local>> newPaths = new ArrayList<>();
-        ArrayList<ArrayList<Integer>> newDists = new ArrayList<>();
-
         autonomia = Utils.readIntegerFromConsole("Indique a autonomia do veículo (km):");
         autonomia *= 1000;
         veloMedia = Utils.readDoubleFromConsole("Indique a velocidade média de deslocamente (m/s):");
         localOrigem = Utils.readLineFromConsole("Indique o local de origem do percurso:");
         hub = Utils.readLineFromConsole("Indique o hub que pretende alcançar:");
 
-        ArrayList<LinkedList<Local>> paths = controller.getPathsBetweenLocations(localOrigem, hub);
+        ArrayList<LinkedList<Local>> paths = controller.getPathsBetweenLocations(localOrigem, hub,autonomia);
         ArrayList<ArrayList<Integer>> distances = controller.getDistancesOfPaths(paths);
-        controller.filterPaths(paths, distances, autonomia, newPaths, newDists);
-        ArrayList<Double> time = controller.getTotalTime(newDists, veloMedia);
-        printResults(newPaths, newDists, time);
+        ArrayList<Double> time = controller.getTotalTime(distances, veloMedia);
+        printResults(paths, distances, time);
     }
 
     private void printResults(ArrayList<LinkedList<Local>> paths, ArrayList<ArrayList<Integer>> distances, ArrayList<Double> time) {

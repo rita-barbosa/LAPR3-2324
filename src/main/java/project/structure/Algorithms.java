@@ -1,6 +1,5 @@
 package project.structure;
 
-import java.time.LocalTime;
 import java.util.*;
 import java.util.function.BinaryOperator;
 
@@ -14,15 +13,15 @@ public class Algorithms {
     /**
      * Returns all paths from vOrig to vDest
      *
-     * @param g       Graph instance
-     * @param vDest   Vertex that will be the end of the path
+     * @param g           Graph instance
+     * @param vDest       Vertex that will be the end of the path
      * @param currentPath LinkedList of the vertices from the current path
-     * @param allPaths   ArrayList with all the paths (in correct order)
+     * @param allPaths    ArrayList with all the paths (in correct order)
      */
-    private static <V, E> void findPaths(Graph<V, E> g, V vDest, ArrayList<LinkedList<V>> allPaths, LinkedList<V> currentPath) {
+    private static <V, E> void findPaths(Graph<V, E> g, V vDest, ArrayList<LinkedList<V>> allPaths, LinkedList<V> currentPath, int aut, int dist) {
         V last = currentPath.get(currentPath.size() - 1);
 
-        if (last.equals(vDest)) {
+        if (last.equals(vDest) && dist <= aut) {
             allPaths.add(new LinkedList<>(currentPath));
         }
 
@@ -31,8 +30,9 @@ public class Algorithms {
         for (Edge<V, E> edge : incomingEdges) {
             V neighbor = edge.getVOrig();
             if (isNotVisited(neighbor, currentPath)) {
+                int newDist = dist + (int) edge.getWeight();
                 currentPath.add(neighbor);
-                findPaths(g, vDest, allPaths, currentPath);
+                findPaths(g, vDest, allPaths, currentPath, aut, newDist);
                 currentPath.removeLast();
             }
         }
@@ -46,11 +46,12 @@ public class Algorithms {
      * @param vDest information of the Vertex destination
      * @return paths ArrayList with all paths from vOrig to vDest
      */
-    public static <V, E> ArrayList<LinkedList<V>> findPaths(Graph<V, E> g, V vOrig, V vDest) {
+    public static <V, E> ArrayList<LinkedList<V>> findPaths(Graph<V, E> g, V vOrig, V vDest, int autonomia) {
         ArrayList<LinkedList<V>> allPaths = new ArrayList<>();
         LinkedList<V> initialPath = new LinkedList<>();
         initialPath.add(vOrig);
-        findPaths(g, vDest, allPaths, initialPath);
+        findPaths(g, vDest, allPaths, initialPath, autonomia, 0);
+
         return allPaths;
     }
 
@@ -217,9 +218,9 @@ public class Algorithms {
      * @param pathKeys minimum path vertices keys
      * @param dist     minimum distances
      */
-    public static <V, E> void shortestPathDijkstraWithAutonomy(Graph<V, E> g,E autonomia, V vOrig,
-                                                   Comparator<E> ce, BinaryOperator<E> sum, E zero,
-                                                   boolean[] visited, V[] pathKeys, E[] dist) {
+    public static <V, E> void shortestPathDijkstraWithAutonomy(Graph<V, E> g, E autonomia, V vOrig,
+                                                               Comparator<E> ce, BinaryOperator<E> sum, E zero,
+                                                               boolean[] visited, V[] pathKeys, E[] dist) {
 
         int vkey = g.key(vOrig);
         dist[vkey] = zero;
@@ -307,9 +308,9 @@ public class Algorithms {
      * @param shortPath returns the vertices which make the shortest path
      * @return if vertices exist in the graph and are connected, true, false otherwise
      */
-    public static <V, E> E shortestPathWithAutonomy(Graph<V, E> g,E autonomy, V vOrig, V vDest,
-                                        Comparator<E> ce, BinaryOperator<E> sum, E zero,
-                                        LinkedList<V> shortPath) {
+    public static <V, E> E shortestPathWithAutonomy(Graph<V, E> g, E autonomy, V vOrig, V vDest,
+                                                    Comparator<E> ce, BinaryOperator<E> sum, E zero,
+                                                    LinkedList<V> shortPath) {
         if (!g.validVertex(vOrig) || !g.validVertex(vDest)) {
             return null;
         }
@@ -649,7 +650,7 @@ public class Algorithms {
         Set<Edge<V, E>> edgeSet = new HashSet<>(edgeDict.edges());
 
         int edgeCount = edgeSet.size();
-        MapGraph<V,E> updateGraph = edgeDict;
+        MapGraph<V, E> updateGraph = edgeDict;
 
         Map<Map<Edge<V, E>, Double>, Set<Set<V>>> btwResult = Algorithms.edgeBetweennessCentrality(updateGraph, vertices);
         Map.Entry<Map<Edge<V, E>, Double>, Set<Set<V>>> firstEntry = btwResult.entrySet().iterator().next();
@@ -675,7 +676,7 @@ public class Algorithms {
                 }
                 maxModularity = currentModularity;
                 currentBestCommunity = nextCommunity;
-            } else{
+            } else {
                 if (verbose) {
                     System.out.println("Modularity after split = " + currentModularity + ", which is lower than best split " + maxModularity + "\n");
                 }
@@ -686,7 +687,6 @@ public class Algorithms {
         }
         return currentBestCommunity;
     }
-
 
 
 }

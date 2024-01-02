@@ -37,6 +37,7 @@ public class Local {
 
     public Local(String numId) {
         this.numId = numId;
+        this.isHub = false;
     }
 
     public String getNumId() {

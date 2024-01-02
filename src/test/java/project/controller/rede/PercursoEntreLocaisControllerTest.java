@@ -40,7 +40,7 @@ public class PercursoEntreLocaisControllerTest {
         locations2.add(l6);
         locations2.add(l7);
 
-        ArrayList<LinkedList<Local>> paths = controller.getPathsBetweenLocations("CT1", "CT3");
+        ArrayList<LinkedList<Local>> paths = controller.getPathsBetweenLocations("CT1", "CT3",200000);
 
         assertTrue(paths.contains(locations1));
         assertTrue(paths.contains(locations2));
@@ -49,7 +49,7 @@ public class PercursoEntreLocaisControllerTest {
 
     @Test
     public void getDistancesOfPaths() {
-        ArrayList<LinkedList<Local>> paths = controller.getPathsBetweenLocations("CT1", "CT3");
+        ArrayList<LinkedList<Local>> paths = controller.getPathsBetweenLocations("CT1", "CT3",200000);
         ArrayList<ArrayList<Integer>> actual = controller.getDistancesOfPaths(paths);
 
         ArrayList<Integer> expected = new ArrayList<>();
@@ -66,41 +66,10 @@ public class PercursoEntreLocaisControllerTest {
         assertTrue(actual.contains(expected1));
     }
 
-    @Test
-    public void filterPaths() {
-        ArrayList<LinkedList<Local>> paths = controller.getPathsBetweenLocations("CT1", "CT3");
-        ArrayList<ArrayList<Integer>> distances = controller.getDistancesOfPaths(paths);
-        ArrayList<LinkedList<Local>> newPaths = new ArrayList<>();
-        ArrayList<ArrayList<Integer>> newDistances = new ArrayList<>();
-        int autonomia = 200000; //200km
-
-        controller.filterPaths(paths, distances, autonomia, newPaths, newDistances);
-
-        LinkedList<Local> locations1 = new LinkedList<>();
-        Local l1 = new Local("CT1");
-        Local l2 = new Local("CT12");
-        Local l3 = new Local("CT3");
-        locations1.add(l1);
-        locations1.add(l2);
-        locations1.add(l3);
-
-        LinkedList<Local> locations2 = new LinkedList<>();
-        Local l4 = new Local("CT1");
-        Local l5 = new Local("CT12");
-        Local l6 = new Local("CT15");
-        Local l7 = new Local("CT3");
-        locations2.add(l4);
-        locations2.add(l5);
-        locations2.add(l6);
-        locations2.add(l7);
-
-        assertTrue(newPaths.contains(locations1));
-        assertTrue(newPaths.contains(locations2));
-    }
 
     @Test
     public void getTotalTime() {
-        ArrayList<LinkedList<Local>> paths = controller.getPathsBetweenLocations("CT1", "CT3");
+        ArrayList<LinkedList<Local>> paths = controller.getPathsBetweenLocations("CT1", "CT3",200000);
         ArrayList<ArrayList<Integer>> distances = controller.getDistancesOfPaths(paths);
         int velocidade = 50;
 
@@ -108,7 +77,6 @@ public class PercursoEntreLocaisControllerTest {
 
         assertTrue(actual.contains(2266.88));
         assertTrue(actual.contains(3543.84));
-
     }
 
     @Before

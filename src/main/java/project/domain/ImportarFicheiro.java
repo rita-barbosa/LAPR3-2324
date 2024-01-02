@@ -18,7 +18,7 @@ public class ImportarFicheiro {
 
     private static final String DIAS_IMPARES = "I";
     private static final String TRES_DIAS = "3";
-    private static final Integer N = 9;
+    private static Integer n;
     private static final Set<LocalTime> timeTurns = new TreeSet<>();
     private static final Map<String, List<String>> lineRega = new LinkedHashMap<>();
     private static final Map<String, List<String>> lineFertirrega = new LinkedHashMap<>();
@@ -57,7 +57,7 @@ public class ImportarFicheiro {
                             tempHora = tempHora.plusMinutes(minutos);
                             boolean aux = isFertirregaDay(lineFertirrega.get(setor).get(1), i);
                             plano.add(new Rega(setor, tempHora.minusMinutes(minutos), tempHora, currentDate, lineFertirrega.get(setor).get(0), aux));
-                        } else if (isRegaDay(currentDate, regularidade)){
+                        } else if (isRegaDay(currentDate, regularidade)) {
                             tempHora = tempHora.plusMinutes(minutos);
                             plano.add(new Rega(setor, tempHora.minusMinutes(minutos), tempHora, currentDate));
                         }
@@ -78,7 +78,7 @@ public class ImportarFicheiro {
         };
     }
 
-    private static boolean isFertirregaDay(String regularidade, int planDay){
+    private static boolean isFertirregaDay(String regularidade, int planDay) {
         int regularidadeValue = Integer.parseInt(regularidade);
         return planDay % regularidadeValue == 0;
     }
@@ -99,7 +99,7 @@ public class ImportarFicheiro {
             valores.add(line[1]);
             valores.add(line[2]);
             lineRega.put(line[0], valores);
-            if (line.length == 5){
+            if (line.length == 5) {
                 List<String> valoresFertirrega = new ArrayList<>();
                 valoresFertirrega.add(line[3]);
                 valoresFertirrega.add(line[4]);
@@ -113,21 +113,27 @@ public class ImportarFicheiro {
     public static boolean importRedeDistribuicao(String locais, String distancias) throws ExcecaoFicheiro, IOException {
         importFicheiroLocais(locais);
         importFicheiroDistancias(distancias);
-        setHubs();
+        setHubs(locais);
         return true;
     }
 
-    private static void setHubs() {
+    private static void setHubs(String locais) {
+        if (locais.contains("small")) {
+            n = 7;
+        } else {
+            n = 20;
+        }
         LocalizacaoIdealHubsController controller = new LocalizacaoIdealHubsController();
         RedeHub rede = RedeHub.getInstance();
         MapGraph<Local, Integer> graph = rede.getRedeDistribuicao();
-        Map<Local, List<Integer>> topNMap = controller.getTopNTotal(graph, N);
+        Map<Local, List<Integer>> topNMap = controller.getTopNTotal(graph, n);
 
         for (Local ideal : topNMap.keySet()) {
             if (graph.validVertex(ideal)) {
                 graph.vertex(p -> p.equals(ideal)).setHub(true);
             }
         }
+
     }
 
     private static void importFicheiroDistancias(String distancias) throws IOException {
@@ -172,7 +178,7 @@ public class ImportarFicheiro {
                 novosHorarios.put(hubId, novoHorario);
             }
             return true;
-        } catch (ExcecaoFicheiro | ExcecaoHora |IOException e) {
+        } catch (ExcecaoFicheiro | ExcecaoHora | IOException e) {
             return false;
         }
     }

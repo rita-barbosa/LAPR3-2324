@@ -7,7 +7,6 @@ import project.structure.MapGraph;
 
 import java.time.LocalTime;
 import java.util.*;
-
 import static project.structure.Algorithms.shortestPaths;
 
 public class RedeHub {
@@ -376,4 +375,132 @@ public class RedeHub {
 
         return velocity;
     }
+
+    public void filterPaths(ArrayList<LinkedList<Local>> paths, ArrayList<ArrayList<Integer>> dists, int autonomia,
+                            ArrayList<LinkedList<Local>> newPaths, ArrayList<ArrayList<Integer>> newDists) {
+        for (int i = 0; i < paths.size(); i++) {
+            if (dists.get(i).get(0) < autonomia) {
+                newPaths.add(paths.get(i));
+                newDists.add(dists.get(i));
+            }
+        }
+    }
+
+
+    public List<Local> getHubsOrderedByCollaborators(int n, Local origem) {
+        List<Local> hubs = new ArrayList<>();
+
+        for (Local local : redeDistribuicao.vertices()) {
+            if (local.isHub() && !local.equals(origem)) {
+                hubs.add(local);
+            }
+        }
+
+        hubs.sort((local1, local2) -> Integer.compare(Integer.parseInt(local2.getNumId().substring(2)),
+                Integer.parseInt(local1.getNumId().substring(2))));
+
+
+        return getTopNHubs(hubs, n);
+    }
+
+    private List<Local> getTopNHubs(List<Local> totalHubs, int n){
+        List<Local> topNHubs = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            topNHubs.add(totalHubs.get(i));
+        }
+
+        return topNHubs;
+    }
+
+
+    public List<Local> nearestResult(Local org, int n, int autonomia, List<Local> hubs,  List<Integer> distancias, List<Local> locaisCarregamento){
+        List<Local> circuit = Algorithms.nearestNeighbor(redeDistribuicao, n, org, hubs, Comparator.naturalOrder(), Integer::sum, 0, autonomia);
+
+        if (circuit.size() > 1){
+            getDistancias(circuit, distancias);
+
+            verificarLocaisCarregamento(circuit, distancias, autonomia, locaisCarregamento);
+        }
+
+        return circuit;
+    }
+
+
+    public Map<Local, Integer> getNumberCollaborators(List<Local> hubs) {
+        Map<Local, Integer> collaboratorsMap = new HashMap<>();
+
+        for (Local local : hubs) {
+            String numId = local.getNumId();
+            int collaborators = extractCollaborators(numId);
+            collaboratorsMap.put(local, collaborators);
+        }
+
+        return collaboratorsMap;
+    }
+
+    private int extractCollaborators(String numId) {
+        int ctIndex = numId.indexOf("CT");
+
+        if (ctIndex != -1) {
+            String collaboratorsStr = numId.substring(ctIndex + 2);
+
+            if (collaboratorsStr.matches("\\d+")) {
+                return Integer.parseInt(collaboratorsStr);
+            }
+        }
+        return 0;
+    }
+
+    public void getDistancias(List<Local> circuito, List<Integer> distancias){
+        int total = 0;
+        for (int i = 0; i < circuito.size() - 1; i++) {
+            int distancia = redeDistribuicao.edge(circuito.get(i), circuito.get(i+1)).getWeight();
+            distancias.add(distancia);
+            total += distancia;
+        }
+        distancias.add(total);
+    }
+
+
+    public LinkedList<Integer> getTempoTotalPercurso(LinkedList<Integer> distancias, double velocidadeMedia, List<Local> locaisCarregamento, int tempoRecarga, int tempoDescarga, int n) {
+        LinkedList<Integer> temposPercurso = new LinkedList<>();
+        int numCarregamentos = locaisCarregamento.size();
+        int tempoCircuito = (int) ((distancias.getLast() / velocidadeMedia) / 60);
+        int tempoCarregamento = numCarregamentos * tempoRecarga;
+        int tempoDescargaHubs = tempoDescarga * n;
+        int tempoTotal = tempoCircuito + tempoCarregamento + tempoDescargaHubs;
+
+        temposPercurso.add(tempoCircuito);
+        temposPercurso.add(tempoCarregamento);
+        temposPercurso.add(tempoDescargaHubs);
+        temposPercurso.add(tempoTotal);
+
+
+        return temposPercurso;
+    }
+
+    public int getTotalCollaborators(Map<Local, Integer> numeroColaboradores) {
+        int total = 0;
+        for (Map.Entry<Local, Integer> entry : numeroColaboradores.entrySet()) {
+            total += entry.getValue();
+        }
+
+        return total;
+    }
+
+
+    private void verificarLocaisCarregamento(List<Local> circuit, List<Integer> distancias, int autonomia, List<Local> locaisCarregamento) {
+        int autonomiaRestante = autonomia;
+        for (int i = 0; i < circuit.size() - 1; i++) {
+            if (distancias.get(i) > autonomiaRestante){
+                locaisCarregamento.add(circuit.get(i));
+                autonomiaRestante = autonomia;
+                autonomiaRestante = autonomiaRestante - distancias.get(i);
+            } else {
+                autonomiaRestante = autonomiaRestante - distancias.get(i);
+            }
+        }
+    }
+
 }

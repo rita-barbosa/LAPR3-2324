@@ -2,7 +2,7 @@
 #define ASM_H 
 
 #define NUM 10 
-#define ARRAY_SENSOR_SIZE 5
+#define ARRAY_SENSOR_SIZE 1
 #define TYPE_SIZE 23
 #define UNIT_SIZE 10
 #define BUFFER_VARIABLES 0
@@ -26,28 +26,14 @@ typedef struct {
     char unit[UNIT_SIZE];
 } Sensor;
 
-void alocateProcessadorDeDados(char input[]);
-//---------------------------------------------------------------------------------------
-BufferCircular *allocBufferCircular();
-BufferCircular *reallocBufferCircular(BufferCircular *buffer, int newSize);
-void freeBufferCircular(BufferCircular *buffer);
-int *allocArrayMedias();
-int *reallocArrayMedias(int *arrayMedias, int newSize);
-void freeArrayMedias(int *arrayMedias);
 Sensor *allocSensor(int bufferSize, int arrayMediasSize);
 Sensor **allocVetorSensores();
 Sensor **reallocVectorSensores(Sensor ***vetorSensores, int newSize, int size);
 void freeVectorSensores(Sensor **vetorSensores, int size) ;
-int extract_token(char* input, char* token, int* output);
+void freeSensor(Sensor *sensor);
 void enqueue_value(int* array, int length, int* read, int* write, int value);
 //---------------------------------------------------------------------------------------
-int extract_string(char* input_str, char* prefix,char size, char* result_str);
-void remove_newline(char* str);
-char check_array_has_sensor(Sensor** sensor_array, int sensor_id, int array_size);
-int check_array_has_space(Sensor **sensor_array, int array_size);
-Sensor *create_sensor(char *ptr_read, int counter,int sensor_id);
-void insert_data_sensor(Sensor **sensor_array, char *ptr_read, int counter, int sensor_id, int array_size);
-void print_sensor_data(Sensor **sensor_array, int pos);
+
 void insert_data_line(char *ptr_read, Sensor ***sensor_array,int *ptr_arr_size,int *ptr_counter);
 
 

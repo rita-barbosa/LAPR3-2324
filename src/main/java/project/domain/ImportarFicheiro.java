@@ -119,7 +119,7 @@ public class ImportarFicheiro {
 
     private static void setHubs(String locais) {
         if (locais.contains("small")) {
-            n = 7;
+            n = 8;
         } else {
             n = 20;
         }

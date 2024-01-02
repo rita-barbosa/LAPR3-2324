@@ -376,16 +376,6 @@ public class RedeHub {
         return velocity;
     }
 
-    public void filterPaths(ArrayList<LinkedList<Local>> paths, ArrayList<ArrayList<Integer>> dists, int autonomia,
-                            ArrayList<LinkedList<Local>> newPaths, ArrayList<ArrayList<Integer>> newDists) {
-        for (int i = 0; i < paths.size(); i++) {
-            if (dists.get(i).get(0) < autonomia) {
-                newPaths.add(paths.get(i));
-                newDists.add(dists.get(i));
-            }
-        }
-    }
-
 
     public List<Local> getHubsOrderedByCollaborators(int n, Local origem) {
         List<Local> hubs = new ArrayList<>();
@@ -406,8 +396,10 @@ public class RedeHub {
     private List<Local> getTopNHubs(List<Local> totalHubs, int n){
         List<Local> topNHubs = new ArrayList<>();
 
-        for (int i = 0; i < n; i++) {
-            topNHubs.add(totalHubs.get(i));
+        if (totalHubs.size() >= n){
+            for (int i = 0; i < n; i++) {
+                topNHubs.add(totalHubs.get(i));
+            }
         }
 
         return topNHubs;
@@ -415,7 +407,11 @@ public class RedeHub {
 
 
     public List<Local> nearestResult(Local org, int n, int autonomia, List<Local> hubs,  List<Integer> distancias, List<Local> locaisCarregamento){
-        List<Local> circuit = Algorithms.nearestNeighbor(redeDistribuicao, n, org, hubs, Comparator.naturalOrder(), Integer::sum, 0, autonomia);
+        List<Local> circuit = new ArrayList<>();
+
+        if (!hubs.isEmpty()){
+            circuit =  Algorithms.nearestNeighbor(redeDistribuicao, n, org, hubs, Comparator.naturalOrder(), Integer::sum, 0, autonomia);
+        }
 
         if (circuit.size() > 1){
             getDistancias(circuit, distancias);
@@ -428,7 +424,7 @@ public class RedeHub {
 
 
     public Map<Local, Integer> getNumberCollaborators(List<Local> hubs) {
-        Map<Local, Integer> collaboratorsMap = new HashMap<>();
+        Map<Local, Integer> collaboratorsMap = new LinkedHashMap<>();
 
         for (Local local : hubs) {
             String numId = local.getNumId();
@@ -465,8 +461,9 @@ public class RedeHub {
 
     public LinkedList<Integer> getTempoTotalPercurso(LinkedList<Integer> distancias, double velocidadeMedia, List<Local> locaisCarregamento, int tempoRecarga, int tempoDescarga, int n) {
         LinkedList<Integer> temposPercurso = new LinkedList<>();
+        double velocidadeMetroSegundos = (velocidadeMedia * 1000) / 3600;
         int numCarregamentos = locaisCarregamento.size();
-        int tempoCircuito = (int) ((distancias.getLast() / velocidadeMedia) / 60);
+        int tempoCircuito = (int) ((distancias.getLast() / velocidadeMetroSegundos) / 60);
         int tempoCarregamento = numCarregamentos * tempoRecarga;
         int tempoDescargaHubs = tempoDescarga * n;
         int tempoTotal = tempoCircuito + tempoCarregamento + tempoDescargaHubs;

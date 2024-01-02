@@ -30,8 +30,8 @@ public class CircuitoEntregaController {
         return rede.getHubsOrderedByCollaborators(n, org);
     }
 
-    public LinkedList<Integer> getTempoTotalPercurso(LinkedList<Integer> distancias, double velocidadeMedia, List<Local> locaisCarregamento, int tempoDescarga, int tempoDescarga1, int n) {
-        return rede.getTempoTotalPercurso(distancias, velocidadeMedia, locaisCarregamento, tempoDescarga, tempoDescarga, n);
+    public LinkedList<Integer> getTempoTotalPercurso(LinkedList<Integer> distancias, double velocidadeMedia, List<Local> locaisCarregamento, int tempoRecarga, int tempoDescarga, int n) {
+        return rede.getTempoTotalPercurso(distancias, velocidadeMedia, locaisCarregamento, tempoRecarga, tempoDescarga, n);
     }
 
     public Map<Local, Integer> calculateNumberCollaborators(int n, String localOrigem) {

@@ -222,36 +222,31 @@ public class Algorithms {
                                                                Comparator<E> ce, BinaryOperator<E> sum, E zero,
                                                                boolean[] visited, V[] pathKeys, E[] dist) {
 
-        int vkey = g.key(vOrig);
-        dist[vkey] = zero;
-        pathKeys[vkey] = vOrig;
+        int vKey = g.key(vOrig);
+        dist[vKey] = zero;
+        pathKeys[vKey] = vOrig;
 
         while (vOrig != null) {
-            vkey = g.key(vOrig);
-            visited[vkey] = true;
-
+            vKey = g.key(vOrig);
+            visited[vKey] = true;
             for (Edge<V, E> edge : g.outgoingEdges(vOrig)) {
-                int vkeyAdj = g.key(edge.getVDest());
-                if (!visited[vkeyAdj]) {
-                    E remainingAutonomy = sum.apply(autonomia, dist[vkey]);
-                    if (ce.compare(edge.getWeight(), remainingAutonomy) <= 0) {
-                        E s = sum.apply(dist[vkey], edge.getWeight());
-                        if (dist[vkeyAdj] == null || ce.compare(dist[vkeyAdj], s) > 0) {
-                            dist[vkeyAdj] = s;
-                            pathKeys[vkeyAdj] = vOrig;
-                        }
+                int keyVAdj = g.key(edge.getVDest());
+                if (!visited[keyVAdj]) {
+                    E s = sum.apply(dist[vKey], edge.getWeight());
+                    if ((dist[keyVAdj] == null || ce.compare(dist[keyVAdj], s) > 0) && (ce.compare(autonomia, edge.getWeight()) > 0)) {
+                        dist[keyVAdj] = s;
+                        pathKeys[keyVAdj] = vOrig;
                     }
                 }
             }
 
             E minDist = null;
             vOrig = null;
-
-            for (V vert : g.vertices()) {
-                int i = g.key(vert);
-                if (!visited[i] && (dist[i] != null) && ((minDist == null) || ce.compare(dist[i], minDist) < 0)) {
-                    minDist = dist[i];
-                    vOrig = vert;
+            for (V vertex : g.vertices()) {
+                int vertexKey = g.key(vertex);
+                if (!visited[vertexKey] && (dist[vertexKey] != null) && ((minDist == null) || ce.compare(dist[vertexKey], minDist) < 0)) {
+                    minDist = dist[vertexKey];
+                    vOrig = vertex;
                 }
             }
         }
@@ -688,5 +683,87 @@ public class Algorithms {
         return currentBestCommunity;
     }
 
+
+    /**
+     * Finds a circuit by applying the nearest neighbor heuristic in a graph, considering a hubs list and autonomy.
+     *
+     * @param <V>            The vertex type in the graph.
+     * @param <E>            The edge type in the graph.
+     * @param g              The graph where the circuit needs to be found.
+     * @param n              The number of iterations for selecting hubs.
+     * @param startVertex    The starting vertex for the circuit.
+     * @param hubs           The list of hubs to be considered during the circuit formation.
+     * @param ce             The comparator for edges in the graph.
+     * @param sum            The binary operator to sum edges.
+     * @param zero           The zero element for the edge sum.
+     * @param autonomia      The autonomy constraint value.
+     * @return               A LinkedList representing the circuit found in the graph.
+     */
+    public static <V,E> LinkedList<V> nearestNeighbor(Graph<V, E> g, int n, V startVertex, List<V> hubs, Comparator<E> ce, BinaryOperator<E> sum, E zero, E autonomia) {
+        int hubIndex;
+        LinkedList<V> circuit = new LinkedList<>();
+        V previousVertex = startVertex;
+
+        circuit.add(startVertex);
+
+        for (int i = 0; i < n; i++) {
+            hubIndex = Integer.MIN_VALUE;
+
+            LinkedList<V> shortestPath = new LinkedList<>();
+
+            int shortestValue = Integer.MAX_VALUE;
+
+            for (int j = 0; j < hubs.size(); j++) {
+                LinkedList<V> shortPath = new LinkedList<>();
+                V selectedHub = hubs.get(j);
+                shortestPathWithAutonomy(g, autonomia, previousVertex, selectedHub, ce, sum, zero, shortPath);
+
+
+                if (pathSize(g, shortPath) < shortestValue) {
+                    shortestValue = pathSize(g, shortPath);
+                    shortestPath = new LinkedList<>(shortPath);
+                    hubIndex = j;
+                }
+            }
+
+            previousVertex = hubs.get(hubIndex);
+            hubs.remove(hubIndex);
+
+            if (shortestPath.size() > 1){
+                shortestPath.removeFirst();
+            }
+
+            circuit.addAll(shortestPath);
+        }
+
+        LinkedList<V> shortPathReturn = new LinkedList<>();
+
+        shortestPathWithAutonomy(g, autonomia, previousVertex, startVertex, ce, sum, zero, shortPathReturn);
+
+        if (shortPathReturn.size() > 1){
+            shortPathReturn.removeFirst();
+        }
+        circuit.addAll(shortPathReturn);
+
+        return circuit;
+    }
+
+    /**
+     * Calculates the total size or weight of a given path in a graph based on edge weights.
+     *
+     * @param <V>    The vertex type in the graph.
+     * @param <E>    The edge type in the graph.
+     * @param graph  The graph containing vertices and edges.
+     * @param path   The path represented as a list of vertices.
+     * @return       The total size or weight of the provided path in the graph.
+     */
+    private static <V,E> Integer pathSize(Graph<V, E> graph, LinkedList<V> path){
+        int total = 0;
+        for (int i = 0; i < path.size() - 1; i++) {
+            total += Integer.parseInt(String.valueOf(graph.edge(path.get(i), path.get(i + 1)).getWeight()));
+        }
+
+        return total;
+    }
 
 }

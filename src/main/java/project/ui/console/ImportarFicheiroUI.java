@@ -65,24 +65,16 @@ public class ImportarFicheiroUI implements Runnable {
                             if (vertex.getNumId().equals(hubId) && vertex.isHub()) {
                                 Horario novoHorario = novosHorarios.get(hubId);
                                 vertex.setHorario(novoHorario);
-                                System.out.println("Horários redefinidos para o hub " + hubId);
-                                System.out.println("Novos Horários:" + vertex.getHorario() + "\n");
+                                System.out.println("Horários redefinidos para o hub: " + hubId);
+                                System.out.println("Novos Horários: " + vertex.getHorario() + "\n");
                                 hubExiste = true;
-//                                break;
                             }
                         }
                         if (!hubExiste) {
-                            System.out.println("Hub " + hubId + " não encontrado!\n");
+                            System.out.println("ERRO: Hub " + hubId + " não encontrado.\n");
                         }
                     }
                     System.out.println();
-//                    successfulImport = true;
-
-                    //Apenas para verificação se os horários mudaram ---> RETIRAR
-//                    System.out.println("Novos horários dos hubs:");
-//                    for (Local entry : graph.vertices) {
-//                        System.out.println("Hub: " + entry.getNumId() + " - Horário: " + entry.getHorario() + " Hub: " + entry.isHub());
-//                    }
                 } catch (Exception e) {
                     System.out.printf("%s\n\n", e.getMessage());
                 }

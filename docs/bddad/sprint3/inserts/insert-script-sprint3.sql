@@ -696,6 +696,7 @@ INSERT INTO Operacao (idOperacao, designacaoOperacaoAgricola, designacaoUnidade,
 INSERT INTO Operacao (idOperacao, designacaoOperacaoAgricola, designacaoUnidade, idEstadoOperacao, quantidade, dataOperacao) VALUES (277, 'Rega', 'min', 1 ,  120.0,  TO_DATE('25/08/2023 - 22:00', 'DD/MM/YYYY - HH24:MI'));
 INSERT INTO Operacao (idOperacao, designacaoOperacaoAgricola, designacaoUnidade, idEstadoOperacao, quantidade, dataOperacao) VALUES (278, 'Rega', 'min', 1 ,  120.0,  TO_DATE('01/09/2023 - 22:00', 'DD/MM/YYYY - HH24:MI'));
 INSERT INTO Operacao (idOperacao, designacaoOperacaoAgricola, designacaoUnidade, idEstadoOperacao, quantidade, dataOperacao) VALUES (279, 'Rega', 'min', 1 ,  120.0,  TO_DATE('08/09/2023 - 22:00', 'DD/MM/YYYY - HH24:MI'));
+INSERT INTO Operacao (idOperacao, designacaoOperacaoAgricola, designacaoUnidade, idEstadoOperacao, quantidade, dataOperacao) VALUES (409, 'Rega', 'min', 1 ,  120.0,  TO_DATE('15/09/2023 - 22:00', 'DD/MM/YYYY - HH24:MI'));
 INSERT INTO Operacao (idOperacao, designacaoOperacaoAgricola, designacaoUnidade, idEstadoOperacao, quantidade, dataOperacao) VALUES (280, 'Rega', 'min', 1 ,  120.0,  TO_DATE('13/05/2023 - 23:00', 'DD/MM/YYYY - HH24:MI'));
 INSERT INTO Operacao (idOperacao, designacaoOperacaoAgricola, designacaoUnidade, idEstadoOperacao, quantidade, dataOperacao) VALUES (281, 'Rega', 'min', 1 ,  120.0,  TO_DATE('02/06/2023 - 23:00', 'DD/MM/YYYY - HH24:MI'));
 INSERT INTO Operacao (idOperacao, designacaoOperacaoAgricola, designacaoUnidade, idEstadoOperacao, quantidade, dataOperacao) VALUES (282, 'Fertirrega','min',1,120,TO_DATE('16/06/2023 - 23:00', 'DD/MM/YYYY - HH24:MI'));
@@ -1195,6 +1196,7 @@ INSERT INTO Rega(idOperacao, designacaoSetor) VALUES (276, 21);
 INSERT INTO Rega(idOperacao, designacaoSetor) VALUES (277, 21);
 INSERT INTO Rega(idOperacao, designacaoSetor) VALUES (278, 21);
 INSERT INTO Rega(idOperacao, designacaoSetor) VALUES (279, 21);
+INSERT INTO Rega(idOperacao, designacaoSetor) VALUES (409, 21);
 INSERT INTO Rega(idOperacao, designacaoSetor) VALUES (280, 22);
 INSERT INTO Rega(idOperacao, designacaoSetor) VALUES (281, 22);
 INSERT INTO Rega(idOperacao, designacaoSetor) VALUES (282, 22);

@@ -1,9 +1,35 @@
 package project.structure;
 
+import project.domain.Local;
+
 import java.util.*;
 import java.util.function.BinaryOperator;
 
 public class Algorithms {
+
+
+    private static <V, E> LinkedList<V> breadthFirstSearch(Graph<V, E> graph, V vOrig) {
+        LinkedList<V> qbfs = new LinkedList<>();
+        qbfs.add(vOrig);
+        LinkedList<V> qaux = new LinkedList<>();
+        qaux.add(vOrig);
+        Map<V, Boolean> visited = new HashMap<>();
+        for (V vertex : graph.vertices()) {
+            visited.put(vertex, false);
+        }
+        visited.put(vOrig, true);
+        while (!qaux.isEmpty()) {
+            vOrig = qaux.pop();
+            for (V adj : graph.adjVertices(vOrig)) {
+                if (!visited.get(adj)) {
+                    qbfs.add(adj);
+                    qaux.add(adj);
+                    visited.put(adj, true);
+                }
+            }
+        }
+        return qbfs;
+    }
 
 
     private static <V> boolean isNotVisited(V x, List<V> path) {
@@ -775,6 +801,374 @@ public class Algorithms {
         }
 
         return total;
+    }
+
+
+    public static <V, E> Set<Set<V>> getNClusters(MapGraph<V, E> graph, int numClusters, List<V> hubList) {
+        MapGraph<V, E> copycat = new MapGraph<>(graph);
+        Set<Set<V>> clusterSets = new HashSet<>();
+        boolean thereWasASlipt;
+        Map<V, Set<V>> clusters = new HashMap<>();
+
+        for (V hub : graph.getHubsVertexList().subList(0, numClusters)) {
+            clusters.put(hub, new HashSet<>());
+            clusters.get(hub).add(hub);
+        }
+
+        if (numClusters == hubList.size()){
+            for (Map.Entry<V, Set<V>> entry : clusters.entrySet()) {
+                Set<V> clust = new HashSet<>(entry.getValue());
+                clust.add(entry.getKey());
+                clusterSets.add(clust);
+            }
+            return clusterSets;
+        }
+
+        Map<Edge<V, E>, Double> edgeBetweenness;
+        Edge<V, E> biggestEdge = null;
+        double edgeCentrality = -1;
+
+        do {
+            double currentBiggestCentrality = edgeCentrality;
+            thereWasASlipt = false;
+            edgeBetweenness = edgeBetweennessCentrality(copycat);
+
+            for (Edge<V, E> edge : edgeBetweenness.keySet()) {
+                if (edgeBetweenness.get(edge) > edgeCentrality) {
+                    edgeCentrality = edgeBetweenness.get(edge);
+                    biggestEdge = edge;
+                }
+            }
+
+            if (biggestEdge != null) {
+                copycat.removeEdge(biggestEdge.getVOrig(), biggestEdge.getVDest());
+                copycat.removeEdge(biggestEdge.reverse().getVOrig(), biggestEdge.reverse().getVDest());
+            }
+
+            for (V hub : clusters.keySet()) {
+                int formerSize = clusters.get(hub).size();
+                clusters.get(hub).clear();
+                List<V> bfsHub = breadthFirstSearch(copycat, hub);
+                if ((formerSize != 1) && (formerSize != bfsHub.size())) {
+                    thereWasASlipt = true;
+                }
+                clusters.get(hub).addAll(bfsHub);
+            }
+
+            if (thereWasASlipt || currentBiggestCentrality == edgeCentrality) {
+                edgeCentrality = -1;
+            }
+
+        } while (!areClustersIsolated(copycat, clusters));
+
+        for (Map.Entry<V, Set<V>> entry : clusters.entrySet()) {
+            Set<V> clust = new HashSet<>(entry.getValue());
+            clust.add(entry.getKey());
+            clusterSets.add(clust);
+        }
+
+        if (!checkLeftOutVertexes(graph, clusterSets)) {
+            correctClusters(graph, clusterSets, numClusters);
+        }
+        return clusterSets;
+    }
+
+    private static <E, V> void correctClusters(MapGraph<V, E> graph, Set<Set<V>> clusterSets, int numClusters) {
+        List<V> leftoutVertexes = new ArrayList<>(graph.vertices);
+        Set<V> clusterVertexes = new HashSet<>();
+        Map<V, V> clusterBuddies = new HashMap<>();
+        boolean asHub = false;
+        for (Set<V> cluster : clusterSets) {
+            clusterVertexes.addAll(cluster);
+        }
+        leftoutVertexes.removeAll(clusterVertexes);
+
+
+        if (clusterSets.size() != numClusters) {
+            for (V vertex : leftoutVertexes) {
+                if (vertex.getClass().getSimpleName().equals("Local")) {
+                    Local local = (Local) vertex;
+                    if (local.isHub()) {
+                        asHub = true;
+                    }
+                }
+            }
+            if (asHub) {
+                clusterSets.add(new HashSet<>(leftoutVertexes));
+            } else {
+                boolean isPossible = false;
+                do {
+                    Edge<V, E> smallestCentralityHubEdge = getEdgeWithLessCentralityAndHub(graph, leftoutVertexes);
+                    V hub;
+                    if (leftoutVertexes.contains(smallestCentralityHubEdge.getVOrig())) {
+                        hub = smallestCentralityHubEdge.getVDest();
+                    } else {
+                        hub = smallestCentralityHubEdge.getVOrig();
+                    }
+                    if (checkIfWithoutHubClusterExists(hub, clusterSets)) {
+                        isPossible = true;
+                        for (Set<V> set : clusterSets) {
+                            set.remove(hub);
+                        }
+                        leftoutVertexes.add(hub);
+                        clusterSets.add(new HashSet<>(leftoutVertexes));
+                    } else {
+                        graph.removeEdge(smallestCentralityHubEdge.getVOrig(), smallestCentralityHubEdge.getVDest());
+                        graph.removeEdge(smallestCentralityHubEdge.reverse().getVOrig(), smallestCentralityHubEdge.reverse().getVDest());
+                    }
+                } while (!isPossible);
+            }
+        } else {
+            Map<Edge<V, E>, Double> edgeBetweenness = edgeBetweennessCentrality(graph);
+            for (V vertex : leftoutVertexes) {
+                V clusterBelonger;
+                Edge<V, E> smallestCentralityEdge = getEdgeWithLessCentrality(vertex, edgeBetweenness);
+                if (vertex.equals(smallestCentralityEdge.getVOrig())) {
+                    clusterBelonger = smallestCentralityEdge.getVDest();
+                } else {
+                    clusterBelonger = smallestCentralityEdge.getVOrig();
+                }
+                clusterBuddies.put(vertex, clusterBelonger);
+            }
+
+            for (V vertex : clusterBuddies.keySet()) {
+                for (Set<V> cluster : clusterSets) {
+                    if (cluster.contains(clusterBuddies.get(vertex))) {
+                        cluster.add(vertex);
+                        break;
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    private static <V> boolean checkIfWithoutHubClusterExists(V hub, Set<Set<V>> clusterSets) {
+        Set<V> cluster = null;
+        for (Set<V> set : clusterSets) {
+            if (set.contains(hub)) {
+                cluster = new HashSet<>(set);
+            }
+        }
+        if (cluster != null) {
+            cluster.remove(hub);
+            for (V vertex : cluster) {
+                if (vertex.getClass().getSimpleName().equals("Local")) {
+                    Local local = (Local) vertex;
+                    if (local.isHub()) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private static <E, V> Edge<V, E> getEdgeWithLessCentralityAndHub(MapGraph<V, E> graph, List<V> leftoutVertexes) {
+        Map<Edge<V, E>, Double> edgeBetweenness = edgeBetweennessCentrality(graph);
+        Map<Edge<V, E>, Double> edgesVertex = new HashMap<>();
+        double smallestCentrality = Double.POSITIVE_INFINITY;
+        Edge<V, E> chosenOne = null;
+        for (V vertex : leftoutVertexes) {
+            for (Edge<V, E> edge : graph.edges()) {
+                if ((edge.getVOrig().equals(vertex) && checkOtherVertex(edge.getVDest()) || (edge.getVDest().equals(vertex) && checkOtherVertex(edge.getVOrig())))) {
+                    edgesVertex.put(edge, edgeBetweenness.get(edge));
+                }
+            }
+        }
+        for (Edge<V, E> edge : edgesVertex.keySet()) {
+            if (edgesVertex.get(edge) < smallestCentrality) {
+                smallestCentrality = edgesVertex.get(edge);
+                chosenOne = edge;
+            }
+        }
+        return chosenOne;
+    }
+
+    private static <V> boolean checkOtherVertex(V vDest) {
+        if (vDest.getClass().getSimpleName().equals("Local")) {
+            Local local = (Local) vDest;
+            return local.isHub();
+        }
+        return false;
+    }
+
+    private static <V, E> Edge<V, E> getEdgeWithLessCentrality(V vertex, Map<Edge<V, E>, Double> edgeBetweenness) {
+        Edge<V, E> lessCentralEdge = null;
+        double smallCentrality = Double.POSITIVE_INFINITY;
+
+        for (Edge<V, E> edge : edgeBetweenness.keySet()) {
+            if (edge.getVOrig().equals(vertex) || edge.getVDest().equals(vertex)) {
+                if (edgeBetweenness.get(edge) < smallCentrality) {
+                    lessCentralEdge = edge;
+                }
+            }
+        }
+        return lessCentralEdge;
+    }
+
+    private static <E, V> boolean checkLeftOutVertexes(MapGraph<V, E> graph, Set<Set<V>> clusterSets) {
+        int vertexesClusters = 0;
+        for (Set<V> cluster : clusterSets) {
+            vertexesClusters += cluster.size();
+        }
+        return vertexesClusters == graph.vertices.size();
+    }
+
+
+    private static <E, V> boolean areClustersIsolated(MapGraph<V, E> graph, Map<V, Set<V>> clusters) {
+        for (Set<V> cluster : clusters.values()) {
+            for (Set<V> nextOne : clusters.values()) {
+                if (cluster != nextOne) {
+                    List<V> clusterV = cluster.stream().toList();
+                    List<V> nextOneV = nextOne.stream().toList();
+                    for (int i = 0; i < clusterV.size() - 1; i++) {
+                        for (int j = 0; j < nextOneV.size() - 1; j++) {
+                            if ((clusterV.get(i) != nextOneV.get(j)) && (graph.edge(clusterV.get(i), nextOneV.get(j)) != null)) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+
+    private static <V, E> Map<Edge<V, E>, Double> edgeBetweennessCentrality(MapGraph<V, E> graph) {
+        Map<Edge<V, E>, Double> result = new HashMap<>();
+        Map<Edge<V, E>, Double> edgeBetweenness = new HashMap<>();
+        boolean btnFiltered = false;
+        Map<V, List<Integer>> vertexScores = new HashMap<>();
+        List<Integer> sourceVertexMap;
+        int sourceLevel = 1;
+
+        for (Edge<V, E> edge : graph.edges()) {
+            result.put(edge, 0.0);
+        }
+
+        for (V vertex : graph.vertices) {
+            edgeBetweenness.clear();
+
+            initializeVertexScoresAndLevels(vertexScores, graph);
+
+            sourceVertexMap = vertexScores.get(vertex);
+            sourceVertexMap.set(0, sourceLevel);
+            sourceVertexMap.set(1, 1);
+
+            List<V> listPath = Algorithms.breadthFirstSearch(graph, vertex);
+
+            //levels
+            for (V node : listPath) {
+                int currentNodeLevel = vertexScores.get(node).get(0);
+                for (V adj : graph.adjVertices(node)) {
+                    if (vertexScores.get(adj).get(0) == -1) {
+                        sourceVertexMap = vertexScores.get(adj);
+                        sourceVertexMap.set(0, currentNodeLevel + 1);
+                    }
+                }
+            }
+
+            filterAndFillEdgeBetweennessMap(graph, edgeBetweenness, vertexScores);
+
+            if (!btnFiltered) {
+                filterAndFillEdgeBetweennessMap(graph, result, vertexScores);
+                btnFiltered = true;
+            }
+            getVertexesScores(graph, listPath, vertexScores);
+            calculateEdgeBetwenness(listPath, edgeBetweenness, vertexScores);
+            addEdgeBetwennessToResult(edgeBetweenness, result);
+        }
+        return result;
+    }
+
+    private static <V, E> void addEdgeBetwennessToResult(Map<Edge<V, E>, Double> edgeBetweenness, Map<Edge<V, E>, Double> result) {
+        for (Edge<V, E> edge : edgeBetweenness.keySet()) {
+            if (!result.containsKey(edge)) {
+                result.put(edge, edgeBetweenness.get(edge));
+            } else {
+                result.put(edge, result.get(edge) + edgeBetweenness.get(edge));
+            }
+        }
+    }
+
+    private static <V, E> void filterAndFillEdgeBetweennessMap(MapGraph<V, E> graph, Map<Edge<V, E>, Double> edgeBetweenness, Map<V, List<Integer>> vertexScores) {
+        List<Edge<V, E>> edgesToRemove = new ArrayList<>();
+        List<Edge<V, E>> edges = new ArrayList<>(graph.edges());
+        for (Edge<V, E> edge : edges) {
+            if (vertexScores.get(edge.getVOrig()).get(0) >= vertexScores.get(edge.getVDest()).get(0)) {
+                edgesToRemove.add(edge);
+            }
+        }
+        edges.removeAll(edgesToRemove);
+        for (Edge<V, E> edge : edges) {
+            edgeBetweenness.put(edge, 0.0);
+        }
+    }
+
+    private static <V, E> void calculateEdgeBetwenness(List<V> listPath, Map<Edge<V, E>, Double> edgeBetweenness, Map<V, List<Integer>> vertexScores) {
+        Map<V, Double> sumEdges = new HashMap<>();
+        List<V> vOrigEdgesVDest = new ArrayList<>();
+
+        for (int i = listPath.size() - 1; i > -1; i--) {
+            sumEdges.clear();
+            for (Edge<V, E> edge : edgeBetweenness.keySet()) {
+                if (edge.getVOrig().equals(listPath.get(i))) {
+                    double edgeSoloScore = (double) vertexScores.get(edge.getVOrig()).get(1) / vertexScores.get(edge.getVDest()).get(1);
+                    edgeBetweenness.put(edge, edgeSoloScore);
+                    vOrigEdgesVDest.add(edge.getVDest());
+                }
+            }
+            if (!vOrigEdgesVDest.isEmpty()) {
+                for (V destination : vOrigEdgesVDest) {
+                    for (Edge<V, E> edge : edgeBetweenness.keySet()) {
+                        if (edge.getVOrig().equals(destination)) {
+                            if (sumEdges.containsKey(destination)) {
+                                sumEdges.put(destination, sumEdges.get(destination) + edgeBetweenness.get(edge));
+                            } else {
+                                sumEdges.put(destination, edgeBetweenness.get(edge));
+                            }
+
+                        }
+                    }
+                }
+            }
+            for (Edge<V, E> edge : edgeBetweenness.keySet()) {
+                if (edge.getVOrig().equals(listPath.get(i))) {
+                    if (sumEdges.containsKey(edge.getVDest())) {
+                        edgeBetweenness.put(edge, edgeBetweenness.get(edge) + sumEdges.get(edge.getVDest()));
+                    }
+                }
+            }
+            vOrigEdgesVDest.clear();
+        }
+    }
+
+    private static <V, E> void getVertexesScores(MapGraph<V, E> graph, List<V> listPath, Map<V, List<Integer>> vertexScores) {
+        MapGraph<V, E> copycat = new MapGraph<>(graph);
+        for (V vertex : listPath) {
+            List<Edge<V, E>> incomingEdges = copycat.incomingEdges(vertex).stream().toList();
+            for (Edge<V, E> edge : incomingEdges) {
+                int scoreVOrig = vertexScores.get(edge.getVOrig()).get(0);
+                int scoreVertex = vertexScores.get(vertex).get(0);
+                if (scoreVOrig < scoreVertex) {
+                    vertexScores.get(vertex).set(1, vertexScores.get(vertex).get(1) + 1);
+                    copycat.removeEdge(edge.getVOrig(), edge.getVDest());
+                    copycat.removeEdge(edge.getVDest(), edge.getVOrig());
+                }
+            }
+        }
+    }
+
+    private static <V, E> void initializeVertexScoresAndLevels(Map<V, List<Integer>> vertexScores, MapGraph<V, E> graph) {
+        for (V vertex : graph.vertices) {
+            List<Integer> sourceVertexMap = new LinkedList<>();
+            sourceVertexMap.add(0, -1);
+            sourceVertexMap.add(1, 0);
+            vertexScores.put(vertex, sourceVertexMap);
+        }
     }
 
 }

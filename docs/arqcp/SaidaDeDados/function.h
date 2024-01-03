@@ -12,7 +12,6 @@ typedef struct {
     char sensor_id;
     char type[TYPE_SIZE];
     char unit[UNIT_SIZE];
-	
 }SaidaDeDados;
 
 void alocateSaidaDeDados(char input[]);

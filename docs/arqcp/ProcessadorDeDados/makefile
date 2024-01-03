@@ -1,5 +1,5 @@
-prog: main.o extract_token.o struct_allocation.o extract_string.o data_insertion.o enqueue_value.o get_outputFileName.o mediana.o sort_array.o serialize_info.o
-	gcc main.o extract_token.o struct_allocation.o extract_string.o data_insertion.o enqueue_value.o get_outputFileName.o mediana.o sort_array.o serialize_info.o -z noexecstack -o prog
+prog: main.o extract_token.o struct_allocation.o extract_string.o data_insertion.o enqueue_value.o get_outputFileName.o mediana.o sort_array.o serialize_info.o move_num_vec.o
+	gcc main.o extract_token.o struct_allocation.o extract_string.o data_insertion.o enqueue_value.o get_outputFileName.o mediana.o sort_array.o serialize_info.o move_num_vec.o -z noexecstack -o prog
 
 main.o: main.c functions.h
 	gcc -g -Wall -Wextra -fanalyzer -c main.c -o main.o
@@ -24,6 +24,9 @@ get_outputFileName.o: get_outputFileName.c
 
 mediana.o: mediana.s 
 	gcc -g -Wall -Wextra -fanalyzer -c mediana.s -o mediana.o
+	
+move_num_vec.o: move_num_vec.s 
+	gcc -g -Wall -Wextra -fanalyzer -c move_num_vec.s -o move_num_vec.o
 
 sort_array.o: sort_array.s 
 	gcc -g -Wall -Wextra -fanalyzer -c sort_array.s -o sort_array.o
@@ -32,10 +35,12 @@ serialize_info.o: serialize_info.c
 	gcc -g -Wall -Wextra -fanalyzer -c serialize_info.c -o serialize_info.o
 
 vg: prog
-	valgrind ./prog /etc/ttyS0 config intermedio 15
+	valgrind ./prog /media/sf_partilha/arqcp23242dgg04/sprint3/ProcessadorDeDados/data.txt config intermedio 50
 
 run: prog
-	./prog /etc/ttyS0 config intermedio 15
+	./prog /media/sf_partilha/arqcp23242dgg04/sprint3/ProcessadorDeDados/data.txt config intermedio 50
 
 clean:
 	rm -f *.o prog
+
+

@@ -729,21 +729,32 @@ public class Algorithms {
             previousVertex = hubs.get(hubIndex);
             hubs.remove(hubIndex);
 
-            if (shortestPath.size() > 1){
+            if (shortestPath.size() > 1) {
                 shortestPath.removeFirst();
             }
 
-            circuit.addAll(shortestPath);
+            Collection<V> vertex = g.adjVertices(circuit.getLast());
+            boolean auxBoolean = false;
+            for (V aux : vertex) {
+                if (!circuit.isEmpty() && !shortestPath.isEmpty()) {
+                    if (aux.equals(shortestPath.get(0)) && !auxBoolean) {
+                        circuit.addAll(shortestPath);
+                        auxBoolean = true;
+                    }
+                }
+            }
         }
 
-        LinkedList<V> shortPathReturn = new LinkedList<>();
+        if (circuit.size() > n){
+            LinkedList<V> shortPathReturn = new LinkedList<>();
 
-        shortestPathWithAutonomy(g, autonomia, previousVertex, startVertex, ce, sum, zero, shortPathReturn);
+            shortestPathWithAutonomy(g, autonomia, previousVertex, startVertex, ce, sum, zero, shortPathReturn);
 
-        if (shortPathReturn.size() > 1){
-            shortPathReturn.removeFirst();
+            if (shortPathReturn.size() > 1){
+                shortPathReturn.removeFirst();
+            }
+            circuit.addAll(shortPathReturn);
         }
-        circuit.addAll(shortPathReturn);
 
         return circuit;
     }

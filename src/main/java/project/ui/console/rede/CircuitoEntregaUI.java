@@ -63,7 +63,14 @@ public class CircuitoEntregaUI implements Runnable {
 
                 int totalColaboradores = controller.getTotalCollaborators(numeroColaboradores);
 
-                printPath(result, distancias, totalColaboradores, locaisCarregamento, temposPercurso, numeroColaboradores);
+                int countHubs = controller.checkNumberHubs(numeroColaboradores, result);
+
+                if (countHubs >= n){
+                    printPath(result, distancias, totalColaboradores, locaisCarregamento, temposPercurso, numeroColaboradores, n);
+
+                } else {
+                    printWrongCase();
+                }
             }
 
         } catch (Exception e) {
@@ -71,7 +78,8 @@ public class CircuitoEntregaUI implements Runnable {
         }
     }
 
-    private void printPath(List<Local> locals, LinkedList<Integer> integers, Integer totalColaboradores, List<Local> locaisCarregamento, List<Integer> temposPercurso, Map<Local, Integer> hubsMap) {
+    private void printPath(List<Local> locals, LinkedList<Integer> integers, Integer totalColaboradores, List<Local> locaisCarregamento, List<Integer> temposPercurso, Map<Local, Integer> hubsMap, int n) {
+        Map<Local, Integer> aux = new HashMap<>();
         System.out.println("\n|-----------------------------------------------------------------------------------------------------|");
         System.out.println("|                                               CIRCUITO:                                             |");
         System.out.println("|-----------------------------------------------------------------------------------------------------|");
@@ -80,18 +88,52 @@ public class CircuitoEntregaUI implements Runnable {
         System.out.println("|-----------------------------------------------------------------------------------------------------|");
         System.out.printf("|%37s  <>  %-37s| %-19s|\n", "DE", "PARA", "DISTÂNCIAS (m)");
         if (locals.size() > 1) {
-            for (int i = 0; i < locals.size() - 1; i++) {
+            System.out.printf("|                                 %-45s  | %-19s|\n", "CAMINHO DE IDA", " ");
+            int i = 0;
+            while (aux.size() != hubsMap.size() && i < locals.size() - 1){
                 String format2 = "|%37s  <>  %-37s| %-19d|\n";
-                System.out.printf(format2, locals.get(i), locals.get(i + 1), integers.get(i));
+                boolean exist = false;
+                boolean exist2 = false;
+                for (Map.Entry<Local, Integer> entry : hubsMap.entrySet()) {
+                    if (locals.get(i).equals(entry.getKey()) && !exist){
+                        exist = true;
+                    }
+                    if (locals.get(i + 1).equals(entry.getKey()) && !exist2){
+                        exist2 = true;
+                    }
+                }
+                if (exist && exist2){
+                    System.out.printf(format2, locals.get(i), locals.get(i + 1), integers.get(i));
+                } else if (exist) {
+                    System.out.printf(format2, locals.get(i), locals.get(i + 1).getNumId(), integers.get(i));
+                } else if (exist2) {
+                    System.out.printf(format2, locals.get(i).getNumId(), locals.get(i + 1), integers.get(i));
+                } else {
+                    System.out.printf(format2, locals.get(i).getNumId(), locals.get(i + 1).getNumId(), integers.get(i));
+                }
+
+                if (hubsMap.containsKey(locals.get(i + 1))){
+                    aux.put(locals.get(i + 1), 0);
+                }
+                i++;
+            }
+            System.out.println("|                                                                                |                    |");
+            System.out.printf("|                                %-46s  | %-19s|\n", "CAMINHO DE VOLTA", " ");
+            while (i < locals.size() - 1){
+                String format2 = "|%37s  <>  %-37s| %-19d|\n";
+                System.out.printf(format2, locals.get(i).getNumId(), locals.get(i + 1).getNumId(), integers.get(i));
+                i++;
             }
         }
         System.out.println("|-----------------------------------------------------------------------------------------------------|");
         System.out.println("|                                    HUBS QUE CONTRIBUEM PARA OS N:                                   |");
         System.out.println("|-----------------------------------------------------------------------------------------------------|");
+        System.out.printf("| N: %-97d|\n", n);
+        System.out.println("|                                                                                                     |");
+        System.out.printf("| NÚMERO COLABORADORES: %-78d|\n", totalColaboradores);
         for (Map.Entry<Local, Integer> entry : hubsMap.entrySet()) {
             System.out.printf("| %-13s -> %-4d colaboradores                                                                 |\n", entry.getKey(), entry.getValue());
         }
-        System.out.printf("| NÚMERO COLABORADORES: %-78d|\n", totalColaboradores);
         System.out.println("|-----------------------------------------------------------------------------------------------------|");
         System.out.println("|                                        LOCAIS DE CARREGAMENTO:                                      |");
         System.out.println("|-----------------------------------------------------------------------------------------------------|");

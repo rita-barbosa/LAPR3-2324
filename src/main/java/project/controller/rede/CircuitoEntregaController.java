@@ -43,4 +43,8 @@ public class CircuitoEntregaController {
     public int getTotalCollaborators(Map<Local, Integer> numeroColaboradores) {
         return rede.getTotalCollaborators(numeroColaboradores);
     }
+
+    public int checkNumberHubs(Map<Local, Integer> numeroColaboradores, List<Local> result) {
+        return rede.checkNumberHubs(numeroColaboradores, result);
+    }
 }

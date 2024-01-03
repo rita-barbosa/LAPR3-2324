@@ -304,4 +304,62 @@ public class CircuitoEntregaControllerTest {
         assertNotEquals(wrongExpected, controller.getTotalCollaborators(colaboradores));
     }
 
+    @Test
+    public void checkNumberHubsWorks(){
+        Local local1 = redeGrafo.vertex(p -> p.getNumId().equals("CT1"));
+        Local local2 = redeGrafo.vertex(p -> p.getNumId().equals("CT6"));
+        Local local3 = redeGrafo.vertex(p -> p.getNumId().equals("CT12"));
+        Local local4 = redeGrafo.vertex(p -> p.getNumId().equals("CT13"));
+        Local local5 = redeGrafo.vertex(p -> p.getNumId().equals("CT7"));
+        Local local6 = redeGrafo.vertex(p -> p.getNumId().equals("CT8"));
+
+        Map<Local, Integer> colaboradores = new LinkedHashMap<>();
+        colaboradores.put(local1, 1);
+        colaboradores.put(local2, 6);
+        colaboradores.put(local3, 12);
+        colaboradores.put(local4, 13);
+        colaboradores.put(local5, 7);
+
+        List<Local> circuit = new ArrayList<>();
+        circuit.add(local6);
+        circuit.add(local1);
+        circuit.add(local5);
+        circuit.add(local4);
+        circuit.add(local3);
+        circuit.add(local2);
+
+        int expected = 5;
+
+        assertEquals(expected, controller.checkNumberHubs(colaboradores, circuit));
+    }
+
+    @Test
+    public void checkNumberHubsFails(){
+        Local local1 = redeGrafo.vertex(p -> p.getNumId().equals("CT1"));
+        Local local2 = redeGrafo.vertex(p -> p.getNumId().equals("CT6"));
+        Local local3 = redeGrafo.vertex(p -> p.getNumId().equals("CT12"));
+        Local local4 = redeGrafo.vertex(p -> p.getNumId().equals("CT13"));
+        Local local5 = redeGrafo.vertex(p -> p.getNumId().equals("CT7"));
+        Local local6 = redeGrafo.vertex(p -> p.getNumId().equals("CT8"));
+
+        Map<Local, Integer> colaboradores = new LinkedHashMap<>();
+        colaboradores.put(local1, 1);
+        colaboradores.put(local2, 6);
+        colaboradores.put(local3, 12);
+        colaboradores.put(local4, 13);
+        colaboradores.put(local5, 7);
+
+        List<Local> circuit = new ArrayList<>();
+        circuit.add(local6);
+        circuit.add(local1);
+        circuit.add(local5);
+        circuit.add(local4);
+        circuit.add(local3);
+        circuit.add(local6);
+
+        int expectedWrong = 1;
+
+        assertNotEquals(expectedWrong, controller.checkNumberHubs(colaboradores, circuit));
+    }
+
 }

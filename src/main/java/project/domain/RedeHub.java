@@ -410,16 +410,26 @@ public class RedeHub {
         List<Local> circuit = new ArrayList<>();
 
         if (!hubs.isEmpty()){
-            circuit =  Algorithms.nearestNeighbor(redeDistribuicao, n, org, hubs, Comparator.naturalOrder(), Integer::sum, 0, autonomia);
+            circuit = Algorithms.nearestNeighbor(redeDistribuicao, n, org, hubs, Comparator.naturalOrder(), Integer::sum, 0, autonomia);
         }
 
         if (circuit.size() > 1){
-            getDistancias(circuit, distancias);
+            int count = 0;
+            for (Local l : circuit) {
+                if (org.equals(l)){
+                    count++;
+                }
+            }
 
-            verificarLocaisCarregamento(circuit, distancias, autonomia, locaisCarregamento);
+            if (count == 2){
+                getDistancias(circuit, distancias);
+
+                verificarLocaisCarregamento(circuit, distancias, autonomia, locaisCarregamento);
+
+                return circuit;
+            }
         }
-
-        return circuit;
+        return new ArrayList<>();
     }
 
 
@@ -500,4 +510,16 @@ public class RedeHub {
         }
     }
 
+    public int checkNumberHubs(Map<Local, Integer> numeroColaboradores, List<Local> result) {
+        int count = 0;
+        for (Map.Entry<Local, Integer> entry : numeroColaboradores.entrySet()) {
+            for (Local l : result) {
+                if (entry.getKey().equals(l)){
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
 }

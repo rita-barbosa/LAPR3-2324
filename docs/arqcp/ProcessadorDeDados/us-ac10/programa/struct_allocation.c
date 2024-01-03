@@ -6,7 +6,9 @@
 #include <errno.h>
 #include <stdlib.h>
 
-
+/*
+* Verifica se o diretório existe e caso não exista, cria o diretório
+*/
 void alocateProcessadorDeDados(char c[]){	
 	DIR* dir = opendir(c);
 	
@@ -29,6 +31,9 @@ void alocateProcessadorDeDados(char c[]){
 
 //------------------------------BUFFER CIRCULAR-----------------------------------
 
+/*
+* Vai alocar espaço na memória para o BufferCircular
+*/
 BufferCircular *allocBufferCircular() {
     BufferCircular *buffer = (BufferCircular *)malloc(sizeof(BufferCircular));
 
@@ -50,7 +55,9 @@ BufferCircular *allocBufferCircular() {
     return buffer;
 }
 
-
+/*
+* Vai realocar espaço na memória para o BufferCircular
+*/
 BufferCircular *reallocBufferCircular(BufferCircular *buffer, int newSize){
 	int *newArray = (int *)realloc(buffer->array, newSize * sizeof(int));
     if (newArray == NULL) {
@@ -63,7 +70,9 @@ BufferCircular *reallocBufferCircular(BufferCircular *buffer, int newSize){
     return buffer;
 }
 
-
+/*
+* Vai libertar o espaço que tinha sido alocado para o BufferCircular
+*/
 void freeBufferCircular(BufferCircular *buffer) {
     if (buffer != NULL) {
         free(buffer->array);
@@ -74,6 +83,9 @@ void freeBufferCircular(BufferCircular *buffer) {
 
 //------------------------------ARRAY MEDIAS-----------------------------------
 
+/*
+* Vai alocar espaço na memória para o arrayMedias
+*/
 int *allocArrayMedias(){
 	int *array = (int *) calloc(NUM, sizeof(int *));
 	
@@ -84,6 +96,9 @@ int *allocArrayMedias(){
 	 return array;
 }
 
+/*
+* Vai realocar espaço na memória para o arrayMedias
+*/
 int *reallocArrayMedias(int *arrayMedias, int newSize){
 	int *newArray = (int *)realloc(arrayMedias, newSize * sizeof(int));
 	
@@ -97,6 +112,9 @@ int *reallocArrayMedias(int *arrayMedias, int newSize){
 	return arrayMedias;
 }
 
+/*
+* Vai libertar o espaço  que tinha sido alocado para o arrayMedias
+*/
 void freeArrayMedias(int *arrayMedias) {
     if (arrayMedias != NULL) {
         free(arrayMedias);
@@ -106,7 +124,9 @@ void freeArrayMedias(int *arrayMedias) {
 
 //------------------------------SENSOR-----------------------------------
 
-
+/*
+* Vai alocar espaço na memória para o sensor
+*/
 Sensor *allocSensor(int bufferSize, int arrayMediasSize) {
     Sensor *sensor = (Sensor *)malloc(sizeof(Sensor));
 
@@ -128,9 +148,23 @@ Sensor *allocSensor(int bufferSize, int arrayMediasSize) {
     return sensor;
 }
 
+/*
+* Vai libertar o espaço que tinha sido alocado para o sensor
+*/
+void freeSensor(Sensor *sensor) {
+    if (sensor != NULL) {
+        freeBufferCircular(sensor->buffer);
+        freeArrayMedias(sensor->arrayMedias);
+        free(sensor);
+    }
+}
+
 
 //------------------------------VECTOR SENSORES-----------------------------------
 
+/*
+* Vai alocar espaço na memória para o vetor de sensores
+*/
 Sensor **allocVetorSensores(){
 	Sensor **vetorSensores = (Sensor **)calloc(ARRAY_SENSOR_SIZE, sizeof(Sensor *));
 	if (vetorSensores == NULL) {
@@ -140,24 +174,29 @@ Sensor **allocVetorSensores(){
 	return vetorSensores;
 }
 
-
+/*
+* Vai realocar espaço na memória para o vetor de sensores
+*/
 Sensor **reallocVectorSensores(Sensor ***vetorSensores, int newSize, int size) {
-    Sensor **novoVetor = (Sensor **)realloc(*vetorSensores, newSize*sizeof(Sensor *));
+    Sensor **novoVetor = (Sensor **)realloc(*vetorSensores, newSize * sizeof(Sensor *));
     if (novoVetor != NULL) {
-        *vetorSensores = novoVetor;
+		*vetorSensores = novoVetor;
     } else {
         exit(-1);
     } 
-
+    
      if (newSize > size) {
-        for (int i = size; i < newSize; i++) {
-            (*vetorSensores)[i] = NULL;
-        }
-    }
-
+		for (int i = size; i < newSize; i++) {
+			(*vetorSensores)[i] = 0;
+		}
+	}
+        
     return *vetorSensores;
 }
 
+/*
+* Vai libertar o espaço que tinha sido alocado para o  vetor de sensores
+*/
 void freeVectorSensores(Sensor **vetorSensores, int size) {
 	for (int i = 0; i < size; i++) {
 		if (vetorSensores[i] != NULL) {
@@ -168,5 +207,3 @@ void freeVectorSensores(Sensor **vetorSensores, int size) {
 	}
 	free(vetorSensores);
 }
-
-

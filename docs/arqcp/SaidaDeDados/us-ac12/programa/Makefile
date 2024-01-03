@@ -10,5 +10,8 @@ struct_allocation.o: struct_allocation.c
 run: SaidaDeDados
 		./SaidaDeDados intermedio output 60000
 		
+vg: SaidaDeDados
+	valgrind ./SaidaDeDados intermedio output 60000
+		
 clean:
 		rm  -f *.o SaidaDeDados

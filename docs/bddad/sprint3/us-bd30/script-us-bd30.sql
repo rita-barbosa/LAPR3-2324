@@ -111,7 +111,7 @@ BEGIN
     IF (fncAnularOperacao(v_idOperacao)) THEN
         RAISE failedTest;
     ELSE
-        DBMS_OUTPUT.PUT_LINE('TESTE PASSOU');
+        DBMS_OUTPUT.PUT_LINE('TESTE PASSOU - a anulação da operação não foi realizada.');
     END IF;
 
 EXCEPTION

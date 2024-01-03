@@ -150,7 +150,7 @@ END;
 /
 --------------------------------------------------------------------------
 --FUNÇÃO------------------------------------------------------------------
-create or replace NONEDITIONABLE FUNCTION obterFatoresProducao(p_idOp IN Operacao.idOperacao%TYPE)
+create or replace NONEDITIONABLE FUNCTION obterDesigFatoresProducao(p_idOp IN Operacao.idOperacao%TYPE)
     RETURN VARCHAR2
     IS
     dados VARCHAR2(255);
@@ -266,4 +266,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('TESTE FALHOU');
 END;
 /
-
+--------------------------------------------------------------------------
+--TESTE-------------------------------------------------------------------
+--Caso de sucesso - confirmação de registos
+select * from log;

@@ -1,10 +1,9 @@
 SET SERVEROUTPUT ON;
 -------Função em si--------
-CREATE OR REPLACE FUNCTION registarFertirrega(tmp IN NUMBER,
-                                                         dataOp IN VARCHAR2,
-                                                         horaCm IN VARCHAR2,
-                                                         idStr IN setor.designacaosetor%TYPE,
-                                                         idMx IN receitafertirrega.idreceitafertirrega%TYPE
+create or replace NONEDITIONABLE FUNCTION registarFertirrega(tmp IN NUMBER,
+                                                             dataOp IN DATE,
+                                                             idStr IN setor.designacaosetor%TYPE,
+                                                             idMx IN receitafertirrega.idreceitafertirrega%TYPE
 ) RETURN NUMBER IS
     resultado NUMBER := 0;
     a NUMBER;
@@ -22,48 +21,48 @@ BEGIN
     BEGIN
         IF verificarSeReceitaFertirregaExiste(idMx) != 0 THEN
             BEGIN
-                    idOp := novoIdOperacao();
-                    INSERT INTO Operacao (idOperacao, designacaoOperacaoAgricola, designacaoUnidade, idEstadoOperacao, quantidade, dataOperacao)
-                    VALUES (idOp, 'Fertirrega', 'min', 0 , tmp, TO_DATE(dataOp||' - '||horaCm, 'DD/MM/YYYY - HH24:MI'));
+                idOp := novoIdOperacao();
+                INSERT INTO Operacao (idOperacao, designacaoOperacaoAgricola, designacaoUnidade, idEstadoOperacao, quantidade, dataOperacao)
+                VALUES (idOp, 'Fertirrega', 'min', 1, tmp, dataOp);
 
-                    cursorDados := obterFatoresProducao(idMx);
+                cursorDados := obterFatoresProducao(idMx);
 
+                LOOP
+                    FETCH cursorDados INTO c_nomeFator, c_quantidade;
+                    EXIT WHEN cursorDados%notfound;
+                    INSERT INTO aplicacaofatorproducao (nomecomercial, idoperacao)
+                    VALUES (c_nomeFator, idOp);
+                END LOOP;
+
+                CLOSE cursorDados;
+
+                INSERT INTO Rega (idOperacao, designacaoSetor)
+                VALUES (idOp, idStr);
+
+                cursorDados := obterDados(idStr);
+                << outer_loop >>
+                LOOP
+                    FETCH cursorDados INTO c_variedade, c_nomeComum, c_parcela, c_area;
+                    EXIT WHEN cursorDados%notfound;
+
+                    DBMS_OUTPUT.PUT_LINE('#Operação ' || idOp);
+                    DBMS_OUTPUT.PUT_LINE('- Rega em cultura de ' || c_variedade || ' ' || c_nomeComum || ', localizada no ' || c_parcela || ', ' || tmp || ' min');
+                    DBMS_OUTPUT.PUT_LINE('- Aplicação de fator de produção em cultura de ' || c_variedade || ' ' || c_nomeComum || ', localizada no ' || c_parcela || ' (' || c_area || ' ha de área)');
+
+                    fatoresProducao := obterFatoresProducao(idMx);
+                    << inner_loop >>
                     LOOP
-                        FETCH cursorDados INTO c_nomeFator, c_quantidade;
-                        EXIT WHEN cursorDados%notfound;
-                        INSERT INTO aplicacaofatorproducao (nomecomercial, idoperacao)
-                        VALUES (c_nomeFator, idOp);
-                    END LOOP;
+                        FETCH fatoresProducao INTO c_nomeFator, c_quantidade;
+                        EXIT WHEN fatoresProducao%notfound;
 
-                    CLOSE cursorDados;
+                        a := c_quantidade * c_area;
+                        DBMS_OUTPUT.PUT_LINE('- ' || a || ' l ' || c_nomeFator);
+                    END LOOP inner_loop;
 
-                    INSERT INTO Rega (idOperacao, designacaoSetor)
-                    VALUES (idOp, idStr);
+                    CLOSE fatoresProducao;
+                END LOOP outer_loop;
 
-                    cursorDados := obterDados(idStr);
-                    << outer_loop >>
-                    LOOP
-                        FETCH cursorDados INTO c_variedade, c_nomeComum, c_parcela, c_area;
-                        EXIT WHEN cursorDados%notfound;
-
-                        DBMS_OUTPUT.PUT_LINE('#Operação ' || idOp);
-                        DBMS_OUTPUT.PUT_LINE('- Rega em cultura de ' || c_variedade || ' ' || c_nomeComum || ', localizada no ' || c_parcela || ', ' || tmp || ' min');
-                        DBMS_OUTPUT.PUT_LINE('- Aplicação de fator de produção em cultura de ' || c_variedade || ' ' || c_nomeComum || ', localizada no ' || c_parcela || ' (' || c_area || ' ha de área)');
-
-                        fatoresProducao := obterFatoresProducao(idMx);
-                        << inner_loop >>
-                        LOOP
-                            FETCH fatoresProducao INTO c_nomeFator, c_quantidade;
-                            EXIT WHEN fatoresProducao%notfound;
-
-                            a := c_quantidade * c_area;
-                            DBMS_OUTPUT.PUT_LINE('- ' || a || ' l ' || c_nomeFator);
-                        END LOOP inner_loop;
-
-                        CLOSE fatoresProducao;
-                    END LOOP outer_loop;
-
-                    CLOSE cursorDados;
+                CLOSE cursorDados;
 
             END;
         ELSE
@@ -71,7 +70,7 @@ BEGIN
         END IF;
 
     END;
-RETURN resultado;
+    RETURN resultado;
 ---------Exceções-----------------------------------
 EXCEPTION
     WHEN invalidOperacao THEN

@@ -130,35 +130,33 @@ END;
 /
 -------------TESTE-VÁLIDO-------------------------------
 DECLARE
-     qtdTESTE NUMBER := 90;
-     dataOpTESTE VARCHAR2(10) := '02/09/2023';
-     tmTESTE VARCHAR2(5) := '05:00';
-     idSetorTESTE NUMBER := 10;
-     idMixTESTE receitafertirrega.idreceitafertirrega%TYPE := 10;
-     resultado NUMBER;
- BEGIN
-    resultado := RegistarFertirrega(qtdTESTE,dataOpTESTE,tmTESTE,idSetorTESTE,idMixTESTE);
-     IF(resultado = 1)THEN
+    qtdTESTE NUMBER := 90;
+    dataOpTESTE DATE := TO_DATE('02/09/2023 - 05:00', 'DD/MM/YYYY - HH24:MI');
+    idSetorTESTE NUMBER := 10;
+    idMixTESTE receitafertirrega.idreceitafertirrega%TYPE := 10;
+    resultado NUMBER;
+BEGIN
+    resultado := RegistarFertirrega(qtdTESTE,dataOpTESTE,idSetorTESTE,idMixTESTE);
+    IF(resultado = 1)THEN
         DBMS_OUTPUT.PUT_LINE('TESTE NÃO PASSADO.');
-     ELSE
+    ELSE
         DBMS_OUTPUT.PUT_LINE('TESTE PASSADO.');
-     END IF;
- END;
- /
- -------------TESTE-VÁLIDO-------------------------------
+    END IF;
+END;
+/
+-------------TESTE-VÁLIDO-------------------------------
 DECLARE
-     qtdTESTE NUMBER := 90;
-     dataOpTESTE VARCHAR2(10) := '02/09/2023';
-     tmTESTE VARCHAR2(5) := '05:00';
-     idSetorTESTE NUMBER := 10;
-     idMixTESTE receitafertirrega.idreceitafertirrega%TYPE := 50;
-     resultado NUMBER;
- BEGIN
-    resultado := RegistarFertirrega(qtdTESTE,dataOpTESTE,tmTESTE,idSetorTESTE,idMixTESTE);
-     IF(resultado = 0)THEN
+    qtdTESTE NUMBER := 90;
+    dataOpTESTE DATE := TO_DATE('02/09/2023 - 05:00', 'DD/MM/YYYY - HH24:MI');
+    idSetorTESTE NUMBER := 10;
+    idMixTESTE receitafertirrega.idreceitafertirrega%TYPE := 50;
+    resultado NUMBER;
+BEGIN
+    resultado := RegistarFertirrega(qtdTESTE,dataOpTESTE,idSetorTESTE,idMixTESTE);
+    IF(resultado = 0)THEN
         DBMS_OUTPUT.PUT_LINE('TESTE NÃO PASSADO.');
-     ELSE
+    ELSE
         DBMS_OUTPUT.PUT_LINE('TESTE PASSADO.');
-     END IF;
- END;
- /
+    END IF;
+END;
+/

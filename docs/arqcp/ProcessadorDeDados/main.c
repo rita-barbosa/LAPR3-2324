@@ -120,7 +120,7 @@ int main(int argc,char *argv[]) {
 		}
 	}
 	fclose(outputFile); 	// ---> Fecha o ficheiro.
-	fclose(inputFile);		// ---> Fecha o ficheiro.
+	fclose(inputFile);
 
 	freeVectorSensores(sensor_array,array_size);
 

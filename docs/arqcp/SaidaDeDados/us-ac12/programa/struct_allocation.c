@@ -5,8 +5,10 @@
 #include <errno.h>
 #include <stdlib.h>
 
-
-void alocateSaidaDeDados(char b[]){	
+/*
+* Verifica se o diretório existe e caso não exista, cria o diretório
+*/
+void alocateSaidaDeDados(char b[]){
 	DIR* dir = opendir(b);
 	
 	if(dir){
@@ -28,7 +30,9 @@ void alocateSaidaDeDados(char b[]){
 
 //---------------------------SAIDA DE DADOS--------------------------------
 
-
+/*
+* Vai alocar espaço na memória para a SaidaDeDados
+*/
 SaidaDeDados *allocSaidaDeDados() {
     SaidaDeDados *saidaDados = (SaidaDeDados *)malloc(sizeof(SaidaDeDados));
 
@@ -49,6 +53,9 @@ SaidaDeDados *allocSaidaDeDados() {
     return saidaDados;
 }
 
+/*
+* Vai realocar espaço na memória para a SaidaDeDados
+*/
 SaidaDeDados *reallocSaidaDeDados(SaidaDeDados *saidaDados) {
     SaidaDeDados *novaSaidaDados = (SaidaDeDados *)realloc(saidaDados, sizeof(SaidaDeDados));
     if (novaSaidaDados == NULL) {
@@ -57,13 +64,18 @@ SaidaDeDados *reallocSaidaDeDados(SaidaDeDados *saidaDados) {
     return novaSaidaDados;
 }
 
-
+/*
+* Vai libertar o espaço que tinha sido alocado para a saidaDeDados
+*/
 void freeSaidaDeDados(SaidaDeDados *saidaDados) {
     free(saidaDados);
 }
 
 //----------------------------VECTOR SAIDA DE DADOS-----------------------------
 
+/*
+* Vai alocar espaço na memória para o vetor de saidaDeDados
+*/
 SaidaDeDados **allocVetorSaidaDados(){
 	SaidaDeDados **vetorSaidaDados = (SaidaDeDados **)calloc(VECTOR_SIZE, sizeof(SaidaDeDados *));
 	if (vetorSaidaDados == NULL) {
@@ -73,7 +85,9 @@ SaidaDeDados **allocVetorSaidaDados(){
 	return vetorSaidaDados;
 }
 
-
+/*
+* Vai realocar espaço na memória para o vetor de saidaDeDados
+*/
 SaidaDeDados **reallocVectorSaidaDados(SaidaDeDados ***vetorSaidaDados, int newSize, int size) {
     SaidaDeDados **novoVetor = (SaidaDeDados **)realloc(*vetorSaidaDados, newSize * sizeof(SaidaDeDados *));
     if (novoVetor != NULL) {
@@ -91,6 +105,9 @@ SaidaDeDados **reallocVectorSaidaDados(SaidaDeDados ***vetorSaidaDados, int newS
     return *vetorSaidaDados;
 }
 
+/*
+* Vai libertar o espaço que tinha sido alocado para o vetor de saidaDeDados
+*/
 void freeVectorSaidaDados(SaidaDeDados **vetorSaidaDados, int size) {
 	for (int i = 0; i < size; i++) {
 		if (vetorSaidaDados[i] != NULL) {

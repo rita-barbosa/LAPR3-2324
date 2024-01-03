@@ -28,7 +28,7 @@ OPEN listaConsumoCulturas FOR
         INNER JOIN Setor S ON PR.designacaoSetor = S.designacaoSetor
         INNER JOIN Rega R ON S.designacaoSetor = R.designacaoSetor
         INNER JOIN Operacao O ON R.idOperacao = O.idOperacao
-        WHERE O.designacaoOperacaoAgricola = 'Rega'
+        WHERE O.designacaoOperacaoAgricola = 'Rega' OR O.designacaoOperacaoAgricola = 'Fertirrega'
             AND O.designacaoUnidade = 'min'
             AND EXTRACT(YEAR FROM O.dataOperacao) = p_ano_civil
         GROUP BY CI.nomeParcela, CI.variedade, CI.nomeComum, CI.dataInicial, EXTRACT(YEAR FROM O.dataOperacao)

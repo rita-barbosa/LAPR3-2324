@@ -2,7 +2,7 @@
 #define FUNCTION_H
 
 #define NUM 10 
-#define VECTOR_SIZE 20
+#define ARRAY_SENSOR_SIZE 20
 #define TYPE_SIZE 25
 #define UNIT_SIZE 10
 #define BUFFER_VARIABLES 0

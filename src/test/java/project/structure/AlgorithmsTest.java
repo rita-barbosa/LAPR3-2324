@@ -9,10 +9,7 @@ import project.domain.RedeHub;
 import project.exception.ExcecaoFicheiro;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,7 +23,7 @@ class AlgorithmsTest {
         try {
             String locais = "files/locais_small.csv";
             String distancias = "files/distancias_small.csv";
-            ImportarFicheiro.importRedeDistribuicao(locais,distancias);
+            ImportarFicheiro.importRedeDistribuicao(locais, distancias);
             redeGrafo = rede.getRedeDistribuicao();
         } catch (ExcecaoFicheiro | IOException e) {
             System.out.println(e.getMessage());
@@ -43,6 +40,7 @@ class AlgorithmsTest {
         assertNull(Algorithms.DepthFirstSearch(redeGrafo, new Local("Sardinha")));
 
         LinkedList<Local> path = Algorithms.DepthFirstSearch(redeGrafo, new Local("CT5"));
+        assert path != null;
         assertEquals(17, path.size());
 
         assertEquals(new Local("CT5"), path.peekFirst());
@@ -57,11 +55,13 @@ class AlgorithmsTest {
         List<String> expected = new LinkedList<>(Arrays.asList("CT16", "CT3", "CT12", "CT1", "CT10", "CT13", "CT11", "CT5",
                 "CT9", "CT17", "CT6", "CT4", "CT2", "CT14", "CT7", "CT8", "CT15"));
         List<String> pathIds = new ArrayList<>();
-        for (Local local : path){
+        assert path != null;
+        for (Local local : path) {
             pathIds.add(local.getNumId());
         }
         assertEquals(expected, pathIds);
     }
+
     @Test
     void minimumSpanningTreeAlgorithmsTest() {
         MapGraph<Local, Integer> mst1 = MST.getMstWithPrimAlgorithm(redeGrafo);
@@ -69,7 +69,7 @@ class AlgorithmsTest {
 
         System.out.println("\nÁrvore de Cobertura de Custo Mínimo usando o alg. Kruskall " + mst2);
         System.out.println("\nÁrvore de Cobertura de Custo Mínimo usando o alg. Prim " + mst1);
-        assertTrue(mst1.equals(mst2));
+        assertEquals(mst1, mst2);
     }
 
     @Test
@@ -82,4 +82,30 @@ class AlgorithmsTest {
 
         assertEquals(primTotalWeight, kruskallTotalWeight);
     }
+
+    @Test
+    void checkIfNoLocalsAreReapeated() {
+        List<Local> hubs = redeGrafo.getHubsVertexList();
+        int numClusters = 5;
+        Set<Set<Local>> clusters = Algorithms.getNClusters(redeGrafo, numClusters, hubs);
+
+        for (Set<Local> cluster : clusters) {
+            assertEquals(cluster.size(), cluster.stream().distinct().count(),
+                    "Foram encontrados locais duplicados nos clusters.");
+        }
+    }
+
+
+    @Test
+    void checkIfNoLocalsAreLeftOut() {
+        List<Local> hubs = redeGrafo.getHubsVertexList();
+        int numClusters = 3;
+        Set<Set<Local>> clusters = Algorithms.getNClusters(redeGrafo, numClusters, hubs);
+        int vertexesClusters = 0;
+        for (Set<Local> cluster : clusters) {
+            vertexesClusters += cluster.size();
+        }
+        assertEquals(redeGrafo.vertices.size(), vertexesClusters);
+    }
+
 }

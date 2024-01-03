@@ -93,9 +93,10 @@ public class ExcecaoFicheiro extends Exception {
                 if (!info[2].equals("I")) {
                     tempoAtualP = tempoAtualP.plusMinutes(duracao);
                 }
-
-                if (tempoAtualI.isAfter(horasRega.get(1)) || tempoAtualP.isAfter(horasRega.get(1))) {
-                    throw new ExcecaoFicheiro("ERRO: Sobreposição de horas de rega.");
+                if (horasRega.size() > 1) {
+                    if (tempoAtualI.isAfter(horasRega.get(1)) || tempoAtualP.isAfter(horasRega.get(1))) {
+                        throw new ExcecaoFicheiro("ERRO: Sobreposição de horas de rega.");
+                    }
                 }
                 if (info.length == 5) {
                     validarFertirrega(info);
@@ -126,7 +127,7 @@ public class ExcecaoFicheiro extends Exception {
             }
 
             if ((i % recorrencia == 0) && ((day % 2 == 0 && reg.equalsIgnoreCase("i")) || (day % 2 != 0 && reg.equalsIgnoreCase("p")) || (day % 3 != 0 && reg.equalsIgnoreCase("3")))) {
-                throw new ExcecaoFicheiro("ERRO: Inválida recorrência da fertirrega para a regularidade apresentada - " + String.join(", ", info) + " Dom - " + day + " dop -"+i);
+                throw new ExcecaoFicheiro("ERRO: Inválida recorrência da fertirrega para a regularidade apresentada - " + String.join(", ", info));
             }
         }
     }

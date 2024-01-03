@@ -57,8 +57,8 @@ public class Rega {
         return horaInicio;
     }
 
-    public void setHoraInicio(LocalTime horaInicio) {
-        this.horaInicio = horaInicio;
+    public void setMixDay(Boolean horaInicio) {
+        this.mixDay = horaInicio;
     }
 
     public String getReceita() {

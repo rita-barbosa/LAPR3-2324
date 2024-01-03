@@ -55,8 +55,8 @@ Sensor *create_sensor(char *ptr_read, int counter,int sensor_id);
 void insert_data_sensor(Sensor **sensor_array, char *ptr_read, int counter, int sensor_id, int array_size);
 void print_sensor_data(Sensor **sensor_array, int pos);
 void insert_data_line(char *ptr_read, Sensor ***sensor_array,int *ptr_arr_size,int *ptr_counter);
-
 //---------------------------------------------------------------------------------------
+int move_num_vec(int* array, int length, int* read, int* write, int num, int* vec);
 void sort_array(int* vec, int num);
 int mediana(int* vec, int num);
 char* get_outputFileName();

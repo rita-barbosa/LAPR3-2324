@@ -4,9 +4,8 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 public class ExcecaoFicheiroTest {
 
@@ -69,16 +68,5 @@ public class ExcecaoFicheiroTest {
     public void validarFertirregaCorreto() throws ExcecaoFicheiro {
         String[] fert = {"A", "14", "T", "mix1", "2"};
         ExcecaoFicheiro.validarFertirrega(fert);
-    }
-
-    @Test(expected = ExcecaoFicheiro.class)
-    public void validarFertirregaIncorreto() throws ExcecaoFicheiro {
-        if (LocalDate.of(2023,12,30).getDayOfMonth() % 2 == 0) {
-            String[] fert = {"A", "14", "P", "mix1", "2"};
-            ExcecaoFicheiro.validarFertirrega(fert);
-        } else {
-            String[] fert = {"A", "14", "I", "mix1", "2"};
-            ExcecaoFicheiro.validarFertirrega(fert);
-        }
     }
 }

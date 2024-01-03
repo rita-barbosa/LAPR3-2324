@@ -1,20 +1,18 @@
 package project.data_access;
 
 import oracle.jdbc.OracleTypes;
-import project.domain.Operacao;
-import project.domain.OperacaoCultura;
 import project.domain.Rega;
 
 import java.math.BigDecimal;
-import java.sql.*;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 public class OperacaoRepository {
@@ -71,8 +69,8 @@ public class OperacaoRepository {
         CallableStatement callStmt = null;
         boolean success = false;
         try {
-           Connection connection = DatabaseConnection.getInstance().getConnection();
-            callStmt = connection.prepareCall("{ ? = call registarFertirrega(?,?,?,?,?) }");
+            Connection connection = DatabaseConnection.getInstance().getConnection();
+            callStmt = connection.prepareCall("{ ? = call registarFertirrega(?,?,?,?) }");
 
             callStmt.registerOutParameter(1, OracleTypes.NUMBER);
 
@@ -82,24 +80,23 @@ public class OperacaoRepository {
             LocalDate localDate = LocalDate.parse(rega.getData().toString(), dateFormatter);
             LocalTime localTime = LocalTime.parse(rega.getHoraInicio().toString(), timeFormatter);
 
-            callStmt.setString(3, String.valueOf(localDate));
+            LocalDateTime localDateTime = LocalDateTime.of(localDate, localTime);
+            java.util.Date date = java.util.Date.from(localDateTime.atZone(java.time.ZoneId.systemDefault()).toInstant());
+            java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 
-            callStmt.setString(4, String.valueOf(localTime));
+            callStmt.setDate(3, sqlDate);
 
-            callStmt.setInt(5, Integer.parseInt(rega.getIdSetor()));
+            callStmt.setInt(4, Integer.parseInt(rega.getIdSetor()));
 
-            callStmt.setInt(6, Integer.parseInt(rega.getReceita().substring(3)));
+            callStmt.setInt(5, Integer.parseInt(rega.getReceita()));
 
             callStmt.execute();
 
             BigDecimal bigDecimalValue = (BigDecimal) callStmt.getObject(1);
             int opStatus = bigDecimalValue.intValue();
 
-            if (opStatus == 1) {
+            if (opStatus == 0) {
                 success = true;
-                System.out.println("success");
-            }else{
-                System.out.println("failure");
             }
 
             connection.commit();
@@ -146,9 +143,6 @@ public class OperacaoRepository {
 
             if (opStatus == 1) {
                 success = true;
-                System.out.println("success");
-            }else{
-                System.out.println("failure");
             }
 
             connection.commit();

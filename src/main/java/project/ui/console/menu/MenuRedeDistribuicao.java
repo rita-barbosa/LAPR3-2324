@@ -20,9 +20,9 @@ public class MenuRedeDistribuicao implements Runnable {
         options.add(new MenuItem("Localização ideal de N hubs.", new LocalizacaoIdealHubsUI()));
         options.add(new MenuItem("Percurso mínimo possível.", new PercursoMinimoUI()));
         options.add(new MenuItem("Rede de ligação mínima.", new RedeLigacaoMinimaUI()));
-        options.add(new MenuItem("Rede de ligação maxíma.", new MaiorPercursoHubsUI()));
         options.add(new MenuItem("Percursos entre local e hub.", new PercursoEntreLocaisUI()));
         options.add(new MenuItem("Circuito de entrega", new CircuitoEntregaUI()));
+        options.add(new MenuItem("Rede de ligação maxíma.", new MaiorPercursoHubsUI()));
         options.add(new MenuItem("Rede dividida em N Clusters", new ClustersHubsUI()));
         int option = 0;
         do {

@@ -29,7 +29,6 @@ public class SistemaDeRega {
 
     public static void setPlanoDeRega(List<Rega> planoDeRega) {
         SistemaDeRega.planoDeRega = planoDeRega;
-        SistemaDeRega.planoDeRega.get(0).setMixDay(true);
     }
 
     public static List<Rega> getPlanoDeRegas() {

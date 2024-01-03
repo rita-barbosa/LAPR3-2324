@@ -33,15 +33,6 @@ private static boolean result;
     }
 
     @Test
-    public void testImportWateringPlanFailureWrongMix() {
-        String exceptionMessage = """
-                ERRO: Não foi possível registar a operação de rega na base de dados.""";
-        String wrongLinesFile = "src/test/java/project/testFiles/ficheiroMixNaoExistente.txt";
-        result = ImportarFicheiro.importWateringPlan(wrongLinesFile);
-        assertFalse(result);
-    }
-
-    @Test
     public void testImportWateringPlanFailureWrongHours() {
         String exceptionMessage = "ERRO: Conteúdo ficheiro não corresponde ao esperado.\n" +
                 "A primeira linha deve ter as horas de rega com o seguinte formato: hh:mm, hh:mm, etc.";

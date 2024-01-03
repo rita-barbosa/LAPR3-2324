@@ -3,14 +3,10 @@ package project.ui.console.rede;
 import project.controller.rede.ClustersHubsController;
 import project.domain.Local;
 import project.domain.RedeHub;
-import project.structure.Algorithms;
-import project.structure.Edge;
 import project.structure.MapGraph;
 import project.ui.console.utils.Utils;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 
@@ -34,11 +30,11 @@ public class ClustersHubsUI implements Runnable {
 
         if (numClusters <= hubs.size()){
 
-            Set<Set<Local>> currentBestCommunity = controller.getNClusters(graph, numClusters, hubs);
+            Set<Set<Local>> clusters = controller.getNClusters(graph, numClusters, hubs);
 
             int i = 1;
             System.out.println();
-            for (Set<Local> cluster : currentBestCommunity) {
+            for (Set<Local> cluster : clusters) {
                 System.out.print("------------------------\n");
                 System.out.printf("|   ## Cluster #%d ###  |\n", i);
                 System.out.print("------------------------\n");

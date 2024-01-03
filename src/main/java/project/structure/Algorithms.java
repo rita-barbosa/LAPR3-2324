@@ -115,7 +115,7 @@ public class Algorithms {
             return null;
         }
 
-        boolean visited[] = new boolean[g.numVertices()];
+        boolean[] visited = new boolean[g.numVertices()];
 
         LinkedList<V> result = new LinkedList<>();
 
@@ -492,224 +492,6 @@ public class Algorithms {
     }
 
 
-    // following Brandes' algorithm to calculate the betweeness/centrality of an edge with BFS
-    public static <V, E> Map<Map<Edge<V, E>, Double>, Set<Set<V>>> edgeBetweennessCentrality(Graph<V, E> graph, List<V> vertexes) {
-
-        // Vertice -> (Adjacente, Betweenness)
-        Map<V, Map<V, Double>> edgeBetweenness = new HashMap<>();
-
-        // Vertice -> (Adjacente, 0.0)
-        for (V v : vertexes) {
-            Map<V, Double> adjacentMap = new HashMap<>();
-            for (V adj : graph.adjVertices(v)) {
-                adjacentMap.put(adj, 0.0);
-            }
-            edgeBetweenness.put(v, adjacentMap);
-        }
-
-        // set com as comunidades que passam a existir
-        Set<Set<V>> comRes = new HashSet<>();
-        // valores default para o score do vertice e da edge
-        List<Double> nodeScoreValuesDefault = new ArrayList<>();
-        nodeScoreValuesDefault.add(0.0);
-        nodeScoreValuesDefault.add(1.0);
-
-
-        // first we select a node v to start, and perform bfs to assign node score and edge credits
-        // where node_score contains {node: [node_score, edge_credit]}
-        for (V vertex : graph.vertices()) {
-            Set<V> visited = new HashSet<>();
-            List<V> src = new ArrayList<>();
-            src.add(vertex);
-            Map<V, List<Double>> nodeScore = new HashMap<>();
-            nodeScore.put(vertex, new ArrayList<>(nodeScoreValuesDefault));
-            nodeScore.get(vertex).set(0, nodeScore.get(vertex).get(0) + 1.0);
-            List<Map<V, List<V>>> edgePath = new ArrayList<>();
-            Map<V, List<V>> curLevelEdge = new HashMap<>();
-
-
-            // calcular o score dos vértices
-            while (true) {
-                visited.addAll(src);
-                Set<V> nextSrc = new HashSet<>();
-                curLevelEdge.clear();
-
-                for (V node : src) {
-                    List<V> destinations = graph.adjVertices(node).stream().toList();
-                    for (V nextNode : destinations) {
-                        if (!visited.contains(nextNode)) {
-                            nextSrc.add(nextNode);
-                            if (!nodeScore.containsKey(nextNode)) {
-                                nodeScore.put(nextNode, new ArrayList<>(nodeScoreValuesDefault));
-                            }
-                            double scoreNode = nodeScore.get(node).get(0);
-                            nodeScore.get(nextNode).set(0, nodeScore.get(nextNode).get(0) + scoreNode);
-                            // check this
-                            curLevelEdge.computeIfAbsent(nextNode, k -> new ArrayList<>()).add(node);
-                        }
-                    }
-                }
-
-                //alocacao de comunidades
-                if (nextSrc.isEmpty()) {
-                    HashSet<V> set = new HashSet<>();
-                    if (!graph.vertices().contains(vertex)) {
-                        set.add(vertex);
-                        comRes.add(set);
-                    } else {
-                        set.addAll(visited);
-                        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! suposed to sort them
-                        comRes.add(set);
-                    }
-                    break;
-                } else {
-                    edgePath.add((curLevelEdge));
-                    src = new ArrayList<>(nextSrc);
-                }
-            }
-
-            // next, we compute the betweenness value and the edge credit to the next node
-            for (int i = edgePath.size() - 1; i >= 0; i--) {
-                Map<V, List<V>> levelNodes = edgePath.get(i);
-
-                for (V vNode : levelNodes.keySet()) {
-                    Map<V, Double> edgeMap = edgeBetweenness.getOrDefault(vNode, new HashMap<>());
-                    List<V> edges = levelNodes.get(vNode);
-                    for (V nextNode : edges) {
-                        // Edge(vNode, nextNode) -> (1 + Sum(incoming edge credit)) * [(scoreVDest) / (scoreVOrig)]
-                        Double btwVal = nodeScore.get(vNode).get(1) * nodeScore.get(nextNode).get(0) / nodeScore.get(vNode).get(0);
-                        edgeMap.put(nextNode, btwVal);
-                        edgeBetweenness.put(vNode, edgeMap);
-                        nodeScore.get(nextNode).set(1, nodeScore.get(nextNode).get(1) + btwVal);
-                    }
-                }
-            }
-        }
-        Map<Map<Edge<V, E>, Double>, Set<Set<V>>> result = new HashMap<>();
-        result.put(scaleBetweenness(graph, edgeBetweenness), comRes);
-        return result;
-    }
-
-    private static <E, V> Map<Edge<V, E>, Double> scaleBetweenness(Graph<V, E> graph, Map<V, Map<V, Double>> edgeBetweenness) {
-        Map<Edge<V, E>, Double> result = new HashMap<>();
-        for (V source : edgeBetweenness.keySet()) {
-            Map<V, Double> edges = edgeBetweenness.get(source);
-            for (V dest : edges.keySet()) {
-                Double betweenness = edges.get(dest) / 2;
-                result.put(graph.edge(source, dest), betweenness);
-            }
-        }
-        // sort, maybe?
-        return result;
-    }
-
-    public static <V, E> double computeModularity(MapGraph<V, E> originalGraph, MapGraph<V, E> updateGraph, int numEdges, Set<Set<V>> communities) {
-        double res = 0;
-        for (Set<V> com : communities) {
-            for (Edge<V, E> edge : getCommunityEdges(originalGraph, com)) {
-                V vOrig = edge.getVOrig();
-                V vDest = edge.getVDest();
-                int A = 0;
-                if (originalGraph.adjVertices(vOrig).contains(vDest) && originalGraph.adjVertices(vDest).contains(vOrig)) {
-                    A = 1;
-                }
-                int ki = updateGraph.adjVertices(vOrig).size();
-                int kj = updateGraph.adjVertices(vDest).size();
-                res += A - (ki * kj) / (2.0 * numEdges);
-            }
-        }
-        return res / (2.0 * numEdges);
-    }
-
-    private static <E, V> Set<Edge<V, E>> getCommunityEdges(Graph<V, E> originalGraph, Set<V> com) {
-        Set<Edge<V, E>> edges = new HashSet<>();
-        List<Edge<V, E>> originalGraphEdges = originalGraph.edges().stream().toList();
-        for (V source : com) {
-            for (V dest : com) {
-                Edge<V, E> testEdge = new Edge<>(source, dest);
-                if (source != dest && originalGraphEdges.contains(testEdge)) {
-                    edges.add(testEdge);
-                }
-            }
-        }
-        return edges;
-    }
-
-
-    public static <V, E> void removeHighestBetweennessEdge(MapGraph<V, E> edgeDict, Map<Edge<V, E>, Double> edgeBtwDict) {
-        double largestBtwVal = Double.NEGATIVE_INFINITY;
-
-        for (Edge<V, E> edge : edgeBtwDict.keySet()) {
-            if (edgeBtwDict.get(edge) > largestBtwVal) {
-                largestBtwVal = edgeBtwDict.get(edge);
-            }
-        }
-
-        //assinalar para remover todas as edges que tenham o valor da betweenness maior
-        List<Edge<V, E>> removeEdgeList = new ArrayList<>();
-        for (Edge<V, E> edge : edgeBtwDict.keySet()) {
-            if (Math.round(edgeBtwDict.get(edge) * 100000) == Math.round(largestBtwVal * 100000)) {
-                removeEdgeList.add(edge);
-            }
-        }
-
-        System.out.println("Remove edges " + removeEdgeList + " with betweenness value around " + Math.round(largestBtwVal));
-
-        // remove betweenness maior + a edge reversa
-        for (Edge<V, E> edge : removeEdgeList) {
-            V vOrig = edge.getVOrig();
-            V vDest = edge.getVDest();
-            edgeDict.removeEdge(vOrig, vDest);
-            edgeDict.removeEdge(vDest, vOrig);
-        }
-    }
-
-
-    public static <V, E> Set<Set<V>> computeOptCommunities(MapGraph<V, E> edgeDict, List<V> vertices, int numClusters, boolean verbose) {
-
-        double maxModularity = Double.NEGATIVE_INFINITY;
-        Set<Edge<V, E>> edgeSet = new HashSet<>(edgeDict.edges());
-
-        int edgeCount = edgeSet.size();
-        MapGraph<V, E> updateGraph = edgeDict;
-
-        Map<Map<Edge<V, E>, Double>, Set<Set<V>>> btwResult = Algorithms.edgeBetweennessCentrality(updateGraph, vertices);
-        Map.Entry<Map<Edge<V, E>, Double>, Set<Set<V>>> firstEntry = btwResult.entrySet().iterator().next();
-        Map<Edge<V, E>, Double> edgeBtwDict = firstEntry.getKey();
-        Set<Set<V>> currentBestCommunity = new HashSet<>();
-
-        //int iterations = 0; // Track the number of iterations
-
-        while (true) {
-            removeHighestBetweennessEdge(updateGraph, edgeBtwDict);
-
-            btwResult = Algorithms.edgeBetweennessCentrality(updateGraph, vertices);
-            firstEntry = btwResult.entrySet().iterator().next();
-            edgeBtwDict = firstEntry.getKey();
-
-            Set<Set<V>> nextCommunity = firstEntry.getValue();
-
-            double currentModularity = computeModularity(edgeDict, updateGraph, edgeCount, nextCommunity);
-
-            if (currentModularity >= maxModularity) {
-                if (verbose) {
-                    System.out.println("Update best modularity of community split " + maxModularity + " ---> " + currentModularity + "\n");
-                }
-                maxModularity = currentModularity;
-                currentBestCommunity = nextCommunity;
-            } else {
-                if (verbose) {
-                    System.out.println("Modularity after split = " + currentModularity + ", which is lower than best split " + maxModularity + "\n");
-                }
-                break;
-            }
-
-            // iterations++; // Increment the iteration counter
-        }
-        return currentBestCommunity;
-    }
-
-
     /**
      * Finds a circuit by applying the nearest neighbor heuristic in a graph, considering a hubs list and autonomy.
      *
@@ -804,6 +586,15 @@ public class Algorithms {
     }
 
 
+    /**
+     * Obtem N clusters com vertices do grafo, seguindo o algoritmo de Girvan Newman e com o de Brandes.
+     * @param graph grafo
+     * @param numClusters numero de clusters
+     * @param hubList lista de hubs do grafo
+     * @return clusters
+     * @param <V> vertice
+     * @param <E> integer
+     */
     public static <V, E> Set<Set<V>> getNClusters(MapGraph<V, E> graph, int numClusters, List<V> hubList) {
         MapGraph<V, E> copycat = new MapGraph<>(graph);
         Set<Set<V>> clusterSets = new HashSet<>();
@@ -813,15 +604,6 @@ public class Algorithms {
         for (V hub : graph.getHubsVertexList().subList(0, numClusters)) {
             clusters.put(hub, new HashSet<>());
             clusters.get(hub).add(hub);
-        }
-
-        if (numClusters == hubList.size()){
-            for (Map.Entry<V, Set<V>> entry : clusters.entrySet()) {
-                Set<V> clust = new HashSet<>(entry.getValue());
-                clust.add(entry.getKey());
-                clusterSets.add(clust);
-            }
-            return clusterSets;
         }
 
         Map<Edge<V, E>, Double> edgeBetweenness;
@@ -873,6 +655,14 @@ public class Algorithms {
         return clusterSets;
     }
 
+    /**
+     * no caso de haverem vertices isolados
+     * @param graph grafo
+     * @param clusterSets cluters existentes
+     * @param numClusters numero de clusters desejados
+     * @param <E> integer
+     * @param <V> vertices
+     */
     private static <E, V> void correctClusters(MapGraph<V, E> graph, Set<Set<V>> clusterSets, int numClusters) {
         List<V> leftoutVertexes = new ArrayList<>(graph.vertices);
         Set<V> clusterVertexes = new HashSet<>();
@@ -944,6 +734,13 @@ public class Algorithms {
 
     }
 
+    /**
+     * Verifica se ao se retirar um hub se o cluster ainda existe (ainda contem outros hubs)
+     * @param hub hub
+     * @param clusterSets clusters
+     * @return true - se o cluster ainda tiver hubs, false se o contrario
+     * @param <V> vertices
+     */
     private static <V> boolean checkIfWithoutHubClusterExists(V hub, Set<Set<V>> clusterSets) {
         Set<V> cluster = null;
         for (Set<V> set : clusterSets) {
@@ -965,6 +762,14 @@ public class Algorithms {
         return false;
     }
 
+    /**
+     * Obtem a edge com menor centralidade onde o vertice de origem ou destino pertence ao vertices isolados
+     * @param graph grafo
+     * @param leftoutVertexes vertices isolados
+     * @return edge com menor centralidade e com hub conectado a um vertice isolado
+     * @param <E> integer
+     * @param <V> vertice
+     */
     private static <E, V> Edge<V, E> getEdgeWithLessCentralityAndHub(MapGraph<V, E> graph, List<V> leftoutVertexes) {
         Map<Edge<V, E>, Double> edgeBetweenness = edgeBetweennessCentrality(graph);
         Map<Edge<V, E>, Double> edgesVertex = new HashMap<>();
@@ -986,6 +791,12 @@ public class Algorithms {
         return chosenOne;
     }
 
+    /**
+     * verifica se o outro vertice da edge é um hub
+     * @param vDest vertice, potencialmente um hub
+     * @return true se o vertice for um hub
+     * @param <V> vertice
+     */
     private static <V> boolean checkOtherVertex(V vDest) {
         if (vDest.getClass().getSimpleName().equals("Local")) {
             Local local = (Local) vDest;
@@ -994,6 +805,14 @@ public class Algorithms {
         return false;
     }
 
+    /**
+     * Obtencao da edge com menor centralidade ligada a um vertice passado como parametro
+     * @param vertex vertice
+     * @param edgeBetweenness mapa com a centralidade de cada edge
+     * @return a edge com menor centralidade
+     * @param <V> vertice
+     * @param <E> integer
+     */
     private static <V, E> Edge<V, E> getEdgeWithLessCentrality(V vertex, Map<Edge<V, E>, Double> edgeBetweenness) {
         Edge<V, E> lessCentralEdge = null;
         double smallCentrality = Double.POSITIVE_INFINITY;
@@ -1008,6 +827,14 @@ public class Algorithms {
         return lessCentralEdge;
     }
 
+    /**
+     * Verificacao da existencia de vertices isolados
+     * @param graph grafo
+     * @param clusterSets clusters
+     * @return true se existem vertices isolados, falso se não existirem
+     * @param <E> integer
+     * @param <V> vertices
+     */
     private static <E, V> boolean checkLeftOutVertexes(MapGraph<V, E> graph, Set<Set<V>> clusterSets) {
         int vertexesClusters = 0;
         for (Set<V> cluster : clusterSets) {
@@ -1016,7 +843,14 @@ public class Algorithms {
         return vertexesClusters == graph.vertices.size();
     }
 
-
+    /**
+     * Verifica se os clusters existentes estão isolados
+     * @param graph grafo
+     * @param clusters clusters
+     * @return confirmação de que os clusters estao ou nao isolados
+     * @param <E> integer
+     * @param <V> vertices
+     */
     private static <E, V> boolean areClustersIsolated(MapGraph<V, E> graph, Map<V, Set<V>> clusters) {
         for (Set<V> cluster : clusters.values()) {
             for (Set<V> nextOne : clusters.values()) {
@@ -1036,7 +870,13 @@ public class Algorithms {
         return true;
     }
 
-
+    /**
+     * Obtem o indice de centralidade das edges do grafo, seguindo o Algoritmo de Girvan Newman e de Brandes
+     * @param graph grafo
+     * @return mapa com as edges e a sua centralidade
+     * @param <V> vertices
+     * @param <E> integer
+     */
     private static <V, E> Map<Edge<V, E>, Double> edgeBetweennessCentrality(MapGraph<V, E> graph) {
         Map<Edge<V, E>, Double> result = new HashMap<>();
         Map<Edge<V, E>, Double> edgeBetweenness = new HashMap<>();
@@ -1084,6 +924,13 @@ public class Algorithms {
         return result;
     }
 
+    /**
+     * Adiciona ao resultado final o valor de centralidade das edges a cada iteracao
+     * @param edgeBetweenness mapa com as centralidades das edges
+     * @param result resultado
+     * @param <V> vertices
+     * @param <E> integer
+     */
     private static <V, E> void addEdgeBetwennessToResult(Map<Edge<V, E>, Double> edgeBetweenness, Map<Edge<V, E>, Double> result) {
         for (Edge<V, E> edge : edgeBetweenness.keySet()) {
             if (!result.containsKey(edge)) {
@@ -1094,6 +941,14 @@ public class Algorithms {
         }
     }
 
+    /**
+     * Filtra e preenche o mapa da centralidade das edges
+     * @param graph grafo
+     * @param edgeBetweenness mapa com as centralidades
+     * @param vertexScores mapa com os niveis e valores dos vertices
+     * @param <V> vertices
+     * @param <E> integer
+     */
     private static <V, E> void filterAndFillEdgeBetweennessMap(MapGraph<V, E> graph, Map<Edge<V, E>, Double> edgeBetweenness, Map<V, List<Integer>> vertexScores) {
         List<Edge<V, E>> edgesToRemove = new ArrayList<>();
         List<Edge<V, E>> edges = new ArrayList<>(graph.edges());
@@ -1108,6 +963,14 @@ public class Algorithms {
         }
     }
 
+    /**
+     * Calcula o indice de centralidade das edges do grafo para cada iteracao da pesquisa do grafo
+     * @param listPath lista obtida atraves do breadth-first-search
+     * @param edgeBetweenness mapa das centralidades das edges
+     * @param vertexScores mapa com os niveis e valores dos vertices
+     * @param <V> vertices
+     * @param <E> integer
+     */
     private static <V, E> void calculateEdgeBetwenness(List<V> listPath, Map<Edge<V, E>, Double> edgeBetweenness, Map<V, List<Integer>> vertexScores) {
         Map<V, Double> sumEdges = new HashMap<>();
         List<V> vOrigEdgesVDest = new ArrayList<>();
@@ -1146,6 +1009,14 @@ public class Algorithms {
         }
     }
 
+    /**
+     * Obtem a pontuaçao de cada vertice aquando a iteracao atual do grafo
+     * @param graph grafo
+     * @param listPath lista bfs
+     * @param vertexScores  mapa com os niveis e valores dos vertices
+     * @param <V> vertices
+     * @param <E> integer
+     */
     private static <V, E> void getVertexesScores(MapGraph<V, E> graph, List<V> listPath, Map<V, List<Integer>> vertexScores) {
         MapGraph<V, E> copycat = new MapGraph<>(graph);
         for (V vertex : listPath) {
@@ -1162,6 +1033,13 @@ public class Algorithms {
         }
     }
 
+    /**
+     * Inicializa o mapa com os niveis e valores dos vertices
+     * @param vertexScores  mapa com os niveis e valores dos vertices
+     * @param graph grafo
+     * @param <V> vertices
+     * @param <E> integer
+     */
     private static <V, E> void initializeVertexScoresAndLevels(Map<V, List<Integer>> vertexScores, MapGraph<V, E> graph) {
         for (V vertex : graph.vertices) {
             List<Integer> sourceVertexMap = new LinkedList<>();

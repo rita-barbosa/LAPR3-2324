@@ -41,7 +41,7 @@ int main(int argc,char *argv[]) {
 
 			vetorSensores[0] = sensor1;
 			
-			vetorSensores = reallocVectorSensores(&vetorSensores, 40, VECTOR_SIZE);
+			vetorSensores = reallocVectorSensores(&vetorSensores, 40, ARRAY_SENSOR_SIZE);
 			
 			vetorSensores[25] = sensor2;
 			printf("Foi colocado com sucesso!\n");

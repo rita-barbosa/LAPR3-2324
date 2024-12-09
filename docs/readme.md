@@ -1,4 +1,4 @@
-# Projeto Integrativo - 2ºAno - 1º Semestre
+# LAPR3 | 2023 - 2024
 
 | Número Grupo | Turma |
 |--------------|-------|
